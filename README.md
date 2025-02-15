@@ -19,7 +19,7 @@ Feel free to connect with me for all things related to LLM, academic discussions
 - 🎓 &nbsp; I’m a first-year postgraduate at Nanjing University, graduating in 2026.
 - 🛠 &nbsp; I’m currently working on LLM Post-Training.
 - 💬 &nbsp; Ask me anything [here](https://github.com/Raynhu/Raynhu/issues/1)! I am happy to help.
-- 🎶 &nbsp; I love Jazz rap and R&B music.
+- 🎶 &nbsp; I love Jazz hiphop and R&B music.
 - 🏊‍♂️ &nbsp; I enjoy swimming in my spare time.
 - 📫 &nbsp; Reach me out: starry.r.hu@gmail.com.
 - 💼 &nbsp; I have interned at Huawei, Bytedance, Microsoft, and Tencent.
@@ -27,7 +27,7 @@ Feel free to connect with me for all things related to LLM, academic discussions
 ### My Absolute Favorites:
 
 - 💻 &nbsp; I love exploring the latest advancements in LLM technology.
-- 🎵 &nbsp; Listening to Jazz rap and R&B music.
+- 🎵 &nbsp; Listening to Jazz hiphop and R&B music.
 - 🏊‍♂️ &nbsp; Swimming to keep myself healthy and energetic.
 
 ### Projects and Dev Stuffs:
