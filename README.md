@@ -31,7 +31,5 @@ Feel free to connect with me for all things related to LLM, academic discussions
 - 🏊‍♂️ &nbsp; Swimming to keep myself healthy and energetic.
 
 ### Projects and Dev Stuffs:
-<img height="180em" src="https://github-readme-stats.vercel.app/api?username=Raynhu&show_icons=true&hide_border=true&&count_private=true&include_all_commits=true" />
-<img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Raynhu&exclude_repo=SomeRepo&show_icons=true&hide_border=true&layout=compact&langs_count=8"/>
-
-<img height="180em" src="https://github-readme-streak-stats.herokuapp.com/?user=Raynhu&hide_border=true" />
+<img height="200em" src="https://github-readme-stats.vercel.app/api?username=Raynhu&show_icons=true&hide_border=true&&count_private=true&include_all_commits=true" />
+<img height="200em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Raynhu&exclude_repo=SomeRepo&show_icons=true&hide_border=true&layout=compact&langs_count=8"/>
