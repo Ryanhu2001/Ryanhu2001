@@ -1,4 +1,4 @@
-## Hey there 👋, I'm [Rui Hu!](https://github.com/Raynhu/)
+## Hey there 👋, I'm [Rui Hu!](https://github.com/Hades1019/)
 
 [![Twitter Badge](https://img.shields.io/badge/-Twitter-00acee?style=flat-square&logo=Twitter&logoColor=white)](https://x.com/HuJinBo_plus)
 [![Linkedin Badge](https://img.shields.io/badge/-LinkedIn-0e76a8?style=flat-square&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/ray-hu-3b02712a5/)
