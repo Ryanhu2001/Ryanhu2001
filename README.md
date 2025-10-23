@@ -4,7 +4,7 @@
 [![Linkedin Badge](https://img.shields.io/badge/-LinkedIn-0e76a8?style=flat-square&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/ray-hu-3b02712a5/)
 
 ### Glad to see you here! 
-I am a first-year postgraduate student at the School of Software, Nanjing University, graduating in 2026. Currently, I'm primarily focusing on reinforcement learning and generative reward modeling (RM).  
+I am a second-year postgraduate student at the Software Institute, Nanjing University, graduating in 2026. Currently, I'm primarily focusing on reinforcement learning and generative reward modeling (RM).  
 Feel free to connect with me for all things related to LLM, RL, academic discussions, or just to say hello! Let’s explore the fascinating world of technology together. 🌟
 
 <hr>
