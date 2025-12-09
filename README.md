@@ -22,7 +22,7 @@ Feel free to connect with me for all things related to LLM, RL, academic discuss
 - 🎶 &nbsp; I love Jazz hip hop and R&B music.
 - 🏊‍♂️ &nbsp; I enjoy swimming in my spare time.
 - 📫 &nbsp; Reach me out: starry.r.hu@gmail.com.
-- 💼 &nbsp; I have interned at Microsoft STCA, Tencent AI Lab, and Alibaba.
+- 💼 &nbsp; I have interned at Tencent AI Lab, Alibaba.
 
 ### My Absolute Favorites:
 
