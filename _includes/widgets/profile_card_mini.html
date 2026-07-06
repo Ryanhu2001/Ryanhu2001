@@ -34,6 +34,14 @@
                     </div>
                 </div>
 
+                {% if site.data.profile.short_bio %}
+                <div class="row small pt-2">
+                    <div class="col text-center">
+                        {{ site.data.profile.short_bio }}
+                    </div>
+                </div>
+                {% endif %}
+
                 {% if site.data.profile.email %}
                 <div class="row small">
                     <div class="col text-center">
