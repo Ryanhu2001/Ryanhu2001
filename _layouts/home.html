@@ -1,7 +1,5 @@
 ---
 layout: default
-title : Homepage
-navbar_title: Home
 ---
 
 <div class="row">
@@ -9,6 +7,14 @@ navbar_title: Home
         {% include widgets/profile_card_mini.html %}
     </div>
     <div class="col-lg-9 col-md-8">
+        {% assign homepage_content = content | strip %}
+        {% if homepage_content != "" %}
+        <div class="my-3 bg-white shadow-sm rounded-xl">
+            <div class="p-4 home-content">
+                {{ content }}
+            </div>
+        </div>
+        {% endif %}
 
         <div class="my-3 bg-white shadow-sm rounded-xl">
             <div class="p-4">
