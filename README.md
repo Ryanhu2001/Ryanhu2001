@@ -1,27 +1,11 @@
 # Ryan Hu
 
-Personal notes, paper reading, and wiki pages.
+Academic homepage and public wiki.
 
-The public site is generated from Markdown notes in `wiki/` and published from `docs/`.
-
-## Write
-
-Add a note under `wiki/`:
+The site is based on [academic-homepage](https://github.com/luost26/academic-homepage). Notes live in `wiki/` and are published when their front matter includes:
 
 ```yaml
----
-title: Note title
 public: true
-description: Short summary.
----
 ```
 
-Images and attachments live in `assets/`.
-
-## Build
-
-```sh
-node scripts/build-wiki.mjs
-```
-
-GitHub Actions rebuilds the public site after notes are pushed.
+Assets live in `assets/`.

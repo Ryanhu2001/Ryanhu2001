@@ -1,5 +1,5 @@
 ---
-title: Paper-sharing-2: 智能体环境合成的三条技术路线
+title: "Paper-sharing-2: 智能体环境合成的三条技术路线"
 public: true
 description: 从环境构建切入，对比世界模型、程序合成真实环境、真实挖掘加自进化三条智能体环境合成路线。
 type: paper-sharing
@@ -803,5 +803,4 @@ $\mathcal{D}^{(n+1)}(m) = \phi\big(\mathcal{D}^{(n)}(m),\,m,\,\mathcal{T}\big),\
 - [CLI\-Universe: Towards Verifiable Task Synthesis Engine for Terminal Agents](https://arxiv.org/abs/2606.22883)
 
 - [Agent\-World: Scaling Real\-World Environment Synthesis for Evolving General Agent Intelligence](https://arxiv.org/abs/2604.18292)
-
 

@@ -1,0 +1,37 @@
+title: Ryan Hu
+url: "https://ryanhu2001.github.io"
+baseurl: "/Ryanhu2001"
+
+markdown: kramdown
+kramdown:
+  input: GFM
+
+timezone: Asia/Shanghai
+
+exclude:
+  - .bundle
+  - .obsidian
+  - docs
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE-academic-homepage
+  - node_modules
+  - preview-*.png
+  - README.md
+  - scripts
+  - site
+  - vendor
+  - assets/ryan/3194f61b0f7f765d1f954a939560855c.jpg
+  - assets/ryan/3194f61b0f7f765d1f954a939560855c_副本.jpg
+
+collections:
+  - publications
+  - news
+  - posts
+
+defaults:
+  - scope:
+      path: "wiki"
+      type: "pages"
+    values:
+      layout: wiki_note

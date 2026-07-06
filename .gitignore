@@ -1,9 +1,18 @@
 .DS_Store
 preview-*.png
+.jekyll-cache/
+.jekyll-metadata
+.sass-cache/
+_site/
+.bundle/
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
+.obsidian/graph.json
 .trash/
 node_modules/
+vendor/
+assets/ryan/3194f61b0f7f765d1f954a939560855c.jpg
+assets/ryan/*_副本.*
 
 # Keep installed Obsidian plugin bundles local; commit plugin settings only.
 .obsidian/plugins/*/main.js
