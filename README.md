@@ -36,13 +36,21 @@ The generated site is written to `docs/`.
 
 ## GitHub Pages
 
-This repo is configured for GitHub Pages. With the provided remote:
+This repo is ready for GitHub Pages branch publishing. With the provided remote:
 
 ```text
 git@github.com:Ryanhu2001/Ryanhu2001.git
 ```
 
-the project-page URL will be:
+set GitHub Pages to:
+
+```text
+Source: Deploy from a branch
+Branch: main
+Folder: /docs
+```
+
+The project-page URL will be:
 
 ```text
 https://ryanhu2001.github.io/Ryanhu2001/
@@ -55,6 +63,8 @@ https://ryanhu2001.github.io/
 ```
 
 create or rename the repository to `Ryanhu2001.github.io`.
+
+For `ryan.wiki`, update DNS away from Namecheap forwarding and toward GitHub Pages. The exact DNS records are in `GITHUB_PAGES.md`.
 
 ## Editing The Homepage
 

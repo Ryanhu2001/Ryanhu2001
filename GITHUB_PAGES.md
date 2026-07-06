@@ -12,10 +12,11 @@ After pushing, enable Pages in GitHub:
 
 1. Open the repository on GitHub.
 2. Go to `Settings -> Pages`.
-3. Set `Source` to `GitHub Actions`.
+3. Set `Source` to `Deploy from a branch`.
+4. Set `Branch` to `main` and folder to `/docs`.
 4. Save.
 
-The included workflow builds the site and deploys `docs/`.
+The generated static site is already committed under `docs/`.
 
 ## Resulting URL
 
@@ -36,6 +37,35 @@ use a repository named:
 ```text
 Ryanhu2001.github.io
 ```
+
+## Custom Domain: `ryan.wiki`
+
+Current DNS check shows:
+
+```text
+ryan.wiki        A      162.255.119.128
+www.ryan.wiki    CNAME  parkingpage.namecheap.com
+```
+
+That is Namecheap forwarding/parking, not GitHub Pages.
+
+To use `ryan.wiki`, remove Namecheap URL forwarding and set DNS to GitHub Pages:
+
+```text
+@    A      185.199.108.153
+@    A      185.199.109.153
+@    A      185.199.110.153
+@    A      185.199.111.153
+www  CNAME  Ryanhu2001.github.io
+```
+
+Then in GitHub `Settings -> Pages`, set `Custom domain` to:
+
+```text
+ryan.wiki
+```
+
+Until DNS is fixed, remove the custom domain in GitHub Pages settings if you want the default `github.io` URL to work.
 
 ## Publishing A Note
 
