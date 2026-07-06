@@ -3,18 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Personal Knowledge System</title>
+  <title>Personal Knowledge System | Wiki</title>
   <meta name="description" content="The operating map for this vault.">
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-  <aside class="sidebar">
-    <a class="brand" href="../index.html">Personal Wiki</a>
-    <nav><a href="../pages/home.html">Home</a>
-<a href="../pages/10-notes-llm-era-personal-knowledge-base.html">LLM Era Personal Knowledge Base</a>
-<a href="../pages/40-maps-personal-knowledge-system.html">Personal Knowledge System</a></nav>
-  </aside>
-  <main class="page">
+  <header class="site-header">
+    <a class="brand" href="../index.html">Ryan Hu</a>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a class="" href="../index.html">Home</a>
+      <a class="active" href="../wiki/index.html">Wiki</a>
+    </nav>
+  </header>
+  <main>
+
+  <article class="note page-shell">
+    <a class="back-link" href="index.html">Wiki index</a>
     <h1 id="personal-knowledge-system">Personal Knowledge System</h1>
 <p>This vault is organized as a working pipeline rather than a perfect taxonomy.</p>
 <h2 id="folders">Folders</h2>
@@ -44,6 +48,7 @@
 <p>Only notes with this frontmatter are published:</p>
 <pre><code>public: true</code></pre>
 <p>Private notes stay local even if the repo is public, as long as they do not include <code>public: true</code> and the build script remains the publishing path.</p>
+  </article>
   </main>
 </body>
 </html>

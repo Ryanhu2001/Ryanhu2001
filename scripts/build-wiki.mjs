@@ -3,8 +3,43 @@ import path from "node:path";
 
 const root = process.cwd();
 const outDir = path.join(root, "docs");
-const pageDir = path.join(outDir, "pages");
-const ignoredDirs = new Set([".git", ".obsidian", "docs", "scripts", "assets"]);
+const wikiDir = path.join(outDir, "wiki");
+const profilePath = path.join(root, "site", "profile.json");
+const ignoredDirs = new Set([".git", ".obsidian", "docs", "scripts", "assets", "site"]);
+
+const defaultProfile = {
+  name: "Ryan Hu",
+  initials: "RH",
+  role: "Researcher / Engineer",
+  affiliation: "",
+  location: "",
+  email: "",
+  headline: "I work on LLM agents, reinforcement learning, evaluation, and practical systems for thinking with models.",
+  bio: [
+    "This site is a personal academic homepage and a public knowledge base. The homepage collects profile, research interests, projects, writing, and selected work. The wiki publishes curated Obsidian notes."
+  ],
+  interests: [
+    "LLM agents",
+    "computer-use agents",
+    "reinforcement learning",
+    "evaluation",
+    "personal knowledge systems"
+  ],
+  links: [
+    { "label": "GitHub", "url": "https://github.com/Ryanhu2001" }
+  ],
+  news: [
+    { "date": "2026-07", "text": "Launched this academic homepage and public wiki." }
+  ],
+  publications: [],
+  projects: [
+    {
+      "title": "Personal Wiki",
+      "description": "An Obsidian-first knowledge base published as a lightweight static site.",
+      "url": "wiki/index.html"
+    }
+  ]
+};
 
 function walk(dir) {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
@@ -22,6 +57,21 @@ function walk(dir) {
     }
   }
   return files;
+}
+
+function readProfile() {
+  if (!fs.existsSync(profilePath)) return defaultProfile;
+  const userProfile = JSON.parse(fs.readFileSync(profilePath, "utf8"));
+  return {
+    ...defaultProfile,
+    ...userProfile,
+    links: userProfile.links || defaultProfile.links,
+    bio: userProfile.bio || defaultProfile.bio,
+    interests: userProfile.interests || defaultProfile.interests,
+    news: userProfile.news || defaultProfile.news,
+    publications: userProfile.publications || defaultProfile.publications,
+    projects: userProfile.projects || defaultProfile.projects
+  };
 }
 
 function parseFrontmatter(raw) {
@@ -54,11 +104,33 @@ function slugify(value) {
 }
 
 function escapeHtml(value) {
-  return String(value)
+  return String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
+}
+
+function stripMarkdown(value) {
+  return String(value)
+    .replace(/```[\s\S]*?```/g, "")
+    .replace(/^#+\s+/gm, "")
+    .replace(/\[\[([^\]|]+)\|([^\]]+)\]\]/g, "$2")
+    .replace(/\[\[([^\]]+)\]\]/g, "$1")
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1")
+    .replace(/[`*_>#-]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getExcerpt(note) {
+  const lines = note.body
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .filter((line) => !line.startsWith("#") && !line.startsWith("```"));
+  const excerpt = stripMarkdown(lines[0] || note.data.description || "");
+  return excerpt.length > 150 ? `${excerpt.slice(0, 147)}...` : excerpt;
 }
 
 function inlineMarkdown(text, noteByKey, linkPrefix = "") {
@@ -144,7 +216,9 @@ function markdownToHtml(markdown, noteByKey, linkPrefix = "") {
   return html.join("\n");
 }
 
-function layout({ title, description = "", body, nav }) {
+function shell({ title, description = "", body, active = "home", base = "", brand = "Ryan Hu" }) {
+  const homeActive = active === "home" ? "active" : "";
+  const wikiActive = active === "wiki" ? "active" : "";
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -152,22 +226,146 @@ function layout({ title, description = "", body, nav }) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${escapeHtml(description)}">
-  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="${base}style.css">
 </head>
 <body>
-  <aside class="sidebar">
-    <a class="brand" href="../index.html">Personal Wiki</a>
-    <nav>${nav}</nav>
-  </aside>
-  <main class="page">
+  <header class="site-header">
+    <a class="brand" href="${base}index.html">${escapeHtml(brand)}</a>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a class="${homeActive}" href="${base}index.html">Home</a>
+      <a class="${wikiActive}" href="${base}wiki/index.html">Wiki</a>
+    </nav>
+  </header>
+  <main>
     ${body}
   </main>
 </body>
 </html>`;
 }
 
-function indexLayout({ title, body, nav }) {
-  return layout({ title, body, nav }).replace('href="../style.css"', 'href="style.css"').replaceAll("../index.html", "index.html").replaceAll('href="pages/', 'href="pages/');
+function linkList(links, className = "button") {
+  return (links || [])
+    .filter((link) => link && link.url && link.label)
+    .map((link) => `<a class="${className}" href="${escapeHtml(link.url)}">${escapeHtml(link.label)}</a>`)
+    .join("\n");
+}
+
+function renderAcademicHome(profile, notes) {
+  const profileLinks = linkList(profile.links, "button secondary");
+  const contactLinks = [
+    profile.email ? `<a class="button secondary" href="mailto:${escapeHtml(profile.email)}">Email</a>` : "",
+    profileLinks
+  ].filter(Boolean).join("\n");
+  const bio = (profile.bio || []).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("\n");
+  const interests = (profile.interests || []).map((interest) => `<span>${escapeHtml(interest)}</span>`).join("\n");
+  const news = (profile.news || []).map((item) => `
+    <li>
+      <time>${escapeHtml(item.date)}</time>
+      <span>${escapeHtml(item.text)}</span>
+    </li>`).join("\n");
+  const publications = (profile.publications || []).map((item) => `
+    <article class="entry">
+      <h3>${escapeHtml(item.title)}</h3>
+      <p class="entry-meta">${escapeHtml([item.authors, item.venue, item.year].filter(Boolean).join(" · "))}</p>
+      ${item.summary ? `<p>${escapeHtml(item.summary)}</p>` : ""}
+      <div class="entry-links">${linkList(item.links || [], "text-link")}</div>
+    </article>`).join("\n");
+  const projects = (profile.projects || []).map((item) => `
+    <article class="entry">
+      <h3>${escapeHtml(item.title)}</h3>
+      ${item.description ? `<p>${escapeHtml(item.description)}</p>` : ""}
+      ${item.url ? `<a class="text-link" href="${escapeHtml(item.url)}">Open</a>` : ""}
+    </article>`).join("\n");
+  const featuredNotes = notes
+    .filter((note) => note.title.toLowerCase() !== "home")
+    .slice(0, 4)
+    .map((note) => `
+      <article class="entry compact">
+        <h3><a href="${note.href}">${escapeHtml(note.title)}</a></h3>
+        ${getExcerpt(note) ? `<p>${escapeHtml(getExcerpt(note))}</p>` : ""}
+      </article>`)
+    .join("\n");
+
+  const affiliation = [profile.role, profile.affiliation, profile.location].filter(Boolean).join(" · ");
+  const initials = profile.initials || profile.name.split(/\s+/).map((part) => part[0]).join("").slice(0, 2);
+
+  return `
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Academic homepage and public notebook</p>
+      <h1>${escapeHtml(profile.name)}</h1>
+      <p class="lede">${escapeHtml(profile.headline)}</p>
+      ${affiliation ? `<p class="affiliation">${escapeHtml(affiliation)}</p>` : ""}
+      <div class="actions">
+        <a class="button primary" href="wiki/index.html">Open Wiki</a>
+        ${contactLinks}
+      </div>
+    </div>
+    <aside class="identity-panel" aria-label="Profile summary">
+      <div class="avatar">${escapeHtml(initials)}</div>
+      <div>
+        <strong>${escapeHtml(profile.name)}</strong>
+        <span>${escapeHtml(profile.role)}</span>
+      </div>
+    </aside>
+  </section>
+
+  <section class="content-grid">
+    <div class="main-column">
+      <section class="section">
+        <h2>About</h2>
+        ${bio}
+      </section>
+
+      ${projects ? `<section class="section">
+        <h2>Projects</h2>
+        <div class="entry-list">${projects}</div>
+      </section>` : ""}
+
+      ${publications ? `<section class="section">
+        <h2>Publications</h2>
+        <div class="entry-list">${publications}</div>
+      </section>` : ""}
+
+      ${featuredNotes ? `<section class="section">
+        <h2>From The Wiki</h2>
+        <div class="entry-list">${featuredNotes}</div>
+      </section>` : ""}
+    </div>
+
+    <aside class="side-column">
+      ${interests ? `<section class="section">
+        <h2>Interests</h2>
+        <div class="tag-list">${interests}</div>
+      </section>` : ""}
+      ${news ? `<section class="section">
+        <h2>News</h2>
+        <ul class="news-list">${news}</ul>
+      </section>` : ""}
+    </aside>
+  </section>`;
+}
+
+function renderWikiIndex(notes) {
+  const notesHtml = notes
+    .sort((a, b) => a.title.localeCompare(b.title))
+    .map((note) => `
+      <article class="entry">
+        <h2><a href="../${note.href}">${escapeHtml(note.title)}</a></h2>
+        ${getExcerpt(note) ? `<p>${escapeHtml(getExcerpt(note))}</p>` : ""}
+        <p class="entry-meta">${escapeHtml(note.rel)}</p>
+      </article>`)
+    .join("\n");
+
+  return `
+  <section class="page-shell">
+    <div class="page-heading">
+      <p class="eyebrow">Public notes</p>
+      <h1>Wiki</h1>
+      <p class="lede">Curated notes from the Obsidian vault. Only notes with <code>public: true</code> are published here.</p>
+    </div>
+    <div class="entry-list">${notesHtml}</div>
+  </section>`;
 }
 
 function ensureCleanDir(dir) {
@@ -175,6 +373,11 @@ function ensureCleanDir(dir) {
   fs.mkdirSync(dir, { recursive: true });
 }
 
+function writeText(file, content) {
+  fs.writeFileSync(file, `${String(content).replace(/[ \t]+$/gm, "").trimEnd()}\n`);
+}
+
+const profile = readProfile();
 const files = walk(root);
 const notes = files.map((file) => {
   const raw = fs.readFileSync(file, "utf8");
@@ -183,7 +386,7 @@ const notes = files.map((file) => {
   const inferredTitle = path.basename(file, ".md");
   const title = data.title || inferredTitle;
   const slug = slugify(rel.replace(/\.md$/, ""));
-  const href = `pages/${slug}.html`;
+  const href = `wiki/${slug}.html`;
   return { file, rel, data, body, title, slug, href };
 }).filter((note) => note.data.public === true);
 
@@ -195,92 +398,362 @@ for (const note of notes) {
 }
 
 ensureCleanDir(outDir);
-fs.mkdirSync(pageDir, { recursive: true });
-
-const nav = notes
-  .sort((a, b) => a.title.localeCompare(b.title))
-  .map((note) => `<a href="../${note.href}">${escapeHtml(note.title)}</a>`)
-  .join("\n");
+fs.mkdirSync(wikiDir, { recursive: true });
+fs.writeFileSync(path.join(outDir, ".nojekyll"), "");
 
 for (const note of notes) {
-  const body = markdownToHtml(note.body, noteByKey, "../");
-  const page = layout({
-    title: note.title,
-    description: note.data.description || "",
+  const body = `
+  <article class="note page-shell">
+    <a class="back-link" href="index.html">Wiki index</a>
+    ${markdownToHtml(note.body, noteByKey, "../")}
+  </article>`;
+  const page = shell({
+    title: `${note.title} | Wiki`,
+    description: note.data.description || getExcerpt(note),
     body,
-    nav
+    active: "wiki",
+    base: "../",
+    brand: profile.name
   });
-  fs.writeFileSync(path.join(pageDir, `${note.slug}.html`), page);
+  writeText(path.join(wikiDir, `${note.slug}.html`), page);
 }
 
-const home = notes.find((note) => note.title.toLowerCase() === "home") || notes[0];
-const indexBody = home ? markdownToHtml(home.body, noteByKey) : "<h1>Personal Wiki</h1>";
-const indexNav = nav.replaceAll('href="../', 'href="');
-fs.writeFileSync(path.join(outDir, "index.html"), indexLayout({
-  title: "Personal Wiki",
-  body: indexBody,
-  nav: indexNav
+writeText(path.join(wikiDir, "index.html"), shell({
+  title: `Wiki | ${profile.name}`,
+  description: `Public notes from ${profile.name}'s Obsidian vault.`,
+  body: renderWikiIndex(notes),
+  active: "wiki",
+  base: "../",
+  brand: profile.name
 }));
 
-fs.writeFileSync(path.join(outDir, "style.css"), `:root {
+writeText(path.join(outDir, "index.html"), shell({
+  title: `${profile.name} | Academic Homepage`,
+  description: profile.headline,
+  body: renderAcademicHome(profile, notes),
+  active: "home",
+  base: "",
+  brand: profile.name
+}));
+
+writeText(path.join(outDir, "style.css"), `:root {
   color-scheme: light;
-  --bg: #fbfbf8;
-  --panel: #f1f0ea;
-  --text: #22231f;
-  --muted: #6b6c63;
-  --line: #dedbd0;
-  --accent: #3f7f6b;
-  --accent-2: #2d6f8f;
-  --code: #ecebe4;
+  --bg: #f8f8f4;
+  --paper: #ffffff;
+  --ink: #20231f;
+  --muted: #68706a;
+  --line: #dcded6;
+  --soft: #ecefe8;
+  --accent: #1f6f78;
+  --accent-strong: #174f58;
+  --warm: #9f5d34;
+  --code: #eff1eb;
 }
 
 * { box-sizing: border-box; }
+
 body {
   margin: 0;
   background: var(--bg);
-  color: var(--text);
+  color: var(--ink);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
   line-height: 1.65;
   letter-spacing: 0;
 }
-a { color: var(--accent-2); text-decoration-thickness: 1px; text-underline-offset: 3px; }
-.sidebar {
-  position: fixed;
-  inset: 0 auto 0 0;
-  width: 260px;
-  padding: 28px 20px;
-  border-right: 1px solid var(--line);
-  background: var(--panel);
-  overflow: auto;
+
+a {
+  color: var(--accent-strong);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 }
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 68px;
+  padding: 0 36px;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg) 92%, white);
+  backdrop-filter: blur(16px);
+}
+
 .brand {
-  display: block;
-  margin-bottom: 24px;
-  color: var(--text);
-  font-size: 18px;
-  font-weight: 760;
+  color: var(--ink);
+  font-weight: 780;
   text-decoration: none;
 }
-nav a {
+
+.site-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.site-nav a {
+  min-width: 72px;
+  padding: 7px 12px;
+  border: 1px solid transparent;
+  color: var(--muted);
+  text-align: center;
+  text-decoration: none;
+}
+
+.site-nav a:hover,
+.site-nav a.active {
+  border-color: var(--line);
+  color: var(--ink);
+  background: var(--paper);
+}
+
+main {
+  width: min(1120px, calc(100% - 44px));
+  margin: 0 auto;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 44px;
+  align-items: end;
+  min-height: calc(100vh - 68px);
+  padding: 76px 0 54px;
+  border-bottom: 1px solid var(--line);
+}
+
+.hero-copy {
+  max-width: 760px;
+}
+
+.eyebrow {
+  margin: 0 0 14px;
+  color: var(--warm);
+  font-size: 13px;
+  font-weight: 760;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+h1 {
+  margin: 0 0 18px;
+  font-size: clamp(40px, 7vw, 82px);
+  font-weight: 820;
+}
+
+h2 {
+  margin: 0 0 18px;
+  font-size: 24px;
+}
+
+h3 {
+  margin: 0 0 6px;
+  font-size: 18px;
+}
+
+p,
+li {
+  font-size: 16px;
+}
+
+.lede {
+  max-width: 760px;
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-size: 21px;
+  line-height: 1.55;
+}
+
+.affiliation {
+  margin: 0 0 28px;
+  color: var(--muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  background: var(--paper);
+  text-decoration: none;
+}
+
+.button.primary {
+  border-color: var(--accent);
+  color: white;
+  background: var(--accent);
+}
+
+.button.secondary:hover,
+.button.primary:hover {
+  transform: translateY(-1px);
+}
+
+.identity-panel {
+  display: grid;
+  gap: 18px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+
+.avatar {
+  display: grid;
+  width: 128px;
+  height: 128px;
+  place-items: center;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(135deg, rgba(31, 111, 120, 0.14), rgba(159, 93, 52, 0.12)),
+    var(--soft);
+  color: var(--accent-strong);
+  font-size: 42px;
+  font-weight: 820;
+}
+
+.identity-panel strong,
+.identity-panel span {
   display: block;
-  padding: 7px 0;
+}
+
+.identity-panel span {
+  color: var(--muted);
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 56px;
+  padding: 52px 0 92px;
+}
+
+.main-column,
+.side-column {
+  display: grid;
+  align-content: start;
+  gap: 44px;
+}
+
+.section {
+  min-width: 0;
+}
+
+.entry-list {
+  display: grid;
+  gap: 18px;
+}
+
+.entry {
+  padding: 0 0 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.entry.compact h3 {
+  margin-bottom: 4px;
+}
+
+.entry p {
+  margin: 8px 0 0;
+}
+
+.entry-meta {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.entry-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.text-link {
+  font-weight: 680;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag-list span {
+  padding: 5px 9px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.news-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.news-list li {
+  display: grid;
+  gap: 2px;
+  font-size: 15px;
+}
+
+.news-list time {
+  color: var(--warm);
+  font-size: 13px;
+  font-weight: 720;
+}
+
+.page-shell {
+  max-width: 820px;
+  padding: 60px 0 96px;
+}
+
+.page-heading {
+  margin-bottom: 38px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--line);
+}
+
+.note h1 {
+  font-size: 44px;
+}
+
+.note h2 {
+  margin-top: 42px;
+}
+
+.note h3 {
+  margin-top: 30px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 28px;
   color: var(--muted);
   text-decoration: none;
 }
-nav a:hover { color: var(--text); }
-.page {
-  max-width: 860px;
-  margin-left: 260px;
-  padding: 56px 52px 96px;
-}
-h1, h2, h3, h4 {
-  line-height: 1.25;
-  letter-spacing: 0;
-}
-h1 { font-size: 40px; margin: 0 0 28px; }
-h2 { font-size: 25px; margin-top: 42px; }
-h3 { font-size: 19px; margin-top: 30px; }
-p, li { font-size: 17px; }
+
 code {
   background: var(--code);
   padding: 2px 5px;
@@ -288,35 +761,89 @@ code {
   font-family: "SF Mono", Menlo, Consolas, monospace;
   font-size: 0.92em;
 }
+
 pre {
   background: var(--code);
   padding: 16px;
-  border-radius: 8px;
+  border-radius: 6px;
   overflow: auto;
 }
-pre code { padding: 0; }
+
+pre code {
+  padding: 0;
+}
+
 blockquote {
   margin: 20px 0;
   padding-left: 16px;
   border-left: 3px solid var(--accent);
   color: var(--muted);
 }
+
 .missing-link {
   color: #9a4f45;
   border-bottom: 1px dotted #9a4f45;
 }
-@media (max-width: 760px) {
-  .sidebar {
-    position: static;
-    width: auto;
-    border-right: 0;
-    border-bottom: 1px solid var(--line);
+
+@media (max-width: 840px) {
+  .site-header {
+    padding: 0 20px;
   }
-  .page {
-    margin-left: 0;
-    padding: 34px 22px 72px;
+
+  main {
+    width: min(100% - 32px, 1120px);
   }
-  h1 { font-size: 32px; }
+
+  .hero,
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    min-height: auto;
+    padding: 54px 0 42px;
+  }
+
+  .identity-panel {
+    max-width: 360px;
+  }
+
+  .content-grid {
+    gap: 36px;
+    padding-top: 40px;
+  }
+
+  .lede {
+    font-size: 18px;
+  }
+
+  .note h1 {
+    font-size: 34px;
+  }
+}
+
+@media (max-width: 520px) {
+  .site-header {
+    min-height: 62px;
+  }
+
+  .site-nav a {
+    min-width: 58px;
+    padding: 6px 8px;
+  }
+
+  h1 {
+    font-size: 40px;
+  }
+
+  .actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .button {
+    width: 100%;
+  }
 }
 `);
 

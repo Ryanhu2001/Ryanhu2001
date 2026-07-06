@@ -1,0 +1,40 @@
+{
+  "name": "Ryan Hu",
+  "initials": "RH",
+  "role": "Researcher / Engineer",
+  "affiliation": "",
+  "location": "",
+  "email": "",
+  "headline": "I work on LLM agents, reinforcement learning, evaluation, and practical systems for thinking with models.",
+  "bio": [
+    "This site is my academic homepage and public knowledge base. I use Obsidian for private thinking, then publish the notes that are worth sharing.",
+    "My current interests include LLM agents, computer-use agents, reinforcement learning, evaluation, and tools for maintaining long-lived knowledge."
+  ],
+  "interests": [
+    "LLM agents",
+    "computer-use agents",
+    "reinforcement learning",
+    "evaluation",
+    "personal knowledge systems"
+  ],
+  "links": [
+    {
+      "label": "GitHub",
+      "url": "https://github.com/Ryanhu2001"
+    }
+  ],
+  "news": [
+    {
+      "date": "2026-07",
+      "text": "Launched this academic homepage and public wiki."
+    }
+  ],
+  "publications": [],
+  "projects": [
+    {
+      "title": "Personal Wiki",
+      "description": "An Obsidian-first knowledge base published as a lightweight static site.",
+      "url": "wiki/index.html"
+    }
+  ]
+}

@@ -1,6 +1,10 @@
-# Personal Wiki
+# Ryan Hu Academic Homepage + Wiki
 
-This repository is both an Obsidian vault and a publishable personal wiki.
+This repository is both an Obsidian vault and a publishable academic homepage.
+
+- `docs/index.html` is the public academic homepage.
+- `docs/wiki/` is the public wiki generated from Obsidian notes.
+- `site/profile.json` controls the homepage profile, links, interests, news, projects, and publications.
 
 ## Local Writing
 
@@ -28,26 +32,39 @@ Build the static site:
 node scripts/build-wiki.mjs
 ```
 
-The generated site is written to `docs/`, so GitHub Pages can publish from:
+The generated site is written to `docs/`.
+
+## GitHub Pages
+
+This repo is configured for GitHub Pages. With the provided remote:
 
 ```text
-Branch: main
-Folder: /docs
+git@github.com:Ryanhu2001/Ryanhu2001.git
 ```
 
-## First GitHub Pages Link
-
-After pushing this repo to GitHub and enabling Pages, your public wiki link will be:
+the project-page URL will be:
 
 ```text
-https://<github-username>.github.io/<repo-name>/
+https://ryanhu2001.github.io/Ryanhu2001/
 ```
 
-For example:
+For the clean root URL:
 
 ```text
-https://ryan.github.io/personal-wiki/
+https://ryanhu2001.github.io/
 ```
+
+create or rename the repository to `Ryanhu2001.github.io`.
+
+## Editing The Homepage
+
+Edit:
+
+```sh
+site/profile.json
+```
+
+Then rebuild with `node scripts/build-wiki.mjs`.
 
 ## Plugins
 
@@ -62,4 +79,3 @@ The vault is configured for a small plugin set:
 - QuickAdd
 
 If the plugin files are not present under `.obsidian/plugins/`, open Obsidian, enable Community Plugins, and install them by name.
-

@@ -1,42 +1,40 @@
-# Turn This Into A Personal Wiki Link
+# Turn This Into A Personal Academic Site
 
-## Option A: GitHub Pages From `/docs`
+## Current Remote
 
-1. Create a GitHub repository, for example `personal-wiki`.
-2. Push this local repo to GitHub.
-3. Open the repository on GitHub.
-4. Go to `Settings -> Pages`.
-5. Set:
+Use this remote:
 
 ```text
-Source: Deploy from a branch
-Branch: main
-Folder: /docs
+git@github.com:Ryanhu2001/Ryanhu2001.git
 ```
 
-6. Save.
+After pushing, enable Pages in GitHub:
 
-Your wiki will be available at:
+1. Open the repository on GitHub.
+2. Go to `Settings -> Pages`.
+3. Set `Source` to `GitHub Actions`.
+4. Save.
+
+The included workflow builds the site and deploys `docs/`.
+
+## Resulting URL
+
+Because the repo is `Ryanhu2001/Ryanhu2001`, the project-page URL is:
 
 ```text
-https://<github-username>.github.io/<repo-name>/
+https://ryanhu2001.github.io/Ryanhu2001/
 ```
 
-## Push Commands
+If you want the root personal domain:
 
-After creating the GitHub repo:
-
-```sh
-cd /Users/ryan/personal-wiki
-git remote add origin git@github.com:<github-username>/<repo-name>.git
-git push -u origin main
+```text
+https://ryanhu2001.github.io/
 ```
 
-If you prefer HTTPS:
+use a repository named:
 
-```sh
-git remote add origin https://github.com/<github-username>/<repo-name>.git
-git push -u origin main
+```text
+Ryanhu2001.github.io
 ```
 
 ## Publishing A Note
@@ -56,3 +54,16 @@ Then rebuild:
 node scripts/build-wiki.mjs
 ```
 
+## Editing The Homepage
+
+Edit:
+
+```sh
+site/profile.json
+```
+
+Then rebuild:
+
+```sh
+node scripts/build-wiki.mjs
+```

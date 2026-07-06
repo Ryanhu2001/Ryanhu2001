@@ -1,4 +1,4 @@
-name: Build personal wiki
+name: Deploy academic site
 
 on:
   push:
@@ -7,10 +7,19 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
-  build:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,9 +27,9 @@ jobs:
         with:
           node-version: 22
       - run: node scripts/build-wiki.mjs
-      - name: Commit generated docs
-        uses: stefanzweifel/git-auto-commit-action@v5
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
         with:
-          commit_message: "build: update public wiki"
-          file_pattern: docs
-
+          path: docs
+      - id: deployment
+        uses: actions/deploy-pages@v4
