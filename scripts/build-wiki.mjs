@@ -111,14 +111,19 @@ function escapeHtml(value) {
     .replace(/"/g, "&quot;");
 }
 
+function unescapeMarkdownText(value) {
+  return String(value ?? "").replace(/\\([\\`*_\[\](){}#+\-.!<>|+])/g, "$1");
+}
+
 function stripMarkdown(value) {
-  return String(value)
+  return unescapeMarkdownText(value)
     .replace(/```[\s\S]*?```/g, "")
     .replace(/^#+\s+/gm, "")
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, "$1")
     .replace(/\[\[([^\]|]+)\|([^\]]+)\]\]/g, "$2")
     .replace(/\[\[([^\]]+)\]\]/g, "$1")
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1")
-    .replace(/[`*_>#-]/g, "")
+    .replace(/[`*_>#]/g, "")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -133,8 +138,23 @@ function getExcerpt(note) {
   return excerpt.length > 150 ? `${excerpt.slice(0, 147)}...` : excerpt;
 }
 
+function isExternalUrl(value) {
+  return /^(https?:|mailto:|#|\/)/i.test(String(value));
+}
+
+function assetUrl(value, linkPrefix = "") {
+  const clean = unescapeMarkdownText(String(value || "").trim());
+  if (!clean || isExternalUrl(clean)) return clean;
+  return `${linkPrefix}${clean}`;
+}
+
 function inlineMarkdown(text, noteByKey, linkPrefix = "") {
-  let html = escapeHtml(text);
+  let html = escapeHtml(unescapeMarkdownText(text));
+  html = html.replace(/&lt;br\s*\/?&gt;/gi, "<br>");
+  html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, src) => {
+    const caption = alt ? `<figcaption>${alt}</figcaption>` : "";
+    return `<figure><img src="${assetUrl(src, linkPrefix)}" alt="${alt}" loading="lazy">${caption}</figure>`;
+  });
   html = html.replace(/`([^`]+)`/g, "<code>$1</code>");
   html = html.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
   html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
@@ -151,21 +171,63 @@ function wikiLink(target, label, noteByKey, linkPrefix = "") {
   return `<a href="${linkPrefix}${note.href}">${escapeHtml(label)}</a>`;
 }
 
+function isTableSeparator(line) {
+  return /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/.test(line);
+}
+
+function isTableRow(line) {
+  return line.includes("|") && !line.startsWith("```");
+}
+
+function splitTableRow(line) {
+  return line
+    .trim()
+    .replace(/^\|/, "")
+    .replace(/\|$/, "")
+    .split("|")
+    .map((cell) => cell.trim());
+}
+
+function renderTable(rows, noteByKey, linkPrefix = "") {
+  if (rows.length < 2) return "";
+  const headers = splitTableRow(rows[0]);
+  const bodyRows = rows.slice(2).map(splitTableRow);
+  const head = headers.map((cell) => `<th>${inlineMarkdown(cell, noteByKey, linkPrefix)}</th>`).join("");
+  const body = bodyRows
+    .map((row) => `<tr>${row.map((cell) => `<td>${inlineMarkdown(cell, noteByKey, linkPrefix)}</td>`).join("")}</tr>`)
+    .join("\n");
+  return `<div class="table-wrap"><table>
+<thead><tr>${head}</tr></thead>
+<tbody>
+${body}
+</tbody>
+</table></div>`;
+}
+
 function markdownToHtml(markdown, noteByKey, linkPrefix = "") {
   const lines = markdown.split(/\r?\n/);
   const html = [];
   let inCode = false;
   let code = [];
-  let inList = false;
+  let listType = null;
 
   function closeList() {
-    if (inList) {
-      html.push("</ul>");
-      inList = false;
+    if (listType) {
+      html.push(`</${listType}>`);
+      listType = null;
     }
   }
 
-  for (const line of lines) {
+  function openList(type) {
+    if (listType !== type) {
+      closeList();
+      html.push(`<${type}>`);
+      listType = type;
+    }
+  }
+
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i];
     if (line.startsWith("```")) {
       if (inCode) {
         html.push(`<pre><code>${escapeHtml(code.join("\n"))}</code></pre>`);
@@ -181,8 +243,25 @@ function markdownToHtml(markdown, noteByKey, linkPrefix = "") {
       code.push(line);
       continue;
     }
+    if (isTableRow(line) && isTableSeparator(lines[i + 1] || "")) {
+      closeList();
+      const tableRows = [line, lines[i + 1]];
+      i += 2;
+      while (i < lines.length && isTableRow(lines[i]) && lines[i].trim()) {
+        tableRows.push(lines[i]);
+        i += 1;
+      }
+      i -= 1;
+      html.push(renderTable(tableRows, noteByKey, linkPrefix));
+      continue;
+    }
     if (!line.trim()) {
       closeList();
+      continue;
+    }
+    if (/^\s*-{3,}\s*$/.test(line)) {
+      closeList();
+      html.push("<hr>");
       continue;
     }
     const heading = line.match(/^(#{1,4})\s+(.*)$/);
@@ -194,13 +273,16 @@ function markdownToHtml(markdown, noteByKey, linkPrefix = "") {
       html.push(`<h${level} id="${id}">${text}</h${level}>`);
       continue;
     }
-    const list = line.match(/^\s*[-*]\s+(.*)$/);
-    if (list) {
-      if (!inList) {
-        html.push("<ul>");
-        inList = true;
-      }
-      html.push(`<li>${inlineMarkdown(list[1], noteByKey, linkPrefix)}</li>`);
+    const unorderedList = line.match(/^\s*[-*]\s+(.*)$/);
+    if (unorderedList) {
+      openList("ul");
+      html.push(`<li>${inlineMarkdown(unorderedList[1], noteByKey, linkPrefix)}</li>`);
+      continue;
+    }
+    const orderedList = line.match(/^\s*\d+[.)]\s+(.*)$/);
+    if (orderedList) {
+      openList("ol");
+      html.push(`<li>${inlineMarkdown(orderedList[1], noteByKey, linkPrefix)}</li>`);
       continue;
     }
     const quote = line.match(/^>\s?(.*)$/);
@@ -210,7 +292,8 @@ function markdownToHtml(markdown, noteByKey, linkPrefix = "") {
       continue;
     }
     closeList();
-    html.push(`<p>${inlineMarkdown(line, noteByKey, linkPrefix)}</p>`);
+    const rendered = inlineMarkdown(line, noteByKey, linkPrefix);
+    html.push(rendered.startsWith("<figure>") ? rendered : `<p>${rendered}</p>`);
   }
   closeList();
   return html.join("\n");
@@ -377,6 +460,20 @@ function writeText(file, content) {
   fs.writeFileSync(file, `${String(content).replace(/[ \t]+$/gm, "").trimEnd()}\n`);
 }
 
+function copyDir(src, dest) {
+  if (!fs.existsSync(src)) return;
+  fs.mkdirSync(dest, { recursive: true });
+  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+    if (entry.isDirectory()) {
+      copyDir(srcPath, destPath);
+    } else if (entry.isFile()) {
+      fs.copyFileSync(srcPath, destPath);
+    }
+  }
+}
+
 const profile = readProfile();
 const files = walk(root);
 const notes = files.map((file) => {
@@ -399,6 +496,7 @@ for (const note of notes) {
 
 ensureCleanDir(outDir);
 fs.mkdirSync(wikiDir, { recursive: true });
+copyDir(path.join(root, "assets"), path.join(outDir, "assets"));
 fs.writeFileSync(path.join(outDir, ".nojekyll"), "");
 
 for (const note of notes) {
@@ -771,6 +869,67 @@ pre {
 
 pre code {
   padding: 0;
+}
+
+hr {
+  margin: 34px 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+
+figure {
+  margin: 28px 0;
+}
+
+figure img,
+.note img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+
+figcaption {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+.table-wrap {
+  margin: 24px 0;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+
+table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: var(--soft);
+  font-size: 14px;
+}
+
+td {
+  font-size: 14px;
+}
+
+tr:last-child td {
+  border-bottom: 0;
 }
 
 blockquote {

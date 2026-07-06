@@ -12,6 +12,7 @@ This is the front door of the wiki.
 
 - [[40_Maps/Personal Knowledge System|Personal Knowledge System]]
 - [[10_Notes/LLM Era Personal Knowledge Base|LLM Era Personal Knowledge Base]]
+- [[30_Blog/Paper-sharing-2 智能体环境合成的三条技术路线|Paper-sharing-2: 智能体环境合成的三条技术路线]]
 
 ## Current Focus
 
@@ -27,4 +28,3 @@ capture -> digest -> connect -> publish -> refine
 ```
 
 The point is not to store everything. The point is to keep useful judgment alive.
-
