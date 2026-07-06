@@ -17,6 +17,7 @@ permalink: /wiki/
 
             <div class="wiki-list">
                 {% for note in notes %}
+                {% unless note.type == "paper-reading" %}
                 <article class="wiki-list-item">
                     <h2 class="h5 mb-1">
                         <a href="{{ note.url | relative_url }}">{{ note.title }}</a>
@@ -28,6 +29,7 @@ permalink: /wiki/
                     <div class="small text-muted">{{ note.date | date: "%Y-%m-%d" }}</div>
                     {% endif %}
                 </article>
+                {% endunless %}
                 {% endfor %}
             </div>
         </div>

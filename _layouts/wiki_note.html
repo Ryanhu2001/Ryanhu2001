@@ -3,12 +3,18 @@ layout: default
 ---
 
 {% assign fixed_content = content | replace: 'src="assets/', 'src="../assets/' | replace: 'href="assets/', 'href="../assets/' %}
+{% assign back_url = '/wiki/' %}
+{% assign back_label = 'Wiki' %}
+{% if page.type == 'paper-reading' %}
+    {% assign back_url = '/paper-reading/' %}
+    {% assign back_label = 'Paper Reading' %}
+{% endif %}
 
 <div class="blog-layout-wrapper">
     <div class="blog-main">
         <div class="mb-3">
-            <a class="small" href="{{ '/wiki/' | relative_url }}">
-                <i class="fas fa-arrow-left"></i> Wiki
+            <a class="small" href="{{ back_url | relative_url }}">
+                <i class="fas fa-arrow-left"></i> {{ back_label }}
             </a>
         </div>
 

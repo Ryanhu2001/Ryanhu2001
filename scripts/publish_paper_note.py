@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create a public paper-reading note for the Jekyll wiki."""
+"""Create a public paper-reading note for the Jekyll site."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-WIKI_DIR = ROOT / "wiki"
+PAPER_READING_DIR = ROOT / "paper-reading"
 
 
 def yaml_quote(value: str) -> str:
@@ -92,7 +92,7 @@ def build_note(args: argparse.Namespace) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Create a wiki note that is automatically listed on /paper-reading/."
+        description="Create a paper-reading note that is automatically listed on /paper-reading/."
     )
     parser.add_argument("--title", required=True, help="Site note title.")
     parser.add_argument("--paper-title", help="Original paper title if different.")
@@ -113,8 +113,8 @@ def main() -> int:
     else:
         args.body = ""
 
-    WIKI_DIR.mkdir(parents=True, exist_ok=True)
-    path = WIKI_DIR / f"{slugify(args.title)}.md"
+    PAPER_READING_DIR.mkdir(parents=True, exist_ok=True)
+    path = PAPER_READING_DIR / f"{slugify(args.title)}.md"
     if path.exists() and not args.force:
         print(f"Refusing to overwrite existing note: {path}", file=sys.stderr)
         return 1

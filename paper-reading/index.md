@@ -14,7 +14,7 @@ permalink: /paper-reading/
 
             <div class="wiki-list">
                 {% for note in notes %}
-                {% if note.type == "paper-reading" or note.type == "paper-sharing" %}
+                {% if note.type == "paper-reading" %}
                 <article class="wiki-list-item">
                     <h2 class="h5 mb-1">
                         <a href="{{ note.url | relative_url }}">{{ note.title }}</a>
