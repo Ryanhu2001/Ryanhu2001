@@ -4,6 +4,10 @@
 .trash/
 node_modules/
 
+# Keep installed Obsidian plugin bundles local; commit plugin settings only.
+.obsidian/plugins/*/main.js
+.obsidian/plugins/*/manifest.json
+.obsidian/plugins/*/styles.css
+
 # Keep generated public site in git for GitHub Pages /docs publishing.
 !docs/
-

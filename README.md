@@ -59,6 +59,12 @@ With the Obsidian Git plugin, the daily workflow becomes:
 write in Obsidian -> Obsidian Git pushes -> GitHub Actions rebuilds docs -> GitHub Pages updates
 ```
 
+Obsidian Git is configured to:
+
+- auto commit every 5 minutes
+- auto push every 5 minutes
+- auto pull every 30 minutes
+
 ## GitHub Pages
 
 This repo is ready for GitHub Pages branch publishing. With the provided remote:
@@ -103,12 +109,8 @@ Then rebuild with `node scripts/build-wiki.mjs`.
 
 ## Plugins
 
-The vault is configured for a small plugin set:
+The vault is configured for a tiny plugin set:
 
 - Obsidian Git
-- Dataview
-- Style Settings
-- Omnisearch
-- Linter
 
 If the plugin files are not present under `.obsidian/plugins/`, open Obsidian, enable Community Plugins, and install them by name.

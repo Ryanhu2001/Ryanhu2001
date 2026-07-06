@@ -1,6 +1,6 @@
 # Obsidian Plugin Setup
 
-This vault is already configured for the plugin set below. If the plugin files are missing, install them in Obsidian through:
+This vault is already configured for the plugin below. If the plugin files are missing, install it in Obsidian through:
 
 ```text
 Settings -> Community plugins -> Browse
@@ -9,17 +9,9 @@ Settings -> Community plugins -> Browse
 ## Install
 
 1. Obsidian Git
-2. Dataview
-3. Style Settings
-4. Omnisearch
-5. Linter
 
 ## Why These
 
-- Obsidian Git keeps the vault synced to GitHub.
-- Dataview turns notes into queryable indexes.
-- Style Settings supports richer theme customization.
-- Omnisearch makes local retrieval fast.
-- Linter keeps Markdown consistent.
+- Obsidian Git keeps the vault synced to GitHub and triggers the website rebuild workflow after push.
 
-Keep this plugin set small at first. Add more only when a workflow repeatedly asks for it.
+Keep the plugin set tiny at first. Add more only when a workflow repeatedly asks for it.

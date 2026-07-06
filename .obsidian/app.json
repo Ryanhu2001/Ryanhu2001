@@ -2,10 +2,9 @@
   "alwaysUpdateLinks": true,
   "attachmentFolderPath": "assets",
   "newFileLocation": "folder",
-  "newFileFolderPath": "00_Inbox",
+  "newFileFolderPath": "wiki",
   "promptDelete": false,
   "showFrontmatter": true,
   "readableLineLength": true,
   "strictLineBreaks": false
 }
-
