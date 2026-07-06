@@ -1,0 +1,32 @@
+body {
+  --radius-s: 4px;
+  --radius-m: 6px;
+  --radius-l: 8px;
+  --line-height-normal: 1.65;
+  --h1-size: 1.9em;
+  --h2-size: 1.35em;
+  --h3-size: 1.12em;
+  --file-line-width: 820px;
+}
+
+.markdown-source-view.mod-cm6 .cm-content,
+.markdown-preview-view {
+  letter-spacing: 0;
+}
+
+.markdown-preview-view h1,
+.markdown-preview-view h2,
+.markdown-preview-view h3 {
+  letter-spacing: 0;
+}
+
+.markdown-preview-view code,
+.cm-inline-code {
+  border-radius: 4px;
+}
+
+.markdown-preview-view blockquote {
+  border-left: 3px solid var(--interactive-accent);
+  padding-left: 1rem;
+}
+

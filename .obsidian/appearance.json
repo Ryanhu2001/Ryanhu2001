@@ -1,0 +1,14 @@
+{
+  "accentColor": "#3f7f6b",
+  "baseFontSize": 16,
+  "cssTheme": "Ryan Minimal",
+  "enabledCssSnippets": [
+    "ryan-wiki"
+  ],
+  "interfaceFontFamily": "",
+  "monospaceFontFamily": "",
+  "nativeMenus": true,
+  "textFontFamily": "",
+  "translucency": false
+}
+

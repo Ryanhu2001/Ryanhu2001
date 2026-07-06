@@ -1,0 +1,57 @@
+body {
+  --font-interface-theme: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  --font-text-theme: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  --font-monospace-theme: "SF Mono", Menlo, Consolas, monospace;
+  --background-primary: #fbfbf8;
+  --background-secondary: #f1f0ea;
+  --background-modifier-border: #dedbd0;
+  --text-normal: #22231f;
+  --text-muted: #696a62;
+  --text-faint: #898a82;
+  --interactive-accent: #3f7f6b;
+  --interactive-accent-hover: #356f5d;
+  --link-color: #2d6f8f;
+  --link-color-hover: #1f596f;
+  --code-background: #ecebe4;
+  --titlebar-background: #fbfbf8;
+  --titlebar-background-focused: #fbfbf8;
+}
+
+body.theme-dark {
+  --background-primary: #171916;
+  --background-secondary: #20231f;
+  --background-modifier-border: #343832;
+  --text-normal: #ebe9df;
+  --text-muted: #b5b1a4;
+  --text-faint: #888477;
+  --interactive-accent: #82b5a3;
+  --interactive-accent-hover: #93c8b6;
+  --link-color: #8fc4d5;
+  --link-color-hover: #abd7e5;
+  --code-background: #262a25;
+  --titlebar-background: #171916;
+  --titlebar-background-focused: #171916;
+}
+
+.workspace,
+.markdown-source-view,
+.markdown-preview-view {
+  font-family: var(--font-text-theme);
+}
+
+.workspace-tab-header,
+.nav-file-title,
+.nav-folder-title {
+  border-radius: 6px;
+}
+
+.markdown-preview-view h1,
+.HyperMD-header-1 {
+  font-weight: 760;
+}
+
+.markdown-preview-view h2,
+.HyperMD-header-2 {
+  font-weight: 680;
+}
+

@@ -1,0 +1,12 @@
+{
+  "ruleConfigs": {
+    "yaml-title": false,
+    "format-tags-in-yaml": true,
+    "remove-multiple-blank-lines": true,
+    "heading-blank-lines": true,
+    "move-tags-to-yaml": true
+  },
+  "lintOnSave": false,
+  "displayChanged": true
+}
+
