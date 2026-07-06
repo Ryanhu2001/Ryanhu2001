@@ -10,6 +10,7 @@ const ignoredDirs = new Set([".git", ".obsidian", "docs", "scripts", "assets", "
 const defaultProfile = {
   name: "Ryan Hu",
   initials: "RH",
+  avatar: "assets/ryan/avator.jpg",
   role: "Researcher / Engineer",
   affiliation: "",
   location: "",
@@ -334,13 +335,14 @@ function linkList(links, className = "button") {
 }
 
 function renderAcademicHome(profile, notes) {
-  const profileLinks = linkList(profile.links, "button secondary");
+  const profileLinks = linkList(profile.links, "profile-link");
   const contactLinks = [
-    profile.email ? `<a class="button secondary" href="mailto:${escapeHtml(profile.email)}">Email</a>` : "",
+    `<a class="profile-link primary" href="wiki/index.html">Wiki</a>`,
+    profile.email ? `<a class="profile-link" href="mailto:${escapeHtml(profile.email)}">Email</a>` : "",
     profileLinks
   ].filter(Boolean).join("\n");
   const bio = (profile.bio || []).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("\n");
-  const interests = (profile.interests || []).map((interest) => `<span>${escapeHtml(interest)}</span>`).join("\n");
+  const interests = (profile.interests || []).map((interest) => `<li>${escapeHtml(interest)}</li>`).join("\n");
   const news = (profile.news || []).map((item) => `
     <li>
       <time>${escapeHtml(item.date)}</time>
@@ -351,17 +353,17 @@ function renderAcademicHome(profile, notes) {
       <h3>${escapeHtml(item.title)}</h3>
       <p class="entry-meta">${escapeHtml([item.authors, item.venue, item.year].filter(Boolean).join(" · "))}</p>
       ${item.summary ? `<p>${escapeHtml(item.summary)}</p>` : ""}
-      <div class="entry-links">${linkList(item.links || [], "text-link")}</div>
+      <div class="entry-links">${linkList(item.links || [], "inline-link")}</div>
     </article>`).join("\n");
   const projects = (profile.projects || []).map((item) => `
     <article class="entry">
       <h3>${escapeHtml(item.title)}</h3>
       ${item.description ? `<p>${escapeHtml(item.description)}</p>` : ""}
-      ${item.url ? `<a class="text-link" href="${escapeHtml(item.url)}">Open</a>` : ""}
+      ${item.url ? `<a class="inline-link" href="${escapeHtml(item.url)}">Open</a>` : ""}
     </article>`).join("\n");
   const featuredNotes = notes
     .filter((note) => note.title.toLowerCase() !== "home")
-    .slice(0, 4)
+    .slice(0, 5)
     .map((note) => `
       <article class="entry compact">
         <h3><a href="${note.href}">${escapeHtml(note.title)}</a></h3>
@@ -371,61 +373,56 @@ function renderAcademicHome(profile, notes) {
 
   const affiliation = [profile.role, profile.affiliation, profile.location].filter(Boolean).join(" · ");
   const initials = profile.initials || profile.name.split(/\s+/).map((part) => part[0]).join("").slice(0, 2);
+  const portrait = profile.avatar
+    ? `<img src="${escapeHtml(profile.avatar)}" alt="${escapeHtml(profile.name)} portrait">`
+    : `<span>${escapeHtml(initials)}</span>`;
 
   return `
-  <section class="hero">
-    <div class="hero-copy">
-      <p class="eyebrow">Academic homepage and public notebook</p>
+  <section class="academic-layout">
+    <aside class="profile-card" aria-label="Profile">
+      <div class="portrait">${portrait}</div>
       <h1>${escapeHtml(profile.name)}</h1>
-      <p class="lede">${escapeHtml(profile.headline)}</p>
-      ${affiliation ? `<p class="affiliation">${escapeHtml(affiliation)}</p>` : ""}
-      <div class="actions">
-        <a class="button primary" href="wiki/index.html">Open Wiki</a>
-        ${contactLinks}
-      </div>
-    </div>
-    <aside class="identity-panel" aria-label="Profile summary">
-      <div class="avatar">${escapeHtml(initials)}</div>
-      <div>
-        <strong>${escapeHtml(profile.name)}</strong>
-        <span>${escapeHtml(profile.role)}</span>
-      </div>
+      ${affiliation ? `<p class="profile-role">${escapeHtml(affiliation)}</p>` : ""}
+      <div class="profile-actions">${contactLinks}</div>
     </aside>
-  </section>
 
-  <section class="content-grid">
-    <div class="main-column">
-      <section class="section">
+    <div class="academic-main">
+      <section class="intro-section">
+        <p class="eyebrow">Academic homepage / public wiki</p>
+        <h2>${escapeHtml(profile.headline)}</h2>
+      </section>
+
+      <section class="section about-section">
         <h2>About</h2>
         ${bio}
       </section>
+
+      ${interests ? `<section class="section">
+        <h2>Research Interests</h2>
+        <ul class="interest-list">${interests}</ul>
+      </section>` : ""}
+
+      ${publications ? `<section class="section">
+        <h2>Selected Publications</h2>
+        <div class="entry-list">${publications}</div>
+      </section>` : ""}
+
+      ${featuredNotes ? `<section class="section">
+        <h2>Wiki</h2>
+        <div class="entry-list">${featuredNotes}</div>
+        <p class="section-footer"><a class="inline-link" href="wiki/index.html">View all notes</a></p>
+      </section>` : ""}
 
       ${projects ? `<section class="section">
         <h2>Projects</h2>
         <div class="entry-list">${projects}</div>
       </section>` : ""}
 
-      ${publications ? `<section class="section">
-        <h2>Publications</h2>
-        <div class="entry-list">${publications}</div>
-      </section>` : ""}
-
-      ${featuredNotes ? `<section class="section">
-        <h2>From The Wiki</h2>
-        <div class="entry-list">${featuredNotes}</div>
-      </section>` : ""}
-    </div>
-
-    <aside class="side-column">
-      ${interests ? `<section class="section">
-        <h2>Interests</h2>
-        <div class="tag-list">${interests}</div>
-      </section>` : ""}
       ${news ? `<section class="section">
         <h2>News</h2>
         <ul class="news-list">${news}</ul>
       </section>` : ""}
-    </aside>
+    </div>
   </section>`;
 }
 
@@ -445,7 +442,7 @@ function renderWikiIndex(notes) {
     <div class="page-heading">
       <p class="eyebrow">Public notes</p>
       <h1>Wiki</h1>
-      <p class="lede">Curated notes from the Obsidian vault. Only notes with <code>public: true</code> are published here.</p>
+      <p class="lede">Selected public notes from my Obsidian vault.</p>
     </div>
     <div class="entry-list">${notesHtml}</div>
   </section>`;
@@ -464,6 +461,7 @@ function copyDir(src, dest) {
   if (!fs.existsSync(src)) return;
   fs.mkdirSync(dest, { recursive: true });
   for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+    if (entry.name === ".DS_Store") continue;
     const srcPath = path.join(src, entry.name);
     const destPath = path.join(dest, entry.name);
     if (entry.isDirectory()) {
@@ -537,33 +535,43 @@ writeText(path.join(outDir, "index.html"), shell({
 
 writeText(path.join(outDir, "style.css"), `:root {
   color-scheme: light;
-  --bg: #f8f8f4;
+  --bg: #f7f8f5;
   --paper: #ffffff;
-  --ink: #20231f;
-  --muted: #68706a;
-  --line: #dcded6;
-  --soft: #ecefe8;
-  --accent: #1f6f78;
-  --accent-strong: #174f58;
-  --warm: #9f5d34;
-  --code: #eff1eb;
+  --ink: #1f2328;
+  --muted: #626b76;
+  --line: #dfe3e0;
+  --soft: #f0f3f1;
+  --accent: #2f665d;
+  --accent-strong: #214f49;
+  --warm: #8a5946;
+  --link: #2457a6;
+  --code: #f1f3f5;
+  --shadow: 0 14px 34px rgba(31, 35, 40, 0.08);
 }
 
 * { box-sizing: border-box; }
+
+html {
+  background: var(--bg);
+}
 
 body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-  line-height: 1.65;
+  line-height: 1.68;
   letter-spacing: 0;
 }
 
 a {
-  color: var(--accent-strong);
+  color: var(--link);
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
+}
+
+a:hover {
+  color: var(--accent-strong);
 }
 
 .site-header {
@@ -573,90 +581,75 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 68px;
-  padding: 0 36px;
+  min-height: 64px;
+  padding: 0 34px;
   border-bottom: 1px solid var(--line);
-  background: color-mix(in srgb, var(--bg) 92%, white);
-  backdrop-filter: blur(16px);
+  background: rgba(247, 248, 245, 0.94);
+  backdrop-filter: blur(14px);
 }
 
 .brand {
   color: var(--ink);
-  font-weight: 780;
+  font-size: 16px;
+  font-weight: 720;
   text-decoration: none;
 }
 
 .site-nav {
   display: flex;
-  gap: 8px;
+  gap: 4px;
 }
 
 .site-nav a {
-  min-width: 72px;
-  padding: 7px 12px;
-  border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 64px;
+  min-height: 34px;
+  padding: 6px 12px;
+  border-radius: 6px;
   color: var(--muted);
+  font-size: 14px;
   text-align: center;
   text-decoration: none;
 }
 
 .site-nav a:hover,
 .site-nav a.active {
-  border-color: var(--line);
   color: var(--ink);
   background: var(--paper);
+  box-shadow: inset 0 0 0 1px var(--line);
 }
 
 main {
-  width: min(1120px, calc(100% - 44px));
+  width: min(1120px, calc(100% - 48px));
   margin: 0 auto;
-}
-
-.hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 280px;
-  gap: 44px;
-  align-items: end;
-  min-height: calc(100vh - 68px);
-  padding: 76px 0 54px;
-  border-bottom: 1px solid var(--line);
-}
-
-.hero-copy {
-  max-width: 760px;
-}
-
-.eyebrow {
-  margin: 0 0 14px;
-  color: var(--warm);
-  font-size: 13px;
-  font-weight: 760;
-  letter-spacing: 0;
-  text-transform: uppercase;
 }
 
 h1,
 h2,
 h3,
 h4 {
-  line-height: 1.2;
+  line-height: 1.24;
   letter-spacing: 0;
 }
 
 h1 {
-  margin: 0 0 18px;
-  font-size: clamp(40px, 7vw, 82px);
-  font-weight: 820;
+  margin: 0;
+  font-size: 30px;
+  font-weight: 760;
 }
 
 h2 {
   margin: 0 0 18px;
-  font-size: 24px;
+  font-size: 22px;
+  font-weight: 720;
 }
 
 h3 {
   margin: 0 0 6px;
-  font-size: 18px;
+  font-size: 17px;
+  font-weight: 700;
 }
 
 p,
@@ -664,95 +657,156 @@ li {
   font-size: 16px;
 }
 
-.lede {
-  max-width: 760px;
-  margin: 0 0 18px;
-  color: var(--muted);
-  font-size: 21px;
-  line-height: 1.55;
+.academic-layout {
+  display: grid;
+  grid-template-columns: 282px minmax(0, 760px);
+  gap: 58px;
+  align-items: start;
+  padding: 48px 0 96px;
 }
 
-.affiliation {
-  margin: 0 0 28px;
-  color: var(--muted);
+.profile-card {
+  position: sticky;
+  top: 88px;
+  display: grid;
+  gap: 16px;
+  max-width: 100%;
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
 }
 
-.actions {
+.portrait {
+  display: grid;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--soft);
+  color: var(--accent-strong);
+  font-size: 42px;
+  font-weight: 780;
+}
+
+.portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.profile-role {
+  margin: -6px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.profile-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
+  min-width: 0;
+  padding-top: 4px;
 }
 
-.button {
+.profile-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 40px;
-  padding: 8px 14px;
+  min-width: 0;
+  min-height: 34px;
+  padding: 6px 11px;
   border: 1px solid var(--line);
+  border-radius: 6px;
   color: var(--ink);
   background: var(--paper);
+  font-size: 14px;
+  font-weight: 640;
   text-decoration: none;
 }
 
-.button.primary {
+.profile-link:hover {
   border-color: var(--accent);
-  color: white;
+}
+
+.profile-link.primary {
+  border-color: var(--accent);
+  color: #ffffff;
   background: var(--accent);
 }
 
-.button.secondary:hover,
-.button.primary:hover {
-  transform: translateY(-1px);
+.academic-main {
+  min-width: 0;
 }
 
-.identity-panel {
-  display: grid;
-  gap: 18px;
-  padding: 22px;
-  border: 1px solid var(--line);
-  background: var(--paper);
+.intro-section {
+  margin-bottom: 34px;
+  padding: 4px 0 32px;
+  border-bottom: 1px solid var(--line);
 }
 
-.avatar {
-  display: grid;
-  width: 128px;
-  height: 128px;
-  place-items: center;
-  border: 1px solid var(--line);
-  background:
-    linear-gradient(135deg, rgba(31, 111, 120, 0.14), rgba(159, 93, 52, 0.12)),
-    var(--soft);
-  color: var(--accent-strong);
-  font-size: 42px;
-  font-weight: 820;
+.intro-section h2 {
+  max-width: 760px;
+  margin: 0;
+  font-size: 31px;
+  font-weight: 680;
+  line-height: 1.34;
 }
 
-.identity-panel strong,
-.identity-panel span {
-  display: block;
-}
-
-.identity-panel span {
-  color: var(--muted);
-}
-
-.content-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 300px;
-  gap: 56px;
-  padding: 52px 0 92px;
-}
-
-.main-column,
-.side-column {
-  display: grid;
-  align-content: start;
-  gap: 44px;
+.eyebrow {
+  margin: 0 0 12px;
+  color: var(--warm);
+  font-size: 12px;
+  font-weight: 760;
+  letter-spacing: 0;
+  text-transform: uppercase;
 }
 
 .section {
   min-width: 0;
+  margin-bottom: 34px;
+  padding-bottom: 34px;
+  border-bottom: 1px solid var(--line);
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+.section p {
+  margin: 0 0 14px;
+}
+
+.section p:last-child {
+  margin-bottom: 0;
+}
+
+.about-section p {
+  max-width: 720px;
+}
+
+.interest-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.interest-list li {
+  min-height: 40px;
+  padding: 8px 11px;
+  border-left: 3px solid var(--accent);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--ink);
+  font-size: 15px;
 }
 
 .entry-list {
@@ -765,12 +819,17 @@ li {
   border-bottom: 1px solid var(--line);
 }
 
+.entry:last-child {
+  border-bottom: 0;
+}
+
 .entry.compact h3 {
   margin-bottom: 4px;
 }
 
 .entry p {
   margin: 8px 0 0;
+  color: var(--muted);
 }
 
 .entry-meta {
@@ -785,22 +844,12 @@ li {
   margin-top: 8px;
 }
 
-.text-link {
+.inline-link {
   font-weight: 680;
 }
 
-.tag-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.tag-list span {
-  padding: 5px 9px;
-  border: 1px solid var(--line);
-  background: var(--paper);
-  color: var(--muted);
-  font-size: 14px;
+.section-footer {
+  margin-top: 16px;
 }
 
 .news-list {
@@ -813,8 +862,9 @@ li {
 
 .news-list li {
   display: grid;
-  gap: 2px;
-  font-size: 15px;
+  grid-template-columns: 84px minmax(0, 1fr);
+  gap: 12px;
+  align-items: baseline;
 }
 
 .news-list time {
@@ -823,19 +873,37 @@ li {
   font-weight: 720;
 }
 
+.news-list span {
+  font-size: 15px;
+}
+
 .page-shell {
-  max-width: 820px;
-  padding: 60px 0 96px;
+  max-width: 840px;
+  padding: 58px 0 96px;
 }
 
 .page-heading {
-  margin-bottom: 38px;
-  padding-bottom: 32px;
+  margin-bottom: 36px;
+  padding-bottom: 30px;
   border-bottom: 1px solid var(--line);
 }
 
+.page-heading h1 {
+  margin-bottom: 12px;
+  font-size: 42px;
+}
+
+.lede {
+  max-width: 760px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 19px;
+  line-height: 1.55;
+}
+
 .note h1 {
-  font-size: 44px;
+  margin-bottom: 22px;
+  font-size: 38px;
 }
 
 .note h2 {
@@ -854,18 +922,18 @@ li {
 }
 
 code {
-  background: var(--code);
   padding: 2px 5px;
   border-radius: 4px;
+  background: var(--code);
   font-family: "SF Mono", Menlo, Consolas, monospace;
   font-size: 0.92em;
 }
 
 pre {
-  background: var(--code);
+  overflow: auto;
   padding: 16px;
   border-radius: 6px;
-  overflow: auto;
+  background: var(--code);
 }
 
 pre code {
@@ -888,6 +956,7 @@ figure img,
   max-width: 100%;
   height: auto;
   border: 1px solid var(--line);
+  border-radius: 4px;
   background: var(--paper);
 }
 
@@ -902,6 +971,7 @@ figcaption {
   margin: 24px 0;
   overflow-x: auto;
   border: 1px solid var(--line);
+  border-radius: 6px;
   background: var(--paper);
 }
 
@@ -914,8 +984,8 @@ table {
 th,
 td {
   padding: 10px 12px;
-  border-bottom: 1px solid var(--line);
   border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
   text-align: left;
   vertical-align: top;
 }
@@ -945,64 +1015,99 @@ blockquote {
   border-bottom: 1px dotted #9a4f45;
 }
 
-@media (max-width: 840px) {
+@media (max-width: 900px) {
   .site-header {
     padding: 0 20px;
   }
 
   main {
-    width: min(100% - 32px, 1120px);
+    width: calc(100% - 32px);
+    max-width: 1120px;
   }
 
-  .hero,
-  .content-grid {
+  .academic-layout {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 34px 0 78px;
+  }
+
+  .profile-card {
+    position: static;
+    grid-template-columns: 138px minmax(0, 1fr);
+    align-items: center;
+  }
+
+  .portrait {
+    grid-row: span 2;
+  }
+
+  .profile-actions {
+    grid-column: 1 / -1;
+  }
+
+  .intro-section h2 {
+    font-size: 26px;
+  }
+
+  .interest-list {
     grid-template-columns: 1fr;
   }
 
-  .hero {
-    min-height: auto;
-    padding: 54px 0 42px;
-  }
-
-  .identity-panel {
-    max-width: 360px;
-  }
-
-  .content-grid {
-    gap: 36px;
-    padding-top: 40px;
-  }
-
-  .lede {
-    font-size: 18px;
+  .news-list li {
+    grid-template-columns: 76px minmax(0, 1fr);
   }
 
   .note h1 {
-    font-size: 34px;
+    font-size: 32px;
   }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 560px) {
   .site-header {
-    min-height: 62px;
+    min-height: 60px;
+  }
+
+  .brand {
+    max-width: 52%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .site-nav a {
-    min-width: 58px;
+    min-width: 56px;
     padding: 6px 8px;
   }
 
-  h1 {
-    font-size: 40px;
+  .profile-card {
+    grid-template-columns: 1fr;
   }
 
-  .actions {
-    align-items: stretch;
-    flex-direction: column;
+  .portrait {
+    width: min(100%, 240px);
+    justify-self: start;
   }
 
-  .button {
+  .profile-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .profile-link {
     width: 100%;
+  }
+
+  .intro-section h2 {
+    font-size: 23px;
+  }
+
+  .page-heading h1 {
+    font-size: 34px;
+  }
+
+  .news-list li {
+    grid-template-columns: 1fr;
+    gap: 2px;
   }
 }
 `);
