@@ -1,8 +1,8 @@
 # Ryan Hu
 
-Academic homepage and public wiki.
+Personal site and public wiki.
 
-The site is based on [academic-homepage](https://github.com/luost26/academic-homepage). Notes live in `wiki/` and are published when their front matter includes:
+Based on [academic-homepage](https://github.com/luost26/academic-homepage). Public notes live in `wiki/` and use:
 
 ```yaml
 public: true

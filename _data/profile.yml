@@ -2,21 +2,11 @@ primary_name: "Ryan Hu"
 secondary_name: ""
 navbar_name: "Ryan Hu"
 
-positions:
-  - name: Researcher / Engineer
+positions: []
 
 github: Ryanhu2001
 
 short_bio_text_justify: false
-short_bio: >-
-  <p>
-    I work on LLM agents, reinforcement learning, evaluation, and practical systems for thinking with models.
-  </p>
-  <p>
-    This site is both my academic homepage and public wiki. I use Obsidian for private thinking, then publish notes that are worth sharing.
-  </p>
-  <p>
-    Current interests include LLM agents, computer-use agents, reinforcement learning, evaluation, and long-lived personal knowledge systems.
-  </p>
+short_bio: ""
 
 portrait_url: /assets/ryan/avator.jpg
