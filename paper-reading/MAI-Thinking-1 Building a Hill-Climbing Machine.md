@@ -29,15 +29,17 @@ MAI-Thinking-1 的真正主题不是某个单点 benchmark，而是 Microsoft AI
 3. **mid-training 明显偏 STEM/math/code。** 预训练后再做 3.55T mid-training，上下文扩到 64K 再到 256K；中期 mixture 里 STEM/math 35%、code 55%、background 10%。
 4. **post-training 是多条 climb 合并。** STEM climb、agentic climb、helpfulness/safety climb 都有各自 reward 和数据管线，最后通过 consolidation 汇成 MAI-Thinking-1。
 
-## 关键图先看
+## 先看我整理的结构图
+
+![MAI-Thinking-1 hill-climbing machine](assets/paper-reading/mai-thinking-1/hill-climbing-machine.svg)
+
+MAI-Thinking-1 最适合被读成一台持续爬坡的机器：pretraining/mid-training 提供底座，STEM、agentic、helpfulness/safety 三条 climb 分别优化，再通过 consolidation 合并。它的强 STEM 分数说明这套机器在某些方向已经能爬，Terminal-Bench 46.0 则提醒 agentic climb 还没到全面领先。
+
+## 论文原图 / 数据作为证据
 
 ![MAI-Thinking-1 RL climb](assets/paper-reading/mai-thinking-1/fig1-rl-climb.png)
 
 Figure 1 是标题里 hill-climbing 的直观证据：模型在 STEM 和 coding RL 过程中持续爬升。它不是解释机制的图，但解释了这篇报告为什么把“机器”而不是“模型”放在中心。
-
-![MAI-Base-1 architecture](assets/paper-reading/mai-thinking-1/fig2-architecture.png)
-
-Figure 2 是方法图。左边是 Transformer body，dense FFN、local/global attention 和 sparse MoE 交错；右边是 MoE 层，8/512 experts 被激活。
 
 ## 模型架构
 

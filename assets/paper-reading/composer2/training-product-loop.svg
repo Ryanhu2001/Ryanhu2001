@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="680" viewBox="0 0 1120 680" role="img" aria-labelledby="title desc">
+  <title id="title">Composer 2 training and product loop</title>
+  <desc id="desc">A hand-drawn loop showing how Composer 2 connects base model selection, training, RL infrastructure, CursorBench, and product cost.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#243036"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfaf7; }
+      .title { font: 700 30px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111; }
+      .subtitle { font: 500 15px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #5b625f; }
+      .box { fill: #fff; stroke: #27323a; stroke-width: 1.5; rx: 16; }
+      .train { fill: #eef5ff; stroke: #3a5f90; stroke-width: 1.5; rx: 16; }
+      .rl { fill: #eef8ef; stroke: #3d704a; stroke-width: 1.5; rx: 16; }
+      .prod { fill: #fff1dc; stroke: #9b6518; stroke-width: 1.5; rx: 16; }
+      .label { font: 700 16px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #162025; }
+      .small { font: 500 13px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #394246; }
+      .metric { font: 800 24px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #162025; }
+      .mono { font: 600 13px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #253036; }
+      .line { stroke: #243036; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .loop { stroke: #3d704a; stroke-width: 2; fill: none; marker-end: url(#arrow); stroke-dasharray: 7 6; }
+      .chip { fill: #f5f1e7; stroke: #c8bfae; stroke-width: 1; rx: 12; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1120" height="680"/>
+  <text class="title" x="54" y="58">Composer 2: train the model inside the product loop</text>
+  <text class="subtitle" x="55" y="86">The core story is not one benchmark table; it is faithful environment + reward + cost control.</text>
+
+  <rect class="box" x="70" y="160" width="180" height="118"/>
+  <text class="label" x="106" y="195">Base model</text>
+  <text class="small" x="106" y="225">Kimi K2.5</text>
+  <text class="small" x="106" y="249">1.04T total</text>
+
+  <rect class="train" x="320" y="135" width="245" height="170"/>
+  <text class="label" x="360" y="170">Continued training</text>
+  <text class="small" x="360" y="202">code-dominated pretrain</text>
+  <text class="small" x="360" y="228">32K main phase</text>
+  <text class="small" x="360" y="254">256K long-context extension</text>
+  <text class="small" x="360" y="280">targeted coding SFT + MTP</text>
+
+  <rect class="rl" x="650" y="135" width="255" height="170"/>
+  <text class="label" x="690" y="170">Async agentic RL</text>
+  <text class="small" x="690" y="202">rollouts in Anyrun</text>
+  <text class="small" x="690" y="228">Firecracker VM snapshots</text>
+  <text class="small" x="690" y="254">router replay for MoE</text>
+  <text class="small" x="690" y="280">delta weight sync</text>
+
+  <path class="line" d="M250 219 H320"/>
+  <path class="line" d="M565 220 H650"/>
+
+  <rect class="prod" x="690" y="390" width="285" height="145"/>
+  <text class="label" x="730" y="425">CursorBench / product harness</text>
+  <text class="metric" x="730" y="463">61.3</text>
+  <text class="small" x="795" y="461">CursorBench</text>
+  <text class="small" x="730" y="492">short prompt, large diff, real sessions</text>
+  <text class="small" x="730" y="516">measure quality + tokens + cost</text>
+
+  <rect class="prod" x="285" y="390" width="310" height="145"/>
+  <text class="label" x="323" y="425">Behavior rewards</text>
+  <text class="small" x="323" y="455">style, communication, tool use</text>
+  <text class="small" x="323" y="481">unfinished todo penalty</text>
+  <text class="small" x="323" y="507">nonlinear length penalty</text>
+
+  <path class="line" d="M778 305 C778 338 815 350 824 390"/>
+  <path class="loop" d="M690 466 C615 560 415 568 395 535"/>
+  <path class="loop" d="M440 390 C440 345 705 346 745 305"/>
+
+  <rect class="chip" x="80" y="420" width="150" height="42"/>
+  <text class="mono" x="107" y="447">SWE Multi 73.7</text>
+  <rect class="chip" x="80" y="480" width="150" height="42"/>
+  <text class="mono" x="102" y="507">T-Bench 61.7</text>
+  <text class="subtitle" x="70" y="585">Reading frame: Composer 2 is a product-shaped coding model. The benchmark is important because it matches the training/evaluation environment.</text>
+</svg>

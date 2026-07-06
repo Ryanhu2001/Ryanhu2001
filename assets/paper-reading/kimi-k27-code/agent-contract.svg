@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="620" viewBox="0 0 1100 620" role="img" aria-labelledby="title desc">
+  <title id="title">Kimi K2.7 Code agent contract</title>
+  <desc id="desc">A hand-drawn flow diagram showing Kimi K2.7 Code as a constrained coding agent runtime.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#263238"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfaf7; }
+      .title { font: 700 30px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #151515; }
+      .subtitle { font: 500 15px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #5d625f; }
+      .box { fill: #ffffff; stroke: #27323a; stroke-width: 1.6; rx: 14; }
+      .box-soft { fill: #eef7f2; stroke: #2e6f55; stroke-width: 1.5; rx: 14; }
+      .box-warn { fill: #fff2df; stroke: #9a5b18; stroke-width: 1.5; rx: 14; }
+      .box-blue { fill: #eef4ff; stroke: #3b5f9a; stroke-width: 1.5; rx: 14; }
+      .label { font: 700 16px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #162025; }
+      .small { font: 500 13px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #3d464a; }
+      .tiny { font: 500 12px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #566166; }
+      .mono { font: 600 13px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #263238; }
+      .line { stroke: #263238; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .loop { stroke: #2e6f55; stroke-width: 2; fill: none; marker-end: url(#arrow); stroke-dasharray: 7 6; }
+      .chip { fill: #f4f1ea; stroke: #c9c0ad; stroke-width: 1; rx: 12; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1100" height="620"/>
+  <text class="title" x="54" y="58">Kimi K2.7 Code: read it as an agent contract</text>
+  <text class="subtitle" x="55" y="86">The important part is not only benchmark score, but the constrained message/tool loop.</text>
+
+  <rect class="box" x="55" y="145" width="170" height="115"/>
+  <text class="label" x="82" y="178">User task</text>
+  <text class="small" x="82" y="207">repo bug</text>
+  <text class="small" x="82" y="229">coding change</text>
+  <text class="small" x="82" y="251">tool workflow</text>
+
+  <rect class="box-blue" x="285" y="130" width="200" height="145"/>
+  <text class="label" x="319" y="164">Chat API</text>
+  <text class="mono" x="319" y="193">messages</text>
+  <text class="mono" x="319" y="216">tools schema</text>
+  <text class="mono" x="319" y="239">max_tokens</text>
+
+  <rect class="box-warn" x="545" y="115" width="220" height="175"/>
+  <text class="label" x="585" y="150">K2.7 Code</text>
+  <text class="small" x="585" y="178">thinking is required</text>
+  <text class="mono" x="585" y="203">reasoning_content</text>
+  <text class="small" x="585" y="229">must be preserved</text>
+  <text class="tiny" x="585" y="256">turn it off =&gt; request error</text>
+
+  <rect class="box-soft" x="835" y="145" width="190" height="115"/>
+  <text class="label" x="872" y="178">Tool call</text>
+  <text class="mono" x="872" y="207">auto | none</text>
+  <text class="small" x="872" y="232">execute and observe</text>
+
+  <path class="line" d="M225 203 H285"/>
+  <path class="line" d="M485 203 H545"/>
+  <path class="line" d="M765 203 H835"/>
+  <path class="loop" d="M930 260 C930 365 640 380 640 292"/>
+
+  <rect class="box" x="378" y="358" width="350" height="98"/>
+  <text class="label" x="415" y="390">History invariant</text>
+  <text class="small" x="415" y="420">Append tool results, but also keep assistant reasoning state.</text>
+  <text class="small" x="415" y="444">Dropping hidden state can break the contract.</text>
+
+  <path class="line" d="M655 290 C655 323 625 340 586 358"/>
+
+  <rect class="box-blue" x="820" y="360" width="205" height="92"/>
+  <text class="label" x="862" y="392">Final answer</text>
+  <text class="small" x="862" y="421">patch, report, next tool</text>
+  <text class="small" x="862" y="443">or handoff</text>
+  <path class="line" d="M728 407 H820"/>
+
+  <text class="subtitle" x="55" y="505">Locked knobs are part of the product contract:</text>
+  <rect class="chip" x="55" y="525" width="150" height="38"/>
+  <text class="mono" x="79" y="550">temperature=1.0</text>
+  <rect class="chip" x="220" y="525" width="125" height="38"/>
+  <text class="mono" x="248" y="550">top_p=0.95</text>
+  <rect class="chip" x="360" y="525" width="80" height="38"/>
+  <text class="mono" x="387" y="550">n=1</text>
+  <rect class="chip" x="455" y="525" width="150" height="38"/>
+  <text class="mono" x="480" y="550">penalties=0</text>
+  <rect class="chip" x="620" y="525" width="175" height="38"/>
+  <text class="mono" x="646" y="550">default 32k out</text>
+  <rect class="chip" x="810" y="525" width="215" height="38"/>
+  <text class="mono" x="840" y="550">tool_choice auto/none</text>
+</svg>

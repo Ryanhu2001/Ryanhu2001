@@ -30,19 +30,17 @@ Composer 2 的重点不是“又一个 coding benchmark 高分模型”，而是
 3. **CursorBench 是整篇最有价值的 benchmark。** 它来自 Cursor 工程团队真实 coding sessions，比 public benchmark 更少说明、更大改动、更贴近产品。
 4. **系统工程写得很具体。** Anyrun、Firecracker VM、memory/filesystem snapshot、Fireworks inference、router replay、delta weight sync，这些比单个分数更能解释为什么它能训练出来。
 
-## 关键图先看
+## 先看我整理的结构图
 
-![Composer 2 overview](assets/paper-reading/composer2/fig1-overview.png)
+![Composer 2 training and product loop](assets/paper-reading/composer2/training-product-loop.svg)
 
-Figure 1 是概览图，告诉你 Composer 2 的目标：在 CursorBench 和公共 coding benchmark 上接近 frontier，同时服务成本更低。
+Composer 2 最值得先看的不是论文里的 overview 截图，而是这个产品闭环：Kimi K2.5 base model 经过 continued pretraining、targeted coding SFT、Anyrun 里的异步 RL，再回到 CursorBench/真实产品 harness 里同时优化质量、token 和成本。
+
+## 论文原图 / 数据作为证据
 
 ![Composer 2 RL improvement](assets/paper-reading/composer2/fig5-rl-improvement.png)
 
 Figure 5 说明 RL 不是只把概率质量挪到已知好答案上。作者声称 average performance 和 best-of-K 都随训练上升，这意味着模型可达正确解的覆盖面也在变大。
-
-![Composer 2 cost frontier](assets/paper-reading/composer2/fig11-cost-frontier.png)
-
-Figure 11 是产品视角最关键的图：Cursor 不只关心分数，还关心每个 CursorBench task 的 completion tokens 和 inference cost。
 
 ## 方法 Pipeline
 

@@ -28,7 +28,13 @@ GLM-5.2 的官方叙事不是“上下文更长”这么简单，而是把 1M co
 3. **官方给了很多完整 task prompt。** 包括整项目技术审计、长链重构、生产标准约束、Android 真机调试、微信小程序迁移、小游戏、论文复现、Remotion code-to-video。
 4. **benchmark 数字强，但评测细节不够 paper 级。** Terminal-Bench 2.1 81.0 vs GLM-5.1 62.0，SWE-bench Pro 62.1 vs 58.4，这些很有信息量；但 FrontierSWE/PostTrainBench/SWE-Marathon 的完整协议、样本和方差在文档页里没有展开。
 
-## 官方图先看
+## 先看我整理的结构图
+
+![GLM-5.2 long-horizon agent map](assets/paper-reading/glm-52/long-horizon-agent-map.svg)
+
+GLM-5.2 的重点不是“能塞 1M token”这个规格本身，而是把 1M context、128K output、thinking、function call、MCP 和工程任务模板连成一个长链 agent。图里右侧这些 task family，比单纯的 long-context 曲线更接近它的真实使用场景。
+
+## 官方图 / 数据作为证据
 
 ![GLM-5.2 long-context benchmark](assets/paper-reading/glm-52/long-context.png)
 

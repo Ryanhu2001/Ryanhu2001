@@ -30,19 +30,17 @@ DeepSeek-V4 最重要的贡献不是宣布支持 1M context，而是把百万上
 3. **训练和推理都为长上下文重做。** 论文不只讲模型结构，还讲 Muon optimizer、mHC fused kernels、two-stage contextual parallelism、heterogeneous KV cache、shared-prefix reuse、FP4 QAT。
 4. **post-training 用“专家训练 + 统一蒸馏”。** 各 domain specialist 先独立 SFT/RL，再通过 on-policy distillation 汇总进统一模型，而不是直接混一个大 RL。
 
-## 关键图先看
+## 先看我整理的结构图
+
+![DeepSeek-V4 million-token efficiency pipeline](assets/paper-reading/deepseek-v4/efficiency-pipeline.svg)
+
+这张图是我把论文机制重新画了一遍：DeepSeek-V4 的主线不是“1M context”，而是用 CSA/HCA 把远距离 KV 压缩和选择，再靠 MoE、mHC、Muon、kernel、KV cache 和 FP4 QAT 把训练/推理系统一起配上。这样读 Figure 1/2/3 会更清楚。
+
+## 论文原图 / 数据作为证据
 
 ![DeepSeek-V4 benchmark and efficiency](assets/paper-reading/deepseek-v4/fig1-benchmark-efficiency.png)
 
 Figure 1 右侧是整篇论文最有信息量的图：随着 context 到 1M，DeepSeek-V4-Pro / Flash 的 FLOPs 和 KV cache 增长斜率远低于 V3.2。左侧是能力图，但右侧才是 paper title 里 “Highly Efficient Million-Token” 的核心证据。
-
-![DeepSeek-V4 architecture](assets/paper-reading/deepseek-v4/fig2-architecture.png)
-
-Figure 2 给出整体结构：Transformer block 里注意力层用 CSA/HCA，FFN 用 DeepSeekMoE，残差连接被 mHC 强化，顶部仍保留 MTP modules。
-
-![DeepSeek-V4 CSA](assets/paper-reading/deepseek-v4/fig3-csa.png)
-
-Figure 3 展示 CSA：把每 `m` 个 KV entries 压成一个，再由 lightning indexer 做 top-k 选择，最后进入 shared key-value multi-query attention。它说明 V4 的长上下文效率不是简单 window attention，而是压缩 + 稀疏选择。
 
 ## 模型与训练规格
 

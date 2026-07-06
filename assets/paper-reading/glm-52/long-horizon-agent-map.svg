@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="650" viewBox="0 0 1100 650" role="img" aria-labelledby="title desc">
+  <title id="title">GLM-5.2 long-horizon coding agent map</title>
+  <desc id="desc">A hand-drawn map connecting GLM-5.2 specs to long-horizon engineering tasks.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#222"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfaf7; }
+      .title { font: 700 30px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111; }
+      .subtitle { font: 500 15px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #5b625f; }
+      .panel { fill: #fff; stroke: #2f3437; stroke-width: 1.5; rx: 16; }
+      .green { fill: #edf7ef; stroke: #386d48; stroke-width: 1.5; rx: 16; }
+      .blue { fill: #eef5ff; stroke: #385d90; stroke-width: 1.5; rx: 16; }
+      .gold { fill: #fff4dc; stroke: #9b6718; stroke-width: 1.5; rx: 16; }
+      .label { font: 700 16px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #162025; }
+      .small { font: 500 13px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #394246; }
+      .metric { font: 800 25px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #162025; }
+      .mono { font: 600 13px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #2c3438; }
+      .line { stroke: #27323a; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .dash { stroke: #386d48; stroke-width: 2; fill: none; stroke-dasharray: 7 6; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1100" height="650"/>
+  <text class="title" x="54" y="58">GLM-5.2: 1M context is useful only if it closes engineering loops</text>
+  <text class="subtitle" x="55" y="86">The public doc reads like a long-horizon coding-agent spec, not a pure context-length announcement.</text>
+
+  <rect class="green" x="55" y="135" width="220" height="130"/>
+  <text class="label" x="90" y="170">Large working memory</text>
+  <text class="metric" x="90" y="205">1M</text>
+  <text class="small" x="145" y="203">context tokens</text>
+  <text class="metric" x="90" y="238">128K</text>
+  <text class="small" x="167" y="236">max output</text>
+
+  <rect class="blue" x="55" y="318" width="220" height="130"/>
+  <text class="label" x="90" y="353">Agent controls</text>
+  <text class="mono" x="90" y="384">thinking=max</text>
+  <text class="mono" x="90" y="408">function call</text>
+  <text class="mono" x="90" y="432">MCP + cache</text>
+
+  <rect class="panel" x="350" y="170" width="330" height="235"/>
+  <text class="label" x="407" y="207">Long-horizon coding loop</text>
+  <text class="small" x="405" y="245">1. ingest whole project</text>
+  <text class="small" x="405" y="275">2. make plan and constraints</text>
+  <text class="small" x="405" y="305">3. edit / call tools / inspect state</text>
+  <text class="small" x="405" y="335">4. run checks and repair failures</text>
+  <text class="small" x="405" y="365">5. write deployable artifact</text>
+
+  <path class="line" d="M275 200 H350"/>
+  <path class="line" d="M275 383 C310 383 318 338 350 338"/>
+
+  <rect class="gold" x="760" y="122" width="280" height="112"/>
+  <text class="label" x="795" y="158">Concrete task families</text>
+  <text class="small" x="795" y="188">codebase takeover, refactor</text>
+  <text class="small" x="795" y="212">device debugging, migration</text>
+
+  <rect class="gold" x="760" y="268" width="280" height="112"/>
+  <text class="label" x="795" y="304">Research and media work</text>
+  <text class="small" x="795" y="334">paper reproduction</text>
+  <text class="small" x="795" y="358">Remotion code-to-video</text>
+
+  <rect class="gold" x="760" y="414" width="280" height="112"/>
+  <text class="label" x="795" y="450">Evidence to remember</text>
+  <text class="small" x="795" y="480">Terminal-Bench 2.1: 81.0</text>
+  <text class="small" x="795" y="504">SWE-bench Pro: 62.1</text>
+
+  <path class="line" d="M680 250 C720 220 720 180 760 178"/>
+  <path class="line" d="M680 292 H760"/>
+  <path class="line" d="M680 336 C720 382 720 466 760 470"/>
+
+  <path class="dash" d="M515 405 C515 475 415 500 300 454"/>
+  <text class="subtitle" x="320" y="535">Useful reading frame: long context reduces forgetting, but real value comes from planning, tools, verification, and output budget.</text>
+</svg>
