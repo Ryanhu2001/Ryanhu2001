@@ -1,10 +1,7 @@
 [
   "obsidian-git",
   "dataview",
-  "templater-obsidian",
   "obsidian-style-settings",
   "omnisearch",
-  "obsidian-linter",
-  "quickadd"
+  "obsidian-linter"
 ]
-

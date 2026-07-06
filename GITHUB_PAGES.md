@@ -69,7 +69,7 @@ Until DNS is fixed, remove the custom domain in GitHub Pages settings if you wan
 
 ## Publishing A Note
 
-Add this to the top of a note:
+Put the note under `wiki/` and add this to the top:
 
 ```yaml
 ---
@@ -83,6 +83,8 @@ Then rebuild:
 ```sh
 node scripts/build-wiki.mjs
 ```
+
+If the note is committed and pushed without running the build locally, GitHub Actions will rebuild `docs/` automatically and commit the generated site back to `main`.
 
 ## Editing The Homepage
 

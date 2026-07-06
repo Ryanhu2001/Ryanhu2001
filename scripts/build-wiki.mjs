@@ -482,7 +482,8 @@ const notes = files.map((file) => {
   const rel = path.relative(root, file);
   const inferredTitle = path.basename(file, ".md");
   const title = data.title || inferredTitle;
-  const slug = slugify(rel.replace(/\.md$/, ""));
+  const slugSource = rel.startsWith(`wiki${path.sep}`) ? inferredTitle : rel.replace(/\.md$/, "");
+  const slug = slugify(slugSource);
   const href = `wiki/${slug}.html`;
   return { file, rel, data, body, title, slug, href };
 }).filter((note) => note.data.public === true);

@@ -14,17 +14,26 @@ Open this folder as an Obsidian vault:
 /Users/ryan/personal-wiki
 ```
 
-Recommended flow:
+Use a deliberately small structure:
 
-1. Capture raw material in `00_Inbox/`.
-2. Promote useful notes into `10_Notes/`.
-3. Keep active work in `20_Projects/`.
-4. Draft public writing in `30_Blog/`.
-5. Maintain topic indexes in `40_Maps/`.
+- `wiki/` for notes that may become public wiki pages.
+- `assets/` for images and attachments used by notes.
+- `site/profile.json` for the academic homepage profile.
+- `docs/` for the generated public site.
 
 ## Public Wiki
 
 Only notes with frontmatter `public: true` are published.
+
+Create or edit notes under `wiki/`, for example:
+
+```yaml
+---
+title: My Note
+public: true
+description: One sentence summary.
+---
+```
 
 Build the static site:
 
@@ -33,6 +42,22 @@ node scripts/build-wiki.mjs
 ```
 
 The generated site is written to `docs/`.
+
+## Automated Publishing
+
+The repo includes a GitHub Actions workflow:
+
+```text
+.github/workflows/build-site.yml
+```
+
+When a pushed commit changes Markdown notes, `assets/`, `site/`, or `scripts/build-wiki.mjs`, GitHub automatically rebuilds `docs/` and commits the generated site back to `main`.
+
+With the Obsidian Git plugin, the daily workflow becomes:
+
+```text
+write in Obsidian -> Obsidian Git pushes -> GitHub Actions rebuilds docs -> GitHub Pages updates
+```
 
 ## GitHub Pages
 
@@ -82,10 +107,8 @@ The vault is configured for a small plugin set:
 
 - Obsidian Git
 - Dataview
-- Templater
 - Style Settings
 - Omnisearch
 - Linter
-- QuickAdd
 
 If the plugin files are not present under `.obsidian/plugins/`, open Obsidian, enable Community Plugins, and install them by name.
