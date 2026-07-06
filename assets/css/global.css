@@ -122,22 +122,13 @@ div.lazy {
     margin-top: 0;
 }
 
-.wiki-note img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    margin: 1.5rem auto;
-    border-radius: 0.25rem;
+.wiki-note h2,
+.wiki-note h3,
+.wiki-note h4 {
+    scroll-margin-top: 6rem;
 }
 
-.wiki-note table {
-    width: 100%;
-    margin: 1.5rem 0;
-}
-
-.wiki-note th,
-.wiki-note td {
-    padding: 0.55rem 0.7rem;
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    vertical-align: top;
+.wiki-note hr {
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+    margin: 2rem 0;
 }

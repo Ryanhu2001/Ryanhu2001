@@ -2,16 +2,27 @@
 layout: default
 ---
 
-<div class="row">
-    <div class="col-lg-10 mx-auto">
-        <article class="wiki-note bg-white shadow-sm rounded-xl p-4 p-md-5">
-            <div class="mb-4">
-                <a class="small" href="{{ '/wiki/' | relative_url }}">
-                    <i class="fas fa-arrow-left"></i> Wiki
-                </a>
+{% assign fixed_content = content | replace: 'src="assets/', 'src="../assets/' | replace: 'href="assets/', 'href="../assets/' %}
+
+<div class="blog-layout-wrapper">
+    <div class="blog-main">
+        <div class="mb-3">
+            <a class="small" href="{{ '/wiki/' | relative_url }}">
+                <i class="fas fa-arrow-left"></i> Wiki
+            </a>
+        </div>
+
+        <article class="bg-white rounded-xl p-4 p-md-5 mb-4 wiki-note-card">
+            <div class="blog-content wiki-note">
+                {{ fixed_content }}
             </div>
-            {% assign fixed_content = content | replace: 'src="assets/', 'src="../assets/' | replace: 'href="assets/', 'href="../assets/' %}
-            {{ fixed_content }}
         </article>
     </div>
+
+    <aside class="blog-toc-sidebar">
+        <nav id="blog-toc" class="blog-toc-nav" aria-label="Table of contents">
+            <div class="blog-toc-title">Table of Contents</div>
+            <ul class="blog-toc-list"></ul>
+        </nav>
+    </aside>
 </div>
