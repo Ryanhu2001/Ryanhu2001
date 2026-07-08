@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="720" viewBox="0 0 1120 720" role="img" aria-labelledby="title desc">
+  <title id="title">Harness optimization map</title>
+  <desc id="desc">A concept map showing how harness engineering moves from prompt optimization to context, workflow, harness code, evolutionary search, and weight updates.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#2c2925"/>
+    </marker>
+    <style>
+      .bg { fill: #fbf6ea; }
+      .title { font: 700 30px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #171513; }
+      .subtitle { font: 500 15px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #5d564d; }
+      .axis { stroke: #5b5146; stroke-width: 2.2; marker-end: url(#arrow); }
+      .box { fill: #fffaf0; stroke: #6f6252; stroke-width: 1.4; }
+      .accent { fill: #f1e2c8; stroke: #8a6f45; stroke-width: 1.6; }
+      .guard { fill: #f7ede0; stroke: #8a5a44; stroke-width: 1.6; }
+      .label { font: 700 16px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #181614; }
+      .small { font: 500 13px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #3f3932; }
+      .tiny { font: 500 12px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #635a4f; }
+      .mono { font: 600 12.5px "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #332e28; }
+      .line { stroke: #4f473d; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .soft { stroke: #8a6f45; stroke-width: 2; fill: none; stroke-dasharray: 7 6; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1120" height="720"/>
+  <text class="title" x="54" y="58">Harness 优化谱系：从写 prompt 到改运行时</text>
+  <text class="subtitle" x="55" y="86">越往右，优化对象越接近「让模型工作的系统」；同时 evaluator 和权限边界越来越重要。</text>
+
+  <line class="axis" x1="90" y1="160" x2="1020" y2="160"/>
+  <text class="tiny" x="88" y="132">更像提示词</text>
+  <text class="tiny" x="912" y="132">更像系统自改进</text>
+
+  <rect class="box" x="75" y="205" width="175" height="122" rx="8"/>
+  <text class="label" x="106" y="240">Prompt</text>
+  <text class="small" x="106" y="270">instruction</text>
+  <text class="small" x="106" y="294">examples</text>
+  <text class="mono" x="106" y="316">Promptbreeder</text>
+
+  <rect class="accent" x="295" y="205" width="185" height="122" rx="8"/>
+  <text class="label" x="329" y="240">Context</text>
+  <text class="small" x="329" y="270">playbook</text>
+  <text class="small" x="329" y="294">files as memory</text>
+  <text class="mono" x="329" y="316">ACE, MCE</text>
+
+  <rect class="box" x="525" y="205" width="185" height="122" rx="8"/>
+  <text class="label" x="560" y="240">Workflow</text>
+  <text class="small" x="560" y="270">graph / loop</text>
+  <text class="small" x="560" y="294">task control flow</text>
+  <text class="mono" x="560" y="316">ADAS, AFlow</text>
+
+  <rect class="accent" x="755" y="205" width="205" height="122" rx="8"/>
+  <text class="label" x="790" y="240">Harness code</text>
+  <text class="small" x="790" y="270">runtime logic</text>
+  <text class="small" x="790" y="294">editable surface</text>
+  <text class="mono" x="790" y="316">Meta-Harness, DGM</text>
+
+  <path class="line" d="M250 266 H295"/>
+  <path class="line" d="M480 266 H525"/>
+  <path class="line" d="M710 266 H755"/>
+
+  <rect class="box" x="170" y="425" width="225" height="128" rx="8"/>
+  <text class="label" x="207" y="460">Self-improvement loop</text>
+  <text class="small" x="207" y="492">mine weakness</text>
+  <text class="small" x="207" y="516">propose bounded edits</text>
+  <text class="small" x="207" y="540">validate, accept, log</text>
+
+  <rect class="box" x="455" y="425" width="225" height="128" rx="8"/>
+  <text class="label" x="492" y="460">Evolutionary search</text>
+  <text class="small" x="492" y="492">population</text>
+  <text class="small" x="492" y="516">mutation / crossover</text>
+  <text class="small" x="492" y="540">fitness gate</text>
+
+  <rect class="guard" x="740" y="425" width="245" height="128" rx="8"/>
+  <text class="label" x="778" y="460">Outer guardrails</text>
+  <text class="small" x="778" y="492">held-out tests</text>
+  <text class="small" x="778" y="516">trace audit</text>
+  <text class="small" x="778" y="540">human taste + permission</text>
+
+  <path class="soft" d="M858 327 C858 365 780 395 680 438"/>
+  <path class="soft" d="M618 327 C585 372 570 396 570 425"/>
+  <path class="soft" d="M388 327 C350 370 310 394 285 425"/>
+  <path class="line" d="M395 488 H455"/>
+  <path class="line" d="M680 488 H740"/>
+
+  <text class="subtitle" x="116" y="625">读法：这张图不是时间线，而是「可优化对象」的外移。越往右越有力量，也越需要外部评测和权限控制。</text>
+</svg>
