@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="560" viewBox="0 0 1080 560" role="img" aria-labelledby="title desc">
+  <title id="title">AutoBench Agentic dynamic benchmark map</title>
+  <desc id="desc">A warm toned diagram showing how AutoBench Agentic creates dynamic enterprise virtual environments, runs agentic tasks, and judges execution traces.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c4f20"/>
+    </marker>
+    <style>
+      .bg { fill: #fbf6ea; }
+      .panel { fill: #fffaf0; stroke: #dfc7a5; stroke-width: 1.5; }
+      .accent { fill: #a96f2a; }
+      .soft { fill: #f4ead7; stroke: #d7bd94; stroke-width: 1.2; }
+      .text { font-family: Inter, "Noto Sans SC", Arial, sans-serif; fill: #2d261f; }
+      .small { font-size: 18px; }
+      .mid { font-size: 22px; font-weight: 700; }
+      .title { font-size: 30px; font-weight: 800; }
+      .mono { font-family: "JetBrains Mono", monospace; font-size: 16px; fill: #5d4630; }
+      .arrow { stroke: #7c4f20; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect class="bg" width="1080" height="560" rx="0"/>
+  <text x="56" y="58" class="text title">AutoBench Agentic：从静态题库到动态虚拟企业环境</text>
+  <text x="56" y="92" class="text small">核心不是给模型一段 prompt，而是实时生成 persona、memory、tool schema、mock feedback 和多轮执行轨迹。</text>
+
+  <rect x="56" y="132" width="244" height="308" rx="12" class="panel"/>
+  <text x="82" y="172" class="text mid">任务生成</text>
+  <rect x="82" y="196" width="192" height="44" rx="8" class="soft"/>
+  <text x="100" y="224" class="text small">10 个 operator roles</text>
+  <rect x="82" y="252" width="192" height="44" rx="8" class="soft"/>
+  <text x="100" y="280" class="text small">10 个 business domains</text>
+  <rect x="82" y="308" width="192" height="44" rx="8" class="soft"/>
+  <text x="100" y="336" class="text small">10 类 agentic tasks</text>
+  <rect x="82" y="364" width="192" height="44" rx="8" class="soft"/>
+  <text x="100" y="392" class="text small">5 阶段组装流程</text>
+
+  <path d="M310 286 C340 286 352 286 382 286" class="arrow"/>
+
+  <rect x="386" y="132" width="304" height="308" rx="12" class="panel"/>
+  <text x="414" y="172" class="text mid">Virtual Environment</text>
+  <text x="414" y="208" class="text small">UIR 把工具和 prose 解耦</text>
+  <text x="414" y="242" class="text small">Memory Lines 注入中途状态</text>
+  <text x="414" y="276" class="text small">复杂 JSON schema + distractor tools</text>
+  <text x="414" y="310" class="text small">timeout / error / missing parameter</text>
+  <text x="414" y="344" class="text small">多轮工具调用与 gap handling</text>
+  <rect x="414" y="374" width="246" height="42" rx="8" fill="#f0dfc4" stroke="#caa777"/>
+  <text x="432" y="401" class="text small">输出：可评估的 execution trace</text>
+
+  <path d="M700 286 C728 286 742 286 770 286" class="arrow"/>
+
+  <rect x="774" y="132" width="250" height="308" rx="12" class="panel"/>
+  <text x="802" y="172" class="text mid">Collective Judge</text>
+  <text x="802" y="208" class="text small">LLM pool 生成和评估</text>
+  <text x="802" y="242" class="text small">8 个细粒度 criteria</text>
+  <text x="802" y="276" class="text small">Tool Fidelity</text>
+  <text x="802" y="310" class="text small">Multi-Step Orchestration</text>
+  <text x="802" y="344" class="text small">Parameter Complexity</text>
+  <rect x="802" y="374" width="192" height="42" rx="8" fill="#f0dfc4" stroke="#caa777"/>
+  <text x="820" y="401" class="text small">score / cost / latency / P99</text>
+
+  <rect x="56" y="478" width="968" height="44" rx="10" fill="#efe0c8" stroke="#d4b88f"/>
+  <text x="82" y="506" class="text small">读法：这套 benchmark 的价值在“动态企业状态 + 工具 schema + 失败恢复”，风险在“闭源生成器 + LLM-as-judge 难审计”。</text>
+</svg>
