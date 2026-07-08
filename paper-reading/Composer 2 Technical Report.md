@@ -4,10 +4,18 @@ public: true
 description: "Composer 2 是 Cursor 把 Kimi K2.5 专门训练成 coding agent 的报告，核心在 continued pretraining、真实 CursorBench、异步 RL、Anyrun 环境和成本/准确率 Pareto。"
 type: paper-reading
 date: 2026-07-07
+created_at: 2026-07-07T00:29:37+08:00
 paper_title: "Composer 2 Technical Report"
 venue: "arXiv"
 year: "2026"
 status: "reading"
+category: "Coding Agents"
+tags:
+  - coding-agent
+  - rl
+  - cursorbench
+  - training-infra
+  - anyrun
 source_url: "https://arxiv.org/abs/2603.24477"
 ---
 

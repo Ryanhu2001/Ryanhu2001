@@ -4,10 +4,18 @@ public: true
 description: "PaperPilot 把科学文献搜索建模成可编辑的 DAG workflow：从 anchor paper 和用户意图出发，组合关键词搜索、引用扩展、过滤、打分、重排和证据抽取，并用多轮反馈修改 workflow。"
 type: paper-reading
 date: 2026-07-08
+created_at: 2026-07-08T14:22:37+08:00
 paper_title: "Multi-Turn Agentic Scientific Literature Search via Workflow Induction"
 venue: "arXiv preprint"
 year: "2026"
 status: "reading"
+category: "Research Workflows"
+tags:
+  - literature-search
+  - workflow-induction
+  - retrieval
+  - multi-turn
+  - scientific-agents
 source_url: "https://arxiv.org/abs/2607.00597"
 ---
 

@@ -4,10 +4,18 @@ public: true
 description: "MAI-Thinking-1 的重点是 Microsoft AI 如何搭一台持续 hill-climbing 的模型机器：35B active / 1T MoE、30T 预训练、256K 上下文、三类 RL climb 和很细的数据/基础设施细节。"
 type: paper-reading
 date: 2026-07-07
+created_at: 2026-07-07T00:29:37+08:00
 paper_title: "MAI-Thinking-1: Building a Hill-Climbing Machine"
 venue: "Technical Report"
 year: "2026"
 status: "reading"
+category: "Model Training"
+tags:
+  - model-report
+  - rl
+  - data-mixture
+  - hill-climbing
+  - agentic-coding
 source_url: "https://microsoft.ai/pdf/mai-thinking-1.pdf"
 ---
 

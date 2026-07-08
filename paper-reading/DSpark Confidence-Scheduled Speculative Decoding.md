@@ -4,11 +4,19 @@ public: true
 description: "DSpark 把 speculative decoding 做成 draft quality 和 serving scheduler 的系统协同：半自回归 drafter 修 suffix decay，confidence-scheduled verification 在高并发下减少无效验证。"
 type: paper-reading
 date: 2026-07-08
+created_at: 2026-07-08T15:11:50+08:00
 paper_title: "DSpark: Confidence-Scheduled Speculative Decoding with Semi-Autoregressive Generation"
 authors: "Xin Cheng et al."
 venue: "arXiv preprint"
 year: "2026"
 status: "reading"
+category: "Inference Systems"
+tags:
+  - speculative-decoding
+  - serving
+  - scheduler
+  - deepseek
+  - latency
 source_url: "https://arxiv.org/abs/2607.05147"
 ---
 

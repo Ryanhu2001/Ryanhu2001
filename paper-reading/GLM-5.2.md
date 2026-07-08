@@ -4,10 +4,18 @@ public: true
 description: "把 GLM-5.2 官方文档当成 long-horizon coding agent 报告来读：重点是 1M context、128K output、工程任务案例和 benchmark claim 的可信边界。"
 type: paper-reading
 date: 2026-07-07
+created_at: 2026-07-07T00:29:37+08:00
 paper_title: "GLM-5.2"
 venue: "Official Documentation"
 year: "2026"
 status: "reading"
+category: "Model Releases"
+tags:
+  - long-context
+  - coding-agent
+  - mcp
+  - benchmark
+  - glm
 source_url: "https://docs.z.ai/guides/llm/glm-5.2"
 ---
 

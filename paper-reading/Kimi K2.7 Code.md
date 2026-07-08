@@ -4,10 +4,18 @@ public: true
 description: "把 Kimi 最新 coding 模型当成 API/agent contract 来读：K2.7 Code 的重点不只是分数，而是强制 thinking、工具调用约束、token 成本和 K2.6 到 K2.7 的编码/agent 能力迁移。"
 type: paper-reading
 date: 2026-07-07
+created_at: 2026-07-07T00:29:37+08:00
 paper_title: "Kimi K2.7 Code"
 venue: "Official Documentation / Technical Blog"
 year: "2026"
 status: "reading"
+category: "Model Releases"
+tags:
+  - coding-agent
+  - tool-use
+  - thinking-mode
+  - mcp
+  - token-efficiency
 source_url: "https://platform.kimi.com/docs/guide/kimi-k2-7-code-quickstart"
 ---
 

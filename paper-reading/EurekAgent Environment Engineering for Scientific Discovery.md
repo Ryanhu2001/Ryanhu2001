@@ -4,11 +4,19 @@ public: true
 description: "EurekAgent 把 autonomous scientific discovery 的重点从固定 workflow 转向环境工程：权限、artifact、budget 和 human-in-loop 让强 CLI agent 在可验证科学任务里可靠探索。"
 type: paper-reading
 date: 2026-07-08
+created_at: 2026-07-08T15:54:58+08:00
 paper_title: "EurekAgent: Agent Environment Engineering is All You Need For Autonomous Scientific Discovery"
 authors: "Amy Xin, Jiening Siow, Junjie Wang, Zijun Yao, Fanjin Zhang, Jian Song, Lei Hou, Juanzi Li"
 venue: "arXiv preprint"
 year: "2026"
 status: "reading"
+category: "Agent Environments"
+tags:
+  - sandbox
+  - environment-engineering
+  - scientific-discovery
+  - budget
+  - artifact-memory
 source_url: "https://arxiv.org/abs/2606.13662"
 ---
 

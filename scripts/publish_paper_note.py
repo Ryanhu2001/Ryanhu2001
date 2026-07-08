@@ -27,6 +27,7 @@ def slugify(title: str) -> str:
 def build_note(args: argparse.Namespace) -> str:
     today = dt.date.today().isoformat()
     date = args.date or today
+    created_at = args.created_at or dt.datetime.now().astimezone().isoformat(timespec="seconds")
     description = args.description or "Paper reading note."
     paper_title = args.paper_title or args.title
 
@@ -37,6 +38,7 @@ def build_note(args: argparse.Namespace) -> str:
         f"description: {yaml_quote(description)}",
         "type: paper-reading",
         f"date: {date}",
+        f"created_at: {created_at}",
         f"paper_title: {yaml_quote(paper_title)}",
     ]
 
@@ -45,12 +47,19 @@ def build_note(args: argparse.Namespace) -> str:
         "venue": args.venue,
         "year": args.year,
         "status": args.status,
+        "category": args.category,
         "source_url": args.source_url,
         "pdf_path": args.pdf_path,
     }
     for key, value in optional_fields.items():
         if value:
             frontmatter.append(f"{key}: {yaml_quote(str(value))}")
+
+    tags = [tag.strip() for tag in (args.tags or "").split(",") if tag.strip()]
+    if tags:
+        frontmatter.append("tags:")
+        for tag in tags:
+            frontmatter.append(f"  - {tag}")
 
     frontmatter.append("---")
 
@@ -104,6 +113,9 @@ def main() -> int:
     parser.add_argument("--source-url", help="Official paper URL.")
     parser.add_argument("--pdf-path", help="Local PDF path if applicable.")
     parser.add_argument("--date", help="YYYY-MM-DD. Defaults to today.")
+    parser.add_argument("--created-at", help="ISO timestamp. Defaults to current local time.")
+    parser.add_argument("--category", help="One display category for paper-reading filters.")
+    parser.add_argument("--tags", help="Comma-separated tags for paper-reading filters.")
     parser.add_argument("--body-file", help="Markdown body file to use after front matter.")
     parser.add_argument("--force", action="store_true", help="Overwrite an existing note.")
     args = parser.parse_args()

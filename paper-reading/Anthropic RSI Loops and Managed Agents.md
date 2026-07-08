@@ -4,10 +4,19 @@ public: true
 description: "三篇 Anthropic/Claude 文章串起来看：近端 RSI 更像 AI R&D 被 loops、persistent sessions、sandbox、vault、eval 和人类 judgment 共同加速，而不是模型神秘地直接重写自己。"
 type: paper-reading
 date: 2026-07-08
+created_at: 2026-07-08T15:00:47+08:00
 paper_title: "When AI builds itself / Getting started with loops / The evolution of agentic surfaces"
 venue: "Anthropic Institute / Claude Blog"
 year: "2026"
 status: "reading"
+category: "Agent Systems"
+tags:
+  - rsi
+  - self-improvement
+  - loops
+  - managed-agents
+  - sandbox
+  - claude
 source_url: "https://www.anthropic.com/institute/recursive-self-improvement"
 source_urls:
   - "https://www.anthropic.com/institute/recursive-self-improvement"

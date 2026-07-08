@@ -4,10 +4,18 @@ public: true
 description: "把 patch verifier 做成会读仓库、会收集证据的 agentic workflow，用来替代 per-repository test execution 的 SFT 筛选和 RL reward。"
 type: paper-reading
 date: 2026-07-06
+created_at: 2026-07-06T23:32:12+08:00
 paper_title: "Dockerless: Environment-Free Program Verifier for Coding Agents"
 venue: "arXiv"
 year: "2026"
 status: "reading"
+category: "Coding Agents"
+tags:
+  - verifier
+  - coding-agent
+  - swe-bench
+  - rl-reward
+  - environment-free
 source_url: "https://arxiv.org/abs/2606.28436"
 ---
 

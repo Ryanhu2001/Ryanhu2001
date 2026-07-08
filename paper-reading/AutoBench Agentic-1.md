@@ -4,11 +4,19 @@ public: true
 description: "AutoBench Agentic 把 agent benchmark 做成动态虚拟企业环境：persona、memory、tool schema、mock feedback 和多轮执行共同构成任务，同时给出分数、成本、延迟和细粒度 task breakdown。"
 type: paper-reading
 date: 2026-07-08
+created_at: 2026-07-08T15:53:44+08:00
 paper_title: "Announcing AutoBench Agentic: The Next Generation Agentic Benchmark"
 authors: "AutoBench Team"
 venue: "AutoBench Blog"
 year: "2026"
 status: "reading"
+category: "Benchmarks & Evals"
+tags:
+  - agent-evaluation
+  - dynamic-benchmark
+  - virtual-environment
+  - llm-as-judge
+  - cost-latency
 source_url: "https://autobench.org/blog/autobench-Agentic-1"
 ---
 

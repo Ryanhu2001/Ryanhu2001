@@ -4,10 +4,18 @@ public: true
 description: "Lilian Weng 这篇 blog 把 recursive self-improvement 的近路放在 harness engineering：workflow、文件系统记忆、sub-agent、context/workflow/harness-code 优化、evolutionary search 和人类监督边界。"
 type: paper-reading
 date: 2026-07-08
+created_at: 2026-07-08T13:37:46+08:00
 paper_title: "Harness Engineering for Self-Improvement"
 venue: "Lil'Log"
 year: "2026"
 status: "reading"
+category: "Agent Systems"
+tags:
+  - harness-engineering
+  - rsi
+  - context-engineering
+  - workflow-search
+  - self-improvement
 source_url: "https://lilianweng.github.io/posts/2026-07-04-harness/"
 ---
 

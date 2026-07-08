@@ -4,10 +4,18 @@ public: true
 description: "DeepSeek-V4 的核心不是单纯 1M context，而是用 CSA/HCA、mHC、Muon、FP4 QAT 和 post-training consolidation 把百万上下文做得更省 FLOPs 和 KV cache。"
 type: paper-reading
 date: 2026-07-07
+created_at: 2026-07-07T00:29:37+08:00
 paper_title: "DeepSeek-V4: Towards Highly Efficient Million-Token Context Intelligence"
 venue: "arXiv"
 year: "2026"
 status: "reading"
+category: "Model Architecture"
+tags:
+  - long-context
+  - efficient-attention
+  - kv-cache
+  - fp4
+  - deepseek
 source_url: "https://arxiv.org/abs/2606.19348"
 ---
 
