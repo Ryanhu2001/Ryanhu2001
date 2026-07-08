@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="560" viewBox="0 0 1120 560" role="img" aria-labelledby="title desc">
+  <title id="title">SelfCompact rubric-gated compaction loop</title>
+  <desc id="desc">A trajectory periodically receives a rubric probe. If the model returns COMPRESS, the same model writes a summary and generation resumes from the prompt plus summary.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#7a5c2f"/>
+    </marker>
+    <style>
+      .bg { fill: #fbf6ea; }
+      .box { fill: #fffaf1; stroke: #d8c8ad; stroke-width: 2; rx: 12; }
+      .tool { fill: #f3ead8; stroke: #b8843a; stroke-width: 2; rx: 12; }
+      .bad { fill: #f8efe5; stroke: #c9ad86; stroke-width: 2; rx: 10; }
+      .text { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #2d261c; }
+      .label { font-size: 22px; font-weight: 700; }
+      .small { font-size: 16px; fill: #5f5240; }
+      .tiny { font-size: 13px; fill: #6c5f4d; }
+      .line { stroke: #7a5c2f; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+      .muted { stroke: #b99d70; stroke-width: 2; fill: none; stroke-dasharray: 7 7; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect class="bg" width="1120" height="560"/>
+
+  <rect class="box" x="64" y="92" width="230" height="130"/>
+  <text class="text label" x="96" y="139">Growing trace</text>
+  <text class="text small" x="96" y="174">thoughts, tool calls,</text>
+  <text class="text small" x="96" y="197">dead ends, facts</text>
+
+  <rect class="tool" x="430" y="92" width="260" height="130"/>
+  <text class="text label" x="462" y="139">Rubric probe</text>
+  <text class="text small" x="462" y="174">COMPRESS only after</text>
+  <text class="text small" x="462" y="197">a closed sub-task</text>
+
+  <rect class="box" x="826" y="92" width="230" height="130"/>
+  <text class="text label" x="858" y="139">Continue</text>
+  <text class="text small" x="858" y="174">if mid-derivation,</text>
+  <text class="text small" x="858" y="197">stuck, or unresolved</text>
+
+  <rect class="tool" x="430" y="332" width="260" height="130"/>
+  <text class="text label" x="462" y="379">Summarizer</text>
+  <text class="text small" x="462" y="414">same model condenses</text>
+  <text class="text small" x="462" y="437">facts and open goals</text>
+
+  <rect class="box" x="826" y="332" width="230" height="130"/>
+  <text class="text label" x="858" y="379">Hard reset</text>
+  <text class="text small" x="858" y="414">resume from prompt</text>
+  <text class="text small" x="858" y="437">plus summary</text>
+
+  <rect class="bad" x="64" y="332" width="230" height="130"/>
+  <text class="text label" x="96" y="379">Fixed trigger</text>
+  <text class="text small" x="96" y="414">fires at token %</text>
+  <text class="text small" x="96" y="437">ignores state</text>
+
+  <path class="line" d="M294 157 H430"/>
+  <path class="line" d="M690 157 H826"/>
+  <path class="line" d="M560 222 V332"/>
+  <path class="line" d="M690 397 H826"/>
+  <path class="line" d="M941 332 C1010 265, 1000 222, 941 222"/>
+  <path class="line" d="M826 397 C650 535, 230 515, 180 222"/>
+
+  <path class="muted" d="M294 397 H430"/>
+  <text class="text tiny" x="302" y="384">often drops active work</text>
+
+  <text class="text small" x="300" y="526">Core idea: timing is the product. The summary tool matters only when the rubric says the trajectory is safe to compress.</text>
+</svg>
