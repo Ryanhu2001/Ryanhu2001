@@ -18,6 +18,12 @@ source_url: "https://microsoft.ai/pdf/mai-thinking-1.pdf"
 - **类型**: model report / pretraining + midtraining + RL system / safety and evaluation report
 - **关键词**: sparse MoE, hill-climbing machine, GB200, data mixture, STEM RL, agentic RL, 256K context
 
+## 读法：给人和 agent 的路标
+
+这篇要按“训练组织能力”读，而不是按“某个榜单高不高”读。快速路线是：先看 hill-climbing machine 图，理解 pretraining/mid-training/post-training 三段；再看数据 mixture 和训练 recipe；最后看 Table 11，把 STEM 强项和 agentic coding 弱项分开。
+
+给 agent 以后检索时，关键词是：`35B active / 1T total MoE`、`30T pre-training`、`3.55T mid-training`、`256K context`、`STEM climb`、`agentic climb`、`helpfulness safety climb`、`consolidation`、`Sandbox Execution Environment`。这篇适合和 Composer 2 对照：MAI 写的是通用模型爬坡机器，Composer 写的是产品 coding agent 爬坡机器。
+
 ## 一句话判断
 
 MAI-Thinking-1 的真正主题不是某个单点 benchmark，而是 Microsoft AI 如何把数据、训练基础设施、评测、RL 环境、reward、safety 和部署硬件组织成一台可持续爬坡的机器；模型本身是 35B active / 1T total sparse MoE，强在 STEM reasoning 和 coding，但 agentic coding 还不是全面领先。
@@ -35,11 +41,19 @@ MAI-Thinking-1 的真正主题不是某个单点 benchmark，而是 Microsoft AI
 
 MAI-Thinking-1 最适合被读成一台持续爬坡的机器：pretraining/mid-training 提供底座，STEM、agentic、helpfulness/safety 三条 climb 分别优化，再通过 consolidation 合并。它的强 STEM 分数说明这套机器在某些方向已经能爬，Terminal-Bench 46.0 则提醒 agentic climb 还没到全面领先。
 
+图里有三个锚点：
+
+- **底座很重**：35B active / 1T total sparse MoE，加上 30T pre-training 和 3.55T mid-training，说明 post-training 不是凭空变魔法。
+- **climb 是分工的**：数学/科学、agentic coding、helpfulness/safety 分开爬，再 consolidation，避免一个混合 RL 目标互相污染。
+- **结果不均衡**：STEM climb 很有效，agentic coding 仍明显落后 Kimi/DeepSeek/GPT，这恰好说明报告没有把短板藏起来。
+
 ## 论文原图 / 数据作为证据
 
 ![MAI-Thinking-1 RL climb](assets/paper-reading/mai-thinking-1/fig1-rl-climb.png)
 
 Figure 1 是标题里 hill-climbing 的直观证据：模型在 STEM 和 coding RL 过程中持续爬升。它不是解释机制的图，但解释了这篇报告为什么把“机器”而不是“模型”放在中心。
+
+这张图的价值不是告诉我们“RL 一定有效”，而是提醒读者看这篇报告时要关注 **爬坡过程**：数据、环境、reward、grader、失败分析、consolidation 怎样让能力持续变好。单个 checkpoint 分数只是这台机器跑出来的一帧。
 
 ## 模型架构
 
@@ -123,6 +137,8 @@ Figure 1 是标题里 hill-climbing 的直观证据：模型在 STEM 和 coding 
 
 这些细节说明它不是只有 benchmark，而是想公开一部分可审计的训练 recipe。
 
+这张训练 recipe 表的意义是：它把“长上下文能力”放进训练阶段，而不是只在推理时拉大窗口。先 16K pre-training，再 64K mid-training，最后短阶段扩到 256K，这是一条更省钱的路线。对个人项目的类比是：不要一开始就把所有材料塞进最大上下文，先让流程在短上下文里稳定，再扩大任务长度。
+
 ## Post-training / Hill-Climbing Pipeline
 
 MAI-Thinking-1 的 post-training 分三条主线：
@@ -142,6 +158,8 @@ Agentic climb 的 loop 很接近真实 coding agent：
 5. credit assignment 统一作用到所有 policy steps 的 tokens。
 
 软件工程任务里工具包括 read/edit files、shell commands、inspect repository state。General tool use 则是结构化工具和可变 task state，例如数据库。
+
+这里和 Harness Engineering 的关系很强：MAI 的 agentic climb 本质上是在一个 sandbox harness 里训练模型。模型不是只回答文本，而是在 SEE 里调用工具、观察状态、被 grader 评分。这说明“agent 能力”越来越像模型和环境共同训练出来的东西，而不是单靠 instruction tuning。
 
 ## 关键结果
 
@@ -167,6 +185,8 @@ Agentic climb 的 loop 很接近真实 coding agent：
 
 所以这篇不能读成“MAI 全面超过 frontier coding models”。更准确的定位是：它展示了 Microsoft AI 自建 hill-climbing pipeline 的第一代结果，在 STEM 很强，在 agentic coding 仍有明显提升空间。
 
+这个结论很重要，因为它防止误读：MAI-Thinking-1 是一份透明度很高的训练系统报告，不是一份“全面领先 coding agent”报告。它真正值得学的是怎么组织爬坡机器，而不是拿 Terminal-Bench 46.0 去吹 coding agent。
+
 ## Agentic coding 评测细节
 
 Appendix I 里有具体设置：
@@ -181,6 +201,8 @@ Appendix I 里有具体设置：
 - Terminal-Bench 2.0 只使用 bash tool。
 
 这个设置对解读分数很重要：它的 agentic coding 并不是复杂 IDE harness，也不是和 Cursor 一样的产品工具集，而是相对简单的 ReAct loop。
+
+因此，MAI 的 agentic coding 分数有两种读法：一方面，它说明模型和基础 RL 还需要继续爬；另一方面，它也可能低估了模型在更强 harness 下的潜力。和 Composer 2 对比会很有意思：Composer 的优势恰恰在于产品 harness、真实 CursorBench 和复杂基础设施。
 
 ## 附录里值得看的 case
 
@@ -210,6 +232,8 @@ Appendix D 讲了一些 reasoning behavior。一个 AIME case 里，强模型会
 1. **数据 mixture 要按目标能力重配。** paper-reading/coding agent 的数据不应只堆 web text，代码、STEM、长文档、工具轨迹要分桶。
 2. **长上下文扩展可以是短阶段校准。** 不是所有训练都要在最大 context 下烧钱，先短 context 建能力，再做 target context extension 可能更划算。
 3. **agent pipeline 要用环境和 grader。** 真正的 coding agent 训练信号来自环境状态、测试、工具轨迹和行为质量，而不是单轮文本偏好。
+
+我还会把它变成一个个人 wiki 原则：想让一个长期 workflow 变强，不能只改 prompt。要有数据分桶、任务环境、外部 grader、失败记录、阶段性 consolidation。paper-reading pipeline 也是一样，先保证来源、图、公式、构建、部署这些环节都有检查点，再谈“自动读得更好”。
 
 ## 一句话收束
 

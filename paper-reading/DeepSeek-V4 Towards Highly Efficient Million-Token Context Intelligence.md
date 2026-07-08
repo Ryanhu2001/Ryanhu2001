@@ -19,6 +19,12 @@ source_url: "https://arxiv.org/abs/2606.19348"
 - **类型**: 模型架构 / 长上下文效率 / post-training report
 - **关键词**: CSA, HCA, mHC, Muon, FP4 QAT, MoE, 1M context, on-policy distillation
 
+## 读法：给人和 agent 的路标
+
+这篇要按“长上下文系统工程”读，不要按“谁家 context length 更长”读。快速路线是：先看 efficiency pipeline 图，抓住 CSA/HCA 怎么省 attention 和 KV cache；再看 1M context 下相对 V3.2 的 FLOPs/KV cache 数字；最后看 agent 评测和 tool-calling context path，判断它对真实 coding agent 有什么意义。
+
+给 agent 以后检索时，关键词是：`CSA`、`HCA`、`hybrid attention`、`mHC`、`Muon`、`FP4 QAT`、`heterogeneous KV cache`、`shared-prefix reuse`、`tool-calling reasoning persistence`。这篇最适合放在“长上下文如何变便宜”而不是“长上下文 benchmark 排名”里。
+
 ## 一句话判断
 
 DeepSeek-V4 最重要的贡献不是宣布支持 1M context，而是把百万上下文的推理成本压下去：通过 CSA/HCA 混合注意力、mHC、Muon、FP4 QAT 和专门的 KV cache/inference infrastructure，让 DeepSeek-V4-Pro 在 1M context 下只需要 DeepSeek-V3.2 的 27% single-token FLOPs 和 10% KV cache。
@@ -36,11 +42,23 @@ DeepSeek-V4 最重要的贡献不是宣布支持 1M context，而是把百万上
 
 这张图是我把论文机制重新画了一遍：DeepSeek-V4 的主线不是“1M context”，而是用 CSA/HCA 把远距离 KV 压缩和选择，再靠 MoE、mHC、Muon、kernel、KV cache 和 FP4 QAT 把训练/推理系统一起配上。这样读 Figure 1/2/3 会更清楚。
 
+图里有三个锚点：
+
+- **注意力先分层**：近邻 token 需要细粒度，远距离上下文可以压缩成块，再用 sparse selector 找回真正相关的部分。
+- **省成本不只靠架构**：mHC、fused kernels、TileLang、contextual parallelism、KV cache layout 都在帮架构落地。
+- **post-training 继续配合系统目标**：专家模型先各自 SFT/RL，再 on-policy distillation 合并，最后用 FP4 QAT 把服务成本压下来。
+
 ## 论文原图 / 数据作为证据
 
 ![DeepSeek-V4 benchmark and efficiency](assets/paper-reading/deepseek-v4/fig1-benchmark-efficiency.png)
 
 Figure 1 右侧是整篇论文最有信息量的图：随着 context 到 1M，DeepSeek-V4-Pro / Flash 的 FLOPs 和 KV cache 增长斜率远低于 V3.2。左侧是能力图，但右侧才是 paper title 里 “Highly Efficient Million-Token” 的核心证据。
+
+这张图要分两层读：
+
+- **左侧能力图**回答“V4 是否还是强模型”：它展示 reasoning、coding、long-context、agent 等方向的综合表现。
+- **右侧效率图**回答“1M 是否跑得起”：它把 FLOPs 和 KV cache 随 context 增长的斜率画出来，这才是 V4 相比 V3.2 的真实系统差异。
+- **真正的 claim 是组合命题**：如果只有能力，没有效率，1M context 只是昂贵展示；如果只有效率，没有能力，压缩就可能丢信息。V4 的主张是两者同时成立。
 
 ## 模型与训练规格
 
@@ -80,6 +98,8 @@ Figure 1 右侧是整篇论文最有信息量的图：随着 context 到 1M，De
 
 这套设计的直觉是：远距离上下文可以更粗粒度，近距离依赖需要细粒度，真正相关的远程块再通过 sparse selector 拉回来。
 
+用更工程化的话说，CSA/HCA 是在回答一个现实问题：**百万上下文里绝大多数 token 在某一步推理时都不是同等重要的。** V4 不再把所有远程 token 当成同一粒度的注意力对象，而是先压缩、再选择、再保留局部精细信息。这和个人 wiki/paper-reading 也很像：不是把所有笔记塞进 prompt，而是先做索引和筛选。
+
 ### 2. mHC: residual connection 的升级
 
 mHC 是 Manifold-Constrained Hyper-Connections，用来强化传统 residual connection。论文把它作为模型能力增强而不是长上下文效率组件；换句话说，CSA/HCA 主要省成本，mHC 主要补表达能力。
@@ -108,6 +128,8 @@ mHC 是 Manifold-Constrained Hyper-Connections，用来强化传统 residual con
 | KV cache size | 10% | 7% |
 
 这个表是理解 V4 的核心。DeepSeek-V4-Pro activated params 比 V3.2 更大，但长上下文推理成本反而大幅下降。Flash 则是更激进的效率版。
+
+这组数字的含义很直接：V4-Pro 不是靠缩小模型换效率，它 activated params 更大，但通过注意力和 cache 设计让 1M 推理成本下降；V4-Flash 则更像面向高吞吐/低成本场景的版本。读这篇时，不要只记“1M context”，要记 **1M 下 Pro 只要 V3.2 27% FLOPs、10% KV cache，Flash 是 10% FLOPs、7% KV cache**。
 
 ## 关键评测数据
 
@@ -149,6 +171,8 @@ mHC 是 Manifold-Constrained Hyper-Connections，用来强化传统 residual con
 
 这个设置说明 DeepSeek-V4 的 agent 数字不是纯文本分数，而是工具环境里的结果。但因为 harness 是 in-house，所以跨公司对比仍要保留一点不确定性。
 
+这里最该警惕的是归因问题：如果两个模型在不同公司内部 harness 下跑 Terminal-Bench 或 SWE-bench，分数差异可能来自 base model，也可能来自 tool schema、context retention、patch application、timeout、retry strategy。DeepSeek 把 agent 设置写出来是加分项，但仍不足以把跨模型分数当成完全干净的模型本体比较。
+
 ## Tool calling 与 thinking 管理
 
 V4 还改了 tool-call schema：使用特殊 `|DSML|` token 和 XML-based tool invocation 格式，目标是减少 escaping failure 和 tool-call error。
@@ -160,6 +184,8 @@ V4 还改了 tool-call schema：使用特殊 `|DSML|` token 和 XML-based tool i
 - 论文提醒：如果 agent framework 用 user messages 模拟工具交互，例如 Terminus，可能不会触发 tool-calling context path，也就不能利用增强的 thinking persistence。
 
 这和 Kimi K2.7 Code 文档里“必须保留 reasoning_content”的方向很一致：新一代 coding/agent 模型正在把 reasoning trace 当成 agent state 的一部分。
+
+这部分对 agent 框架特别重要。很多框架把工具结果包装成普通 user message，这可能会绕开模型专门为 tool-calling 设计的 context path。V4 的提示是：未来模型的“长上下文能力”可能越来越依赖消息类型、工具协议和 reasoning retention，而不是只有 raw token window。
 
 ## 我怎么看
 
@@ -182,6 +208,8 @@ V4 还改了 tool-call schema：使用特殊 `|DSML|` token 和 XML-based tool i
 1. **长上下文要算 KV cache。** 个人 wiki/paper pipeline 里，长上下文不是越多越好，要知道哪些内容值得进上下文。
 2. **agent state 要保留，但要分场景。** 工具调用里的 reasoning/context 可以保留，普通聊天不一定要无限保留。
 3. **评测要同时看能力和成本。** 一个模型在 1M context 下能跑，不代表它在成本、延迟、可靠性上可用。
+
+我会把它转成个人 wiki 的一个原则：长上下文不是懒得整理的借口。真正好的系统应该先做结构化索引、局部读取、图表/公式/代码块的 artifact 管理，再把必要上下文放进模型。V4 的工程哲学其实很“知识库”：先压缩和检索，再精读关键块。
 
 ## 一句话收束
 
