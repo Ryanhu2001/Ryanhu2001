@@ -36,6 +36,15 @@ source_url: "https://platform.kimi.com/docs/guide/kimi-k2-7-code-quickstart"
 
 Kimi K2.7 Code 不是一篇传统 paper，更像一份“模型能力 + API 行为 + agent 使用约束”的技术说明；真正需要记住的是：它把 K2.6 的 coding/agent 能力继续往专用代码模型推进，同时把很多 decoding 和 tool-use 参数固定下来，减少用户随手调参造成的 agent 行为漂移。
 
+## 图表优先读法
+
+| 先看 | 图/表/接口 | 读完应该抓住什么 |
+|---|---|---|
+| 1 | agent contract 图 | Kimi 的重点是固定 agent 协议和参数，减少使用方随意调参 |
+| 2 | K2.7 / K2.6 数据图 | release note 数字要分清新模型数据和背景模型数据 |
+| 3 | API / tool-use pipeline | 对 coding agent 来说，reasoning_content、tool schema、temperature/top_p 约束很关键 |
+| 4 | 具体 task | 这类官方文档最有用的是如何正确调用，而不是只看 benchmark |
+
 ## 先抓住四个点
 
 1. **K2.7 Code 是 Kimi 当前面向 coding 的最新专用模型。** 官方文档标题就是 Kimi K2.7 Code，图中也直接把它和 K2.6、GPT-5.5、Opus 4.8 做 coding/agent 对比。

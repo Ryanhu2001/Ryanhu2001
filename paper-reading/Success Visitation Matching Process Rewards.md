@@ -42,6 +42,16 @@ source_urls:
 
 SVM process rewards 的核心思路非常简单：把以前的轨迹按 sparse outcome reward 分成成功和失败两堆，训练一个 discriminator 判断某个 state-action 更像成功轨迹还是失败轨迹，再把 discriminator logit 当作 dense reward；这样 policy 会被奖励去访问“过去通向成功”的状态动作，同时避开失败访问模式。
 
+## 图表优先读法
+
+| 先看 | 图/表 | 读完应该抓住什么 |
+|---|---|---|
+| 1 | overview 图 | SVM 把成功/失败轨迹分布差异变成 process reward |
+| 2 | heatmap | reward 不是只看最终答案，而是在中间 state-action 上塑形 |
+| 3 | residual RL results | SVM 是否能在已有 sparse reward 上继续提供增益 |
+| 4 | 理论保证 | discriminator logit 和 visitation matching 之间是什么关系 |
+| 5 | 负例小节 | 失败轨迹不是废料，它定义了“不要访问”的区域 |
+
 ## 先看机制图
 
 ![SVM process reward overview](assets/paper-reading/svm-process-rewards/overview.png)

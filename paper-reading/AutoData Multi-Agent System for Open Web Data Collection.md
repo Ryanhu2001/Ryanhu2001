@@ -37,7 +37,19 @@ source_url: "https://arxiv.org/abs/2505.15859"
 
 AutoData 的核心贡献是把 open web data collection 做成一个多智能体工程流程：研究 squad 负责理解 web/API 和生成 blueprint，开发 squad 负责写程序、执行、验证，OHCache 用 oriented hypergraph 管理跨 agent 信息流。它在 Instruct2DS 上用 **5.58 分钟 / 0.57 美元** 达到 Academic/Stock/Sport F1 **91.85 / 96.75 / 90.14**，比 Manus 更快更便宜。
 
+## 图表优先读法
+
+| 先看 | 图/表 | 读完应该抓住什么 |
+|---|---|---|
+| 1 | Figure 1：官方整体框架 | Research squad、Develop squad 和 OHCache 怎么接成闭环 |
+| 2 | OHCache 结构 | 为什么多 agent 数据工程需要 message hypergraph 和 local cache |
+| 3 | Table 1 | Instruct2DS 上 F1、时间、成本是否真的同时更好 |
+| 4 | Figure 3 | 去掉 squad / OHCache / formatter / local cache 后到底损失什么 |
+| 5 | Table 5 | 从 survey 抽 BibTeX 这个 case 对 paper-reading pipeline 最有迁移价值 |
+
 ## 先看系统框架
+
+![AutoData official framework](assets/paper-reading/autodata/official-framework.png)
 
 ![AutoData framework](assets/paper-reading/autodata/framework.png)
 
@@ -147,6 +159,8 @@ Table 5：
 这个 case 对我特别有用：它接近 paper-reading pipeline 里的“从综述抽取参考文献、建立阅读地图”的场景。
 
 ## Ablation：系统组件不是装饰
+
+![AutoData official F1 and cost ablation](assets/paper-reading/autodata/official-ablation-cost-f1.png)
 
 ![AutoData ablation study](assets/paper-reading/autodata/ablation-study.png)
 

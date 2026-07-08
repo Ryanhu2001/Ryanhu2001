@@ -53,6 +53,15 @@ Anthropic 这三篇合起来的判断是：近端 recursive self-improvement 不
 
 这里的关键不是神秘的“自我意识式自举”，而是很工程的东西：模型能写代码、跑实验、看日志、修 bug、复现实验、并行委托；系统能保存完整轨迹、隔离执行、控制凭证、自动审查；人类开始把时间从“亲手做”转到“选择什么值得做、怎样验证、哪里该停”。这就是短期更可信的 RSI 表面。
 
+## 图表优先读法
+
+| 先看 | 图/表 | 读完应该抓住什么 |
+|---|---|---|
+| 1 | RSI / Loops / Managed Agents 结构图 | 三篇文章其实在讲同一条工程链路：能力、循环、基础设施 |
+| 2 | 数字证据表 | 近端 RSI 的证据更多来自 AI R&D automation，而不是模型直接改权重 |
+| 3 | Loops 小节 | “让模型持续改进系统”需要评测、日志、权限、sandbox 和回滚 |
+| 4 | Managed Agents 小节 | 生产化 agent 的关键是权限边界、审计轨迹、可恢复状态和人类 judgment |
+
 ## 先看结构图
 
 ![Anthropic RSI, loops, and Managed Agents map]({{ '/assets/paper-reading/anthropic-rsi-loops-managed-agents/rsi-loops-managed-agents.svg' | relative_url }})

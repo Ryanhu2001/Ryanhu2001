@@ -39,6 +39,15 @@ source_url: "https://autobench.org/blog/autobench-Agentic-1"
 
 AutoBench Agentic 的核心价值在于把 agent benchmark 从“静态题目 + 单轮答案”推进到“运行时生成的虚拟企业环境 + 多轮工具轨迹评估”；但它当前仍是闭源产品公告，LLM-as-a-judge、动态数据生成和 leaderboard 分数都需要谨慎看，适合作为 benchmark 设计参考，不适合直接当作模型能力的最终判决。
 
+## 图表优先读法
+
+| 先看 | 图/表/案例 | 读完应该抓住什么 |
+|---|---|---|
+| 1 | Agentic benchmark map | 它测的是动态企业环境里的多轮工具轨迹，不是普通 QA |
+| 2 | Results 图 | 分数要和 judge、任务生成方式、闭源 leaderboard 一起读 |
+| 3 | 完整 task 例子 | 这类 benchmark 最该保留 prompt、环境状态、工具轨迹和判分逻辑 |
+| 4 | 风险小节 | LLM-as-judge 和动态数据生成会让可复现性变弱 |
+
 ## 先看我整理的机制图
 
 ![AutoBench Agentic dynamic benchmark map](assets/paper-reading/autobench-agentic-1/autobench-agentic-map.svg)

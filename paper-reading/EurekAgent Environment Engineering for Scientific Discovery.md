@@ -39,6 +39,16 @@ source_url: "https://arxiv.org/abs/2606.13662"
 
 EurekAgent 的贡献不是发明新的 reasoning 算法，而是把强 CLI agent 的工作环境工程化：用容器和隐藏评测器保住研究完整性，用文件系统和 Git 存储长期记忆，用预算系统约束探索，用 TUI/Web monitor 保持人类可监督；它在 metric-driven、可执行评测的任务上给出很强结果，但不能被直接外推成“开放式科学发现已经解决”。
 
+## 图表优先读法
+
+| 先看 | 图/表 | 读完应该抓住什么 |
+|---|---|---|
+| 1 | Figure 2：system overview | EurekAgent 的核心是 prepare/propose/parallel implement 加环境工程层 |
+| 2 | 26-circle score evolution | 它擅长 metric-driven search，而不是任意开放科学发现 |
+| 3 | Web monitor / TUI | 人类监督、预算、artifact memory 是系统贡献的一部分 |
+| 4 | 实验总表 | 数学、kernel engineering、MLE-Bench 的证据强弱不同，要分开读 |
+| 5 | 成本和超参 | 这类系统的收益必须和预算、parallelism、hidden evaluator 一起看 |
+
 ## 它到底想改变什么
 
 很多 autonomous research 系统会把创新放在 workflow 上，例如固定的 propose、mutate、select、reflect、debate、self-review。EurekAgent 的判断是：随着 Claude Code、Codex 这类通用 CLI agent 变强，瓶颈会从“给 agent 写更细的流程”转向“给 agent 一个更好的环境”。

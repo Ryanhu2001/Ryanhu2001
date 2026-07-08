@@ -37,6 +37,16 @@ source_url: "https://arxiv.org/abs/2606.19348"
 
 DeepSeek-V4 最重要的贡献不是宣布支持 1M context，而是把百万上下文的推理成本压下去：通过 CSA/HCA 混合注意力、mHC、Muon、FP4 QAT 和专门的 KV cache/inference infrastructure，让 DeepSeek-V4-Pro 在 1M context 下只需要 DeepSeek-V3.2 的 27% single-token FLOPs 和 10% KV cache。
 
+## 图表优先读法
+
+| 先看 | 图/表 | 读完应该抓住什么 |
+|---|---|---|
+| 1 | Figure 1 | 能力图只是入口，右侧 FLOPs/KV cache 才是标题里的核心 claim |
+| 2 | Figure 2 / Figure 3 | V4 通过 CSA/HCA 把远程上下文压缩、筛选，再保留局部细粒度依赖 |
+| 3 | KV cache layout | 百万上下文能不能服务，最终要落到 cache block 和 shared-prefix reuse |
+| 4 | Table 6 | V4 很强，但 agent benchmark 并不是所有项都领先 |
+| 5 | Tool calling / thinking management | 长上下文效果依赖消息协议和 reasoning retention，不只是 raw window |
+
 ## 先抓住四个点
 
 1. **两个模型规模不同，目标也不同。** DeepSeek-V4-Pro 是 1.6T total / 49B activated；DeepSeek-V4-Flash 是 284B total / 13B activated。两者都支持 1M context。
@@ -96,7 +106,11 @@ Figure 1 右侧是整篇论文最有信息量的图：随着 context 到 1M，De
 
 ### 1. Hybrid Attention: CSA + HCA
 
+![DeepSeek-V4 official architecture](assets/paper-reading/deepseek-v4/official-architecture.png)
+
 论文要解决的是 vanilla attention 在 ultra-long context 下的二次复杂度问题。它没有选择单一方案，而是把两种注意力交错使用：
+
+![DeepSeek-V4 CSA architecture](assets/paper-reading/deepseek-v4/csa-architecture.png)
 
 | 组件 | 做什么 | 好处 | 风险/代价 |
 |---|---|---|---|
@@ -125,6 +139,8 @@ mHC 是 Manifold-Constrained Hyper-Connections，用来强化传统 residual con
 - mHC recomputation 和 fused kernels。
 - 推理侧 heterogeneous KV cache layout，加上 on-disk storage 做 shared-prefix reuse。
 - post-training 时对 MoE expert weights 和 CSA indexer QK path 做 FP4 QAT。
+
+![DeepSeek-V4 KV cache layout](assets/paper-reading/deepseek-v4/kv-cache-layout.png)
 
 ## 关键效率数据
 

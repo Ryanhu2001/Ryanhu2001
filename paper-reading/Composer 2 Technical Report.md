@@ -37,6 +37,16 @@ source_url: "https://arxiv.org/abs/2603.24477"
 
 Composer 2 的重点不是“又一个 coding benchmark 高分模型”，而是 Cursor 把 Kimi K2.5 这种强 MoE base model 放进真实产品 harness 里继续预训练和 RL：它用 CursorBench 对齐真实开发任务，用 Anyrun 跑大规模环境，用辅助 reward 修 agent 行为，最后在准确率、token 和成本上做 Pareto。
 
+## 图表优先读法
+
+| 先看 | 图/表 | 读完应该抓住什么 |
+|---|---|---|
+| 1 | Training/product loop | Composer 2 是产品 harness 反过来塑造模型，不只是公开 benchmark 调参 |
+| 2 | CursorBench task shape + case | 真实任务是短 prompt、大 diff、生产日志和构建细节，不像 SWE-bench 小补丁 |
+| 3 | Figure 5 | RL 同时提升 average 和 best-of-K，不只是压缩到单一解 |
+| 4 | Table 1 | Composer 2 在 CursorBench 提升明显，但并非所有公开榜单都第一 |
+| 5 | Performance vs completion tokens | 产品模型必须看 accuracy/cost/token Pareto，不只看 pass rate |
+
 ## 先抓住四个点
 
 1. **Composer 2 是专门化模型，不是从零训练。** Base model 选的是 Kimi K2.5，1.04T total / 32B active 的 MoE。
@@ -184,6 +194,8 @@ Figure 8 是很好的例子。用户只说：
 ## 关键分数
 
 ![Composer 2 benchmark table](assets/paper-reading/composer2/table1-benchmarks.png)
+
+![Composer 2 performance vs completion tokens](assets/paper-reading/composer2/performance-vs-completion-tokens.png)
 
 | Model | CursorBench | SWE-bench Multilingual | Terminal-Bench |
 |---|---:|---:|---:|

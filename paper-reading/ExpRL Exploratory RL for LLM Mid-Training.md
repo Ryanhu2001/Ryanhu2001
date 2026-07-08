@@ -44,6 +44,16 @@ source_urls:
 
 ExpRL 的核心贡献是把“人类写好的 step-by-step solution”从监督微调目标改成 **奖励脚手架**：模型自己采样解题过程，judge 对照参考解给 1 到 5 分的 partial progress score，再用 RL 把概率质量推向更有希望的推理路径。它的价值在于提升后续 sparse-reward RL 的初始化，而不是单独追求 mid-training 后立刻满分。
 
+## 图表优先读法
+
+| 先看 | 图/表 | 读完应该抓住什么 |
+|---|---|---|
+| 1 | Figure 1：ExpRL overview | reference solution 只参与 reward，不直接喂给 policy 生成 |
+| 2 | Table 1 / Table 2 | ExpRL 是更好的 Stage-II RL 初始化，而不是只追 Stage-I 分数 |
+| 3 | Figure 3：training dynamics | ExpRL-Process 降低 unsolvable prompts，同时没有像 sparse GRPO 那样明显掉 entropy |
+| 4 | Figure 5：behavior changes | 收益来自 verification、self-correction、exploration、restart/backtrack 等行为变化 |
+| 5 | Figure 10：held-out pass@k | Stage-I priming 后，低到中等采样数上的 sampling efficiency 更好 |
+
 ## 核心图：reference 只参与评分，不参与生成
 
 ![ExpRL overview](assets/paper-reading/exprl/exprl-overview.png)
@@ -124,6 +134,8 @@ Table 2 看的是 Stage-I 后、Stage-II 前的 pass@1 和 pass@16：
 
 ![ExpRL training dynamics](assets/paper-reading/exprl/training-dynamics.png)
 
+![ExpRL behavior change after priming](assets/paper-reading/exprl/behavior-change-after-priming.png)
+
 Figure 3 的重点是：
 
 - sparse GRPO 的 entropy 掉得最快，说明它更像在快速收缩到已知模式；
@@ -131,6 +143,10 @@ Figure 3 的重点是：
 - ExpRL-Process 解锁 solvable prompts 更快，但也带来 response length 增长。
 
 我的判断是，这张图比表格更能说明 ExpRL 的意图：它不是让模型“更短更准”，而是让模型在 hard problem 上保留更有用的探索空间。
+
+![ExpRL Stage-I held-out pass@k](assets/paper-reading/exprl/stage1-heldout-passk.png)
+
+Figure 10 说明 Stage-I 本身已经在 held-out answer-based benchmarks 上改善 pass@k，尤其是低到中等 `k`。这对“exploration”论证很关键：模型不是只靠无限采样撞答案，而是在更少尝试里更容易覆盖到能延展的解题方向。
 
 ## Mixed-domain 和 judge calibration
 

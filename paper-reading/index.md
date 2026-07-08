@@ -49,6 +49,19 @@ permalink: /paper-reading/
                 </div>
             </div>
 
+            <div class="paper-list-toolbar" aria-live="polite">
+                <div class="paper-page-summary" data-page-summary></div>
+                <label class="paper-sort-wrap paper-page-size-wrap">
+                    <span>Per Page</span>
+                    <select data-page-size aria-label="Notes per page">
+                        <option value="12">12</option>
+                        <option value="24">24</option>
+                        <option value="48">48</option>
+                        <option value="all">All</option>
+                    </select>
+                </label>
+            </div>
+
             <div class="wiki-list paper-note-list" data-paper-note-list>
                 {% for note in notes %}
                 {% capture search_text %}
@@ -99,6 +112,7 @@ permalink: /paper-reading/
             </div>
 
             <div class="paper-empty-state" data-empty-state hidden>No matching notes.</div>
+            <nav class="paper-pagination" data-pagination aria-label="Paper reading pagination"></nav>
         </section>
     </div>
 </div>
@@ -112,12 +126,17 @@ document.addEventListener("DOMContentLoaded", function() {
     var list = root.querySelector("[data-paper-note-list]");
     var searchInput = root.querySelector("[data-filter-search]");
     var sortSelect = root.querySelector("[data-sort-order]");
+    var pageSizeSelect = root.querySelector("[data-page-size]");
     var categoryWrap = root.querySelector("[data-category-filters]");
     var tagWrap = root.querySelector("[data-tag-filters]");
     var count = root.querySelector("[data-result-count]");
+    var pageSummary = root.querySelector("[data-page-summary]");
+    var pagination = root.querySelector("[data-pagination]");
     var emptyState = root.querySelector("[data-empty-state]");
     var activeCategory = "all";
     var activeTag = "all";
+    var currentPage = 1;
+    var filteredItems = items.slice();
 
     function normalize(value) {
         return String(value || "").trim();
@@ -184,10 +203,9 @@ document.addEventListener("DOMContentLoaded", function() {
         return normalize(item.dataset.tags).split("|").filter(Boolean);
     }
 
-    function sortItems() {
-        if (!list || !sortSelect) return;
+    function sortedItems(sourceItems) {
         var mode = sortSelect.value;
-        var sorted = items.slice().sort(function(a, b) {
+        return sourceItems.slice().sort(function(a, b) {
             if (mode === "title-asc") {
                 return normalize(a.dataset.title).localeCompare(normalize(b.dataset.title));
             }
@@ -199,49 +217,162 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             return bTime - aTime;
         });
-
-        sorted.forEach(function(item) {
-            list.appendChild(item);
-        });
     }
 
-    function applyFilters() {
-        var query = normalize(searchInput.value).toLowerCase();
-        var visible = 0;
+    function pageSize() {
+        if (!pageSizeSelect || pageSizeSelect.value === "all") {
+            return filteredItems.length || 1;
+        }
+        return parseInt(pageSizeSelect.value, 10) || 12;
+    }
+
+    function totalPages() {
+        return Math.max(1, Math.ceil(filteredItems.length / pageSize()));
+    }
+
+    function clampPage() {
+        currentPage = Math.min(Math.max(currentPage, 1), totalPages());
+    }
+
+    function makePageButton(label, page, options) {
+        var button = document.createElement("button");
+        var opts = options || {};
+        button.type = "button";
+        button.className = "paper-page-btn";
+        button.textContent = label;
+        button.disabled = !!opts.disabled;
+        if (opts.current) {
+            button.setAttribute("aria-current", "page");
+        }
+        button.addEventListener("click", function() {
+            if (button.disabled || currentPage === page) return;
+            currentPage = page;
+            renderPage();
+        });
+        return button;
+    }
+
+    function visiblePageNumbers() {
+        var pages = totalPages();
+        var values = [];
+        var start = Math.max(1, currentPage - 2);
+        var end = Math.min(pages, currentPage + 2);
+
+        values.push(1);
+        for (var page = start; page <= end; page += 1) {
+            if (values.indexOf(page) === -1) values.push(page);
+        }
+        if (values.indexOf(pages) === -1) values.push(pages);
+        return values.sort(function(a, b) { return a - b; });
+    }
+
+    function renderPagination() {
+        if (!pagination) return;
+        pagination.innerHTML = "";
+
+        if (filteredItems.length === 0 || pageSizeSelect.value === "all" || totalPages() <= 1) {
+            pagination.hidden = true;
+            return;
+        }
+
+        pagination.hidden = false;
+        pagination.appendChild(makePageButton("Prev", currentPage - 1, {
+            disabled: currentPage === 1
+        }));
+
+        var pages = visiblePageNumbers();
+        pages.forEach(function(page, index) {
+            if (index > 0 && page - pages[index - 1] > 1) {
+                var gap = document.createElement("span");
+                gap.className = "paper-page-gap";
+                gap.textContent = "...";
+                pagination.appendChild(gap);
+            }
+            pagination.appendChild(makePageButton(String(page), page, {
+                current: page === currentPage
+            }));
+        });
+
+        pagination.appendChild(makePageButton("Next", currentPage + 1, {
+            disabled: currentPage === totalPages()
+        }));
+    }
+
+    function updatePageSummary(start, end) {
+        if (!pageSummary) return;
+        if (filteredItems.length === 0) {
+            pageSummary.textContent = "Showing 0 notes";
+            return;
+        }
+        pageSummary.textContent = "Showing " + start + "-" + end + " of " + filteredItems.length + " notes";
+    }
+
+    function renderPage() {
+        if (!list) return;
+        clampPage();
+
+        var size = pageSize();
+        var startIndex = (currentPage - 1) * size;
+        var endIndex = Math.min(startIndex + size, filteredItems.length);
+        var pageItems = filteredItems.slice(startIndex, endIndex);
 
         items.forEach(function(item) {
+            item.hidden = true;
+        });
+
+        pageItems.forEach(function(item) {
+            item.hidden = false;
+            list.appendChild(item);
+        });
+
+        updatePageSummary(filteredItems.length ? startIndex + 1 : 0, endIndex);
+        renderPagination();
+    }
+
+    function applyFilters(resetPage) {
+        var query = normalize(searchInput.value).toLowerCase();
+
+        filteredItems = sortedItems(items.filter(function(item) {
             var matchesSearch = !query || normalize(item.dataset.search).indexOf(query) !== -1;
             var matchesCategory = activeCategory === "all" || item.dataset.category === activeCategory;
             var matchesTag = activeTag === "all" || itemTags(item).indexOf(activeTag) !== -1;
-            var shouldShow = matchesSearch && matchesCategory && matchesTag;
-            item.hidden = !shouldShow;
-            if (shouldShow) visible += 1;
-        });
+            return matchesSearch && matchesCategory && matchesTag;
+        }));
 
-        count.textContent = visible;
-        emptyState.hidden = visible !== 0;
+        if (resetPage) {
+            currentPage = 1;
+        }
+
+        count.textContent = filteredItems.length;
+        emptyState.hidden = filteredItems.length !== 0;
         updatePressed(categoryWrap, activeCategory);
         updatePressed(tagWrap, activeTag);
+        renderPage();
     }
 
     var maps = buildMapFromItems();
     renderButtons(categoryWrap, maps.categories, activeCategory, function(value) {
         activeCategory = value;
-        applyFilters();
+        applyFilters(true);
     });
     renderButtons(tagWrap, maps.tags, activeTag, function(value) {
         activeTag = value;
-        applyFilters();
+        applyFilters(true);
     });
 
-    searchInput.addEventListener("input", applyFilters);
+    searchInput.addEventListener("input", function() {
+        applyFilters(true);
+    });
     if (sortSelect) {
         sortSelect.addEventListener("change", function() {
-            sortItems();
-            applyFilters();
+            applyFilters(true);
         });
     }
-    sortItems();
-    applyFilters();
+    if (pageSizeSelect) {
+        pageSizeSelect.addEventListener("change", function() {
+            applyFilters(true);
+        });
+    }
+    applyFilters(true);
 });
 </script>

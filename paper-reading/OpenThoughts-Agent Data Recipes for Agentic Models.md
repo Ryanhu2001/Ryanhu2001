@@ -42,6 +42,16 @@ source_urls:
 
 OpenThoughts-Agent 的核心结论是：**agent 后训练的上限很大一部分来自数据源、轨迹过滤和规模化方式，而不是简单把更多 rollout 堆进 SFT 或把奖励接进 RL**。它给出一套公开数据配方，把 Qwen3-32B 训到 7 个 agent benchmark 平均 **44.8%**，超过 Nemotron-Terminal-32B 的 **40.9%**。
 
+## 图表优先读法
+
+| 先看 | 图/表 | 读完应该抓住什么 |
+|---|---|---|
+| 1 | Figure 2：SFT pipeline | agent 数据配方由 task source、mixing、augmentation、filter、teacher、rollout filter 共同决定 |
+| 2 | Table 1 | 100K 高质量 traces 比 264K 粗规模更有价值 |
+| 3 | Figure 3 / Figure 5 | upsampling 会 plateau，synthetic task augmentation 才能继续扩语义多样性 |
+| 4 | Figure 6 / Figure 7 | RL 数据源会改变策略性格，也可能 reward collapse |
+| 5 | Table 10 / 11 | RL 最适合接在 moderately strong SFT 后面 |
+
 ## 先看 SFT 配方图
 
 ![OpenThoughts-Agent SFT pipeline](assets/paper-reading/openthoughts-agent/sft-pipeline.png)
@@ -78,6 +88,8 @@ Table 1 的核心结果如下：
 ## Scaling：为什么不是把 Top tasks 重复采样就行
 
 ![OpenThoughts-Agent scaling methods](assets/paper-reading/openthoughts-agent/scaling-methods.png)
+
+![OpenThoughts-Agent 8B scaling](assets/paper-reading/openthoughts-agent/ot-agent-8b-scaling.png)
 
 作者对 100K 数据扩展做了几种尝试。最关键的对比是：
 
@@ -117,6 +129,10 @@ Table 7 和 Appendix Table 15 都支持 minimum-turn filter。即使在 matched 
 但这不是纯好事。Figure 6 显示 hero run 的 reward 先升到约 **0.51**，之后 collapse 到约 **0.13**。也就是说，这种“更多探索”的行为可能带来泛化收益，也可能触发 reward collapse。
 
 ![OpenThoughts-Agent RL reward collapse](assets/paper-reading/openthoughts-agent/rl-hero-reward-collapse.png)
+
+![OpenThoughts-Agent baseline RL monotone reward](assets/paper-reading/openthoughts-agent/rl-baseline-reward-monotone.png)
+
+两张 RL 曲线要一起看：`pymethods2test` 这类 hero source 会把策略推向更强探索，但探索过头会 collapse；`llm-verifier-freelancer` baseline 则更像逐步压缩行为，reward 更平滑上升。这里的 takeaway 不是“某个 source 永远更好”，而是 **RL 数据源会塑造 agent 的行为风格**，所以只看最终 benchmark 分数会漏掉训练动态。
 
 ## 8B：SFT 和 RL 怎么组合
 

@@ -49,7 +49,19 @@ source_urls:
 
 AutomationBench 的价值在于把 agent eval 从“模型会不会调用工具”推进到“业务世界状态是否真的正确”：它用 6 个业务域、47 个模拟 SaaS app、约 500 个 API endpoint 和最终状态断言来评估跨 app workflow；最新榜单最高也只有十几个百分点，说明今天的模型在真实业务自动化里仍然经常“自信地失败”。
 
+## 图表优先读法
+
+| 先看 | 图/表/案例 | 读完应该抓住什么 |
+|---|---|---|
+| 1 | 官方 evaluation pipeline | AutomationBench 不是看最终回复，而是看模拟 SaaS 的 final state |
+| 2 | `sales.multi_hop_lookup` | 一个任务为什么会同时需要 CRM、Sheets、Gmail policy 和 support escalation |
+| 3 | `operations.asana_fire_drill` | prompt 不长，但 policy / distractor / negative assertions 很密 |
+| 4 | Leaderboard snapshot | 最高十几个百分点意味着真实业务 workflow 仍是 hard mode |
+| 5 | failure modes 表 | 模型“说 done”和世界状态真的正确之间差距有多大 |
+
 ## 先看机制图
+
+![AutomationBench official evaluation pipeline](assets/paper-reading/automationbench/official-evaluation-pipeline.png)
 
 ![AutomationBench evaluation pipeline](assets/paper-reading/automationbench/automationbench-pipeline.svg)
 
@@ -220,6 +232,8 @@ AutomationBench 的 headline metric 是：
 whitepaper 还特别强调 negative assertions，用来防 shotgun reward hacking。比如 agent 不能为了保险把邮件发给所有团队，因为“发给错团队”本身也会触发失败。
 
 ## 最新 leaderboard 怎么读
+
+![AutomationBench official leaderboard snapshot](assets/paper-reading/automationbench/official-leaderboard-snapshot.png)
 
 截至我这次读取 Zapier leaderboard 页面，前几名是：
 

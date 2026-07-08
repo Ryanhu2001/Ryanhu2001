@@ -35,6 +35,15 @@ source_url: "https://docs.z.ai/guides/llm/glm-5.2"
 
 GLM-5.2 的官方叙事不是“上下文更长”这么简单，而是把 1M context、128K output、thinking mode、function calling、MCP 和工程任务示例组合成一个长链 coding agent；但它的公开材料更像产品技术文档，很多 benchmark protocol 还需要等更完整报告才能严格复查。
 
+## 图表优先读法
+
+| 先看 | 图/表/例子 | 读完应该抓住什么 |
+|---|---|---|
+| 1 | long-horizon agent map | GLM-5.2 的卖点是长上下文 + 工具 + MCP + 长输出的组合 |
+| 2 | coding bench / long-context 图 | 官方数字要看清 benchmark protocol 和是否可复查 |
+| 3 | task examples | 这类 model release 文档的价值在具体任务形态和 API 约束 |
+| 4 | 机制理解 | 它更像产品能力说明，不是完整 peer-reviewed technical report |
+
 ## 先抓住四个点
 
 1. **核心规格很明确。** GLM-5.2 是 text-in/text-out 的 flagship foundation model，context length 1M，maximum output tokens 128K。

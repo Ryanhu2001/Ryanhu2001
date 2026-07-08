@@ -43,6 +43,16 @@ source_urls:
 
 这篇的核心观点是：RL 训练里“下一轮环境怎么设”不应该完全靠人拍脑袋或固定 curriculum，当前 policy checkpoint 本身可以读取失败统计、训练历史和环境参数，提出下一轮训练环境配置；在 MAPF-FrozenLake 上，这个闭环让 Qwen3-4B 明显超过随机固定环境和更大的商业模型作为环境设计者。
 
+## 图表优先读法
+
+| 先看 | 图/表 | 读完应该抓住什么 |
+|---|---|---|
+| 1 | MAPF-FrozenLake instance | 任务里的 hole、agent start/goal、collision/wait 不是抽象变量 |
+| 2 | Environment engineer loop | 当前 checkpoint 如何从 failure breakdown 设计下一轮配置 |
+| 3 | Table 2-4 | 3/4/5-agent 上 valid rate 和 optimal rate 是否一起提升 |
+| 4 | Table 7 / Table 8 | 为什么 bookkeeping-only 和 current checkpoint 反而更好 |
+| 5 | Figure 7 | current checkpoint 如何避免把所有预算倒进简单地图 |
+
 ## 我整理的闭环图
 
 ![Environment engineer loop](assets/paper-reading/trainee-to-trainer/environment-engineer-loop.svg)
@@ -61,6 +71,8 @@ source_urls:
 ## MAPF-FrozenLake 是什么
 
 论文设计了一个可控 testbed：多智能体路径规划版 FrozenLake。
+
+![MAPF-FrozenLake 5-agent instance](assets/paper-reading/trainee-to-trainer/mapf-frozenlake-instance.png)
 
 每个实例包含：
 

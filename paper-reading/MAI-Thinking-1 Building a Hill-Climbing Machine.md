@@ -36,6 +36,16 @@ source_url: "https://microsoft.ai/pdf/mai-thinking-1.pdf"
 
 MAI-Thinking-1 的真正主题不是某个单点 benchmark，而是 Microsoft AI 如何把数据、训练基础设施、评测、RL 环境、reward、safety 和部署硬件组织成一台可持续爬坡的机器；模型本身是 35B active / 1T total sparse MoE，强在 STEM reasoning 和 coding，但 agentic coding 还不是全面领先。
 
+## 图表优先读法
+
+| 先看 | 图/表 | 读完应该抓住什么 |
+|---|---|---|
+| 1 | hill-climbing machine 图 | 这篇报告讲的是持续爬坡系统，不只是一个模型 checkpoint |
+| 2 | data mix / training recipe 表 | 数据、RL、评测、safety 和硬件共同定义模型能力 |
+| 3 | RL climb 图 | post-training 是多轮改进闭环，不是一次 SFT/RL |
+| 4 | evaluation table | STEM/coding 强，但 agentic coding 不是全面领先 |
+| 5 | 附录 case | 具体失败/成功样例比总分更能说明模型边界 |
+
 ## 先抓住四个点
 
 1. **模型规模和训练来源很明确。** MAI-Base-1 是 35B active / 1T total sparse MoE，从零开始在 8K GB200 上训练，预训练 30T tokens，声明不使用第三方模型蒸馏。

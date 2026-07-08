@@ -43,6 +43,16 @@ DSpark 的核心贡献不是单纯把 draft block 做长，而是把 speculative
 
 这篇对我最有价值的点是：它把“模型推理加速”讲成了一个系统问题。离线 accepted length 更高只是第一步，真正上线时还要知道当前 batch/load 下多验一个 token 是否值得。换句话说，speculative decoding 的收益不只由模型质量决定，还由 scheduler、校准、CUDA graph/ZOS 约束、variable-length kernel 和线上 traffic 共同决定。
 
+## 图表优先读法
+
+| 先看 | 图/表 | 读完应该抓住什么 |
+|---|---|---|
+| 1 | Figure 1：architecture | DSpark = semi-autoregressive drafter + confidence head + hardware-aware prefix scheduler |
+| 2 | Figure 2 / 5 | suffix decay 和 confidence threshold 是它解决的两个核心机制问题 |
+| 3 | Figure 6 | confidence raw score 需要校准，否则 scheduler 会高估接受概率 |
+| 4 | Figure 7 / 8 | 真正的上线收益要看 throughput-interactivity frontier 和 load-adaptive budget |
+| 5 | 实验表 | 离线 accepted length、线上吞吐、延迟约束要一起读 |
+
 ## 1. 它想做什么
 
 LLM 自回归生成时每个 token 都要跑一次 target model，所以用户感知延迟随输出长度增长。Speculative decoding 的基本思路是：用轻量 draft model 先猜一段 token，再让 target model 一次并行验证这段 prefix；只要接受规则保持 target distribution 不变，就能在不损质量的前提下加速。

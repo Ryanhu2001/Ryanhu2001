@@ -44,6 +44,15 @@ source_url: "https://lilianweng.github.io/posts/2026-07-04-harness/"
 
 这里的 harness 不是一个普通 prompt 模板，而是围绕 base model 的运行时系统：它决定模型如何计划、调用工具、管理上下文、写文件、启动 sub-agent、保存工件、跑评测、处理权限，以及从失败里学到下一轮改法。文章把 auto-research、self-improving agents、workflow search、evolutionary program search 放到同一条线里看：**优化模型周围的非参数系统，可能是近端 RSI 最现实的工程表面。**
 
+## 图表优先读法
+
+| 先看 | 图/表 | 读完应该抓住什么 |
+|---|---|---|
+| 1 | Harness / RSI loop 图 | 自我改进短期更像改 harness，而不是直接改权重 |
+| 2 | optimization map | 可优化对象包括 prompt、tools、memory、eval、workflow、权限和任务分解 |
+| 3 | Heilmeier 七问 | 这篇 blog 最适合用“目标-问题-新方法-风险-实验”框架读 |
+| 4 | 对我的价值 | 它直接对应个人 wiki / paper-reading agent 的自动化闭环 |
+
 ## 先看我整理的结构图
 
 ![Harness engineering RSI loop](assets/paper-reading/harness-engineering-self-improvement/harness-rsi-loop.svg)

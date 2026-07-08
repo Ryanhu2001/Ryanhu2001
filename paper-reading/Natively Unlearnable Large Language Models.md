@@ -37,6 +37,16 @@ source_url: "https://arxiv.org/abs/2606.13873"
 
 NULLs 的核心思路是让模型同时拥有两套记忆通道：共享 backbone 学跨来源的通用知识，source-specific sink neurons 存每个来源独有的信息；部署时只要不激活某个 source 的 sink，就能近似“像没训练过这个来源一样”，不需要梯度更新，也不需要 retained data。
 
+## 图表优先读法
+
+| 先看 | 图/表 | 读完应该抓住什么 |
+|---|---|---|
+| 1 | Figure 1：NULLs overview | source-specific 信息被引导到 sink neurons，共享知识留在 backbone |
+| 2 | Wikipedia retraining match | Sink-Off 是否真的接近 gold retraining，是主证据 |
+| 3 | Harry Potter / adversarial extraction | topic-level unlearning 和攻击鲁棒性是边界测试 |
+| 4 | General capability 表 | 原生可遗忘不能以牺牲通用能力为代价 |
+| 5 | sink overlap / activation | 机制是否真分离来源信息，要看 sink 选择性 |
+
 ## 先看架构图
 
 ![NULLs overview](assets/paper-reading/nulls/overview.png)
