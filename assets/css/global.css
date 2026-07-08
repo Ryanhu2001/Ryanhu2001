@@ -119,6 +119,14 @@ div.lazy {
     margin-bottom: 1.5rem;
 }
 
+.paper-header-tools {
+    align-items: stretch;
+    display: flex;
+    flex: 0 1 520px;
+    gap: 0.75rem;
+    justify-content: flex-end;
+}
+
 .paper-reading-meta {
     color: #6c757d;
     font-size: 0.95rem;
@@ -129,7 +137,7 @@ div.lazy {
     border: 1px solid rgba(0, 0, 0, 0.12);
     border-radius: 0.6rem;
     display: flex;
-    flex: 0 1 340px;
+    flex: 1 1 320px;
     gap: 0.5rem;
     padding: 0.55rem 0.8rem;
 }
@@ -143,6 +151,33 @@ div.lazy {
     flex: 1;
     font: inherit;
     min-width: 0;
+    outline: 0;
+}
+
+.paper-sort-wrap {
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 0.6rem;
+    color: #6c757d;
+    display: flex;
+    flex: 0 0 auto;
+    font-size: 0.85rem;
+    gap: 0.45rem;
+    margin: 0;
+    padding: 0.45rem 0.65rem;
+}
+
+.paper-sort-wrap span {
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.paper-sort-wrap select {
+    background: transparent;
+    border: 0;
+    color: #212529;
+    font: inherit;
     outline: 0;
 }
 
@@ -262,8 +297,19 @@ div.lazy {
         display: block;
     }
 
-    .paper-search-wrap {
+    .paper-header-tools {
+        display: block;
         margin-top: 1rem;
+    }
+
+    .paper-search-wrap {
+        margin-top: 0;
+    }
+
+    .paper-sort-wrap {
+        justify-content: space-between;
+        margin-top: 0.75rem;
+        width: 100%;
     }
 
     .paper-filter-row {
@@ -300,4 +346,33 @@ div.lazy {
 .wiki-note hr {
     border-top: 1px solid rgba(0, 0, 0, 0.12);
     margin: 2rem 0;
+}
+
+.search-page {
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.search-page-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.25rem;
+}
+
+.site-search-box {
+    --pf-background: #ffffff;
+    --pf-border: rgba(0, 0, 0, 0.12);
+    --pf-border-focus: #868e96;
+    --pf-border-radius: 8px;
+    --pf-font: "Lato", sans-serif;
+    --pf-hover: #f8f9fa;
+    --pf-input-height: 44px;
+    --pf-mark: #212529;
+    --pf-outline-focus: #245a7a;
+    --pf-result-excerpt-font-size: 0.92rem;
+    --pf-result-title-font-size: 1rem;
+    --pf-results-gap: 0.7rem;
+    --pf-shadow-md: 0 0.35rem 1rem rgba(0, 0, 0, 0.08);
+    --pf-text: #24292f;
+    --pf-text-muted: #868e96;
+    --pf-text-secondary: #495057;
 }

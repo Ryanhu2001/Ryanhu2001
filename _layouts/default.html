@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ page.lang | default: site.lang | default: 'zh-CN' }}">
 <!-- Template: https://github.com/luost26/academic-homepage -->
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{ page.title }} - {{ site.data.profile.navbar_name }}</title>
+    <link rel="icon" href="{{ '/assets/ryan/avator.jpg' | relative_url }}" type="image/jpeg">
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
@@ -17,6 +18,9 @@
     {% if page.layout == "wiki_note" %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ '/assets/css/blog.css' | relative_url }}">
+    {% endif %}
+    {% if page.pagefind %}
+    <link rel="stylesheet" href="{{ '/pagefind/pagefind-component-ui.css' | relative_url }}">
     {% endif %}
     <link rel="stylesheet" href="{{ '/assets/css/global.css' | relative_url }}">
 </head>
@@ -40,6 +44,12 @@
     {% if page.layout == "wiki_note" %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tocbot@4.36.8/dist/tocbot.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script>
+    {% endif %}
+    {% if page.pagefind %}
+    <script type="module" src="{{ '/pagefind/pagefind-component-ui.js' | relative_url }}"></script>
     {% endif %}
     <script>
         document.addEventListener("DOMContentLoaded", function() {

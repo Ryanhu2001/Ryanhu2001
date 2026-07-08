@@ -10,6 +10,10 @@ layout: default
     {% assign back_label = 'Paper Reading' %}
 {% endif %}
 
+<div class="reading-progress" aria-hidden="true">
+    <span></span>
+</div>
+
 <div class="blog-layout-wrapper">
     <div class="blog-main">
         <div class="mb-3">
@@ -18,7 +22,7 @@ layout: default
             </a>
         </div>
 
-        <article class="bg-white rounded-xl p-4 p-md-5 mb-4 wiki-note-card">
+        <article class="bg-white rounded-xl p-4 p-md-5 mb-4 wiki-note-card" data-pagefind-body>
             <div class="blog-content wiki-note">
                 {{ fixed_content }}
             </div>
@@ -27,8 +31,8 @@ layout: default
 
     <aside class="blog-toc-sidebar">
         <nav id="blog-toc" class="blog-toc-nav" aria-label="Table of contents">
-            <div class="blog-toc-title">Table of Contents</div>
-            <ul class="blog-toc-list"></ul>
+            <div class="blog-toc-title">On This Page</div>
+            <div class="blog-toc-list"></div>
         </nav>
     </aside>
 </div>

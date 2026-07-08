@@ -17,14 +17,24 @@ permalink: /paper-reading/
                         <span data-result-count>{{ notes | size }}</span> notes · sorted by created time
                     </div>
                 </div>
-                <div class="paper-search-wrap">
-                    <i class="fas fa-search" aria-hidden="true"></i>
-                    <input
-                        type="search"
-                        class="paper-search-input"
-                        placeholder="Search title, tag, source..."
-                        aria-label="Search paper reading notes"
-                        data-filter-search>
+                <div class="paper-header-tools">
+                    <div class="paper-search-wrap">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <input
+                            type="search"
+                            class="paper-search-input"
+                            placeholder="Search title, tag, source..."
+                            aria-label="Search paper reading notes"
+                            data-filter-search>
+                    </div>
+                    <label class="paper-sort-wrap">
+                        <span>Sort</span>
+                        <select data-sort-order aria-label="Sort paper reading notes">
+                            <option value="created-desc">Newest</option>
+                            <option value="created-asc">Oldest</option>
+                            <option value="title-asc">Title</option>
+                        </select>
+                    </label>
                 </div>
             </div>
 
@@ -39,7 +49,7 @@ permalink: /paper-reading/
                 </div>
             </div>
 
-            <div class="wiki-list paper-note-list">
+            <div class="wiki-list paper-note-list" data-paper-note-list>
                 {% for note in notes %}
                 {% capture search_text %}
                     {{ note.title }}
@@ -54,6 +64,8 @@ permalink: /paper-reading/
                     class="wiki-list-item paper-note-item"
                     data-category="{{ note.category | default: 'Uncategorized' | escape }}"
                     data-tags="{{ note.tags | join: '|' | escape }}"
+                    data-created="{{ note.created_at | default: note.date | escape }}"
+                    data-title="{{ note.title | escape }}"
                     data-search="{{ search_text | strip_html | downcase | normalize_whitespace | escape }}">
                     <div class="paper-note-topline">
                         {% if note.category %}
@@ -97,7 +109,9 @@ document.addEventListener("DOMContentLoaded", function() {
     if (!root) return;
 
     var items = Array.prototype.slice.call(root.querySelectorAll(".paper-note-item"));
+    var list = root.querySelector("[data-paper-note-list]");
     var searchInput = root.querySelector("[data-filter-search]");
+    var sortSelect = root.querySelector("[data-sort-order]");
     var categoryWrap = root.querySelector("[data-category-filters]");
     var tagWrap = root.querySelector("[data-tag-filters]");
     var count = root.querySelector("[data-result-count]");
@@ -170,6 +184,27 @@ document.addEventListener("DOMContentLoaded", function() {
         return normalize(item.dataset.tags).split("|").filter(Boolean);
     }
 
+    function sortItems() {
+        if (!list || !sortSelect) return;
+        var mode = sortSelect.value;
+        var sorted = items.slice().sort(function(a, b) {
+            if (mode === "title-asc") {
+                return normalize(a.dataset.title).localeCompare(normalize(b.dataset.title));
+            }
+
+            var aTime = Date.parse(a.dataset.created || "") || 0;
+            var bTime = Date.parse(b.dataset.created || "") || 0;
+            if (mode === "created-asc") {
+                return aTime - bTime;
+            }
+            return bTime - aTime;
+        });
+
+        sorted.forEach(function(item) {
+            list.appendChild(item);
+        });
+    }
+
     function applyFilters() {
         var query = normalize(searchInput.value).toLowerCase();
         var visible = 0;
@@ -200,6 +235,13 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     searchInput.addEventListener("input", applyFilters);
+    if (sortSelect) {
+        sortSelect.addEventListener("change", function() {
+            sortItems();
+            applyFilters();
+        });
+    }
+    sortItems();
     applyFilters();
 });
 </script>

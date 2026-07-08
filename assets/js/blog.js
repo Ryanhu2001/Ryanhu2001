@@ -1,57 +1,169 @@
 (function () {
-    var tocList = document.querySelector('.blog-toc-list');
-    if (!tocList) return;
-
-    var content = document.querySelector('.blog-content');
+    var content = document.querySelector(".blog-content");
     if (!content) return;
 
-    var headings = content.querySelectorAll('h1, h2, h3');
-    var navbarHeight = 90;
+    var navbarHeight = 88;
+    var headings = Array.prototype.slice.call(content.querySelectorAll("h1, h2, h3"));
 
-    if (headings.length === 0) {
-        document.getElementById('blog-toc').style.display = 'none';
-        return;
+    function slugify(text, fallback) {
+        var slug = String(text || "")
+            .trim()
+            .toLowerCase()
+            .replace(/<[^>]+>/g, "")
+            .replace(/&[a-z0-9#]+;/g, "")
+            .replace(/[^a-z0-9\u4e00-\u9fa5]+/g, "-")
+            .replace(/^-+|-+$/g, "");
+        return slug || fallback;
     }
 
-    headings.forEach(function (heading, i) {
-        if (!heading.id) {
-            heading.id = 'heading-' + i;
-        }
-        heading.style.scrollMarginTop = navbarHeight + 'px';
+    function ensureHeadingIds() {
+        var seen = {};
+        headings.forEach(function (heading, index) {
+            var base = heading.id || slugify(heading.textContent, "section-" + (index + 1));
+            var unique = base;
+            var count = 2;
 
-        var li = document.createElement('li');
-        var a = document.createElement('a');
-        a.href = '#' + heading.id;
-        a.textContent = heading.textContent;
-        a.className = 'toc-' + heading.tagName.toLowerCase();
-        a.addEventListener('click', function (e) {
-            e.preventDefault();
-            var target = document.getElementById(heading.id);
-            if (target) {
-                window.scrollTo({
-                    top: target.offsetTop - navbarHeight,
-                    behavior: 'smooth'
-                });
-                history.pushState(null, null, '#' + heading.id);
+            while (seen[unique] || document.getElementById(unique)) {
+                if (heading.id === unique) break;
+                unique = base + "-" + count;
+                count += 1;
             }
-        });
-        li.appendChild(a);
-        tocList.appendChild(li);
-    });
 
-    var tocLinks = tocList.querySelectorAll('a');
-    function updateActive() {
-        var scrollPos = window.scrollY + navbarHeight + 10;
-        var current = null;
+            heading.id = unique;
+            seen[unique] = true;
+            heading.style.scrollMarginTop = navbarHeight + "px";
+        });
+    }
+
+    function initAnchors() {
+        if (!window.anchors) return;
+
+        window.anchors.options = {
+            visible: "hover",
+            placement: "left",
+            icon: "#",
+            class: "heading-anchor"
+        };
+        window.anchors.add(".blog-content h2, .blog-content h3, .blog-content h4");
+    }
+
+    function manualToc(tocList) {
         headings.forEach(function (heading) {
-            if (heading.offsetTop <= scrollPos) {
-                current = heading.id;
-            }
+            var link = document.createElement("a");
+            link.href = "#" + heading.id;
+            link.textContent = heading.textContent;
+            link.className = "toc-link toc-" + heading.tagName.toLowerCase();
+            link.addEventListener("click", function (event) {
+                event.preventDefault();
+                window.scrollTo({
+                    top: heading.offsetTop - navbarHeight,
+                    behavior: "smooth"
+                });
+                history.pushState(null, "", "#" + heading.id);
+            });
+            tocList.appendChild(link);
         });
-        tocLinks.forEach(function (link) {
-            link.classList.toggle('toc-active', link.getAttribute('href') === '#' + current);
+
+        function updateActive() {
+            var scrollPos = window.scrollY + navbarHeight + 16;
+            var current = null;
+            headings.forEach(function (heading) {
+                if (heading.offsetTop <= scrollPos) {
+                    current = heading.id;
+                }
+            });
+            Array.prototype.slice.call(tocList.querySelectorAll("a")).forEach(function (link) {
+                link.classList.toggle("toc-active", link.getAttribute("href") === "#" + current);
+            });
+        }
+
+        window.addEventListener("scroll", updateActive, { passive: true });
+        updateActive();
+    }
+
+    function initToc() {
+        var tocNav = document.getElementById("blog-toc");
+        var tocList = document.querySelector(".blog-toc-list");
+        if (!tocNav || !tocList) return;
+
+        if (headings.length === 0) {
+            tocNav.hidden = true;
+            return;
+        }
+
+        if (window.tocbot) {
+            window.tocbot.init({
+                tocSelector: ".blog-toc-list",
+                contentSelector: ".blog-content",
+                headingSelector: "h1, h2, h3",
+                hasInnerContainers: true,
+                orderedList: false,
+                collapseDepth: 6,
+                headingsOffset: navbarHeight + 12,
+                scrollSmooth: true,
+                scrollSmoothOffset: -navbarHeight,
+                listClass: "toc-list",
+                listItemClass: "toc-list-item",
+                linkClass: "toc-link",
+                activeLinkClass: "toc-active"
+            });
+            return;
+        }
+
+        manualToc(tocList);
+    }
+
+    function initImageZoom() {
+        if (!window.mediumZoom) return;
+
+        window.mediumZoom(".blog-content img:not(.no-zoom)", {
+            background: "rgba(251, 250, 247, 0.96)",
+            margin: 32,
+            scrollOffset: 0
         });
     }
-    window.addEventListener('scroll', updateActive, { passive: true });
-    updateActive();
+
+    function initReadingProgress() {
+        var bar = document.querySelector(".reading-progress span");
+        var article = document.querySelector(".wiki-note-card");
+        if (!bar || !article) return;
+
+        function updateProgress() {
+            var start = article.offsetTop - navbarHeight;
+            var end = start + article.offsetHeight - window.innerHeight + navbarHeight;
+            var ratio = end > start ? (window.scrollY - start) / (end - start) : 1;
+            var clamped = Math.max(0, Math.min(1, ratio));
+            bar.style.transform = "scaleX(" + clamped + ")";
+        }
+
+        window.addEventListener("scroll", updateProgress, { passive: true });
+        window.addEventListener("resize", updateProgress);
+        updateProgress();
+    }
+
+    function wrapTables() {
+        Array.prototype.slice.call(content.querySelectorAll("table")).forEach(function (table) {
+            if (table.parentElement && table.parentElement.classList.contains("table-scroll")) return;
+            var wrapper = document.createElement("div");
+            wrapper.className = "table-scroll";
+            table.parentNode.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
+        });
+    }
+
+    function markExternalLinks() {
+        Array.prototype.slice.call(content.querySelectorAll("a[href^='http']")).forEach(function (link) {
+            if (link.hostname === window.location.hostname) return;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+        });
+    }
+
+    ensureHeadingIds();
+    initToc();
+    initAnchors();
+    initImageZoom();
+    initReadingProgress();
+    wrapTables();
+    markExternalLinks();
 })();

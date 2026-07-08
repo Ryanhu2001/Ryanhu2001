@@ -1,0 +1,12 @@
+{
+  "name": "ryan-personal-wiki",
+  "private": true,
+  "scripts": {
+    "build": "bundle exec jekyll build && pagefind --site _site",
+    "build:site": "bundle exec jekyll build",
+    "build:search": "pagefind --site _site"
+  },
+  "devDependencies": {
+    "pagefind": "1.5.2"
+  }
+}

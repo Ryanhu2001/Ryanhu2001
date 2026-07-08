@@ -1,6 +1,7 @@
 title: Ryan
 url: "https://ryanhu2001.github.io"
 baseurl: "/Ryanhu2001"
+lang: zh-CN
 
 markdown: kramdown
 kramdown:

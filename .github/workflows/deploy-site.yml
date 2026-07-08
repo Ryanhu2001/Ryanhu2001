@@ -7,6 +7,7 @@ on:
     paths:
       - "**.md"
       - "**.html"
+      - "**.json"
       - "_config.yml"
       - "_data/**"
       - "_includes/**"
@@ -15,6 +16,8 @@ on:
       - "assets/**"
       - "Gemfile"
       - "Gemfile.lock"
+      - "package.json"
+      - "package-lock.json"
       - ".github/workflows/deploy-site.yml"
   workflow_dispatch:
 
@@ -38,7 +41,14 @@ jobs:
           bundler: "2.4.22"
           bundler-cache: true
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - run: npm ci
       - run: bundle exec jekyll build
+      - run: npm run build:search
       - run: touch _site/.nojekyll
 
       - name: Deploy to gh-pages
