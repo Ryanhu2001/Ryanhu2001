@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="500" viewBox="0 0 1080 500" role="img" aria-labelledby="title desc">
+  <title id="title">AutomationBench evaluation pipeline</title>
+  <desc id="desc">A diagram showing AutomationBench booting a simulated company, giving an agent search and execute tools, and grading final app state with deterministic assertions.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6d4a25"/>
+    </marker>
+    <style>
+      .bg { fill: #fbf6ea; }
+      .panel { fill: #fffaf0; stroke: #dfc7a5; stroke-width: 1.5; }
+      .soft { fill: #f2e4ce; stroke: #d4b88f; stroke-width: 1.2; }
+      .text { font-family: Inter, "Noto Sans SC", Arial, sans-serif; fill: #2d261f; }
+      .title { font-size: 30px; font-weight: 800; }
+      .mid { font-size: 22px; font-weight: 750; }
+      .small { font-size: 17px; }
+      .tiny { font-size: 15px; fill: #5b5146; }
+      .arrow { stroke: #6d4a25; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect class="bg" width="1080" height="500"/>
+  <text x="56" y="58" class="text title">AutomationBench：评估 agent 有没有真的把业务状态改对</text>
+  <text x="56" y="90" class="text small">回复不计分，最终世界状态计分；重点是跨 app、API discovery、policy adherence 和 negative assertions。</text>
+
+  <rect x="56" y="128" width="236" height="250" rx="12" class="panel"/>
+  <text x="82" y="168" class="text mid">1. Boot tiny company</text>
+  <text x="82" y="204" class="text small">CRM records</text>
+  <text x="82" y="232" class="text small">Inbox threads</text>
+  <text x="82" y="260" class="text small">Spreadsheets</text>
+  <text x="82" y="288" class="text small">Calendars / tickets</text>
+  <rect x="82" y="318" width="184" height="36" rx="8" class="soft"/>
+  <text x="100" y="341" class="text tiny">stale rows + lookalikes</text>
+
+  <path d="M302 254 C332 254 344 254 374 254" class="arrow"/>
+
+  <rect x="378" y="128" width="314" height="250" rx="12" class="panel"/>
+  <text x="406" y="168" class="text mid">2. Agent works alone</text>
+  <text x="406" y="204" class="text small">single trigger prompt</text>
+  <text x="406" y="232" class="text small">no clarifying questions</text>
+  <text x="406" y="260" class="text small">up to 50 steps</text>
+  <rect x="406" y="292" width="118" height="42" rx="8" class="soft"/>
+  <text x="438" y="319" class="text small">Search</text>
+  <rect x="544" y="292" width="118" height="42" rx="8" class="soft"/>
+  <text x="574" y="319" class="text small">Execute</text>
+  <text x="406" y="356" class="text tiny">BM25 over schemas + REST-like method/url/body calls</text>
+
+  <path d="M702 254 C732 254 744 254 774 254" class="arrow"/>
+
+  <rect x="778" y="128" width="246" height="250" rx="12" class="panel"/>
+  <text x="806" y="168" class="text mid">3. Grade final state</text>
+  <text x="806" y="204" class="text small">positive assertions</text>
+  <text x="806" y="232" class="text small">negative assertions</text>
+  <text x="806" y="260" class="text small">strict pass / fail</text>
+  <rect x="806" y="292" width="188" height="42" rx="8" class="soft"/>
+  <text x="824" y="319" class="text small">No LLM-as-judge</text>
+  <text x="806" y="356" class="text tiny">partial_credit only for debugging / RL reward</text>
+
+  <rect x="56" y="424" width="968" height="38" rx="10" fill="#efe0c8" stroke="#d4b88f"/>
+  <text x="82" y="448" class="text small">一句话：模型可以说“done”，但只有 CRM、邮件、Slack、Sheet 等最终状态全部对，才算真的完成。</text>
+</svg>
