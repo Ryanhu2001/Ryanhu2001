@@ -125,9 +125,9 @@ Table 4 覆盖 BrowseComp、BrowseComp-Plus、DeepSearchQA，评估 150 subsampl
 
 | Model | No compaction overall | Fixed overall | SelfCompact overall | Cost change vs no compaction |
 |---|---:|---:|---:|---:|
-| GLM-4.7-Flash | 36.6, $0.13 | 41.5, $0.05 | **46.4, $0.07** | -46% |
-| MiniMax-M2.5 | 54.6, $0.19 | 59.3, $0.06 | **63.9, $0.08** | -58% |
-| MiMo-V2-Flash | 48.9, $0.25 | 54.7, $0.14 | **59.2, $0.13** | -48% |
+| GLM-4.7-Flash | 36.6, USD 0.13 | 41.5, USD 0.05 | **46.4, USD 0.07** | -46% |
+| MiniMax-M2.5 | 54.6, USD 0.19 | 59.3, USD 0.06 | **63.9, USD 0.08** | -58% |
+| MiMo-V2-Flash | 48.9, USD 0.25 | 54.7, USD 0.14 | **59.2, USD 0.13** | -48% |
 
 BrowseComp-Plus 上提升尤其清楚：
 
