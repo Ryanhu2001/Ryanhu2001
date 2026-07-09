@@ -1,0 +1,97 @@
+{
+  "description": "Temporary baseline for legacy paper-reading notes that predate the 3 original figures + 1 generated diagram requirement. New notes or regressions must not be added here; remove entries as notes are backfilled.",
+  "min_original": 3,
+  "min_generated": 1,
+  "allowed_debt": {
+    "paper-reading/Anthropic RSI Loops and Managed Agents.md": {
+      "original": 0,
+      "generated": 1,
+      "unknown": 0,
+      "total": 1
+    },
+    "paper-reading/AutoBench Agentic-1.md": {
+      "original": 0,
+      "generated": 2,
+      "unknown": 0,
+      "total": 2
+    },
+    "paper-reading/AutoData Multi-Agent System for Open Web Data Collection.md": {
+      "original": 4,
+      "generated": 0,
+      "unknown": 0,
+      "total": 4
+    },
+    "paper-reading/AutomationBench Business Workflow Benchmark.md": {
+      "original": 2,
+      "generated": 1,
+      "unknown": 0,
+      "total": 3
+    },
+    "paper-reading/DSpark Confidence-Scheduled Speculative Decoding.md": {
+      "original": 6,
+      "generated": 0,
+      "unknown": 0,
+      "total": 6
+    },
+    "paper-reading/EurekAgent Environment Engineering for Scientific Discovery.md": {
+      "original": 3,
+      "generated": 0,
+      "unknown": 0,
+      "total": 3
+    },
+    "paper-reading/ExpRL Exploratory RL for LLM Mid-Training.md": {
+      "original": 4,
+      "generated": 0,
+      "unknown": 0,
+      "total": 4
+    },
+    "paper-reading/GLM-5.2.md": {
+      "original": 2,
+      "generated": 1,
+      "unknown": 0,
+      "total": 3
+    },
+    "paper-reading/Harness Engineering for Self-Improvement.md": {
+      "original": 0,
+      "generated": 2,
+      "unknown": 0,
+      "total": 2
+    },
+    "paper-reading/Kimi K2.7 Code.md": {
+      "original": 2,
+      "generated": 1,
+      "unknown": 0,
+      "total": 3
+    },
+    "paper-reading/Multi-Turn Agentic Scientific Literature Search via Workflow Induction.md": {
+      "original": 5,
+      "generated": 0,
+      "unknown": 0,
+      "total": 5
+    },
+    "paper-reading/Natively Unlearnable Large Language Models.md": {
+      "original": 3,
+      "generated": 0,
+      "unknown": 0,
+      "total": 3
+    },
+    "paper-reading/OpenThoughts-Agent Data Recipes for Agentic Models.md": {
+      "original": 5,
+      "generated": 0,
+      "unknown": 0,
+      "total": 5
+    },
+    "paper-reading/Success Visitation Matching Process Rewards.md": {
+      "original": 4,
+      "generated": 0,
+      "unknown": 0,
+      "total": 4
+    },
+    "paper-reading/Trainee to Trainer LLM-Designed Training Environment.md": {
+      "original": 1,
+      "generated": 1,
+      "unknown": 0,
+      "total": 2
+    }
+  }
+}

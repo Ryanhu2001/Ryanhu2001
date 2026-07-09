@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -132,6 +133,19 @@ def main() -> int:
         return 1
 
     path.write_text(build_note(args), encoding="utf-8")
+    check = subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "check_paper_reading_figures.py"), str(path)],
+        cwd=ROOT,
+        check=False,
+    )
+    if check.returncode != 0:
+        print(
+            "Paper-reading note was written, but it does not satisfy the visual evidence rule: "
+            "at least 3 original figures/screenshots and 1 generated/self-made diagram.",
+            file=sys.stderr,
+        )
+        print(path, file=sys.stderr)
+        return check.returncode
     print(path)
     return 0
 
