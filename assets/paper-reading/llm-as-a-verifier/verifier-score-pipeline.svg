@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="760" viewBox="0 0 1480 760" role="img" aria-labelledby="title desc">
+  <title id="title">LLM-as-a-Verifier score pipeline</title>
+  <desc id="desc">A self-made diagram explaining how LLM-as-a-Verifier turns candidate trajectories into continuous rewards, pairwise preferences, and a selected trajectory.</desc>
+  <defs>
+    <style>
+      .bg { fill: #fbf6ea; }
+      .panel { fill: #fffdf7; stroke: #8a857a; stroke-width: 3; }
+      .soft { fill: #f4ead7; stroke: #8a857a; stroke-width: 3; }
+      .mint { fill: #e4f2ec; stroke: #6d8f80; stroke-width: 3; }
+      .rose { fill: #f8e3dc; stroke: #9f7768; stroke-width: 3; }
+      .lav { fill: #eceaf8; stroke: #7e7899; stroke-width: 3; }
+      .blue { fill: #e7eff8; stroke: #6b7f9d; stroke-width: 3; }
+      .ink { fill: #24211d; font-family: Inter, Arial, sans-serif; }
+      .muted { fill: #68635b; font-family: Inter, Arial, sans-serif; }
+      .mono { fill: #34302a; font-family: "JetBrains Mono", Menlo, monospace; }
+      .arrow { stroke: #777169; stroke-width: 4; fill: none; marker-end: url(#arrow); }
+      .thin { stroke: #928b80; stroke-width: 2.4; fill: none; }
+    </style>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
+      <path d="M 1 1 L 11 6 L 1 11 z" fill="#777169"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1480" height="760"/>
+  <text class="ink" x="740" y="70" font-size="46" font-weight="800" text-anchor="middle">From agent traces to a selected trajectory</text>
+  <text class="muted" x="740" y="110" font-size="22" text-anchor="middle">The paper's key move is not another text judge, it reads the score-token distribution and keeps the uncertainty.</text>
+
+  <rect class="panel" x="56" y="160" rx="24" ry="24" width="1368" height="470"/>
+
+  <rect class="soft" x="105" y="230" rx="18" ry="18" width="210" height="126"/>
+  <text class="ink" x="210" y="270" font-size="25" font-weight="800" text-anchor="middle">Task x</text>
+  <text class="muted" x="210" y="306" font-size="18" text-anchor="middle">coding, robotics,</text>
+  <text class="muted" x="210" y="332" font-size="18" text-anchor="middle">or medical agent task</text>
+
+  <rect class="mint" x="105" y="430" rx="18" ry="18" width="210" height="126"/>
+  <text class="ink" x="210" y="470" font-size="25" font-weight="800" text-anchor="middle">Candidates</text>
+  <text class="mono" x="210" y="506" font-size="19" text-anchor="middle">tau_1 ... tau_N</text>
+  <text class="muted" x="210" y="532" font-size="18" text-anchor="middle">sampled trajectories</text>
+
+  <path class="arrow" d="M 315 293 H 398"/>
+  <path class="arrow" d="M 315 493 H 398"/>
+
+  <rect class="lav" x="405" y="210" rx="18" ry="18" width="250" height="366"/>
+  <text class="ink" x="530" y="252" font-size="25" font-weight="800" text-anchor="middle">Verifier prompt</text>
+  <text class="muted" x="530" y="286" font-size="18" text-anchor="middle">compare A vs B</text>
+  <line class="thin" x1="435" y1="316" x2="625" y2="316"/>
+  <text class="mono" x="530" y="350" font-size="18" text-anchor="middle">&lt;score_A&gt;</text>
+  <text class="mono" x="530" y="382" font-size="18" text-anchor="middle">v_1 ... v_G</text>
+  <text class="mono" x="530" y="430" font-size="18" text-anchor="middle">&lt;score_B&gt;</text>
+  <text class="mono" x="530" y="462" font-size="18" text-anchor="middle">v_1 ... v_G</text>
+  <line class="thin" x1="435" y1="494" x2="625" y2="494"/>
+  <text class="muted" x="530" y="528" font-size="18" text-anchor="middle">repeat K times,</text>
+  <text class="muted" x="530" y="554" font-size="18" text-anchor="middle">across C criteria</text>
+
+  <path class="arrow" d="M 655 393 H 725"/>
+
+  <rect class="rose" x="735" y="210" rx="18" ry="18" width="300" height="366"/>
+  <text class="ink" x="885" y="252" font-size="25" font-weight="800" text-anchor="middle">Continuous reward</text>
+  <text class="mono" x="885" y="310" font-size="20" text-anchor="middle">R(x,tau)</text>
+  <text class="mono" x="885" y="350" font-size="17" text-anchor="middle">= average over C,K</text>
+  <text class="mono" x="885" y="382" font-size="17" text-anchor="middle">sum_g p(v_g | x,c,tau) phi(v_g)</text>
+  <line class="thin" x1="770" y1="418" x2="1000" y2="418"/>
+  <text class="muted" x="885" y="456" font-size="18" text-anchor="middle">uses the whole score</text>
+  <text class="muted" x="885" y="482" font-size="18" text-anchor="middle">distribution, not argmax</text>
+  <text class="muted" x="885" y="522" font-size="18" text-anchor="middle">fewer ties, finer ranking</text>
+
+  <path class="arrow" d="M 1035 393 H 1105"/>
+
+  <rect class="blue" x="1115" y="210" rx="18" ry="18" width="245" height="160"/>
+  <text class="ink" x="1238" y="252" font-size="25" font-weight="800" text-anchor="middle">Pairwise pref</text>
+  <text class="mono" x="1238" y="306" font-size="17" text-anchor="middle">P(tau_i > tau_j | x)</text>
+  <text class="muted" x="1238" y="342" font-size="18" text-anchor="middle">Bradley-Terry transform</text>
+
+  <rect class="mint" x="1115" y="430" rx="18" ry="18" width="245" height="126"/>
+  <text class="ink" x="1238" y="470" font-size="25" font-weight="800" text-anchor="middle">PPT selection</text>
+  <text class="muted" x="1238" y="506" font-size="18" text-anchor="middle">ring pass + pivots</text>
+  <text class="muted" x="1238" y="532" font-size="18" text-anchor="middle">O(Nk), not O(N^2)</text>
+
+  <path class="arrow" d="M 1238 370 V 412"/>
+
+  <rect class="panel" x="438" y="660" rx="16" ry="16" width="604" height="62"/>
+  <text class="ink" x="462" y="700" font-size="22" font-weight="800">Result:</text>
+  <text class="muted" x="552" y="700" font-size="21">a ranked candidate, progress signal, or dense RL reward.</text>
+</svg>
