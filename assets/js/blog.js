@@ -123,6 +123,44 @@
         });
     }
 
+    function detectImageSourceKind(img) {
+        var manualSource = (img.dataset && img.dataset.source) || "";
+        var className = img.className || "";
+        var src = (img.getAttribute("src") || img.currentSrc || "").toLowerCase();
+
+        if (manualSource === "generated" || /\bfigure-generated\b/.test(className)) {
+            return "generated";
+        }
+        if (manualSource === "original" || /\bfigure-original\b/.test(className)) {
+            return "original";
+        }
+
+        return /\.svg(?:$|[?#])/.test(src) ? "generated" : "original";
+    }
+
+    function labelImagesBySource() {
+        Array.prototype.slice.call(content.querySelectorAll("img")).forEach(function (img) {
+            if (img.closest(".image-source-frame") || img.classList.contains("no-source-label")) return;
+
+            var sourceKind = detectImageSourceKind(img);
+            var frame = document.createElement("span");
+            var badge = document.createElement("span");
+
+            frame.className = "image-source-frame image-source-" + sourceKind;
+            frame.setAttribute(
+                "data-source-kind",
+                sourceKind === "generated" ? "generated" : "original"
+            );
+
+            badge.className = "image-source-badge";
+            badge.textContent = sourceKind === "generated" ? "自制图解" : "原文图 / 截图";
+            frame.appendChild(badge);
+
+            img.parentNode.insertBefore(frame, img);
+            frame.appendChild(img);
+        });
+    }
+
     function initReadingProgress() {
         var bar = document.querySelector(".reading-progress span");
         var article = document.querySelector(".wiki-note-card");
@@ -162,6 +200,7 @@
     ensureHeadingIds();
     initToc();
     initAnchors();
+    labelImagesBySource();
     initImageZoom();
     initReadingProgress();
     wrapTables();
