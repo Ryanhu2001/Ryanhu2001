@@ -360,6 +360,32 @@
     color: inherit;
 }
 
+.reading-surface-layout .language-text.highlighter-rouge {
+    font-size: 1rem;
+}
+
+.reading-surface-layout .language-text.highlighter-rouge pre {
+    -webkit-font-smoothing: antialiased;
+    background: #eef4f3;
+    border-color: var(--reading-line);
+    color: #24343c;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1.72;
+    tab-size: 2;
+    text-rendering: optimizeLegibility;
+    text-shadow: none;
+}
+
+.reading-surface-layout .language-text.highlighter-rouge pre code {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    text-shadow: none;
+}
+
 .reading-surface-layout .table-scroll {
     border-color: var(--reading-line);
     border-radius: 0.52rem;
