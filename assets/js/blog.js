@@ -3,7 +3,42 @@
     if (!content) return;
 
     var navbarHeight = 88;
+    var article = document.querySelector(".wiki-note-card");
+
+    function initReadingSurface() {
+        if (!article || !article.hasAttribute("data-reading-surface")) return;
+
+        var nodes = Array.prototype.slice.call(content.childNodes);
+        var fragment = document.createDocumentFragment();
+        var section = null;
+        var sectionIndex = -1;
+
+        nodes.forEach(function (node) {
+            var startsSection = node.nodeType === 1 && node.tagName === "H1";
+
+            if (!section && node.nodeType === 3 && !node.textContent.trim()) return;
+
+            if (startsSection || !section) {
+                sectionIndex += 1;
+                section = document.createElement("section");
+                section.className = sectionIndex === 0
+                    ? "reading-surface-section reading-surface-hero"
+                    : "reading-surface-section reading-surface-doc";
+                fragment.appendChild(section);
+            }
+
+            section.appendChild(node);
+        });
+
+        content.appendChild(fragment);
+    }
+
+    initReadingSurface();
+
     var headings = Array.prototype.slice.call(content.querySelectorAll("h1, h2, h3"));
+    var tocHeadings = article && article.hasAttribute("data-reading-surface")
+        ? Array.prototype.slice.call(content.querySelectorAll("h1, h2"))
+        : headings;
 
     function slugify(text, fallback) {
         var slug = String(text || "")
@@ -48,7 +83,7 @@
     }
 
     function manualToc(tocList) {
-        headings.forEach(function (heading) {
+        tocHeadings.forEach(function (heading) {
             var link = document.createElement("a");
             link.href = "#" + heading.id;
             link.textContent = heading.textContent;
@@ -67,7 +102,7 @@
         function updateActive() {
             var scrollPos = window.scrollY + navbarHeight + 16;
             var current = null;
-            headings.forEach(function (heading) {
+            tocHeadings.forEach(function (heading) {
                 if (heading.offsetTop <= scrollPos) {
                     current = heading.id;
                 }
@@ -86,16 +121,17 @@
         var tocList = document.querySelector(".blog-toc-list");
         if (!tocNav || !tocList) return;
 
-        if (headings.length === 0) {
+        if (tocHeadings.length === 0) {
             tocNav.hidden = true;
             return;
         }
 
         if (window.tocbot) {
+            var isReadingSurface = article && article.hasAttribute("data-reading-surface");
             window.tocbot.init({
                 tocSelector: ".blog-toc-list",
                 contentSelector: ".blog-content",
-                headingSelector: "h1, h2, h3",
+                headingSelector: isReadingSurface ? "h1, h2" : "h1, h2, h3",
                 hasInnerContainers: true,
                 orderedList: false,
                 collapseDepth: 6,
@@ -111,6 +147,39 @@
         }
 
         manualToc(tocList);
+    }
+
+    function initTocToggle() {
+        var wrapper = document.querySelector(".blog-layout-wrapper");
+        var toggle = document.getElementById("blog-toc-toggle");
+        if (!wrapper || !toggle) return;
+
+        var storageKey = "personal-wiki:toc-collapsed";
+
+        function setCollapsed(collapsed) {
+            wrapper.classList.toggle("toc-collapsed", collapsed);
+            toggle.setAttribute("aria-expanded", String(!collapsed));
+            toggle.setAttribute("aria-label", collapsed ? "展开目录" : "收起目录");
+            toggle.title = collapsed ? "展开目录" : "收起目录";
+        }
+
+        var initialState = false;
+        try {
+            initialState = window.localStorage.getItem(storageKey) === "true";
+        } catch (error) {
+            initialState = false;
+        }
+        setCollapsed(initialState);
+
+        toggle.addEventListener("click", function () {
+            var collapsed = !wrapper.classList.contains("toc-collapsed");
+            setCollapsed(collapsed);
+            try {
+                window.localStorage.setItem(storageKey, String(collapsed));
+            } catch (error) {
+                // The toggle still works when storage is unavailable.
+            }
+        });
     }
 
     function initImageZoom() {
@@ -199,6 +268,7 @@
 
     ensureHeadingIds();
     initToc();
+    initTocToggle();
     initAnchors();
     labelImagesBySource();
     initImageZoom();
