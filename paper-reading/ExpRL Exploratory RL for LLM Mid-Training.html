@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<!-- Template: https://github.com/luost26/academic-homepage -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>ExpRL: Exploratory RL for LLM Mid-Training - Ryan</title>
+    <link rel="icon" href="/Ryanhu2001/assets/ryan/avator.jpg" type="image/jpeg">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/pagefind/pagefind-component-ui.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/blog.css">
+    
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/global.css">
+</head>
+<body class="bg-light" >
+    <nav class="navbar navbar-expand-sm navbar-light fixed-top mb-5 shadow-sm">
+    <div class="container-lg">
+        <a class="navbar-brand" href="/Ryanhu2001/"><strong>Ryan</strong></a>
+        <button class="navbar-toggler" style="font-size: 1em; padding: 0.5em;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-map"></i> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/">Home</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/wiki/">Wiki</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/paper-reading/">Paper Reading</a>
+                </li>
+                
+                <li class="nav-item nav-search-item">
+                    <button class="nav-link nav-search-button" type="button" data-toggle="modal" data-target="#siteSearchModal" aria-label="Search site">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <span>Search</span>
+                        <kbd>⌘K</kbd>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <div class="container-lg">
+        
+
+
+
+
+<div class="reading-progress" aria-hidden="true">
+    <span></span>
+</div>
+
+<div class="blog-layout-wrapper">
+    <div class="blog-main">
+        <div class="mb-3">
+            <a class="small" href="/Ryanhu2001/paper-reading/">
+                <i class="fas fa-arrow-left"></i> Paper Reading
+            </a>
+        </div>
+
+        <article class="bg-white rounded-xl p-4 p-md-5 mb-4 wiki-note-card" data-pagefind-body>
+            <div class="blog-content wiki-note">
+                <h1 id="exprlreference-solution-不一定要拿来模仿也可以拿来给探索打分">ExpRL：reference solution 不一定要拿来模仿，也可以拿来给探索打分</h1>
+
+<ul>
+  <li><strong>Paper</strong>: <a href="https://arxiv.org/abs/2606.17024">ExpRL: Exploratory RL for LLM Mid-Training</a></li>
+  <li><strong>Code</strong>: <a href="https://github.com/violetxi/ExpRL">violetxi/ExpRL</a></li>
+  <li><strong>Version</strong>: arXiv v1, 2026-06-15</li>
+  <li><strong>类型</strong>: RL mid-training / dense reward from references / reasoning model priming</li>
+  <li><strong>关键词</strong>: reference-guided reward, ExpRL-Outcome, ExpRL-Process, pass@k, GRPO, REINFORCE, self-distillation</li>
+</ul>
+
+<h2 id="读法给人和-agent-的路标">读法：给人和 agent 的路标</h2>
+
+<p>这篇要抓住一个很关键的分离：<strong>reference solution 不暴露给 actor，actor 仍然只看原始题目；reference 只给 judge 用来判断 on-policy trace 有多少“朝正确解法前进”的信号。</strong></p>
+
+<p>如果只看 abstract，很容易把它误读成“有答案就做 SFT”。实际相反，作者想证明的是：对 hard reasoning，直接 imitation 可能因为 off-policy mismatch 伤到模型；更好的方式是保留 on-policy 探索，但用 reference 给 dense reward。</p>
+
+<p>给 agent 之后检索，关键词是：<code class="language-plaintext highlighter-rouge">ExpRL</code>、<code class="language-plaintext highlighter-rouge">reference-guided dense rewards</code>、<code class="language-plaintext highlighter-rouge">RL priming</code>、<code class="language-plaintext highlighter-rouge">pass@k as coverage</code>、<code class="language-plaintext highlighter-rouge">ExpRL-Outcome</code>、<code class="language-plaintext highlighter-rouge">ExpRL-Process</code>、<code class="language-plaintext highlighter-rouge">wrong reference calibration</code>。</p>
+
+<h2 id="一句话判断">一句话判断</h2>
+
+<p>ExpRL 的核心贡献是把“人类写好的 step-by-step solution”从监督微调目标改成 <strong>奖励脚手架</strong>：模型自己采样解题过程，judge 对照参考解给 1 到 5 分的 partial progress score，再用 RL 把概率质量推向更有希望的推理路径。它的价值在于提升后续 sparse-reward RL 的初始化，而不是单独追求 mid-training 后立刻满分。</p>
+
+<h2 id="图表优先读法">图表优先读法</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>先看</th>
+      <th>图/表</th>
+      <th>读完应该抓住什么</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Figure 1：ExpRL overview</td>
+      <td>reference solution 只参与 reward，不直接喂给 policy 生成</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Table 1 / Table 2</td>
+      <td>ExpRL 是更好的 Stage-II RL 初始化，而不是只追 Stage-I 分数</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Figure 3：training dynamics</td>
+      <td>ExpRL-Process 降低 unsolvable prompts，同时没有像 sparse GRPO 那样明显掉 entropy</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Figure 5：behavior changes</td>
+      <td>收益来自 verification、self-correction、exploration、restart/backtrack 等行为变化</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Figure 10：held-out pass@k</td>
+      <td>Stage-I priming 后，低到中等采样数上的 sampling efficiency 更好</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><img src="../assets/paper-reading/exprl/reference-guided-rl-loop.svg" alt="ExpRL reference-guided RL loop" /></p>
+
+<p>这张自制图把 ExpRL 最容易误读的点画出来：reference solution 不进入 policy 的上下文，只进入 judge 的评分上下文。actor 仍然从原题 on-policy 采样，judge 再用 reference 判断 trace 是否朝正确解法推进。这个分离是它区别于 SFT/self-distillation 的关键。</p>
+
+<h2 id="核心图reference-只参与评分不参与生成">核心图：reference 只参与评分，不参与生成</h2>
+
+<p><img src="../assets/paper-reading/exprl/exprl-overview.png" alt="ExpRL overview" /></p>
+
+<p>Figure 1 讲得很清楚：</p>
+
+<ul>
+  <li><strong>普通 sparse RL</strong>：hard problem 上 base model 很少采到正确轨迹，0/1 reward 几乎不给梯度。</li>
+  <li><strong>SFT / self-distillation</strong>：reference 或 teacher trace 变成 token target，但这些轨迹可能离 student 当前分布太远。</li>
+  <li><strong>ExpRL</strong>：policy 从原题采样；reference hidden from policy，只给 LLM judge 构造 problem-specific rubric；judge 输出 dense reward。</li>
+</ul>
+
+<p>这其实是在做 exploration prior：先让模型更可能采到 productive reasoning path，再把这个模型拿去跑标准 sparse-reward RL。</p>
+
+<h2 id="方法机制">方法机制</h2>
+
+<h3 id="输入和目标">输入和目标</h3>
+
+<p>训练数据是 hard question-answer pairs：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">x</code>: 原始问题；</li>
+  <li><code class="language-plaintext highlighter-rouge">y*</code>: 人类写的 step-by-step reference solution；</li>
+  <li><code class="language-plaintext highlighter-rouge">pi_b</code>: base policy；</li>
+  <li>目标：让 mid-trained policy 在后续 sparse reward RL 之前，有更高的 pass@k coverage。</li>
+</ul>
+
+<p>作者把 <strong>pass@k</strong> 当成 coverage proxy：如果一个 policy 对某条可成功推理路径分配了非零概率，多采样几次就更可能命中。因此 pass@k 提升说明模型不是只在 pass@1 上“更自信”，而是覆盖了更多可成功路径。</p>
+
+<h3 id="exprl-outcome">ExpRL-Outcome</h3>
+
+<p>actor 生成完整 rollout <code class="language-plaintext highlighter-rouge">y</code>，judge 比较 <code class="language-plaintext highlighter-rouge">(x, y, y*)</code>，输出 1 到 5 分，再归一化到 0 到 1：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dense_score = (judge_score - 1) / 4
+</code></pre></div></div>
+
+<p>这个 reward 不是最终答案是否正确，而是 trace 是否采用了 reference 中的关键技术、结构、subgoal 或 reduction。judge 被明确要求只验证，不替模型补缺失步骤。</p>
+
+<h3 id="exprl-process">ExpRL-Process</h3>
+
+<p>Process 版本把 rollout 按 <code class="language-plaintext highlighter-rouge">###</code> 等分隔符切成 prefix segment，对每个 prefix 打分。某个 segment 只有在它让 reference alignment 变好时才获得正 advantage。</p>
+
+<p>这会把“中途做了正确 case split”或“验证了关键中间结论”变成局部学习信号，而不是等 final answer 才给 0/1。</p>
+
+<h3 id="两阶段训练">两阶段训练</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>阶段</th>
+      <th>做什么</th>
+      <th>论文里的设置</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Stage-I</td>
+      <td>ExpRL mid-training</td>
+      <td>Qwen3-4B-Instruct-2507，G=10 rollouts per prompt，230 optimization steps</td>
+    </tr>
+    <tr>
+      <td>Stage-II</td>
+      <td>下游 sparse-reward RL</td>
+      <td>同一 prompt family，去掉 reference，binary final-answer reward，500 steps</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>对照方法包括 SFT、普通 sparse-reward GRPO、自蒸馏，以及 ExpRL-Outcome / ExpRL-Process。</p>
+
+<h2 id="关键结果-1作为-rl-初始化更强">关键结果 1：作为 RL 初始化更强</h2>
+
+<p>Table 1 比较的是 <strong>Stage-II sparse-reward RL 之后的 pass@1</strong>，也就是“这个 priming 方法是否让后续 RL 更好”。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th style="text-align: right">AIME25</th>
+      <th style="text-align: right">AIME26</th>
+      <th style="text-align: right">HMMT</th>
+      <th style="text-align: right">IMO Answer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GRPO</td>
+      <td style="text-align: right">55.99</td>
+      <td style="text-align: right">58.75</td>
+      <td style="text-align: right">42.91</td>
+      <td style="text-align: right">35.28</td>
+    </tr>
+    <tr>
+      <td>ExpRL-Outcome</td>
+      <td style="text-align: right"><strong>59.07</strong></td>
+      <td style="text-align: right">61.74</td>
+      <td style="text-align: right"><strong>49.11</strong></td>
+      <td style="text-align: right"><strong>37.85</strong></td>
+    </tr>
+    <tr>
+      <td>ExpRL-Process</td>
+      <td style="text-align: right">58.08</td>
+      <td style="text-align: right"><strong>63.41</strong></td>
+      <td style="text-align: right">48.13</td>
+      <td style="text-align: right">35.73</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>最明显的是 AIME26：ExpRL-Process 到 <strong>63.41</strong>，普通 GRPO 是 <strong>58.75</strong>。HMMT 上 ExpRL-Outcome 到 <strong>49.11</strong>，比 GRPO 高 <strong>6.20pp</strong>。</p>
+
+<p>读这个表要注意：ExpRL 不是替代最终 sparse RL，而是让最终 sparse RL 的起点更好。</p>
+
+<h2 id="关键结果-2stage-i-已经提升-coverage">关键结果 2：Stage-I 已经提升 coverage</h2>
+
+<p>Table 2 看的是 Stage-I 后、Stage-II 前的 pass@1 和 pass@16：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th style="text-align: right">AIME26 pass@1</th>
+      <th style="text-align: right">AIME26 pass@16</th>
+      <th style="text-align: right">HMMT pass@1</th>
+      <th style="text-align: right">HMMT pass@16</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GRPO</td>
+      <td style="text-align: right">51.39</td>
+      <td style="text-align: right">77.55</td>
+      <td style="text-align: right">41.68</td>
+      <td style="text-align: right">67.58</td>
+    </tr>
+    <tr>
+      <td>ExpRL-Outcome</td>
+      <td style="text-align: right">57.45</td>
+      <td style="text-align: right">81.04</td>
+      <td style="text-align: right">44.19</td>
+      <td style="text-align: right">69.84</td>
+    </tr>
+    <tr>
+      <td>ExpRL-Process</td>
+      <td style="text-align: right"><strong>57.51</strong></td>
+      <td style="text-align: right"><strong>81.10</strong></td>
+      <td style="text-align: right"><strong>45.24</strong></td>
+      <td style="text-align: right"><strong>71.48</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这支持作者的主张：ExpRL 不只是把最终答案拟合好，而是在采样空间里增加了“可能走通的路径”。</p>
+
+<h2 id="训练动态不是简单-mode-collapse">训练动态：不是简单 mode collapse</h2>
+
+<p><img src="../assets/paper-reading/exprl/training-dynamics.png" alt="ExpRL training dynamics" /></p>
+
+<p><img src="../assets/paper-reading/exprl/behavior-change-after-priming.png" alt="ExpRL behavior change after priming" /></p>
+
+<p>Figure 3 的重点是：</p>
+
+<ul>
+  <li>sparse GRPO 的 entropy 掉得最快，说明它更像在快速收缩到已知模式；</li>
+  <li>ExpRL 和 self-distillation 保持更高 token entropy；</li>
+  <li>ExpRL-Process 解锁 solvable prompts 更快，但也带来 response length 增长。</li>
+</ul>
+
+<p>我的判断是，这张图比表格更能说明 ExpRL 的意图：它不是让模型“更短更准”，而是让模型在 hard problem 上保留更有用的探索空间。</p>
+
+<p><img src="../assets/paper-reading/exprl/stage1-heldout-passk.png" alt="ExpRL Stage-I held-out pass@k" /></p>
+
+<p>Figure 10 说明 Stage-I 本身已经在 held-out answer-based benchmarks 上改善 pass@k，尤其是低到中等 <code class="language-plaintext highlighter-rouge">k</code>。这对“exploration”论证很关键：模型不是只靠无限采样撞答案，而是在更少尝试里更容易覆盖到能延展的解题方向。</p>
+
+<h2 id="mixed-domain-和-judge-calibration">Mixed-domain 和 judge calibration</h2>
+
+<p>作者还做了一个 8B mixed-domain Stage-I 实验：</p>
+
+<ul>
+  <li>数据规模 <strong>4,001</strong> reference examples；</li>
+  <li>覆盖 math、science QA、coding；</li>
+  <li>policy 是 Qwen3-8B，judge 是更小的 Qwen3-4B-Instruct。</li>
+</ul>
+
+<p>Table 4 显示 ExpRL-Outcome 在多个 math / science / coding pass@1 evaluation 上都能提升 base，并且在 Math-Aggregate 和 STEM-Aggregate 上是最强 Stage-I 方法。</p>
+
+<p>但 coding 是例外：LiveCodeBench 上 sparse GRPO 更强。论文的解释很合理：代码任务有执行器，functional correctness 是非常强的 sparse reward；reference path 反而不一定适合做 partial progress scaffold，因为功能等价代码可以长得完全不一样。</p>
+
+<p>Table 5/6 的 calibration 也很重要：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Judge setup</th>
+      <th>Math misplacement rate 趋势</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>correct reference</td>
+      <td>4B/8B/14B 都最低</td>
+      <td>reference 真的在帮 judge 区分好坏</td>
+    </tr>
+    <tr>
+      <td>no reference</td>
+      <td>明显更差</td>
+      <td>generic judge confidence 不够</td>
+    </tr>
+    <tr>
+      <td>wrong reference</td>
+      <td>经常崩</td>
+      <td>reference 必须 problem-matched</td>
+    </tr>
+    <tr>
+      <td>0.6B judge</td>
+      <td>不稳定</td>
+      <td>judge 至少要有基本能力</td>
+    </tr>
+    <tr>
+      <td>LiveCodeBench</td>
+      <td>correct/no/wrong 差别很小</td>
+      <td>coding 更依赖功能正确性，不依赖参考路径</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="我怎么判断">我怎么判断</h2>
+
+<h3 id="可信之处">可信之处</h3>
+
+<ul>
+  <li><strong>目标定义清晰</strong>：作者没有把 mid-training 本身包装成最终能力，而是明确说目标是 priming downstream RL。</li>
+  <li><strong>有 pass@k 视角</strong>：这比只看 pass@1 更符合 exploration 的论证。</li>
+  <li><strong>校准实验扎实</strong>：wrong-reference 和 no-reference 对照能证明 reward 不是普通 LLM judge confidence。</li>
+  <li><strong>承认 coding 边界</strong>：在执行器强的任务上，reference-guided dense reward 不一定是最佳。</li>
+</ul>
+
+<h3 id="需要警惕">需要警惕</h3>
+
+<ul>
+  <li><strong>reference 质量是硬依赖</strong>：没有高质量、problem-matched reference，ExpRL 就失去脚手架。</li>
+  <li><strong>process reward 的切分启发式很具体</strong>：<code class="language-plaintext highlighter-rouge">###</code> delimiter 在不同模型和数据上未必稳。</li>
+  <li><strong>judge bias 会进入 policy</strong>：judge 打分不需要完美，但如果系统性偏向某种解法，policy 会学偏。</li>
+  <li><strong>和 RLVR 的执行奖励关系要分域看</strong>：math proof-style reasoning 适合 reference scaffold，coding 可能更适合直接用 tests。</li>
+</ul>
+
+<h2 id="对我的价值">对我的价值</h2>
+
+<p>这篇对个人知识库和 agent training 都有一个很好的启发：<strong>不要急着把好答案做成 imitation target</strong>。如果目标是让模型学会探索，也许应该把好答案变成评估 rubric，而不是变成要逐 token 复刻的文本。</p>
+
+<p>如果迁移到自己的 paper-reading/agent pipeline，可以想象：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>reference note / expert solution
+  -&gt; judge rubric
+  -&gt; score agent's own attempt
+  -&gt; reward partial progress, not copying style
+  -&gt; keep exploration on-policy
+</code></pre></div></div>
+
+<p>这和 OpenThoughts-Agent 的 teacher finding 也能连起来：teacher trace 是否适合 SFT，不只取决于它对不对，还取决于它离 student 的可达行为分布有多远。</p>
+
+<h2 id="一句话收束">一句话收束</h2>
+
+<p>ExpRL 最好的点是把 reference solution 的角色从“标准答案”改成“探索脚手架”。这件事很小，但对怎么做 reasoning model 的中期训练很有想象力。</p>
+
+            </div>
+        </article>
+    </div>
+
+    <aside class="blog-toc-sidebar">
+        <nav id="blog-toc" class="blog-toc-nav" aria-label="Table of contents">
+            <div class="blog-toc-header">
+                <div class="blog-toc-title">On This Page</div>
+                <button
+                    id="blog-toc-toggle"
+                    class="blog-toc-toggle"
+                    type="button"
+                    aria-controls="blog-toc-list"
+                    aria-expanded="true"
+                    aria-label="收起目录"
+                    title="收起目录"
+                >
+                    <svg class="blog-toc-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="blog-toc-list" class="blog-toc-list"></div>
+        </nav>
+    </aside>
+</div>
+
+    </div>
+    <footer class="footer border-top py-2 mt-5 bg-white small">
+    <div class="container-lg">
+        <div class="row my-3">
+            <div class="col-6">
+                <div class="text-muted">
+                    <i>Last updated: Jul 2026</i>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="text-right text-muted">
+                    Built with <a href="https://github.com/luost26/academic-homepage" target="_blank"><i class="fas fa-pencil-ruler"></i> academic-homepage</a>.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <pagefind-config
+        bundle-path="/Ryanhu2001/pagefind/"
+        base-url="/Ryanhu2001/"
+        excerpt-length="30"
+        lang="zh-CN"></pagefind-config>
+    <div class="modal fade site-search-modal" id="siteSearchModal" tabindex="-1" role="dialog" aria-labelledby="siteSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 mb-0" id="siteSearchModalLabel">Search</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <pagefind-searchbox placeholder="搜索 wiki、论文笔记、关键词..." show-sub-results="true" hide-shortcut="true"></pagefind-searchbox>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/github-buttons/2.14.2/buttons.min.js" integrity="sha512-OYwZx04hKFeFNYrWxIyo3atgGpb+cxU0ENWBZs72X7T9U+NoHPM1ftUn/Mfw7dRDXrqWA6M1wBg6z6fGE32aeA==" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+    <script type="module" src="/Ryanhu2001/pagefind/pagefind-component-ui.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tocbot@4.36.8/dist/tocbot.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+              delimiters: [
+                  {left: '$$', right: '$$', display: true},
+                  {left: '\\[', right: '\\]', display: true},
+                  {left: '$', right: '$', display: false},
+                  {left: '\\(', right: '\\)', display: false}
+              ],
+              throwOnError : false
+            });
+            
+            Prism.highlightAll();
+            
+
+            var siteSearchModal = document.getElementById("siteSearchModal");
+            var siteSearchBox = siteSearchModal ? siteSearchModal.querySelector("pagefind-searchbox") : null;
+            function focusSiteSearch() {
+                window.setTimeout(function() {
+                    if (siteSearchBox && typeof siteSearchBox.focus === "function") {
+                        siteSearchBox.focus();
+                    }
+                }, 80);
+            }
+            if (siteSearchModal && window.jQuery) {
+                window.jQuery(siteSearchModal).on("shown.bs.modal", focusSiteSearch);
+            }
+            document.addEventListener("keydown", function(event) {
+                var key = String(event.key || "").toLowerCase();
+                var isSearchShortcut = key === "k" && (event.metaKey || event.ctrlKey);
+                var isModalOpen = siteSearchModal && siteSearchModal.classList.contains("show");
+                var target = event.target;
+                var isTyping = target && (
+                    target.tagName === "INPUT" ||
+                    target.tagName === "TEXTAREA" ||
+                    target.isContentEditable
+                );
+                if (!isSearchShortcut || (isTyping && isModalOpen) || !siteSearchModal || !window.jQuery) return;
+                event.preventDefault();
+                window.jQuery(siteSearchModal).modal("show");
+            });
+        });
+    </script>
+    
+    <script src="/Ryanhu2001/assets/js/blog.js"></script>
+    
+    <script src="/Ryanhu2001/assets/js/common.js"></script>
+    <script src="/Ryanhu2001/assets/js/bubble_visual_hash.js"></script>
+</body>
+</html>

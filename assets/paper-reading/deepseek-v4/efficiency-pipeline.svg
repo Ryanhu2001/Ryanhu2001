@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="680" viewBox="0 0 1120 680" role="img" aria-labelledby="title desc">
+  <title id="title">DeepSeek-V4 million-token efficiency pipeline</title>
+  <desc id="desc">A hand-drawn mechanism diagram for DeepSeek-V4 hybrid attention and efficiency claims.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#243036"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfaf7; }
+      .title { font: 700 30px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111; }
+      .subtitle { font: 500 15px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #5d625f; }
+      .panel { fill: #fff; stroke: #283238; stroke-width: 1.5; rx: 16; }
+      .csa { fill: #eef6ff; stroke: #3a5f90; stroke-width: 1.5; rx: 16; }
+      .hca { fill: #eef8ef; stroke: #3d704a; stroke-width: 1.5; rx: 16; }
+      .infra { fill: #fff1dc; stroke: #9b6518; stroke-width: 1.5; rx: 16; }
+      .label { font: 700 16px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #162025; }
+      .small { font: 500 13px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #394246; }
+      .metric { font: 800 25px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #162025; }
+      .mono { font: 600 13px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #253036; }
+      .line { stroke: #243036; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .thin { stroke: #6c777d; stroke-width: 1.5; fill: none; }
+      .bar-bg { fill: #e7e1d6; }
+      .bar-pro { fill: #386dbe; }
+      .bar-flash { fill: #2f8d62; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1120" height="680"/>
+  <text class="title" x="54" y="58">DeepSeek-V4: make 1M context affordable</text>
+  <text class="subtitle" x="55" y="86">The mechanism is compression + sparse selection + system co-design, not just a larger context window.</text>
+
+  <rect class="panel" x="55" y="150" width="205" height="135"/>
+  <text class="label" x="88" y="185">1M-token input</text>
+  <text class="small" x="88" y="217">near tokens need detail</text>
+  <text class="small" x="88" y="242">far tokens need routing</text>
+  <text class="small" x="88" y="267">KV cache must shrink</text>
+
+  <rect class="csa" x="330" y="118" width="275" height="150"/>
+  <text class="label" x="370" y="153">CSA path</text>
+  <text class="small" x="370" y="183">compress KV by groups</text>
+  <text class="mono" x="370" y="211">m = 4, top-k = 512/1024</text>
+  <text class="small" x="370" y="239">lightning indexer selects blocks</text>
+
+  <rect class="hca" x="330" y="322" width="275" height="150"/>
+  <text class="label" x="370" y="357">HCA path</text>
+  <text class="small" x="370" y="387">heavier compression</text>
+  <text class="mono" x="370" y="415">m' = 128</text>
+  <text class="small" x="370" y="443">dense attention over compressed KV</text>
+
+  <rect class="panel" x="685" y="205" width="265" height="180"/>
+  <text class="label" x="728" y="240">Hybrid transformer</text>
+  <text class="small" x="728" y="272">CSA / HCA layers alternate</text>
+  <text class="small" x="728" y="302">DeepSeekMoE supplies capacity</text>
+  <text class="small" x="728" y="332">mHC strengthens residual path</text>
+  <text class="small" x="728" y="362">MTP stays on top</text>
+
+  <path class="line" d="M260 218 H330"/>
+  <path class="line" d="M260 218 C295 318 295 396 330 396"/>
+  <path class="line" d="M605 193 C640 220 650 255 685 275"/>
+  <path class="line" d="M605 396 C640 372 650 338 685 315"/>
+
+  <rect class="infra" x="55" y="515" width="420" height="95"/>
+  <text class="label" x="88" y="550">System side matters</text>
+  <text class="small" x="88" y="579">Muon, fused kernels, heterogeneous KV cache, FP4 QAT, shared-prefix reuse</text>
+
+  <rect class="panel" x="545" y="500" width="500" height="120"/>
+  <text class="label" x="578" y="535">1M context cost vs DeepSeek-V3.2</text>
+  <text class="small" x="578" y="568">Pro FLOPs</text>
+  <rect class="bar-bg" x="690" y="555" width="220" height="16"/>
+  <rect class="bar-pro" x="690" y="555" width="59" height="16"/>
+  <text class="mono" x="925" y="569">27%</text>
+  <text class="small" x="578" y="596">Pro KV</text>
+  <rect class="bar-bg" x="690" y="583" width="220" height="16"/>
+  <rect class="bar-pro" x="690" y="583" width="22" height="16"/>
+  <text class="mono" x="925" y="597">10%</text>
+  <text class="small" x="578" y="624">Flash FLOPs / KV</text>
+  <rect class="bar-bg" x="690" y="611" width="220" height="16"/>
+  <rect class="bar-flash" x="690" y="611" width="22" height="16"/>
+  <rect class="bar-flash" x="722" y="611" width="15" height="16" opacity="0.6"/>
+  <text class="mono" x="925" y="625">10% / 7%</text>
+
+  <path class="line" d="M817 385 C817 445 790 470 790 500"/>
+  <path class="thin" d="M955 295 H1035"/>
+  <text class="subtitle" x="970" y="285">Main reading:</text>
+  <text class="small" x="970" y="314">architecture and infra</text>
+  <text class="small" x="970" y="338">jointly buy efficiency.</text>
+</svg>

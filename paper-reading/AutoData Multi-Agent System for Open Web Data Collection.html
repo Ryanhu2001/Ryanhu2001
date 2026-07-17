@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<!-- Template: https://github.com/luost26/academic-homepage -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>AutoData: Multi-Agent System for Open Web Data Collection - Ryan</title>
+    <link rel="icon" href="/Ryanhu2001/assets/ryan/avator.jpg" type="image/jpeg">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/pagefind/pagefind-component-ui.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/blog.css">
+    
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/global.css">
+</head>
+<body class="bg-light" >
+    <nav class="navbar navbar-expand-sm navbar-light fixed-top mb-5 shadow-sm">
+    <div class="container-lg">
+        <a class="navbar-brand" href="/Ryanhu2001/"><strong>Ryan</strong></a>
+        <button class="navbar-toggler" style="font-size: 1em; padding: 0.5em;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-map"></i> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/">Home</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/wiki/">Wiki</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/paper-reading/">Paper Reading</a>
+                </li>
+                
+                <li class="nav-item nav-search-item">
+                    <button class="nav-link nav-search-button" type="button" data-toggle="modal" data-target="#siteSearchModal" aria-label="Search site">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <span>Search</span>
+                        <kbd>⌘K</kbd>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <div class="container-lg">
+        
+
+
+
+
+<div class="reading-progress" aria-hidden="true">
+    <span></span>
+</div>
+
+<div class="blog-layout-wrapper">
+    <div class="blog-main">
+        <div class="mb-3">
+            <a class="small" href="/Ryanhu2001/paper-reading/">
+                <i class="fas fa-arrow-left"></i> Paper Reading
+            </a>
+        </div>
+
+        <article class="bg-white rounded-xl p-4 p-md-5 mb-4 wiki-note-card" data-pagefind-body>
+            <div class="blog-content wiki-note">
+                <h1 id="autodata把一句数据需求变成可执行采集程序">AutoData：把一句数据需求变成可执行采集程序</h1>
+
+<ul>
+  <li><strong>Paper</strong>: <a href="https://arxiv.org/abs/2505.15859">AutoData: A Multi-Agent System for Open Web Data Collection</a></li>
+  <li><strong>Version</strong>: arXiv v1, 2025-05-21</li>
+  <li><strong>类型</strong>: multi-agent system / web data collection / benchmark paper</li>
+  <li><strong>关键词</strong>: AutoData, Instruct2DS, OHCache, oriented message hypergraph, research squad, development squad</li>
+</ul>
+
+<h2 id="读法给人和-agent-的路标">读法：给人和 agent 的路标</h2>
+
+<p>这篇适合按 <strong>数据工程 agent 系统</strong> 来读，而不是按普通 web scraping paper 读。它关心的是：用户只给一句自然语言数据需求，系统能不能自己研究网站/API、整理 blueprint、写采集代码、执行、验证、产出 dataset。</p>
+
+<p>给 agent 之后检索，关键词是：<code class="language-plaintext highlighter-rouge">AutoData</code>、<code class="language-plaintext highlighter-rouge">Instruct2DS</code>、<code class="language-plaintext highlighter-rouge">open web data collection</code>、<code class="language-plaintext highlighter-rouge">oriented hypergraph cache</code>、<code class="language-plaintext highlighter-rouge">research squad</code>、<code class="language-plaintext highlighter-rouge">development squad</code>、<code class="language-plaintext highlighter-rouge">OHCache</code>、<code class="language-plaintext highlighter-rouge">BibTeX from survey case study</code>。</p>
+
+<h2 id="一句话判断">一句话判断</h2>
+
+<p>AutoData 的核心贡献是把 open web data collection 做成一个多智能体工程流程：研究 squad 负责理解 web/API 和生成 blueprint，开发 squad 负责写程序、执行、验证，OHCache 用 oriented hypergraph 管理跨 agent 信息流。它在 Instruct2DS 上用 <strong>5.58 分钟 / 0.57 美元</strong> 达到 Academic/Stock/Sport F1 <strong>91.85 / 96.75 / 90.14</strong>，比 Manus 更快更便宜。</p>
+
+<h2 id="图表优先读法">图表优先读法</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>先看</th>
+      <th>图/表</th>
+      <th>读完应该抓住什么</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Figure 1：官方整体框架</td>
+      <td>Research squad、Develop squad 和 OHCache 怎么接成闭环</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>OHCache 结构</td>
+      <td>为什么多 agent 数据工程需要 message hypergraph 和 local cache</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Table 1</td>
+      <td>Instruct2DS 上 F1、时间、成本是否真的同时更好</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Figure 3</td>
+      <td>去掉 squad / OHCache / formatter / local cache 后到底损失什么</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Table 5</td>
+      <td>从 survey 抽 BibTeX 这个 case 对 paper-reading pipeline 最有迁移价值</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><img src="../assets/paper-reading/autodata/autodata-data-collection-loop.svg" alt="AutoData data collection loop" /></p>
+
+<p>这张自制图把 AutoData 的主线压成一条工程闭环：自然语言需求先进入 Research squad 形成 blueprint，再由 Develop squad 写程序和验证数据；OHCache 在底层托住跨 agent 消息和大 artifact。这样看官方 Figure 1 时，不会只看到“多 agent 很热闹”，而能抓住它把数据工程拆成研究阶段和开发阶段的设计。</p>
+
+<h2 id="先看系统框架">先看系统框架</h2>
+
+<p><img src="../assets/paper-reading/autodata/official-framework.png" alt="AutoData official framework" /></p>
+
+<p><img src="../assets/paper-reading/autodata/framework.png" alt="AutoData framework" /></p>
+
+<p>Figure 1 是这篇最重要的图。AutoData 的整体流程是：</p>
+
+<ol>
+  <li>用户输入一句自然语言数据需求。</li>
+  <li><strong>Research squad</strong> 浏览网页、理解数据源、抽取采集逻辑，生成 development blueprint。</li>
+  <li><strong>Development squad</strong> 根据 blueprint 写采集程序、执行程序、验证数据。</li>
+  <li><strong>Manager agent</strong> 编排 agent 顺序和信息流。</li>
+  <li><strong>OHCache</strong> 把消息、artifact 和多接收者通信组织成 oriented message hypergraph。</li>
+</ol>
+
+<p>这个架构最有意思的地方不是“agent 很多”，而是它把真实数据采集拆成了两个阶段：先研究采集逻辑，再写可复用程序。这比让一个 agent 边搜边抓边写更像正常的数据工程流程。</p>
+
+<h2 id="ohcache为什么要用-oriented-hypergraph">OHCache：为什么要用 oriented hypergraph</h2>
+
+<p>普通 multi-agent 系统常用 broadcast：每个 agent 都看到大量历史消息和 artifact。对 web data collection 这种任务，这会带来两个问题：</p>
+
+<ul>
+  <li>token 成本高，尤其网页内容、HTML、API 文档、转换文件会很大；</li>
+  <li>后续 agent 需要的是特定 artifact，不是所有历史聊天。</li>
+</ul>
+
+<p>AutoData 的 OHCache 包含三部分：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>组件</th>
+      <th>做什么</th>
+      <th>价值</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Oriented message hypergraph</td>
+      <td>用有向超边表示一个消息从一个 source agent 发给多个 target agents</td>
+      <td>避免全局广播</td>
+    </tr>
+    <tr>
+      <td>Hyperedge formatter</td>
+      <td>把自然语言消息结构化，再写入 hypergraph</td>
+      <td>降低歧义，便于后续检索</td>
+    </tr>
+    <tr>
+      <td>Local cache system</td>
+      <td>大文件和可复用 artifact 存本地，只在消息里传 cache id</td>
+      <td>降低 token 和重复传输成本</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>用一句话说：<strong>OHCache 是让多 agent 协作更像工作流系统，而不是把所有东西塞进一个聊天上下文。</strong></p>
+
+<h2 id="instruct2ds它测的不是静态网页抽取">Instruct2DS：它测的不是静态网页抽取</h2>
+
+<p>论文提出 Instruct2DS，目标是评估 agent 从开放 web source 采集 live dataset 的能力。它覆盖三个域：</p>
+
+<ul>
+  <li><strong>Academic</strong>：会议论文数据，例如 NeurIPS/ICLR/ICML/ACL/EMNLP/NAACL/CVPR/ICCV/ECCV；</li>
+  <li><strong>Finance</strong>：股票数据；</li>
+  <li><strong>Sports</strong>：NBA/MLB 相关统计。</li>
+</ul>
+
+<p>Appendix D.4 提到评测集包含 <strong>234 unique tasks</strong>。模型只拿到自然语言 instruction，不能直接访问作者构造的 ground-truth database，必须自己去开放 web source 抓取。</p>
+
+<p>这点和 SWDE/Extended SWDE 不一样：后者更多是静态页面 IE，Instruct2DS 要求 agent 处理 live web、instruction variables、symbolic-style extraction 和数据完整性。</p>
+
+<h2 id="主结果instruct2ds">主结果：Instruct2DS</h2>
+
+<p>Table 1 的关键数字：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th style="text-align: right">Academic F1</th>
+      <th style="text-align: right">Stock F1</th>
+      <th style="text-align: right">Sport F1</th>
+      <th style="text-align: right">Time min</th>
+      <th style="text-align: right">Cost USD</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Human</td>
+      <td style="text-align: right">85.57</td>
+      <td style="text-align: right">91.66</td>
+      <td style="text-align: right">89.50</td>
+      <td style="text-align: right">186.98</td>
+      <td style="text-align: right">N/A</td>
+    </tr>
+    <tr>
+      <td>Cursor</td>
+      <td style="text-align: right">84.37</td>
+      <td style="text-align: right">90.23</td>
+      <td style="text-align: right">88.70</td>
+      <td style="text-align: right">71.60</td>
+      <td style="text-align: right">N/A</td>
+    </tr>
+    <tr>
+      <td>Manus</td>
+      <td style="text-align: right">69.27</td>
+      <td style="text-align: right">95.24</td>
+      <td style="text-align: right">87.48</td>
+      <td style="text-align: right">15.37</td>
+      <td style="text-align: right">2.49</td>
+    </tr>
+    <tr>
+      <td>AutoData</td>
+      <td style="text-align: right"><strong>91.85</strong></td>
+      <td style="text-align: right"><strong>96.75</strong></td>
+      <td style="text-align: right"><strong>90.14</strong></td>
+      <td style="text-align: right"><strong>5.58</strong></td>
+      <td style="text-align: right"><strong>0.57</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这个表的读法：</p>
+
+<ul>
+  <li>Manus 在 Stock 上已经很强，但 Academic 明显弱。</li>
+  <li>人和 Cursor 的准确率不错，但时间成本太高。</li>
+  <li>AutoData 的优势来自“系统化 workflow + 专门面向数据采集”，不是单纯换一个更强模型。</li>
+</ul>
+
+<h2 id="其他-benchmark-和-case">其他 benchmark 和 case</h2>
+
+<h3 id="swde--extended-swde">SWDE / Extended SWDE</h3>
+
+<p>Table 2 显示 AutoData 在传统 IE benchmark 上也有竞争力：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Dataset</th>
+      <th style="text-align: right">AutoData F1</th>
+      <th>对比</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SWDE</td>
+      <td style="text-align: right"><strong>89.25</strong></td>
+      <td>Manus 89.22，AutoScraper 88.69</td>
+    </tr>
+    <tr>
+      <td>Extended SWDE</td>
+      <td style="text-align: right"><strong>77.44</strong></td>
+      <td>AutoScraper 76.21，Manus 75.64</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这些提升不算巨大，但说明系统没有只 overfit Instruct2DS。</p>
+
+<h3 id="humaneval">HumanEval</h3>
+
+<p>因为系统里有 code generation 机制，作者还测了 HumanEval：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th style="text-align: right">Pass@1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GPT-4</td>
+      <td style="text-align: right">67.0</td>
+    </tr>
+    <tr>
+      <td>MetaGPT</td>
+      <td style="text-align: right">85.9</td>
+    </tr>
+    <tr>
+      <td>Ours + GPT-4</td>
+      <td style="text-align: right">86.9</td>
+    </tr>
+    <tr>
+      <td>GPT-4o</td>
+      <td style="text-align: right">90.2</td>
+    </tr>
+    <tr>
+      <td>Ours + GPT-4o</td>
+      <td style="text-align: right"><strong>92.5</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这个实验不能证明 AutoData 是通用 coding agent，但说明它的研究-开发拆分没有拖累代码生成，甚至能提升一点。</p>
+
+<h3 id="case-1儿童绘本数据采集">Case 1：儿童绘本数据采集</h3>
+
+<p>Table 4 对比 Manus：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th style="text-align: right">Acc</th>
+      <th style="text-align: right">Completeness</th>
+      <th style="text-align: right">Uniqueness error</th>
+      <th style="text-align: right">Cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Manus</td>
+      <td style="text-align: right">63.93</td>
+      <td style="text-align: right">79.76</td>
+      <td style="text-align: right">1.51</td>
+      <td style="text-align: right">1.86</td>
+    </tr>
+    <tr>
+      <td>AutoData</td>
+      <td style="text-align: right"><strong>89.58</strong></td>
+      <td style="text-align: right"><strong>98.13</strong></td>
+      <td style="text-align: right"><strong>0.00</strong></td>
+      <td style="text-align: right"><strong>0.91</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这是一个多层 HTML crawl 任务，说明 AutoData 不只适合模板化 benchmark。</p>
+
+<h3 id="case-2从-survey-里抓-bibtex">Case 2：从 survey 里抓 BibTeX</h3>
+
+<p>Table 5：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th style="text-align: right">F1</th>
+      <th style="text-align: right">Precision</th>
+      <th style="text-align: right">Recall</th>
+      <th style="text-align: right">Cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Manus</td>
+      <td style="text-align: right">74.70</td>
+      <td style="text-align: right">87.96</td>
+      <td style="text-align: right">61.52</td>
+      <td style="text-align: right">2.55</td>
+    </tr>
+    <tr>
+      <td>AutoData</td>
+      <td style="text-align: right"><strong>91.16</strong></td>
+      <td style="text-align: right"><strong>94.28</strong></td>
+      <td style="text-align: right"><strong>88.46</strong></td>
+      <td style="text-align: right"><strong>1.40</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这个 case 对我特别有用：它接近 paper-reading pipeline 里的“从综述抽取参考文献、建立阅读地图”的场景。</p>
+
+<h2 id="ablation系统组件不是装饰">Ablation：系统组件不是装饰</h2>
+
+<p><img src="../assets/paper-reading/autodata/official-ablation-cost-f1.png" alt="AutoData official F1 and cost ablation" /></p>
+
+<p><img src="../assets/paper-reading/autodata/ablation-study.png" alt="AutoData ablation study" /></p>
+
+<p>Figure 3 做了两类 ablation：</p>
+
+<ul>
+  <li>去掉 research squad 或 development squad 的部分能力，性能下降；</li>
+  <li>去掉 OHCache、formatter 或 local cache，性能/成本变差。</li>
+</ul>
+
+<p>论文特别指出，去掉 local cache 后性能变化可能不大，但成本会显著升高。这符合直觉：artifact 传输和长上下文重复读取在多 agent 系统里很容易变成隐形成本。</p>
+
+<h2 id="我怎么判断">我怎么判断</h2>
+
+<h3 id="可信之处">可信之处</h3>
+
+<ul>
+  <li><strong>问题定义很实际</strong>：从 natural language instruction 到 dataset，是很多研究和业务场景真实需要的能力。</li>
+  <li><strong>有 benchmark 也有 case study</strong>：Instruct2DS、SWDE、HumanEval、绘本、survey BibTeX 覆盖了不同难度。</li>
+  <li><strong>成本意识明确</strong>：论文持续报告 time 和 expense，不只看 F1。</li>
+  <li><strong>OHCache 是真实系统痛点</strong>：多 agent token 成本和 artifact 传递不是小问题。</li>
+</ul>
+
+<h3 id="需要警惕">需要警惕</h3>
+
+<ul>
+  <li><strong>live web 复现会变</strong>：网站结构、rate limit、API pricing、反爬策略都会影响结果。</li>
+  <li><strong>评测任务仍偏结构化采集</strong>：对登录态、强反爬、动态交互、法律合规更复杂的场景没有充分覆盖。</li>
+  <li><strong>依赖 LLM API 质量和价格</strong>：Appendix G 也承认 pricing、rate limit、model quality 一变，latency/reproducibility/cost 都会变。</li>
+  <li><strong>dual-use 风险明显</strong>：自动采集系统可能抓个人数据、版权内容、付费内容或用于恶意数据构建。</li>
+</ul>
+
+<h2 id="对我的价值">对我的价值</h2>
+
+<p>这篇对个人 wiki/paper-reading pipeline 有两个直接启发：</p>
+
+<ol>
+  <li><strong>研究和开发要拆开</strong>：先让 agent 研究数据源和输出 blueprint，再让另一个 agent 写抓取/转换脚本。</li>
+  <li><strong>artifact 不要全塞聊天历史</strong>：HTML、PDF、CSV、图片、解析中间结果应该放 cache，消息里传 id 和摘要。</li>
+  <li><strong>采集结果要有 final-state/evidence 验证</strong>：不是 agent 说“抓完了”，而是和 schema、样本数、字段完整性、去重规则对齐。</li>
+</ol>
+
+<p>如果以后做“从综述自动生成 paper reading seed map”，AutoData 的 BibTeX case 可以直接当参考：先抽引用，再交叉验证，再生成 structured dataset。</p>
+
+<h2 id="一句话收束">一句话收束</h2>
+
+<p>AutoData 的好处是把 web 数据采集从一次性聊天任务变成了一个可缓存、可验证、可复用的 agent workflow。这比“叫一个大模型帮我爬一下”靠谱得多。</p>
+
+            </div>
+        </article>
+    </div>
+
+    <aside class="blog-toc-sidebar">
+        <nav id="blog-toc" class="blog-toc-nav" aria-label="Table of contents">
+            <div class="blog-toc-header">
+                <div class="blog-toc-title">On This Page</div>
+                <button
+                    id="blog-toc-toggle"
+                    class="blog-toc-toggle"
+                    type="button"
+                    aria-controls="blog-toc-list"
+                    aria-expanded="true"
+                    aria-label="收起目录"
+                    title="收起目录"
+                >
+                    <svg class="blog-toc-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="blog-toc-list" class="blog-toc-list"></div>
+        </nav>
+    </aside>
+</div>
+
+    </div>
+    <footer class="footer border-top py-2 mt-5 bg-white small">
+    <div class="container-lg">
+        <div class="row my-3">
+            <div class="col-6">
+                <div class="text-muted">
+                    <i>Last updated: Jul 2026</i>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="text-right text-muted">
+                    Built with <a href="https://github.com/luost26/academic-homepage" target="_blank"><i class="fas fa-pencil-ruler"></i> academic-homepage</a>.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <pagefind-config
+        bundle-path="/Ryanhu2001/pagefind/"
+        base-url="/Ryanhu2001/"
+        excerpt-length="30"
+        lang="zh-CN"></pagefind-config>
+    <div class="modal fade site-search-modal" id="siteSearchModal" tabindex="-1" role="dialog" aria-labelledby="siteSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 mb-0" id="siteSearchModalLabel">Search</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <pagefind-searchbox placeholder="搜索 wiki、论文笔记、关键词..." show-sub-results="true" hide-shortcut="true"></pagefind-searchbox>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/github-buttons/2.14.2/buttons.min.js" integrity="sha512-OYwZx04hKFeFNYrWxIyo3atgGpb+cxU0ENWBZs72X7T9U+NoHPM1ftUn/Mfw7dRDXrqWA6M1wBg6z6fGE32aeA==" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+    <script type="module" src="/Ryanhu2001/pagefind/pagefind-component-ui.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tocbot@4.36.8/dist/tocbot.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+              delimiters: [
+                  {left: '$$', right: '$$', display: true},
+                  {left: '\\[', right: '\\]', display: true},
+                  {left: '$', right: '$', display: false},
+                  {left: '\\(', right: '\\)', display: false}
+              ],
+              throwOnError : false
+            });
+            
+            Prism.highlightAll();
+            
+
+            var siteSearchModal = document.getElementById("siteSearchModal");
+            var siteSearchBox = siteSearchModal ? siteSearchModal.querySelector("pagefind-searchbox") : null;
+            function focusSiteSearch() {
+                window.setTimeout(function() {
+                    if (siteSearchBox && typeof siteSearchBox.focus === "function") {
+                        siteSearchBox.focus();
+                    }
+                }, 80);
+            }
+            if (siteSearchModal && window.jQuery) {
+                window.jQuery(siteSearchModal).on("shown.bs.modal", focusSiteSearch);
+            }
+            document.addEventListener("keydown", function(event) {
+                var key = String(event.key || "").toLowerCase();
+                var isSearchShortcut = key === "k" && (event.metaKey || event.ctrlKey);
+                var isModalOpen = siteSearchModal && siteSearchModal.classList.contains("show");
+                var target = event.target;
+                var isTyping = target && (
+                    target.tagName === "INPUT" ||
+                    target.tagName === "TEXTAREA" ||
+                    target.isContentEditable
+                );
+                if (!isSearchShortcut || (isTyping && isModalOpen) || !siteSearchModal || !window.jQuery) return;
+                event.preventDefault();
+                window.jQuery(siteSearchModal).modal("show");
+            });
+        });
+    </script>
+    
+    <script src="/Ryanhu2001/assets/js/blog.js"></script>
+    
+    <script src="/Ryanhu2001/assets/js/common.js"></script>
+    <script src="/Ryanhu2001/assets/js/bubble_visual_hash.js"></script>
+</body>
+</html>

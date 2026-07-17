@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="680" viewBox="0 0 1120 680" role="img" aria-labelledby="title desc">
+  <title id="title">Dockerless verifier workflow</title>
+  <desc id="desc">A diagram showing Dockerless as a repository-grounded verifier that generates questions, sends read-only agents into the repo, aggregates evidence, and produces a dense score for SFT filtering or RL reward.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#2c2925"/>
+    </marker>
+    <style>
+      .bg { fill: #fbf6ea; }
+      .box { fill: #fffaf0; stroke: #6f6252; stroke-width: 1.4; }
+      .accent { fill: #f1e2c8; stroke: #8a6f45; stroke-width: 1.6; }
+      .guard { fill: #f7ede0; stroke: #8a5a44; stroke-width: 1.5; stroke-dasharray: 8 6; }
+      .title { font: 700 30px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #171513; }
+      .subtitle { font: 500 15px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #5d564d; }
+      .label { font: 700 16px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #181614; }
+      .small { font: 500 13px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #3f3932; }
+      .mono { font: 600 12.5px "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #332e28; }
+      .line { stroke: #4f473d; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .soft { stroke: #8a6f45; stroke-width: 2; fill: none; stroke-dasharray: 7 6; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1120" height="680"/>
+  <text class="title" x="54" y="58">Dockerless：把 verifier 做成一次仓库调查</text>
+  <text class="subtitle" x="56" y="87">核心不是「永远不执行」，而是训练后筛选和 RL reward 不再依赖每个仓库的 Docker 环境。</text>
+
+  <rect class="box" x="70" y="145" width="210" height="126" rx="8"/>
+  <text class="label" x="105" y="181">输入三件事</text>
+  <text class="small" x="105" y="211">issue description</text>
+  <text class="small" x="105" y="235">reference patch</text>
+  <text class="small" x="105" y="259">candidate patch</text>
+
+  <rect class="accent" x="340" y="145" width="220" height="126" rx="8"/>
+  <text class="label" x="376" y="181">问题生成</text>
+  <text class="small" x="376" y="211">拆成 2 到 4 个</text>
+  <text class="small" x="376" y="235">verification questions</text>
+  <text class="small" x="376" y="259">定义要查什么证据</text>
+
+  <rect class="box" x="620" y="120" width="250" height="176" rx="8"/>
+  <text class="label" x="662" y="156">只读 repo explorers</text>
+  <text class="small" x="662" y="188">Q1: 查调用链和模块</text>
+  <text class="small" x="662" y="214">Q2: 查测试和断言</text>
+  <text class="small" x="662" y="240">Q3: 查配置和边界路径</text>
+  <text class="mono" x="662" y="269">find / rg / grep / read</text>
+
+  <rect class="accent" x="920" y="145" width="150" height="126" rx="8"/>
+  <text class="label" x="958" y="181">证据聚合</text>
+  <text class="small" x="958" y="211">Q/A evidence</text>
+  <text class="small" x="958" y="235">verdict token</text>
+  <text class="mono" x="958" y="259">score r_phi</text>
+
+  <path class="line" d="M280 208 H340"/>
+  <path class="line" d="M560 208 H620"/>
+  <path class="line" d="M870 208 H920"/>
+
+  <rect class="box" x="220" y="405" width="210" height="118" rx="8"/>
+  <text class="label" x="254" y="441">SFT / RFT filtering</text>
+  <text class="small" x="254" y="473">16K env-free rollouts</text>
+  <text class="small" x="254" y="497">按 score 选 top 4K</text>
+
+  <rect class="box" x="515" y="405" width="210" height="118" rx="8"/>
+  <text class="label" x="554" y="441">RL reward</text>
+  <text class="small" x="554" y="473">每个 patch 打 dense score</text>
+  <text class="small" x="554" y="497">GRPO 更新 coding agent</text>
+
+  <rect class="guard" x="805" y="390" width="230" height="148" rx="8"/>
+  <text class="label" x="845" y="426">执行测试仍在外层</text>
+  <text class="small" x="845" y="458">训练 verifier 的标签</text>
+  <text class="small" x="845" y="482">评估 verifier AUC</text>
+  <text class="small" x="845" y="506">不是部署时每轮 reward</text>
+
+  <path class="line" d="M995 271 C995 345 685 362 640 405"/>
+  <path class="line" d="M995 271 C995 350 430 358 325 405"/>
+  <path class="soft" d="M920 390 C850 338 745 320 690 296"/>
+
+  <text class="subtitle" x="116" y="610">读法：Dockerless 用 reference patch 定义「该查什么」，用 repo explorer 找证据，用 judge 输出可连续优化的分数。</text>
+</svg>

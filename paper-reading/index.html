@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<!-- Template: https://github.com/luost26/academic-homepage -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Paper Reading - Ryan</title>
+    <link rel="icon" href="/Ryanhu2001/assets/ryan/avator.jpg" type="image/jpeg">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/pagefind/pagefind-component-ui.css">
+    
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/global.css">
+</head>
+<body class="bg-light" >
+    <nav class="navbar navbar-expand-sm navbar-light fixed-top mb-5 shadow-sm">
+    <div class="container-lg">
+        <a class="navbar-brand" href="/Ryanhu2001/"><strong>Ryan</strong></a>
+        <button class="navbar-toggler" style="font-size: 1em; padding: 0.5em;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-map"></i> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/">Home</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/wiki/">Wiki</a>
+                </li>
+                
+                <li class="nav-item active">
+                    <a class="nav-link" href="/Ryanhu2001/paper-reading/">Paper Reading</a>
+                </li>
+                
+                <li class="nav-item nav-search-item">
+                    <button class="nav-link nav-search-button" type="button" data-toggle="modal" data-target="#siteSearchModal" aria-label="Search site">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <span>Search</span>
+                        <kbd>⌘K</kbd>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <div class="container-lg">
+        
+<div class="row">
+    <div class="col-lg-11 mx-auto">
+        <section class="paper-reading-panel bg-white shadow-sm rounded-xl p-4 p-md-5" data-paper-reading-index="">
+            <div class="paper-reading-header">
+                <div>
+                    <h1 class="mb-2">Paper Reading</h1>
+                    <div class="paper-reading-meta">
+                        <span data-result-count="">23</span> notes · sorted by created time
+                    </div>
+                </div>
+                <div class="paper-header-tools">
+                    <div class="paper-search-wrap">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <input type="search" class="paper-search-input" placeholder="Search title, tag, source..." aria-label="Search paper reading notes" data-filter-search="" />
+                    </div>
+                    <label class="paper-sort-wrap">
+                        <span>Sort</span>
+                        <select data-sort-order="" aria-label="Sort paper reading notes">
+                            <option value="created-desc">Newest</option>
+                            <option value="created-asc">Oldest</option>
+                            <option value="title-asc">Title</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+
+            <div class="paper-filter-block" aria-label="Paper reading filters">
+                <div class="paper-filter-row">
+                    <div class="paper-filter-label">Category</div>
+                    <div class="paper-filter-options" data-category-filters=""></div>
+                </div>
+                <div class="paper-filter-row">
+                    <div class="paper-filter-label">Tag</div>
+                    <div class="paper-filter-options" data-tag-filters=""></div>
+                </div>
+            </div>
+
+            <div class="paper-list-toolbar" aria-live="polite">
+                <div class="paper-page-summary" data-page-summary=""></div>
+                <label class="paper-sort-wrap paper-page-size-wrap">
+                    <span>Per Page</span>
+                    <select data-page-size="" aria-label="Notes per page">
+                        <option value="12">12</option>
+                        <option value="24">24</option>
+                        <option value="48">48</option>
+                        <option value="all">All</option>
+                    </select>
+                </label>
+            </div>
+
+            <div class="wiki-list paper-note-list" data-paper-note-list="">
+                
+                
+                <article class="wiki-list-item paper-note-item" data-category="Agent Training" data-tags="coding-agent|black-box-rl|claude-code|slime|sandbox|trajectory-data|reinforcement-learning" data-created="2026-07-13 11:05:25 +0800" data-title="Claude Code Black-box RL with slime coding_agent_rl" data-search="claude code black-box rl with slime coding_agent_rl 基于 claude code 做黑盒 coding-agent rl 知乎黑盒 claude code rl 系列和 slime/coding_agent_rl 交叉阅读：真正的难点不是让 agent 写代码，而是把 claude code 这种真实黑盒 harness 的请求、工具轨迹、sub-agent、auto-compaction 和 sandbox reward 转成可训练数据。 agent training zhihu series / slime official docs 2026 coding-agent black-box-rl claude-code slime sandbox trajectory-data reinforcement-learning">
+                    <div class="paper-note-topline">
+                        
+                        <span class="paper-note-category">Agent Training</span>
+                        
+                        
+                        <time class="paper-note-time" datetime="2026-07-13 11:05:25 +0800">
+                            2026-07-13 11:05
+                        </time>
+                        
+                    </div>
+                    <h2 class="h5 mb-2">
+                        <a href="/Ryanhu2001/paper-reading/Claude%20Code%20Black-box%20RL%20with%20slime%20coding_agent_rl.html">Claude Code Black-box RL with slime coding_agent_rl</a>
+                    </h2>
+                    
+                    <p class="text-muted mb-2">知乎黑盒 Claude Code RL 系列和 slime/coding_agent_rl 交叉阅读：真正的难点不是让 agent 写代码，而是把 Claude Code 这种真实黑盒 harness 的请求、工具轨迹、sub-agent、auto-compaction 和 sandbox reward 转成可训练数据。</p>
+                    
+                    
+                    <div class="paper-note-tags" aria-label="Tags">
+                        
+                        <span class="paper-note-tag">coding-agent</span>
+                        
+                        <span class="paper-note-tag">black-box-rl</span>
+                        
+                        <span class="paper-note-tag">claude-code</span>
+                        
+                        <span class="paper-note-tag">slime</span>
+                        
+                        <span class="paper-note-tag">sandbox</span>
+                        
+                        <span class="paper-note-tag">trajectory-data</span>
+                        
+                        <span class="paper-note-tag">reinforcement-learning</span>
+                        
+                    </div>
+                    
+                </article>
+                
+                
+                <article class="wiki-list-item paper-note-item" data-category="Agent Evaluation" data-tags="agent-evaluation|verifier|llm-as-judge|test-time-scaling|reward-modeling|reinforcement-learning|robotics" data-created="2026-07-09 22:03:05 +0800" data-title="LLM-as-a-Verifier: General-Purpose Verification Framework" data-search="llm-as-a-verifier: general-purpose verification framework llm-as-a-verifier: a general-purpose verification framework 这篇把 verification 当成 llm 的新 scaling axis：不再让 judge 吐一个离散分数，而是读 scoring token logits 的完整分布，生成连续 verifier score，再用于 best-of-n、progress tracking 和 rl dense reward。 agent evaluation arxiv preprint 2026 agent-evaluation verifier llm-as-judge test-time-scaling reward-modeling reinforcement-learning robotics">
+                    <div class="paper-note-topline">
+                        
+                        <span class="paper-note-category">Agent Evaluation</span>
+                        
+                        
+                        <time class="paper-note-time" datetime="2026-07-09 22:03:05 +0800">
+                            2026-07-09 22:03
+                        </time>
+                        
+                    </div>
+                    <h2 class="h5 mb-2">
+                        <a href="/Ryanhu2001/paper-reading/LLM-as-a-Verifier%20General-Purpose%20Verification%20Framework.html">LLM-as-a-Verifier: General-Purpose Verification Framework</a>
+                    </h2>
+                    
+                    <p class="text-muted mb-2">这篇把 verification 当成 LLM 的新 scaling axis：不再让 judge 吐一个离散分数，而是读 scoring token logits 的完整分布，生成连续 verifier score，再用于 best-of-N、progress tracking 和 RL dense reward。</p>
+                    
+                    
+                    <div class="paper-note-tags" aria-label="Tags">
+                        
+                        <span class="paper-note-tag">agent-evaluation</span>
+                        
+                        <span class="paper-note-tag">verifier</span>
+                        
+                        <span class="paper-note-tag">llm-as-judge</span>
+                        
+                        <span class="paper-note-tag">test-time-scaling</span>
+                        
+                        <span class="paper-note-tag">reward-modeling</span>
+                        
+                        <span class="paper-note-tag">reinforcement-learning</span>
+                        
+                        <span class="paper-note-tag">robotics</span>
+                        
+                    </div>
+                    
+                </article>
+                
+                
+                <article class="wiki-list-item paper-note-item" data-category="Agent Evaluation" data-tags="agent-evaluation|evals|llm-as-judge|regression-testing|agent-harness|anthropic" data-created="2026-07-09 17:16:28 +0800" data-title="Demystifying Evals for AI Agents" data-search="demystifying evals for ai agents demystifying evals for ai agents anthropic 的 agent eval 工程手册：好评测不是一个分数，而是把任务、轨迹、环境状态、grader、人工校准和生产信号串成能持续修系统的闭环。 agent evaluation anthropic engineering 2026 agent-evaluation evals llm-as-judge regression-testing agent-harness anthropic">
+                    <div class="paper-note-topline">
+                        
+                        <span class="paper-note-category">Agent Evaluation</span>
+                        
+                        
+                        <time class="paper-note-time" datetime="2026-07-09 17:16:28 +0800">
+                            2026-07-09 17:16
+                        </time>
+                        
+                    </div>
+                    <h2 class="h5 mb-2">
+                        <a href="/Ryanhu2001/paper-reading/Demystifying%20Evals%20for%20AI%20Agents.html">Demystifying Evals for AI Agents</a>
+                    </h2>
+                    
+                    <p class="text-muted mb-2">Anthropic 的 agent eval 工程手册：好评测不是一个分数，而是把任务、轨迹、环境状态、grader、人工校准和生产信号串成能持续修系统的闭环。</p>
+                    
+                    
+                    <div class="paper-note-tags" aria-label="Tags">
+                        
+                        <span class="paper-note-tag">agent-evaluation</span>
+                        
+                        <span class="paper-note-tag">evals</span>
+                        
+                        <span class="paper-note-tag">llm-as-judge</span>
+                        
+                        <span class="paper-note-tag">regression-testing</span>
+                        
+                        <span class="paper-note-tag">agent-harness</span>
+                        
+                        <span class="paper-note-tag">anthropic</span>
+                        
+                    </div>
+                    
+                </article>
+                
+                
+                <article class="wiki-list-item paper-note-item" data-category="Reinforcement Learning" data-tags="process-reward|reinforcement-learning|robotics|reward-shaping|discriminator|rlvr" data-created="2026-07-08 23:07:00 +0800" data-title="Success Visitation Matching Process Rewards" data-search="success visitation matching process rewards learning process rewards via success visitation matching for efficient rl 只用 sparse outcome reward 收集到的成功/失败轨迹，训练 discriminator 形成 dense process reward；在机器人 rl finetuning 上显著提升样本效率。 reinforcement learning arxiv preprint 2026 process-reward reinforcement-learning robotics reward-shaping discriminator rlvr">
+                    <div class="paper-note-topline">
+                        
+                        <span class="paper-note-category">Reinforcement Learning</span>
+                        
+                        
+                        <time class="paper-note-time" datetime="2026-07-08 23:07:00 +0800">
+                            2026-07-08 23:07
+                        </time>
+                        
+                    </div>
+                    <h2 class="h5 mb-2">
+                        <a href="/Ryanhu2001/paper-reading/Success%20Visitation%20Matching%20Process%20Rewards.html">Success Visitation Matching Process Rewards</a>
+                    </h2>
+                    
+                    <p class="text-muted mb-2">只用 sparse outcome reward 收集到的成功/失败轨迹，训练 discriminator 形成 dense process reward；在机器人 RL finetuning 上显著提升样本效率。</p>
+                    
+                    
+                    <div class="paper-note-tags" aria-label="Tags">
+                        
+                        <span class="paper-note-tag">process-reward</span>
+                        
+                        <span class="paper-note-tag">reinforcement-learning</span>
+                        
+                        <span class="paper-note-tag">robotics</span>
+                        
+                        <span class="paper-note-tag">reward-shaping</span>
+                        
+                        <span class="paper-note-tag">discriminator</span>
+                        
+                        <span class="paper-note-tag">rlvr</span>
+                        
+                    </div>
+                    
+                </article>
+                
+                
+                <article class="wiki-list-item paper-note-item" data-category="Agent Systems" data-tags="context-engineering|agent-scaffold|summarization|context-rot|search-agents|cost" data-created="2026-07-08 23:06:00 +0800" data-title="Self-Compacting Language Model Agents" data-search="self-compacting language model agents self-compacting language model agents 让模型用轻量 rubric 判断何时压缩上下文：不是按 token 阈值硬触发，而是在子任务闭合时总结，从而减少 context rot 和错误摘要。 agent systems arxiv preprint 2026 context-engineering agent-scaffold summarization context-rot search-agents cost">
+                    <div class="paper-note-topline">
+                        
+                        <span class="paper-note-category">Agent Systems</span>
+                        
+                        
+                        <time class="paper-note-time" datetime="2026-07-08 23:06:00 +0800">
+                            2026-07-08 23:06
+                        </time>
+                        
+                    </div>
+                    <h2 class="h5 mb-2">
+                        <a href="/Ryanhu2001/paper-reading/Self-Compacting%20Language%20Model%20Agents.html">Self-Compacting Language Model Agents</a>
+                    </h2>
+                    
+                    <p class="text-muted mb-2">让模型用轻量 rubric 判断何时压缩上下文：不是按 token 阈值硬触发，而是在子任务闭合时总结，从而减少 context rot 和错误摘要。</p>
+                    
+                    
+                    <div class="paper-note-tags" aria-label="Tags">
+                        
+                        <span class="paper-note-tag">context-engineering</span>
+                        
+                        <span class="paper-note-tag">agent-scaffold</span>
+                        
+                        <span class="paper-note-tag">summarization</span>
+                        
+                        <span class="paper-note-tag">context-rot</span>
+                        
+                        <span class="paper-note-tag">search-agents</span>
+                        
+                        <span class="paper-note-tag">cost</span>
+                        
+                    </div>
+                    
+                </article>
+                
+                
+                <article class="wiki-list-item paper-note-item" data-category="Agent Environments" data-tags="environment-engineering|reinforcement-learning|curriculum|mapf|self-improvement" data-created="2026-07-08 23:05:00 +0800" data-title="From Trainee to Trainer: LLM-Designed Training Environment" data-search="from trainee to trainer: llm-designed training environment from trainee to trainer: llm-designed training environment for rl with multi-agent reasoning 让当前 rl checkpoint 自己分析失败轨迹并改下一轮环境配置：在 mapf-frozenlake 上，qwen3-4b + grpo + environment engineering 超过固定环境和更大的商业模型。 agent environments arxiv preprint 2026 environment-engineering reinforcement-learning curriculum mapf self-improvement">
+                    <div class="paper-note-topline">
+                        
+                        <span class="paper-note-category">Agent Environments</span>
+                        
+                        
+                        <time class="paper-note-time" datetime="2026-07-08 23:05:00 +0800">
+                            2026-07-08 23:05
+                        </time>
+                        
+                    </div>
+                    <h2 class="h5 mb-2">
+                        <a href="/Ryanhu2001/paper-reading/Trainee%20to%20Trainer%20LLM-Designed%20Training%20Environment.html">From Trainee to Trainer: LLM-Designed Training Environment</a>
+                    </h2>
+                    
+                    <p class="text-muted mb-2">让当前 RL checkpoint 自己分析失败轨迹并改下一轮环境配置：在 MAPF-FrozenLake 上，Qwen3-4B + GRPO + environment engineering 超过固定环境和更大的商业模型。</p>
+                    
+                    
+                    <div class="paper-note-tags" aria-label="Tags">
+                        
+                        <span class="paper-note-tag">environment-engineering</span>
+                        
+                        <span class="paper-note-tag">reinforcement-learning</span>
+                        
+                        <span class="paper-note-tag">curriculum</span>
+                        
+                        <span class="paper-note-tag">mapf</span>
+                        
+                        <span class="paper-note-tag">self-improvement</span>
+                        
+                    </div>
+                    
+                </article>
+                
+                
+                <article class="wiki-list-item paper-note-item" data-category="Model Safety" data-tags="unlearning|model-architecture|source-level|sparse-activation|data-provenance" data-created="2026-07-08 23:04:00 +0800" data-title="Natively Unlearnable Large Language Models" data-search="natively unlearnable large language models natively unlearnable large language models 把 source-level unlearning 做进模型结构：共享 backbone 学通用知识，source-specific sink neurons 存特定来源知识，部署时关掉对应 sink 即可遗忘。 model safety arxiv preprint 2026 unlearning model-architecture source-level sparse-activation data-provenance">
+                    <div class="paper-note-topline">
+                        
+                        <span class="paper-note-category">Model Safety</span>
+                        
+                        
+                        <time class="paper-note-time" datetime="2026-07-08 23:04:00 +0800">
+                            2026-07-08 23:04
+                        </time>
+                        
+                    </div>
+                    <h2 class="h5 mb-2">
+                        <a href="/Ryanhu2001/paper-reading/Natively%20Unlearnable%20Large%20Language%20Models.html">Natively Unlearnable Large Language Models</a>
+                    </h2>
+                    
+                    <p class="text-muted mb-2">把 source-level unlearning 做进模型结构：共享 backbone 学通用知识，source-specific sink neurons 存特定来源知识，部署时关掉对应 sink 即可遗忘。</p>
+                    
+                    
+                    <div class="paper-note-tags" aria-label="Tags">
+                        
+                        <span class="paper-note-tag">unlearning</span>
+                        
+                        <span class="paper-note-tag">model-architecture</span>
+                        
+                        <span class="paper-note-tag">source-level</span>
+                        
+                        <span class="paper-note-tag">sparse-activation</span>
+                        
+                        <span class="paper-note-tag">data-provenance</span>
+                        
+                    </div>
+                    
+                </article>
+                
+                
+                <article class="wiki-list-item paper-note-item" data-category="Agent Systems" data-tags="multi-agent|web-data-collection|benchmark|hypergraph-cache|data-engineering" data-created="2026-07-08 23:03:00 +0800" data-title="AutoData: Multi-Agent System for Open Web Data Collection" data-search="autodata: multi-agent system for open web data collection autodata: a multi-agent system for open web data collection 从一句自然语言数据需求自动生成 web/api 数据采集程序：研究 squad + 开发 squad + oriented hypergraph cache，并提出 instruct2ds benchmark。 agent systems arxiv preprint 2025 multi-agent web-data-collection benchmark hypergraph-cache data-engineering">
+                    <div class="paper-note-topline">
+                        
+                        <span class="paper-note-category">Agent Systems</span>
+                        
+                        
+                        <time class="paper-note-time" datetime="2026-07-08 23:03:00 +0800">
+                            2026-07-08 23:03
+                        </time>
+                        
+                    </div>
+                    <h2 class="h5 mb-2">
+                        <a href="/Ryanhu2001/paper-reading/AutoData%20Multi-Agent%20System%20for%20Open%20Web%20Data%20Collection.html">AutoData: Multi-Agent System for Open Web Data Collection</a>
+                    </h2>
+                    
+                    <p class="text-muted mb-2">从一句自然语言数据需求自动生成 web/API 数据采集程序：研究 squad + 开发 squad + oriented hypergraph cache，并提出 Instruct2DS benchmark。</p>
+                    
+                    
+                    <div class="paper-note-tags" aria-label="Tags">
+                        
+                        <span class="paper-note-tag">multi-agent</span>
+                        
+                        <span class="paper-note-tag">web-data-collection</span>
+                        
+                        <span class="paper-note-tag">benchmark</span>
+                        
+                        <span class="paper-note-tag">hypergraph-cache</span>
+                        
+                        <span class="paper-note-tag">data-engineering</span>
+                        
+                    </div>
+                    
+                </article>
+                
+                
+                <article class="wiki-list-item paper-note-item" data-category="Agent Training" data-tags="reinforcement-learning|mid-training|process-reward|reasoning|llm-judge|exploration" data-created="2026-07-08 23:02:00 +0800" data-title="ExpRL: Exploratory RL for LLM Mid-Training" data-search="exprl: exploratory rl for llm mid-training exprl: exploratory rl for llm mid-training 把人类 reference solution 从 imitation target 改成 reward scaffold：policy 不看答案，只让 judge 用答案给 on-policy trace 打 dense progress reward。 agent training arxiv preprint 2026 reinforcement-learning mid-training process-reward reasoning llm-judge exploration">
+                    <div class="paper-note-topline">
+                        
+                        <span class="paper-note-category">Agent Training</span>
+                        
+                        
+                        <time class="paper-note-time" datetime="2026-07-08 23:02:00 +0800">
+                            2026-07-08 23:02
+                        </time>
+                        
+                    </div>
+                    <h2 class="h5 mb-2">
+                        <a href="/Ryanhu2001/paper-reading/ExpRL%20Exploratory%20RL%20for%20LLM%20Mid-Training.html">ExpRL: Exploratory RL for LLM Mid-Training</a>
+                    </h2>
+                    
+                    <p class="text-muted mb-2">把人类 reference solution 从 imitation target 改成 reward scaffold：policy 不看答案，只让 judge 用答案给 on-policy trace 打 dense progress reward。</p>
+                    
+                    
+                    <div class="paper-note-tags" aria-label="Tags">
+                        
+                        <span class="paper-note-tag">reinforcement-learning</span>
+                        
+                        <span class="paper-note-tag">mid-training</span>
+                        
+                        <span class="paper-note-tag">process-reward</span>
+                        
+                        <span class="paper-note-tag">reasoning</span>
+                        
+                        <span class="paper-note-tag">llm-judge</span>
+                        
+                        <span class="paper-note-tag">exploration</span>
+                        
+                    </div>
+                    
+                </article>
+                
+                
+                <article class="wiki-list-item paper-note-item" data-category="Agent Training" data-tags="agent-training|sft|rl|data-curation|swe-bench|terminal-bench" data-created="2026-07-08 23:01:00 +0800" data-title="OpenThoughts-Agent: Data Recipes for Agentic Models" data-search="openthoughts-agent: data recipes for agentic models openthoughts-agent: data recipes for agentic models 一篇很适合当 agent 后训练配方手册读的论文：100+ sft/rl ablation、100k agentic traces、32b 开源数据模型在 7 个 agent benchmark 上平均 44.8%。 agent training arxiv preprint 2026 agent-training sft rl data-curation swe-bench terminal-bench">
+                    <div class="paper-note-topline">
+                        
+                        <span class="paper-note-category">Agent Training</span>
+                        
+                        
+                        <time class="paper-note-time" datetime="2026-07-08 23:01:00 +0800">
+                            2026-07-08 23:01
+                        </time>
+                        
+                    </div>
+                    <h2 class="h5 mb-2">
+                        <a href="/Ryanhu2001/paper-reading/OpenThoughts-Agent%20Data%20Recipes%20for%20Agentic%20Models.html">OpenThoughts-Agent: Data Recipes for Agentic Models</a>
+                    </h2>
+                    
+                    <p class="text-muted mb-2">一篇很适合当 agent 后训练配方手册读的论文：100+ SFT/RL ablation、100K agentic traces、32B 开源数据模型在 7 个 agent benchmark 上平均 44.8%。</p>
+                    
+                    
+                    <div class="paper-note-tags" aria-label="Tags">
+                        
+                        <span class="paper-note-tag">agent-training</span>
+                        
+                        <span class="paper-note-tag">sft</span>
+                        
+                        <span class="paper-note-tag">rl</span>
+                        
+                        <span class="paper-note-tag">data-curation</span>
+                        
+                        <span class="paper-note-tag">swe-bench</span>
+                        
+                        <span class="paper-note-tag">terminal-bench</span>
+                        
+                    </div>
+                    
+                </article>
+                
+                
+                <article class="wiki-list-item paper-note-item" data-category="Benchmarks &amp; Evals" data-tags="agent-evaluation|business-workflows|api-discovery|deterministic-grading|zapier|workflow-automation" data-created="2026-07-08 16:52:19 +0800" data-title="AutomationBench: Business Workflow Benchmark" data-search="automationbench: business workflow benchmark automationbench zapier 的 automationbench 评估 agent 是否能在 47 个模拟 saas 工具之间完成真实业务 workflow：api discovery、跨 app 状态修改、policy adherence、deterministic final-state grading。 benchmarks &amp; evals zapier blog / arxiv preprint 2026 agent-evaluation business-workflows api-discovery deterministic-grading zapier workflow-automation">
+                    <div class="paper-note-topline">
+                        
+                        <span class="paper-note-category">Benchmarks &amp; Evals</span>
+                        
+                        
+                        <time class="paper-note-time" datetime="2026-07-08 16:52:19 +0800">
+                            2026-07-08 16:52
+                        </time>
+                        
+                    </div>
+                    <h2 class="h5 mb-2">
+                        <a href="/Ryanhu2001/paper-reading/AutomationBench%20Business%20Workflow%20Benchmark.html">AutomationBench: Business Workflow Benchmark</a>
+                    </h2>
+                    
+                    <p class="text-muted mb-2">Zapier 的 AutomationBench 评估 agent 是否能在 47 个模拟 SaaS 工具之间完成真实业务 workflow：API discovery、跨 app 状态修改、policy adherence、deterministic final-state grading。</p>
+                    
+                    
+                    <div class="paper-note-tags" aria-label="Tags">
+                        
+                        <span class="paper-note-tag">agent-evaluation</span>
+                        
+                        <span class="paper-note-tag">business-workflows</span>
+                        
+                        <span class="paper-note-tag">api-discovery</span>
+                        
+                        <span class="paper-note-tag">deterministic-grading</span>
+                        
+                        <span class="paper-note-tag">zapier</span>
+                        
+                        <span class="paper-note-tag">workflow-automation</span>
+                        
+                    </div>
+                    
+                </article>
+                
+                
+                <article class="wiki-list-item paper-note-item" data-category="Agent Environments" data-tags="sandbox|environment-engineering|scientific-discovery|budget|artifact-memory" data-created="2026-07-08 15:54:58 +0800" data-title="EurekAgent Environment Engineering for Scientific Discovery" data-search="eurekagent environment engineering for scientific discovery eurekagent: agent environment engineering is all you need for autonomous scientific discovery eurekagent 把 autonomous scientific discovery 的重点从固定 workflow 转向环境工程：权限、artifact、budget 和 human-in-loop 让强 cli agent 在可验证科学任务里可靠探索。 agent environments arxiv preprint 2026 sandbox environment-engineering scientific-discovery budget artifact-memory">
+                    <div class="paper-note-topline">
+                        
+                        <span class="paper-note-category">Agent Environments</span>
+                        
+                        
+                        <time class="paper-note-time" datetime="2026-07-08 15:54:58 +0800">
+                            2026-07-08 15:54
+                        </time>
+                        
+                    </div>
+                    <h2 class="h5 mb-2">
+                        <a href="/Ryanhu2001/paper-reading/EurekAgent%20Environment%20Engineering%20for%20Scientific%20Discovery.html">EurekAgent Environment Engineering for Scientific Discovery</a>
+                    </h2>
+                    
+                    <p class="text-muted mb-2">EurekAgent 把 autonomous scientific discovery 的重点从固定 workflow 转向环境工程：权限、artifact、budget 和 human-in-loop 让强 CLI agent 在可验证科学任务里可靠探索。</p>
+                    
+                    
+                    <div class="paper-note-tags" aria-label="Tags">
+                        
+                        <span class="paper-note-tag">sandbox</span>
+                        
+                        <span class="paper-note-tag">environment-engineering</span>
+                        
+                        <span class="paper-note-tag">scientific-discovery</span>
+                        
+                        <span class="paper-note-tag">budget</span>
+                        
+                        <span class="paper-note-tag">artifact-memory</span>
+                        
+                    </div>
+                    
+                </article>
+                
+                
+                <article class="wiki-list-item paper-note-item" data-category="Benchmarks &amp; Evals" data-tags="agent-evaluation|dynamic-benchmark|virtual-environment|llm-as-judge|cost-latency" data-created="2026-07-08 15:53:44 +0800" data-title="AutoBench Agentic-1" data-search="autobench agentic-1 announcing autobench agentic: the next generation agentic benchmark autobench agentic 把 agent benchmark 做成动态虚拟企业环境：persona、memory、tool schema、mock feedback 和多轮执行共同构成任务，同时给出分数、成本、延迟和细粒度 task breakdown。 benchmarks &amp; evals autobench blog 2026 agent-evaluation dynamic-benchmark virtual-environment llm-as-judge cost-latency">
+                    <div class="paper-note-topline">
+                        
+                        <span class="paper-note-category">Benchmarks &amp; Evals</span>
+                        
+                        
+                        <time class="paper-note-time" datetime="2026-07-08 15:53:44 +0800">
+                            2026-07-08 15:53
+                        </time>
+                        
+                    </div>
+                    <h2 class="h5 mb-2">
+                        <a href="/Ryanhu2001/paper-reading/AutoBench%20Agentic-1.html">AutoBench Agentic-1</a>
+                    </h2>
+                    
+                    <p class="text-muted mb-2">AutoBench Agentic 把 agent benchmark 做成动态虚拟企业环境：persona、memory、tool schema、mock feedback 和多轮执行共同构成任务，同时给出分数、成本、延迟和细粒度 task breakdown。</p>
+                    
+                    
+                    <div class="paper-note-tags" aria-label="Tags">
+                        
+                        <span class="paper-note-tag">agent-evaluation</span>
+                        
+                        <span class="paper-note-tag">dynamic-benchmark</span>
+                        
+                        <span class="paper-note-tag">virtual-environment</span>
+                        
+                        <span class="paper-note-tag">llm-as-judge</span>
+                        
+                        <span class="paper-note-tag">cost-latency</span>
+                        
+                    </div>
+                    
+                </article>
+                
+                
+                <article class="wiki-list-item paper-note-item" data-category="Inference Systems" data-tags="speculative-decoding|serving|scheduler|deepseek|latency" data-created="2026-07-08 15:11:50 +0800" data-title="DSpark: Confidence-Scheduled Speculative Decoding" data-search="dspark: confidence-scheduled speculative decoding dspark: confidence-scheduled speculative decoding with semi-autoregressive generation dspark 把 speculative decoding 做成 draft quality 和 serving scheduler 的系统协同：半自回归 drafter 修 suffix decay，confidence-scheduled verification 在高并发下减少无效验证。 inference systems arxiv preprint 2026 speculative-decoding serving scheduler deepseek latency">
+                    <div class="paper-note-topline">
+                        
+                        <span class="paper-note-category">Inference Systems</span>
+                        
+                        
+                        <time class="paper-note-time" datetime="2026-07-08 15:11:50 +0800">
+                            2026-07-08 15:11
+                        </time>
+                        
+                    </div>
+                    <h2 class="h5 mb-2">
+                        <a href="/Ryanhu2001/paper-reading/DSpark%20Confidence-Scheduled%20Speculative%20Decoding.html">DSpark: Confidence-Scheduled Speculative Decoding</a>
+                    </h2>
+                    
+                    <p class="text-muted mb-2">DSpark 把 speculative decoding 做成 draft quality 和 serving scheduler 的系统协同：半自回归 drafter 修 suffix decay，confidence-scheduled verification 在高并发下减少无效验证。</p>
+                    
+                    
+                    <div class="paper-note-tags" aria-label="Tags">
+                        
+                        <span class="paper-note-tag">speculative-decoding</span>
+                        
+                        <span class="paper-note-tag">serving</span>
+                        
+                        <span class="paper-note-tag">scheduler</span>
+                        
+                        <span class="paper-note-tag">deepseek</span>
+                        
+                        <span class="paper-note-tag">latency</span>
+                        
+                    </div>
+                    
+                </article>
+                
+                
+                <article class="wiki-list-item paper-note-item" data-category="Agent Systems" data-tags="rsi|self-improvement|loops|managed-agents|sandbox|claude" data-created="2026-07-08 15:00:47 +0800" data-title="Anthropic RSI, Loops, and Managed Agents" data-search="anthropic rsi, loops, and managed agents when ai builds itself / getting started with loops / the evolution of agentic surfaces 三篇 anthropic/claude 文章串起来看：近端 rsi 更像 ai r&amp;d 被 loops、persistent sessions、sandbox、vault、eval 和人类 judgment 共同加速，而不是模型神秘地直接重写自己。 agent systems anthropic institute / claude blog 2026 rsi self-improvement loops managed-agents sandbox claude">
+                    <div class="paper-note-topline">
+                        
+                        <span class="paper-note-category">Agent Systems</span>
+                        
+                        
+                        <time class="paper-note-time" datetime="2026-07-08 15:00:47 +0800">
+                            2026-07-08 15:00
+                        </time>
+                        
+                    </div>
+                    <h2 class="h5 mb-2">
+                        <a href="/Ryanhu2001/paper-reading/Anthropic%20RSI%20Loops%20and%20Managed%20Agents.html">Anthropic RSI, Loops, and Managed Agents</a>
+                    </h2>
+                    
+                    <p class="text-muted mb-2">三篇 Anthropic/Claude 文章串起来看：近端 RSI 更像 AI R&amp;D 被 loops、persistent sessions、sandbox、vault、eval 和人类 judgment 共同加速，而不是模型神秘地直接重写自己。</p>
+                    
+                    
+                    <div class="paper-note-tags" aria-label="Tags">
+                        
+                        <span class="paper-note-tag">rsi</span>
+                        
+                        <span class="paper-note-tag">self-improvement</span>
+                        
+                        <span class="paper-note-tag">loops</span>
+                        
+                        <span class="paper-note-tag">managed-agents</span>
+                        
+                        <span class="paper-note-tag">sandbox</span>
+                        
+                        <span class="paper-note-tag">claude</span>
+                        
+                    </div>
+                    
+                </article>
+                
+                
+                <article class="wiki-list-item paper-note-item" data-category="Research Workflows" data-tags="literature-search|workflow-induction|retrieval|multi-turn|scientific-agents" data-created="2026-07-08 14:22:37 +0800" data-title="Multi-Turn Agentic Scientific Literature Search via Workflow Induction" data-search="multi-turn agentic scientific literature search via workflow induction multi-turn agentic scientific literature search via workflow induction paperpilot 把科学文献搜索建模成可编辑的 dag workflow：从 anchor paper 和用户意图出发，组合关键词搜索、引用扩展、过滤、打分、重排和证据抽取，并用多轮反馈修改 workflow。 research workflows arxiv preprint 2026 literature-search workflow-induction retrieval multi-turn scientific-agents">
+                    <div class="paper-note-topline">
+                        
+                        <span class="paper-note-category">Research Workflows</span>
+                        
+                        
+                        <time class="paper-note-time" datetime="2026-07-08 14:22:37 +0800">
+                            2026-07-08 14:22
+                        </time>
+                        
+                    </div>
+                    <h2 class="h5 mb-2">
+                        <a href="/Ryanhu2001/paper-reading/Multi-Turn%20Agentic%20Scientific%20Literature%20Search%20via%20Workflow%20Induction.html">Multi-Turn Agentic Scientific Literature Search via Workflow Induction</a>
+                    </h2>
+                    
+                    <p class="text-muted mb-2">PaperPilot 把科学文献搜索建模成可编辑的 DAG workflow：从 anchor paper 和用户意图出发，组合关键词搜索、引用扩展、过滤、打分、重排和证据抽取，并用多轮反馈修改 workflow。</p>
+                    
+                    
+                    <div class="paper-note-tags" aria-label="Tags">
+                        
+                        <span class="paper-note-tag">literature-search</span>
+                        
+                        <span class="paper-note-tag">workflow-induction</span>
+                        
+                        <span class="paper-note-tag">retrieval</span>
+                        
+                        <span class="paper-note-tag">multi-turn</span>
+                        
+                        <span class="paper-note-tag">scientific-agents</span>
+                        
+                    </div>
+                    
+                </article>
+                
+                
+                <article class="wiki-list-item paper-note-item" data-category="Agent Systems" data-tags="harness-engineering|rsi|context-engineering|workflow-search|self-improvement" data-created="2026-07-08 13:37:46 +0800" data-title="Harness Engineering for Self-Improvement" data-search="harness engineering for self-improvement harness engineering for self-improvement lilian weng 这篇 blog 把 recursive self-improvement 的近路放在 harness engineering：workflow、文件系统记忆、sub-agent、context/workflow/harness-code 优化、evolutionary search 和人类监督边界。 agent systems lil&#39;log 2026 harness-engineering rsi context-engineering workflow-search self-improvement">
+                    <div class="paper-note-topline">
+                        
+                        <span class="paper-note-category">Agent Systems</span>
+                        
+                        
+                        <time class="paper-note-time" datetime="2026-07-08 13:37:46 +0800">
+                            2026-07-08 13:37
+                        </time>
+                        
+                    </div>
+                    <h2 class="h5 mb-2">
+                        <a href="/Ryanhu2001/paper-reading/Harness%20Engineering%20for%20Self-Improvement.html">Harness Engineering for Self-Improvement</a>
+                    </h2>
+                    
+                    <p class="text-muted mb-2">Lilian Weng 这篇 blog 把 recursive self-improvement 的近路放在 harness engineering：workflow、文件系统记忆、sub-agent、context/workflow/harness-code 优化、evolutionary search 和人类监督边界。</p>
+                    
+                    
+                    <div class="paper-note-tags" aria-label="Tags">
+                        
+                        <span class="paper-note-tag">harness-engineering</span>
+                        
+                        <span class="paper-note-tag">rsi</span>
+                        
+                        <span class="paper-note-tag">context-engineering</span>
+                        
+                        <span class="paper-note-tag">workflow-search</span>
+                        
+                        <span class="paper-note-tag">self-improvement</span>
+                        
+                    </div>
+                    
+                </article>
+                
+                
+                <article class="wiki-list-item paper-note-item" data-category="Model Training" data-tags="model-report|rl|data-mixture|hill-climbing|agentic-coding" data-created="2026-07-07 00:29:37 +0800" data-title="MAI-Thinking-1: Building a Hill-Climbing Machine" data-search="mai-thinking-1: building a hill-climbing machine mai-thinking-1: building a hill-climbing machine mai-thinking-1 的重点是 microsoft ai 如何搭一台持续 hill-climbing 的模型机器：35b active / 1t moe、30t 预训练、256k 上下文、三类 rl climb 和很细的数据/基础设施细节。 model training technical report 2026 model-report rl data-mixture hill-climbing agentic-coding">
+                    <div class="paper-note-topline">
+                        
+                        <span class="paper-note-category">Model Training</span>
+                        
+                        
+                        <time class="paper-note-time" datetime="2026-07-07 00:29:37 +0800">
+                            2026-07-07 00:29
+                        </time>
+                        
+                    </div>
+                    <h2 class="h5 mb-2">
+                        <a href="/Ryanhu2001/paper-reading/MAI-Thinking-1%20Building%20a%20Hill-Climbing%20Machine.html">MAI-Thinking-1: Building a Hill-Climbing Machine</a>
+                    </h2>
+                    
+                    <p class="text-muted mb-2">MAI-Thinking-1 的重点是 Microsoft AI 如何搭一台持续 hill-climbing 的模型机器：35B active / 1T MoE、30T 预训练、256K 上下文、三类 RL climb 和很细的数据/基础设施细节。</p>
+                    
+                    
+                    <div class="paper-note-tags" aria-label="Tags">
+                        
+                        <span class="paper-note-tag">model-report</span>
+                        
+                        <span class="paper-note-tag">rl</span>
+                        
+                        <span class="paper-note-tag">data-mixture</span>
+                        
+                        <span class="paper-note-tag">hill-climbing</span>
+                        
+                        <span class="paper-note-tag">agentic-coding</span>
+                        
+                    </div>
+                    
+                </article>
+                
+                
+                <article class="wiki-list-item paper-note-item" data-category="Model Releases" data-tags="coding-agent|tool-use|thinking-mode|mcp|token-efficiency" data-created="2026-07-07 00:29:37 +0800" data-title="Kimi K2.7 Code" data-search="kimi k2.7 code kimi k2.7 code 把 kimi 最新 coding 模型当成 api/agent contract 来读：k2.7 code 的重点不只是分数，而是强制 thinking、工具调用约束、token 成本和 k2.6 到 k2.7 的编码/agent 能力迁移。 model releases official documentation / technical blog 2026 coding-agent tool-use thinking-mode mcp token-efficiency">
+                    <div class="paper-note-topline">
+                        
+                        <span class="paper-note-category">Model Releases</span>
+                        
+                        
+                        <time class="paper-note-time" datetime="2026-07-07 00:29:37 +0800">
+                            2026-07-07 00:29
+                        </time>
+                        
+                    </div>
+                    <h2 class="h5 mb-2">
+                        <a href="/Ryanhu2001/paper-reading/Kimi%20K2.7%20Code.html">Kimi K2.7 Code</a>
+                    </h2>
+                    
+                    <p class="text-muted mb-2">把 Kimi 最新 coding 模型当成 API/agent contract 来读：K2.7 Code 的重点不只是分数，而是强制 thinking、工具调用约束、token 成本和 K2.6 到 K2.7 的编码/agent 能力迁移。</p>
+                    
+                    
+                    <div class="paper-note-tags" aria-label="Tags">
+                        
+                        <span class="paper-note-tag">coding-agent</span>
+                        
+                        <span class="paper-note-tag">tool-use</span>
+                        
+                        <span class="paper-note-tag">thinking-mode</span>
+                        
+                        <span class="paper-note-tag">mcp</span>
+                        
+                        <span class="paper-note-tag">token-efficiency</span>
+                        
+                    </div>
+                    
+                </article>
+                
+                
+                <article class="wiki-list-item paper-note-item" data-category="Model Releases" data-tags="long-context|coding-agent|mcp|benchmark|glm" data-created="2026-07-07 00:29:37 +0800" data-title="GLM-5.2" data-search="glm-5.2 glm-5.2 把 glm-5.2 官方文档当成 long-horizon coding agent 报告来读：重点是 1m context、128k output、工程任务案例和 benchmark claim 的可信边界。 model releases official documentation 2026 long-context coding-agent mcp benchmark glm">
+                    <div class="paper-note-topline">
+                        
+                        <span class="paper-note-category">Model Releases</span>
+                        
+                        
+                        <time class="paper-note-time" datetime="2026-07-07 00:29:37 +0800">
+                            2026-07-07 00:29
+                        </time>
+                        
+                    </div>
+                    <h2 class="h5 mb-2">
+                        <a href="/Ryanhu2001/paper-reading/GLM-5.2.html">GLM-5.2</a>
+                    </h2>
+                    
+                    <p class="text-muted mb-2">把 GLM-5.2 官方文档当成 long-horizon coding agent 报告来读：重点是 1M context、128K output、工程任务案例和 benchmark claim 的可信边界。</p>
+                    
+                    
+                    <div class="paper-note-tags" aria-label="Tags">
+                        
+                        <span class="paper-note-tag">long-context</span>
+                        
+                        <span class="paper-note-tag">coding-agent</span>
+                        
+                        <span class="paper-note-tag">mcp</span>
+                        
+                        <span class="paper-note-tag">benchmark</span>
+                        
+                        <span class="paper-note-tag">glm</span>
+                        
+                    </div>
+                    
+                </article>
+                
+                
+                <article class="wiki-list-item paper-note-item" data-category="Model Architecture" data-tags="long-context|efficient-attention|kv-cache|fp4|deepseek" data-created="2026-07-07 00:29:37 +0800" data-title="DeepSeek-V4: Towards Highly Efficient Million-Token Context Intelligence" data-search="deepseek-v4: towards highly efficient million-token context intelligence deepseek-v4: towards highly efficient million-token context intelligence deepseek-v4 的核心不是单纯 1m context，而是用 csa/hca、mhc、muon、fp4 qat 和 post-training consolidation 把百万上下文做得更省 flops 和 kv cache。 model architecture arxiv 2026 long-context efficient-attention kv-cache fp4 deepseek">
+                    <div class="paper-note-topline">
+                        
+                        <span class="paper-note-category">Model Architecture</span>
+                        
+                        
+                        <time class="paper-note-time" datetime="2026-07-07 00:29:37 +0800">
+                            2026-07-07 00:29
+                        </time>
+                        
+                    </div>
+                    <h2 class="h5 mb-2">
+                        <a href="/Ryanhu2001/paper-reading/DeepSeek-V4%20Towards%20Highly%20Efficient%20Million-Token%20Context%20Intelligence.html">DeepSeek-V4: Towards Highly Efficient Million-Token Context Intelligence</a>
+                    </h2>
+                    
+                    <p class="text-muted mb-2">DeepSeek-V4 的核心不是单纯 1M context，而是用 CSA/HCA、mHC、Muon、FP4 QAT 和 post-training consolidation 把百万上下文做得更省 FLOPs 和 KV cache。</p>
+                    
+                    
+                    <div class="paper-note-tags" aria-label="Tags">
+                        
+                        <span class="paper-note-tag">long-context</span>
+                        
+                        <span class="paper-note-tag">efficient-attention</span>
+                        
+                        <span class="paper-note-tag">kv-cache</span>
+                        
+                        <span class="paper-note-tag">fp4</span>
+                        
+                        <span class="paper-note-tag">deepseek</span>
+                        
+                    </div>
+                    
+                </article>
+                
+                
+                <article class="wiki-list-item paper-note-item" data-category="Coding Agents" data-tags="coding-agent|rl|cursorbench|training-infra|anyrun" data-created="2026-07-07 00:29:37 +0800" data-title="Composer 2 Technical Report" data-search="composer 2 technical report composer 2 technical report composer 2 是 cursor 把 kimi k2.5 专门训练成 coding agent 的报告，核心在 continued pretraining、真实 cursorbench、异步 rl、anyrun 环境和成本/准确率 pareto。 coding agents arxiv 2026 coding-agent rl cursorbench training-infra anyrun">
+                    <div class="paper-note-topline">
+                        
+                        <span class="paper-note-category">Coding Agents</span>
+                        
+                        
+                        <time class="paper-note-time" datetime="2026-07-07 00:29:37 +0800">
+                            2026-07-07 00:29
+                        </time>
+                        
+                    </div>
+                    <h2 class="h5 mb-2">
+                        <a href="/Ryanhu2001/paper-reading/Composer%202%20Technical%20Report.html">Composer 2 Technical Report</a>
+                    </h2>
+                    
+                    <p class="text-muted mb-2">Composer 2 是 Cursor 把 Kimi K2.5 专门训练成 coding agent 的报告，核心在 continued pretraining、真实 CursorBench、异步 RL、Anyrun 环境和成本/准确率 Pareto。</p>
+                    
+                    
+                    <div class="paper-note-tags" aria-label="Tags">
+                        
+                        <span class="paper-note-tag">coding-agent</span>
+                        
+                        <span class="paper-note-tag">rl</span>
+                        
+                        <span class="paper-note-tag">cursorbench</span>
+                        
+                        <span class="paper-note-tag">training-infra</span>
+                        
+                        <span class="paper-note-tag">anyrun</span>
+                        
+                    </div>
+                    
+                </article>
+                
+                
+                <article class="wiki-list-item paper-note-item" data-category="Coding Agents" data-tags="verifier|coding-agent|swe-bench|rl-reward|environment-free" data-created="2026-07-06 23:32:12 +0800" data-title="Dockerless: Environment-Free Program Verifier for Coding Agents" data-search="dockerless: environment-free program verifier for coding agents dockerless: environment-free program verifier for coding agents 把 patch verifier 做成会读仓库、会收集证据的 agentic workflow，用来替代 per-repository test execution 的 sft 筛选和 rl reward。 coding agents arxiv 2026 verifier coding-agent swe-bench rl-reward environment-free">
+                    <div class="paper-note-topline">
+                        
+                        <span class="paper-note-category">Coding Agents</span>
+                        
+                        
+                        <time class="paper-note-time" datetime="2026-07-06 23:32:12 +0800">
+                            2026-07-06 23:32
+                        </time>
+                        
+                    </div>
+                    <h2 class="h5 mb-2">
+                        <a href="/Ryanhu2001/paper-reading/Dockerless%20Environment-Free%20Program%20Verifier%20for%20Coding%20Agents.html">Dockerless: Environment-Free Program Verifier for Coding Agents</a>
+                    </h2>
+                    
+                    <p class="text-muted mb-2">把 patch verifier 做成会读仓库、会收集证据的 agentic workflow，用来替代 per-repository test execution 的 SFT 筛选和 RL reward。</p>
+                    
+                    
+                    <div class="paper-note-tags" aria-label="Tags">
+                        
+                        <span class="paper-note-tag">verifier</span>
+                        
+                        <span class="paper-note-tag">coding-agent</span>
+                        
+                        <span class="paper-note-tag">swe-bench</span>
+                        
+                        <span class="paper-note-tag">rl-reward</span>
+                        
+                        <span class="paper-note-tag">environment-free</span>
+                        
+                    </div>
+                    
+                </article>
+                
+            </div>
+
+            <div class="paper-empty-state" data-empty-state="" hidden="">No matching notes.</div>
+            <nav class="paper-pagination" data-pagination="" aria-label="Paper reading pagination"></nav>
+        </section>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var root = document.querySelector("[data-paper-reading-index]");
+    if (!root) return;
+
+    var items = Array.prototype.slice.call(root.querySelectorAll(".paper-note-item"));
+    var list = root.querySelector("[data-paper-note-list]");
+    var searchInput = root.querySelector("[data-filter-search]");
+    var sortSelect = root.querySelector("[data-sort-order]");
+    var pageSizeSelect = root.querySelector("[data-page-size]");
+    var categoryWrap = root.querySelector("[data-category-filters]");
+    var tagWrap = root.querySelector("[data-tag-filters]");
+    var count = root.querySelector("[data-result-count]");
+    var pageSummary = root.querySelector("[data-page-summary]");
+    var pagination = root.querySelector("[data-pagination]");
+    var emptyState = root.querySelector("[data-empty-state]");
+    var activeCategory = "all";
+    var activeTag = "all";
+    var currentPage = 1;
+    var filteredItems = items.slice();
+
+    function normalize(value) {
+        return String(value || "").trim();
+    }
+
+    function increment(map, key) {
+        key = normalize(key);
+        if (!key) return;
+        map.set(key, (map.get(key) || 0) + 1);
+    }
+
+    function buildMapFromItems() {
+        var categories = new Map();
+        var tags = new Map();
+        items.forEach(function(item) {
+            increment(categories, item.dataset.category || "Uncategorized");
+            normalize(item.dataset.tags).split("|").forEach(function(tag) {
+                increment(tags, tag);
+            });
+        });
+        return { categories: categories, tags: tags };
+    }
+
+    function makeButton(label, value, total, activeValue, onClick) {
+        var button = document.createElement("button");
+        var labelSpan = document.createElement("span");
+        var totalSpan = document.createElement("span");
+        button.type = "button";
+        button.className = "paper-filter-btn";
+        button.dataset.value = value;
+        button.setAttribute("aria-pressed", value === activeValue ? "true" : "false");
+        labelSpan.textContent = label;
+        totalSpan.className = "paper-filter-count";
+        totalSpan.textContent = total;
+        button.appendChild(labelSpan);
+        button.appendChild(totalSpan);
+        button.addEventListener("click", onClick);
+        return button;
+    }
+
+    function renderButtons(container, map, activeValue, onSelect) {
+        container.innerHTML = "";
+        container.appendChild(makeButton("All", "all", items.length, activeValue, function() {
+            onSelect("all");
+        }));
+        Array.from(map.entries())
+            .sort(function(a, b) {
+                return a[0].localeCompare(b[0]);
+            })
+            .forEach(function(entry) {
+                container.appendChild(makeButton(entry[0], entry[0], entry[1], activeValue, function() {
+                    onSelect(entry[0]);
+                }));
+            });
+    }
+
+    function updatePressed(container, activeValue) {
+        Array.prototype.slice.call(container.querySelectorAll("button")).forEach(function(button) {
+            button.setAttribute("aria-pressed", button.dataset.value === activeValue ? "true" : "false");
+        });
+    }
+
+    function itemTags(item) {
+        return normalize(item.dataset.tags).split("|").filter(Boolean);
+    }
+
+    function sortedItems(sourceItems) {
+        var mode = sortSelect.value;
+        return sourceItems.slice().sort(function(a, b) {
+            if (mode === "title-asc") {
+                return normalize(a.dataset.title).localeCompare(normalize(b.dataset.title));
+            }
+
+            var aTime = Date.parse(a.dataset.created || "") || 0;
+            var bTime = Date.parse(b.dataset.created || "") || 0;
+            if (mode === "created-asc") {
+                return aTime - bTime;
+            }
+            return bTime - aTime;
+        });
+    }
+
+    function pageSize() {
+        if (!pageSizeSelect || pageSizeSelect.value === "all") {
+            return filteredItems.length || 1;
+        }
+        return parseInt(pageSizeSelect.value, 10) || 12;
+    }
+
+    function totalPages() {
+        return Math.max(1, Math.ceil(filteredItems.length / pageSize()));
+    }
+
+    function clampPage() {
+        currentPage = Math.min(Math.max(currentPage, 1), totalPages());
+    }
+
+    function makePageButton(label, page, options) {
+        var button = document.createElement("button");
+        var opts = options || {};
+        button.type = "button";
+        button.className = "paper-page-btn";
+        button.textContent = label;
+        button.disabled = !!opts.disabled;
+        if (opts.current) {
+            button.setAttribute("aria-current", "page");
+        }
+        button.addEventListener("click", function() {
+            if (button.disabled || currentPage === page) return;
+            currentPage = page;
+            renderPage();
+        });
+        return button;
+    }
+
+    function visiblePageNumbers() {
+        var pages = totalPages();
+        var values = [];
+        var start = Math.max(1, currentPage - 2);
+        var end = Math.min(pages, currentPage + 2);
+
+        values.push(1);
+        for (var page = start; page <= end; page += 1) {
+            if (values.indexOf(page) === -1) values.push(page);
+        }
+        if (values.indexOf(pages) === -1) values.push(pages);
+        return values.sort(function(a, b) { return a - b; });
+    }
+
+    function renderPagination() {
+        if (!pagination) return;
+        pagination.innerHTML = "";
+
+        if (filteredItems.length === 0 || pageSizeSelect.value === "all" || totalPages() <= 1) {
+            pagination.hidden = true;
+            return;
+        }
+
+        pagination.hidden = false;
+        pagination.appendChild(makePageButton("Prev", currentPage - 1, {
+            disabled: currentPage === 1
+        }));
+
+        var pages = visiblePageNumbers();
+        pages.forEach(function(page, index) {
+            if (index > 0 && page - pages[index - 1] > 1) {
+                var gap = document.createElement("span");
+                gap.className = "paper-page-gap";
+                gap.textContent = "...";
+                pagination.appendChild(gap);
+            }
+            pagination.appendChild(makePageButton(String(page), page, {
+                current: page === currentPage
+            }));
+        });
+
+        pagination.appendChild(makePageButton("Next", currentPage + 1, {
+            disabled: currentPage === totalPages()
+        }));
+    }
+
+    function updatePageSummary(start, end) {
+        if (!pageSummary) return;
+        if (filteredItems.length === 0) {
+            pageSummary.textContent = "Showing 0 notes";
+            return;
+        }
+        pageSummary.textContent = "Showing " + start + "-" + end + " of " + filteredItems.length + " notes";
+    }
+
+    function renderPage() {
+        if (!list) return;
+        clampPage();
+
+        var size = pageSize();
+        var startIndex = (currentPage - 1) * size;
+        var endIndex = Math.min(startIndex + size, filteredItems.length);
+        var pageItems = filteredItems.slice(startIndex, endIndex);
+
+        items.forEach(function(item) {
+            item.hidden = true;
+        });
+
+        pageItems.forEach(function(item) {
+            item.hidden = false;
+            list.appendChild(item);
+        });
+
+        updatePageSummary(filteredItems.length ? startIndex + 1 : 0, endIndex);
+        renderPagination();
+    }
+
+    function applyFilters(resetPage) {
+        var query = normalize(searchInput.value).toLowerCase();
+
+        filteredItems = sortedItems(items.filter(function(item) {
+            var matchesSearch = !query || normalize(item.dataset.search).indexOf(query) !== -1;
+            var matchesCategory = activeCategory === "all" || item.dataset.category === activeCategory;
+            var matchesTag = activeTag === "all" || itemTags(item).indexOf(activeTag) !== -1;
+            return matchesSearch && matchesCategory && matchesTag;
+        }));
+
+        if (resetPage) {
+            currentPage = 1;
+        }
+
+        count.textContent = filteredItems.length;
+        emptyState.hidden = filteredItems.length !== 0;
+        updatePressed(categoryWrap, activeCategory);
+        updatePressed(tagWrap, activeTag);
+        renderPage();
+    }
+
+    var maps = buildMapFromItems();
+    renderButtons(categoryWrap, maps.categories, activeCategory, function(value) {
+        activeCategory = value;
+        applyFilters(true);
+    });
+    renderButtons(tagWrap, maps.tags, activeTag, function(value) {
+        activeTag = value;
+        applyFilters(true);
+    });
+
+    searchInput.addEventListener("input", function() {
+        applyFilters(true);
+    });
+    if (sortSelect) {
+        sortSelect.addEventListener("change", function() {
+            applyFilters(true);
+        });
+    }
+    if (pageSizeSelect) {
+        pageSizeSelect.addEventListener("change", function() {
+            applyFilters(true);
+        });
+    }
+    applyFilters(true);
+});
+</script>
+
+
+    </div>
+    <footer class="footer border-top py-2 mt-5 bg-white small">
+    <div class="container-lg">
+        <div class="row my-3">
+            <div class="col-6">
+                <div class="text-muted">
+                    <i>Last updated: Jul 2026</i>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="text-right text-muted">
+                    Built with <a href="https://github.com/luost26/academic-homepage" target="_blank"><i class="fas fa-pencil-ruler"></i> academic-homepage</a>.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <pagefind-config
+        bundle-path="/Ryanhu2001/pagefind/"
+        base-url="/Ryanhu2001/"
+        excerpt-length="30"
+        lang="zh-CN"></pagefind-config>
+    <div class="modal fade site-search-modal" id="siteSearchModal" tabindex="-1" role="dialog" aria-labelledby="siteSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 mb-0" id="siteSearchModalLabel">Search</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <pagefind-searchbox placeholder="搜索 wiki、论文笔记、关键词..." show-sub-results="true" hide-shortcut="true"></pagefind-searchbox>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/github-buttons/2.14.2/buttons.min.js" integrity="sha512-OYwZx04hKFeFNYrWxIyo3atgGpb+cxU0ENWBZs72X7T9U+NoHPM1ftUn/Mfw7dRDXrqWA6M1wBg6z6fGE32aeA==" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+    <script type="module" src="/Ryanhu2001/pagefind/pagefind-component-ui.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+              delimiters: [
+                  {left: '$$', right: '$$', display: true},
+                  {left: '\\[', right: '\\]', display: true},
+                  {left: '$', right: '$', display: false},
+                  {left: '\\(', right: '\\)', display: false}
+              ],
+              throwOnError : false
+            });
+            
+
+            var siteSearchModal = document.getElementById("siteSearchModal");
+            var siteSearchBox = siteSearchModal ? siteSearchModal.querySelector("pagefind-searchbox") : null;
+            function focusSiteSearch() {
+                window.setTimeout(function() {
+                    if (siteSearchBox && typeof siteSearchBox.focus === "function") {
+                        siteSearchBox.focus();
+                    }
+                }, 80);
+            }
+            if (siteSearchModal && window.jQuery) {
+                window.jQuery(siteSearchModal).on("shown.bs.modal", focusSiteSearch);
+            }
+            document.addEventListener("keydown", function(event) {
+                var key = String(event.key || "").toLowerCase();
+                var isSearchShortcut = key === "k" && (event.metaKey || event.ctrlKey);
+                var isModalOpen = siteSearchModal && siteSearchModal.classList.contains("show");
+                var target = event.target;
+                var isTyping = target && (
+                    target.tagName === "INPUT" ||
+                    target.tagName === "TEXTAREA" ||
+                    target.isContentEditable
+                );
+                if (!isSearchShortcut || (isTyping && isModalOpen) || !siteSearchModal || !window.jQuery) return;
+                event.preventDefault();
+                window.jQuery(siteSearchModal).modal("show");
+            });
+        });
+    </script>
+    
+    <script src="/Ryanhu2001/assets/js/common.js"></script>
+    <script src="/Ryanhu2001/assets/js/bubble_visual_hash.js"></script>
+</body>
+</html>

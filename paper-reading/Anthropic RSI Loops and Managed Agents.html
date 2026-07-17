@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<!-- Template: https://github.com/luost26/academic-homepage -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Anthropic RSI, Loops, and Managed Agents - Ryan</title>
+    <link rel="icon" href="/Ryanhu2001/assets/ryan/avator.jpg" type="image/jpeg">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/pagefind/pagefind-component-ui.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/blog.css">
+    
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/global.css">
+</head>
+<body class="bg-light" >
+    <nav class="navbar navbar-expand-sm navbar-light fixed-top mb-5 shadow-sm">
+    <div class="container-lg">
+        <a class="navbar-brand" href="/Ryanhu2001/"><strong>Ryan</strong></a>
+        <button class="navbar-toggler" style="font-size: 1em; padding: 0.5em;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-map"></i> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/">Home</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/wiki/">Wiki</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/paper-reading/">Paper Reading</a>
+                </li>
+                
+                <li class="nav-item nav-search-item">
+                    <button class="nav-link nav-search-button" type="button" data-toggle="modal" data-target="#siteSearchModal" aria-label="Search site">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <span>Search</span>
+                        <kbd>⌘K</kbd>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <div class="container-lg">
+        
+
+
+
+
+<div class="reading-progress" aria-hidden="true">
+    <span></span>
+</div>
+
+<div class="blog-layout-wrapper">
+    <div class="blog-main">
+        <div class="mb-3">
+            <a class="small" href="/Ryanhu2001/paper-reading/">
+                <i class="fas fa-arrow-left"></i> Paper Reading
+            </a>
+        </div>
+
+        <article class="bg-white rounded-xl p-4 p-md-5 mb-4 wiki-note-card" data-pagefind-body>
+            <div class="blog-content wiki-note">
+                <h1 id="anthropic-的-rsi-三件套自我改进循环和托管-agent">Anthropic 的 RSI 三件套：自我改进、循环和托管 agent</h1>
+
+<ul>
+  <li><strong>Source 1</strong>: <a href="https://www.anthropic.com/institute/recursive-self-improvement">When AI builds itself</a>, Anthropic Institute, 2026。页面未显式标注发布日期；文中核心证据集中在 2026.04-2026.05。</li>
+  <li><strong>Source 2</strong>: <a href="https://claude.com/blog/getting-started-with-loops">Getting started with loops</a>, Claude Blog, 2026-06-30。</li>
+  <li><strong>Source 3</strong>: <a href="https://claude.com/blog/building-with-claude-managed-agents">The evolution of agentic surfaces: building with Claude Managed Agents</a>, Claude Blog, 2026-06-10。</li>
+  <li><strong>原文体量</strong>: 三篇合计约 <strong>9300 words</strong>。RSI 文章约 <strong>5500 words</strong>，loops 约 <strong>1300 words</strong>，Managed Agents 约 <strong>2500 words</strong>。</li>
+  <li><strong>关键词</strong>: recursive self-improvement, AI-driven AI R&amp;D, loops, Claude Code, <code class="language-plaintext highlighter-rouge">/goal</code>, <code class="language-plaintext highlighter-rouge">/loop</code>, <code class="language-plaintext highlighter-rouge">/schedule</code>, Managed Agents, session log, vault, sandbox, Dreaming, Amdahl’s law。</li>
+</ul>
+
+<h2 id="读法给人和-agent-的路标">读法：给人和 agent 的路标</h2>
+
+<p>这三篇最好不要分开读。RSI 那篇回答 <strong>为什么这件事重要</strong>：AI 已经在加速 AI 研发本身，未来可能把人类从执行者压缩成目标设定者、审查者和瓶颈修复者。Loops 那篇回答 <strong>怎样把 agent 的行动变成可控循环</strong>：触发、执行、验证、停止，每个环节都要显式设计。Managed Agents 那篇回答 <strong>怎样把循环放进生产环境</strong>：有隔离的 sandbox，有不暴露给代码的 credentials，有可恢复的 session log，有 observability，有随模型演进的 harness。</p>
+
+<p>所以这篇笔记的主线是：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RSI 压力：AI 开始加速 AI R&amp;D
+  -&gt; loop 原语：把一次次行动变成可停止、可验证的循环
+  -&gt; managed runtime：把循环放到持久、隔离、可审计的生产环境
+  -&gt; 人类角色：taste、verification、bottleneck selection
+</code></pre></div></div>
+
+<p>如果只想快速 get 到重点，读 <strong>一句话判断</strong>、<strong>结构图</strong>、<strong>关键数字表</strong> 和 <strong>对我的 wiki/paper-reading pipeline 的启发</strong>。如果要真的拿去设计自己的 agent 系统，再读 loops 和 Managed Agents 两节。</p>
+
+<h2 id="一句话判断">一句话判断</h2>
+
+<p>Anthropic 这三篇合起来的判断是：近端 recursive self-improvement 不一定先表现为“模型直接改自己的权重”，更可能先表现为 <strong>AI 把 AI R&amp;D 里的执行部分自动化</strong>，同时由 loops、评测、日志、sandbox、权限和人类 judgment 组成一个越来越强的工程闭环。</p>
+
+<p>这里的关键不是神秘的“自我意识式自举”，而是很工程的东西：模型能写代码、跑实验、看日志、修 bug、复现实验、并行委托；系统能保存完整轨迹、隔离执行、控制凭证、自动审查；人类开始把时间从“亲手做”转到“选择什么值得做、怎样验证、哪里该停”。这就是短期更可信的 RSI 表面。</p>
+
+<h2 id="图表优先读法">图表优先读法</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>先看</th>
+      <th>图/表</th>
+      <th>读完应该抓住什么</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>RSI / Loops / Managed Agents 结构图</td>
+      <td>三篇文章其实在讲同一条工程链路：能力、循环、基础设施</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>数字证据表</td>
+      <td>近端 RSI 的证据更多来自 AI R&amp;D automation，而不是模型直接改权重</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Loops 小节</td>
+      <td>“让模型持续改进系统”需要评测、日志、权限、sandbox 和回滚</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Managed Agents 小节</td>
+      <td>生产化 agent 的关键是权限边界、审计轨迹、可恢复状态和人类 judgment</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="先看结构图">先看结构图</h2>
+
+<p><img src="/Ryanhu2001/assets/paper-reading/anthropic-rsi-loops-managed-agents/rsi-loops-managed-agents.svg" alt="Anthropic RSI, loops, and Managed Agents map" /></p>
+
+<p>这张图的读法有三个锚点：</p>
+
+<ul>
+  <li><strong>RSI 压力来自执行成本下降</strong>：代码、实验、复现、debug 这些“做事”的部分变得越来越便宜，瓶颈就会往上游移动。</li>
+  <li><strong>Loops 是控制原语</strong>：一个 agent 不是“prompt 一下就完”，而是被 trigger、stop condition、verification 和 artifacts 约束住的循环。</li>
+  <li><strong>Managed Agents 是生产底座</strong>：真正上线时，agent 需要 sandbox、vault、session log、resume、observability，而不是一个随容器死亡的脚本进程。</li>
+</ul>
+
+<h2 id="1-rsi-文章到底在说什么">1. RSI 文章到底在说什么</h2>
+
+<p>Anthropic Institute 的 RSI 文章不是说“完整 recursive self-improvement 已经发生了”。它的更强说法是：<strong>AI 已经在加速 AI 系统的开发，并且这种加速可能比制度准备速度更快。</strong></p>
+
+<p>文章把 AI 研发拆成两类工作：</p>
+
+<ul>
+  <li><strong>Engineering</strong>：写代码、改基础设施、跑训练、修工具、处理 incident。</li>
+  <li><strong>Research</strong>：决定跑什么实验、解释结果、判断下一步、知道哪个方向值得继续。</li>
+</ul>
+
+<p>现在 Claude 已经很擅长第一类，也开始侵入第二类里的“执行一个明确实验”。但真正的缺口仍然在 <strong>judgment</strong>：选什么问题、怎么定义成功、看到结果后信不信、什么时候承认方向死了。也就是说，Claude 已经能接过很多“method”，但还没有完全接过“taste”。</p>
+
+<p>这点很重要。很多 RSI 讨论会直接跳到“AI 自己训练下一代 AI”，但 Anthropic 文章实际给的是一条更连续的进化路径：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>阶段</th>
+      <th>主要形态</th>
+      <th>人类的角色</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2021-2023</td>
+      <td>人类写代码和文档，构建早期 Claude</td>
+      <td>几乎全流程主导</td>
+    </tr>
+    <tr>
+      <td>2023-2025</td>
+      <td>chatbot 帮忙生成短代码片段</td>
+      <td>人类复制、粘贴、整合</td>
+    </tr>
+    <tr>
+      <td>2025-2026</td>
+      <td>coding agent 可以直接写和改文件</td>
+      <td>人类给目标、审查结果</td>
+    </tr>
+    <tr>
+      <td>today</td>
+      <td>autonomous agents 能跑代码、委托数小时任务</td>
+      <td>人类管理方向、资源和验证</td>
+    </tr>
+    <tr>
+      <td>future</td>
+      <td>agent 可能构建和训练下一代模型</td>
+      <td>人类转向 oversight、validation、verification</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>我的理解是：<strong>RSI 的近端问题不是模型会不会“突然自举”，而是组织会不会在不知不觉中把研发速度推到人类审查和治理跟不上的区间。</strong></p>
+
+<h2 id="2-关键证据哪些数字值得记">2. 关键证据：哪些数字值得记</h2>
+
+<p>RSI 文章最有价值的部分是把外部 benchmark 和 Anthropic 内部数据放在一起。数字本身不能无脑当作通用结论，因为很多数据是内部场景、Claude judge 或挑选过的 session；但它们展示了一个方向：执行能力、长任务能力和研究 next-step 能力都在变强。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>证据</th>
+      <th style="text-align: right">数字</th>
+      <th>我会怎么读</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>autonomous task horizon</td>
+      <td style="text-align: right">可靠任务长度大约每 4 个月翻倍，早期趋势约每 7 个月翻倍</td>
+      <td>长任务能力在加速，但“可靠完成”取决于任务定义和评测方式</td>
+    </tr>
+    <tr>
+      <td>Claude Opus 3, 2024.03</td>
+      <td style="text-align: right">可完成约 4 分钟人类任务</td>
+      <td>还像短助手</td>
+    </tr>
+    <tr>
+      <td>Claude Sonnet 3.7, 2025</td>
+      <td style="text-align: right">可完成约 1.5 小时任务</td>
+      <td>开始像能接小工单的 coding agent</td>
+    </tr>
+    <tr>
+      <td>Claude Opus 4.6, 2026</td>
+      <td style="text-align: right">可完成约 12 小时任务</td>
+      <td>开始触及半天级自主工作</td>
+    </tr>
+    <tr>
+      <td>SWE-bench</td>
+      <td style="text-align: right">两年内从低个位数到接近饱和</td>
+      <td>单一 benchmark 会饱和，所以要持续换更难任务</td>
+    </tr>
+    <tr>
+      <td>CORE-Bench</td>
+      <td style="text-align: right">2024 年约 20% 成功，15 个月后接近饱和</td>
+      <td>复现实验这种科研前置能力被快速自动化</td>
+    </tr>
+    <tr>
+      <td>Anthropic 代码占比</td>
+      <td style="text-align: right">2026.05 超过 80% merged code 由 Claude authored</td>
+      <td>这说明“写代码”本身已经不是主要人力成本；但 LOC 不是质量</td>
+    </tr>
+    <tr>
+      <td>Anthropic 工程输出</td>
+      <td style="text-align: right">2026 Q2 典型工程师每日 merge 代码量约为 2024 的 8x</td>
+      <td>方向可信，倍率要谨慎，因为代码量高估生产力</td>
+    </tr>
+    <tr>
+      <td>Anthropic research poll</td>
+      <td style="text-align: right">130 名 research 员工，median 估计 Mythos Preview 带来约 4x output</td>
+      <td>主观数据，但和工程输出方向一致</td>
+    </tr>
+    <tr>
+      <td>API error cleanup</td>
+      <td style="text-align: right">Claude ship 800+ fixes，把一类 API error 降低 1000x；人类估计要 4 年</td>
+      <td>最适合 AI 的任务：大量、分散、重复、上下文宽</td>
+    </tr>
+    <tr>
+      <td>open-ended task success</td>
+      <td style="text-align: right">2026.05 达到 76%，6 个月增加 50 个百分点</td>
+      <td>Claude judge 判定，仍需注意 judge bias</td>
+    </tr>
+    <tr>
+      <td>training job incident</td>
+      <td style="text-align: right">约 2 小时定位 obscure debug flag；平常约 2-3 天</td>
+      <td>很像真实研发里“读日志 + 缩小搜索空间 + 验证”的工作</td>
+    </tr>
+    <tr>
+      <td>automated code review</td>
+      <td style="text-align: right">retrospectively 可提前抓住 claude.ai 过去 incidents 中约三分之一 bug</td>
+      <td>审查也被 agent 化，人的 review bottleneck 会被部分转移</td>
+    </tr>
+    <tr>
+      <td>小模型训练加速任务</td>
+      <td style="text-align: right">2025.05 Opus 4 约 3x，2026.04 Mythos Preview 约 52x；强人类 4-8 小时到 4x</td>
+      <td>明确目标 + 明确 correctness check 的实验优化，AI 特别强</td>
+    </tr>
+    <tr>
+      <td>open-ended AI safety research</td>
+      <td style="text-align: right">人类约一周恢复 floor-ceiling gap 的 23%；agents 用 800 cumulative hours 和约 USD 18,000 compute 恢复 97%</td>
+      <td>很强，但 humans 选择问题和评分 rubric，且未干净迁移到 production scale</td>
+    </tr>
+    <tr>
+      <td>research next-step</td>
+      <td style="text-align: right">n=129；Opus 4.5 在 2025.11 胜过人类 detour 选择 51%，Mythos Preview 在 2026.04 达到 64%</td>
+      <td>不是公平人机对比，而是“模型是否越来越会选下一步”的早期信号</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这组数字背后的主线可以压成一句：<strong>doing 在人类时间里变便宜了，judgment 和 verification 开始变贵。</strong></p>
+
+<p>Anthropic 文章也很清楚地把风险放在这里：如果 Claude 生成代码、实验和 ideas 的速度远快于人类 review，那么组织会遇到 Amdahl’s law。你加速了某个环节，整体速度马上被没加速的环节卡住。现在这个环节可能是代码审查、实验解释、优先级选择、安全验证、组织协调。</p>
+
+<h2 id="3-loops把能做事变成可控循环">3. Loops：把“能做事”变成可控循环</h2>
+
+<p>Claude 的 loops 文章很短，但它是 RSI 文章的工程解释。它把 loop 定义成：<strong>agent 重复执行工作循环，直到满足停止条件。</strong></p>
+
+<p>这听起来简单，但它把 agent 设计从“怎么 prompt”换成了四个问题：</p>
+
+<ul>
+  <li><strong>Trigger</strong>：什么时候启动？</li>
+  <li><strong>Work cycle</strong>：每轮做什么？</li>
+  <li><strong>Verification</strong>：怎么知道这轮有没有变好？</li>
+  <li><strong>Stop condition</strong>：什么时候停，而不是一直烧 token？</li>
+</ul>
+
+<p>Claude Code 文中把 loop 分成四类：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Loop 类型</th>
+      <th>触发方式</th>
+      <th>停止方式</th>
+      <th>适合任务</th>
+      <th>你实际交给 agent 的东西</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Turn-based loop</td>
+      <td>用户 prompt</td>
+      <td>Claude 判断完成或需要更多上下文</td>
+      <td>短任务、探索性任务、不固定流程</td>
+      <td>把 <strong>check</strong> 的一部分交给 agent</td>
+    </tr>
+    <tr>
+      <td>Goal-based loop <code class="language-plaintext highlighter-rouge">/goal</code></td>
+      <td>手动 prompt</td>
+      <td>达成目标或达到最大 turn 数</td>
+      <td>有明确 exit criteria 的任务</td>
+      <td>把 <strong>stop condition</strong> 交给 evaluator</td>
+    </tr>
+    <tr>
+      <td>Time-based loop <code class="language-plaintext highlighter-rouge">/loop</code>, <code class="language-plaintext highlighter-rouge">/schedule</code></td>
+      <td>时间间隔</td>
+      <td>取消、PR merge、队列清空等</td>
+      <td>定时摘要、PR/CI 监控、周期性检查</td>
+      <td>把 <strong>trigger</strong> 交给系统</td>
+    </tr>
+    <tr>
+      <td>Proactive loops</td>
+      <td>事件或 schedule，无实时人类</td>
+      <td>每个任务达标退出，routine 持续运行</td>
+      <td>bug report、issue triage、迁移、依赖升级</td>
+      <td>把 <strong>prompt 和执行流程</strong> 整体交出去</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这里最值得偷到自己工作流里的不是命令本身，而是 stop criteria 的思想。一个 loop 的质量不取决于它看起来多自动，而取决于它有没有明确的可验证边界。</p>
+
+<p>例如做 paper-reading，可以这样拆：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>turn-based:
+  读一篇文章，生成初稿，人工看主线是否对
+
+goal-based:
+  反复修到满足 checklist：来源链接存在、关键数字可回溯、图表加载、公式渲染、build 通过
+
+time-based:
+  每天/每周检查候选 paper、blog、GitHub issues 或 deploy 状态
+
+proactive:
+  新 URL 进入 inbox 后自动抽取正文、建素材目录、起草笔记、跑 verifier、打开 PR 或 push
+</code></pre></div></div>
+
+<p>Loops 文章还强调了一个容易被忽略的点：<strong>代码库本身的干净程度会影响 agent 输出质量</strong>。Claude 会模仿已有 pattern。如果仓库里路径、命名、front matter、assets、构建方式都很乱，agent 也会跟着乱。这和个人 wiki 很贴：wiki 不是越自动越好，而是越要有稳定目录、清晰模板、可运行的 build check 和能复用的 verifier。</p>
+
+<h2 id="4-managed-agents把-loop-放进生产基础设施">4. Managed Agents：把 loop 放进生产基础设施</h2>
+
+<p>Managed Agents 那篇可以看成 loops 的生产化版本。核心判断是：<strong>prompt 不能把 agent 带进生产，基础设施才可以。</strong></p>
+
+<p>一个真正能上线的 agent 至少需要：</p>
+
+<ul>
+  <li><strong>运行环境</strong>：代码写完在哪里执行？依赖怎么装？网络怎么限制？</li>
+  <li><strong>凭证管理</strong>：agent 怎么访问 GitHub、数据库、MCP、内部系统，又不把 token 暴露给它生成的代码？</li>
+  <li><strong>session 状态</strong>：长任务中断后能不能恢复？历史在哪里？</li>
+  <li><strong>filesystem</strong>：artifacts 放哪里？下次如何接着用？</li>
+  <li><strong>execution isolation</strong>：代码错了或被 prompt injection 诱导时，爆炸半径多大？</li>
+  <li><strong>observability</strong>：跑了一个小时后做出奇怪动作，能不能逐步复原？</li>
+</ul>
+
+<p>文章里最核心的架构句子可以概括成：<strong>decouple brain from hands</strong>。也就是调用 Claude 的 harness 和执行代码的 sandbox 分开。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>资源</th>
+      <th>它是什么</th>
+      <th>为什么重要</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Agent</td>
+      <td>model、prompt、tools、guardrails 的配置</td>
+      <td>定义 agent 是谁、能用什么、边界在哪里</td>
+    </tr>
+    <tr>
+      <td>Environment</td>
+      <td>sandbox container、网络规则、预装包，可以在 Anthropic cloud 或用户自控 infra</td>
+      <td>定义 agent 的手在哪里工作</td>
+    </tr>
+    <tr>
+      <td>Session</td>
+      <td>一次 run，把 agent 和 environment 配对，保存完整 event history、sandbox state 和 outputs</td>
+      <td>定义 agent 的记忆、审计轨迹和恢复点</td>
+    </tr>
+    <tr>
+      <td>Vault</td>
+      <td>独立存 credentials，按需由 proxy 解密和调用</td>
+      <td>让 token 不和生成代码待在同一个容器里</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>为什么这会改变 agent 体验？因为传统做法经常是 harness 和 filesystem 放在同一个 container 里：container 不起来，Claude 不能开始；credentials 离可执行代码太近；container 死了，run 也死了。Managed Agents 则让 Claude 可以先思考，环境并行启动；没有 tool call 的 session 可以不启动容器；完整事件流保存在进程之外。</p>
+
+<p>文章给了几个产品侧数字和例子：</p>
+
+<ul>
+  <li>time-to-first-token 在测试中 p50 降低约 <strong>60%</strong>，p95 降低超过 <strong>90%</strong>。</li>
+  <li>Notion early prototype 把约 <strong>12 小时</strong>工作压到 <strong>20 分钟</strong>。</li>
+  <li>Rakuten 的 specialist agents 在 product、sales、marketing、finance 等方向，每个约 <strong>一周</strong>上线。</li>
+  <li>Sentry 用 Seer debugging agent 加 Claude patch/PR agent，单个工程师在数周内构建。</li>
+</ul>
+
+<p>这些更像产品 case，不是严谨 benchmark；但它们说明了一个现实：当 agent 从 demo 到 production，难点会从“模型会不会回答”转移到“状态、权限、隔离、可观测性、恢复、成本和用户体验”。</p>
+
+<p>还有一个细节我很喜欢：harness 必须跟着模型变。文章举例说 Sonnet 4.5 临近上下文末尾有 “context anxiety”，harness 加了 context reset；到了 Opus 4.5 这个行为消失，reset 反而变成 overhead。这说明 harness engineering 不是一次写死的脚手架，而是随模型行为不断调参的 runtime。</p>
+
+<h2 id="5-三篇连起来的真正主线">5. 三篇连起来的真正主线</h2>
+
+<p>把三篇合在一起，Anthropic 其实在讲一个完整 stack：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>model capability
+  -&gt; agentic loop
+  -&gt; verifier / evaluator
+  -&gt; persistent session
+  -&gt; sandboxed environment
+  -&gt; credential vault
+  -&gt; observability and memory
+  -&gt; human taste and governance
+</code></pre></div></div>
+
+<p>RSI 文章说明 capability 进步正在压缩研发周期。Loops 文章说明怎么把 capability 包成可控制的循环。Managed Agents 说明怎么把循环放进可恢复、可隔离、可审计的生产环境。三篇共同指向一个结论：<strong>未来的 AI 研发加速不只是模型参数问题，而是 model + harness + infra + org process 的复合系统问题。</strong></p>
+
+<p>这也解释了为什么我觉得 “AI 会不会 self-improve” 这个问题最好拆开问：</p>
+
+<ul>
+  <li><strong>会不会自己写更多研发代码？</strong> 已经在发生。</li>
+  <li><strong>会不会自己跑明确目标的实验？</strong> 已经很强，尤其有 correctness check 的任务。</li>
+  <li><strong>会不会自己提出研究方向？</strong> 有早期信号，但远未闭环。</li>
+  <li><strong>会不会自己训练下一代并验证对齐？</strong> 这是 full RSI，风险最大、证据最少、治理最困难。</li>
+  <li><strong>组织会不会因为 agent 速度太快而 review 不过来？</strong> 这是短期就会发生的问题。</li>
+</ul>
+
+<p>所以我会把 Anthropic 的论证看成：<strong>full RSI 未到，但 RSI 的工程前奏已经到场。</strong></p>
+
+<h2 id="6-风险和我不完全买账的地方">6. 风险和我不完全买账的地方</h2>
+
+<p>这三篇都值得读，但也不能照单全收。</p>
+
+<p>第一，RSI 文章大量依赖 Anthropic 内部数据。内部数据很珍贵，但也很容易带有组织、工具链、模型、任务选择和文化偏差。Anthropic 工程师和研究员可能比一般组织更擅长把 Claude 用到极致。</p>
+
+<p>第二，LOC 和 authored code share 不能直接等于生产力。Claude 写了 80% merged code 很震撼，但真正难的可能是需求判断、架构边界、review、rollout、incident response、长期维护成本。</p>
+
+<p>第三，Claude judge 和 evaluator 会带来测量风险。open-ended task success、research next-step 这些指标都很有意义，但如果评审者也是 Claude，就要特别注意偏差、过拟合和“看起来合理”的幻觉。</p>
+
+<p>第四，open-ended AI safety research 的 97% gap recovery 很强，但 caveat 也很关键：问题和 rubric 由人类选择，结果没有干净迁移到 production-scale models。这说明 agent 可以在定义好的小世界里很强，但把小世界的成功搬到真实前沿研发里，还要过很多层验证。</p>
+
+<p>第五，Managed Agents 是产品文章，不是中立系统论文。它讲的 vault、session、sandbox、latency、Dreaming 都是非常关键的生产要素，但案例更多是 adoption 和 product fit，不是公开可复现实验。</p>
+
+<p>最后，RSI 治理难度被文章说得很真实：pause 或 slowdown 只有在多家 frontier lab、多国、同条件、可验证时才有意义；训练 run 又比导弹井更难发现，defect incentive 很强。也就是说，技术上越像软件，治理上反而越不像传统军控。</p>
+
+<h2 id="7-对我的-wiki--paper-reading-pipeline-的启发">7. 对我的 wiki / paper-reading pipeline 的启发</h2>
+
+<p>这三篇对我自己的 paper-reading 和个人 wiki 最大的启发是：不要把“自动化阅读”理解成一次性生成 Markdown，而要把它做成一个有状态、有验证、有审计的 loop。</p>
+
+<p>一个更合理的 personal wiki loop 是：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>source URL / PDF / local markdown
+  -&gt; extract text, metadata, figures
+  -&gt; draft reading note
+  -&gt; verify checklist
+       - source links exist
+       - publication date / venue not hallucinated
+       - key numbers trace back to source
+       - figures load
+       - formulas render
+       - Jekyll build passes
+  -&gt; human taste pass
+       - 主线是否清楚
+       - 细节是否够用
+       - 有没有我自己的判断
+  -&gt; publish
+  -&gt; save failures and lessons into future skill / checklist
+</code></pre></div></div>
+
+<p>这里有三个设计原则：</p>
+
+<ul>
+  <li><strong>Artifacts 要落盘</strong>：原文 HTML/TXT、图片、笔记、构建日志、git diff、失败记录都应该能恢复。否则 agent 做过什么很快会消失在聊天上下文里。</li>
+  <li><strong>Verifier 要外置</strong>：公式、链接、图片、front matter、Jekyll build、GitHub Pages deploy 都可以脚本化，不要靠“看起来没问题”。</li>
+  <li><strong>Taste 不能完全交出去</strong>：agent 可以写很长，也可以画图，但哪条主线最值得保存、哪些细节该删、哪种表述像自己，这些仍然应该由我来定。</li>
+</ul>
+
+<p>如果把 Anthropic 的 Managed Agents 换成个人版，就是一个 “managed-agent-lite”：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Managed Agents 资源</th>
+      <th>个人 wiki 对应物</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Agent</td>
+      <td>paper-reading skill、写作偏好、图文规范、review checklist</td>
+    </tr>
+    <tr>
+      <td>Environment</td>
+      <td>本地 repo、Jekyll、Ruby bundle、图片处理脚本、浏览器验证</td>
+    </tr>
+    <tr>
+      <td>Session</td>
+      <td>每次阅读的素材目录、草稿、git diff、构建日志、失败记录</td>
+    </tr>
+    <tr>
+      <td>Vault</td>
+      <td>GitHub token、API keys、发布权限，尽量不进正文和仓库</td>
+    </tr>
+    <tr>
+      <td>Dreaming / memory</td>
+      <td>从每次失败里更新 checklist 和 skill，让下一篇少犯同样错</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这就是为什么之前的 <a href="/Ryanhu2001/paper-reading/Harness%20Engineering%20for%20Self-Improvement.html">Harness Engineering for Self-Improvement</a> 和这三篇应该放在一起看。Harness 讲的是 agent 自我改进的近端入口；Anthropic RSI 讲的是为什么这件事在 AI R&amp;D 上变得危险又重要；Loops 和 Managed Agents 讲的是把入口变成工程系统需要哪些基本件。</p>
+
+<h2 id="8-一句话收束">8. 一句话收束</h2>
+
+<p>RSI 的短期现实版本不是一个模型在黑箱里神秘地“进化自己”，而是一套越来越强的研发机器：模型负责执行，loops 负责迭代，managed runtime 负责隔离和记忆，verifier 负责约束，人类负责 taste、边界和最终判断。真正要维护的不是一篇笔记，而是这套循环本身。</p>
+
+            </div>
+        </article>
+    </div>
+
+    <aside class="blog-toc-sidebar">
+        <nav id="blog-toc" class="blog-toc-nav" aria-label="Table of contents">
+            <div class="blog-toc-header">
+                <div class="blog-toc-title">On This Page</div>
+                <button
+                    id="blog-toc-toggle"
+                    class="blog-toc-toggle"
+                    type="button"
+                    aria-controls="blog-toc-list"
+                    aria-expanded="true"
+                    aria-label="收起目录"
+                    title="收起目录"
+                >
+                    <svg class="blog-toc-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="blog-toc-list" class="blog-toc-list"></div>
+        </nav>
+    </aside>
+</div>
+
+    </div>
+    <footer class="footer border-top py-2 mt-5 bg-white small">
+    <div class="container-lg">
+        <div class="row my-3">
+            <div class="col-6">
+                <div class="text-muted">
+                    <i>Last updated: Jul 2026</i>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="text-right text-muted">
+                    Built with <a href="https://github.com/luost26/academic-homepage" target="_blank"><i class="fas fa-pencil-ruler"></i> academic-homepage</a>.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <pagefind-config
+        bundle-path="/Ryanhu2001/pagefind/"
+        base-url="/Ryanhu2001/"
+        excerpt-length="30"
+        lang="zh-CN"></pagefind-config>
+    <div class="modal fade site-search-modal" id="siteSearchModal" tabindex="-1" role="dialog" aria-labelledby="siteSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 mb-0" id="siteSearchModalLabel">Search</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <pagefind-searchbox placeholder="搜索 wiki、论文笔记、关键词..." show-sub-results="true" hide-shortcut="true"></pagefind-searchbox>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/github-buttons/2.14.2/buttons.min.js" integrity="sha512-OYwZx04hKFeFNYrWxIyo3atgGpb+cxU0ENWBZs72X7T9U+NoHPM1ftUn/Mfw7dRDXrqWA6M1wBg6z6fGE32aeA==" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+    <script type="module" src="/Ryanhu2001/pagefind/pagefind-component-ui.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tocbot@4.36.8/dist/tocbot.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+              delimiters: [
+                  {left: '$$', right: '$$', display: true},
+                  {left: '\\[', right: '\\]', display: true},
+                  {left: '$', right: '$', display: false},
+                  {left: '\\(', right: '\\)', display: false}
+              ],
+              throwOnError : false
+            });
+            
+            Prism.highlightAll();
+            
+
+            var siteSearchModal = document.getElementById("siteSearchModal");
+            var siteSearchBox = siteSearchModal ? siteSearchModal.querySelector("pagefind-searchbox") : null;
+            function focusSiteSearch() {
+                window.setTimeout(function() {
+                    if (siteSearchBox && typeof siteSearchBox.focus === "function") {
+                        siteSearchBox.focus();
+                    }
+                }, 80);
+            }
+            if (siteSearchModal && window.jQuery) {
+                window.jQuery(siteSearchModal).on("shown.bs.modal", focusSiteSearch);
+            }
+            document.addEventListener("keydown", function(event) {
+                var key = String(event.key || "").toLowerCase();
+                var isSearchShortcut = key === "k" && (event.metaKey || event.ctrlKey);
+                var isModalOpen = siteSearchModal && siteSearchModal.classList.contains("show");
+                var target = event.target;
+                var isTyping = target && (
+                    target.tagName === "INPUT" ||
+                    target.tagName === "TEXTAREA" ||
+                    target.isContentEditable
+                );
+                if (!isSearchShortcut || (isTyping && isModalOpen) || !siteSearchModal || !window.jQuery) return;
+                event.preventDefault();
+                window.jQuery(siteSearchModal).modal("show");
+            });
+        });
+    </script>
+    
+    <script src="/Ryanhu2001/assets/js/blog.js"></script>
+    
+    <script src="/Ryanhu2001/assets/js/common.js"></script>
+    <script src="/Ryanhu2001/assets/js/bubble_visual_hash.js"></script>
+</body>
+</html>

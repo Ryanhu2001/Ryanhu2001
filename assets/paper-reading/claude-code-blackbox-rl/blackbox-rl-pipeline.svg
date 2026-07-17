@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Black-box Claude Code RL pipeline</title>
+  <desc id="desc">A self-made diagram showing how tasks are sampled, Claude Code runs in a fresh sandbox, trajectories are converted, rewards are scored in clean sandboxes, and slime trains the policy model.</desc>
+  <defs>
+    <style>
+      .bg { fill: #fbf6ea; }
+      .panel { fill: #fffdf7; stroke: #e2d5c0; stroke-width: 2; }
+      .stage { fill: #ffffff; stroke: #d8c7aa; stroke-width: 2; }
+      .stage-strong { fill: #fff7df; stroke: #8a6a3f; stroke-width: 3; }
+      .label { fill: #26221d; font: 700 26px -apple-system, BlinkMacSystemFont, "Inter", sans-serif; }
+      .small { fill: #6f675b; font: 18px -apple-system, BlinkMacSystemFont, "Inter", sans-serif; }
+      .mono { fill: #3c362d; font: 17px "SFMono-Regular", "JetBrains Mono", monospace; }
+      .arrow { stroke: #8a6a3f; stroke-width: 3; fill: none; marker-end: url(#arrowhead); }
+      .muted-arrow { stroke: #c7b798; stroke-width: 2.4; fill: none; stroke-dasharray: 8 8; marker-end: url(#arrowhead-muted); }
+      .badge { fill: #f2e6cf; stroke: #cbb894; stroke-width: 1.5; }
+      .badge-text { fill: #5f4d31; font: 700 15px -apple-system, BlinkMacSystemFont, "Inter", sans-serif; letter-spacing: .03em; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#8a6a3f"/>
+    </marker>
+    <marker id="arrowhead-muted" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#c7b798"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1280" height="720"/>
+  <rect class="panel" x="40" y="40" width="1200" height="640" rx="22"/>
+
+  <text class="label" x="80" y="92">Black-box Claude Code RL: train from real agent trajectories, not ideal chat logs</text>
+  <text class="small" x="80" y="124">The model is updated by slime, while Claude Code remains a black-box rollout surface that produces realistic tool-use traces.</text>
+
+  <rect class="stage" x="80" y="178" width="185" height="150" rx="16"/>
+  <text class="label" x="108" y="218">Task pool</text>
+  <text class="mono" x="108" y="255">SWE tasks</text>
+  <text class="mono" x="108" y="282">coding benchmark</text>
+  <text class="small" x="108" y="309">sample problem</text>
+
+  <rect class="stage-strong" x="330" y="158" width="250" height="190" rx="18"/>
+  <text class="label" x="360" y="202">Claude Code</text>
+  <text class="mono" x="360" y="240">fresh sandbox</text>
+  <text class="mono" x="360" y="267">tool calls</text>
+  <text class="mono" x="360" y="294">git diff output</text>
+  <rect class="badge" x="360" y="315" width="136" height="28" rx="14"/>
+  <text class="badge-text" x="376" y="335">BLACK-BOX</text>
+
+  <rect class="stage" x="645" y="178" width="230" height="150" rx="16"/>
+  <text class="label" x="674" y="218">Trajectory</text>
+  <text class="mono" x="674" y="255">AnthropicAdapter</text>
+  <text class="mono" x="674" y="282">loss_mask</text>
+  <text class="small" x="674" y="309">string/message to tokens</text>
+
+  <rect class="stage" x="940" y="158" width="220" height="190" rx="16"/>
+  <text class="label" x="970" y="202">Reward</text>
+  <text class="mono" x="970" y="240">clean sandbox</text>
+  <text class="mono" x="970" y="267">apply diff</text>
+  <text class="mono" x="970" y="294">score function</text>
+  <text class="small" x="970" y="323">avoid rollout leakage</text>
+
+  <path class="arrow" d="M265 253 C290 253, 303 253, 330 253"/>
+  <path class="arrow" d="M580 253 C606 253, 618 253, 645 253"/>
+  <path class="arrow" d="M875 253 C904 253, 915 253, 940 253"/>
+
+  <rect class="stage" x="255" y="455" width="260" height="145" rx="16"/>
+  <text class="label" x="285" y="495">TrajectoryManager</text>
+  <text class="mono" x="285" y="532">merge sub-agents</text>
+  <text class="mono" x="285" y="559">track compaction</text>
+  <text class="small" x="285" y="586">keep credit assignment sane</text>
+
+  <rect class="stage-strong" x="615" y="430" width="290" height="190" rx="18"/>
+  <text class="label" x="646" y="474">slime training</text>
+  <text class="mono" x="646" y="512">rollout buffer</text>
+  <text class="mono" x="646" y="539">policy update</text>
+  <text class="mono" x="646" y="566">SGD / RL loss</text>
+  <text class="small" x="646" y="594">optimize the model, not Claude Code</text>
+
+  <path class="muted-arrow" d="M455 348 C455 395, 415 420, 392 455"/>
+  <path class="muted-arrow" d="M760 328 C760 365, 760 390, 760 430"/>
+  <path class="arrow" d="M940 348 C900 395, 860 415, 817 430"/>
+  <path class="arrow" d="M515 528 C555 528, 575 528, 615 528"/>
+
+  <path class="muted-arrow" d="M760 620 C702 664, 512 664, 455 348"/>
+  <text class="small" x="80" y="660">Key risk: the agent surface is realistic but messy. The hard part is preserving trajectory fidelity while filtering non-training requests and scoring in isolated environments.</text>
+</svg>

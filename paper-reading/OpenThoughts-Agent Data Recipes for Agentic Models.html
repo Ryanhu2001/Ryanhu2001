@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<!-- Template: https://github.com/luost26/academic-homepage -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>OpenThoughts-Agent: Data Recipes for Agentic Models - Ryan</title>
+    <link rel="icon" href="/Ryanhu2001/assets/ryan/avator.jpg" type="image/jpeg">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/pagefind/pagefind-component-ui.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/blog.css">
+    
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/global.css">
+</head>
+<body class="bg-light" >
+    <nav class="navbar navbar-expand-sm navbar-light fixed-top mb-5 shadow-sm">
+    <div class="container-lg">
+        <a class="navbar-brand" href="/Ryanhu2001/"><strong>Ryan</strong></a>
+        <button class="navbar-toggler" style="font-size: 1em; padding: 0.5em;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-map"></i> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/">Home</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/wiki/">Wiki</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/paper-reading/">Paper Reading</a>
+                </li>
+                
+                <li class="nav-item nav-search-item">
+                    <button class="nav-link nav-search-button" type="button" data-toggle="modal" data-target="#siteSearchModal" aria-label="Search site">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <span>Search</span>
+                        <kbd>⌘K</kbd>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <div class="container-lg">
+        
+
+
+
+
+<div class="reading-progress" aria-hidden="true">
+    <span></span>
+</div>
+
+<div class="blog-layout-wrapper">
+    <div class="blog-main">
+        <div class="mb-3">
+            <a class="small" href="/Ryanhu2001/paper-reading/">
+                <i class="fas fa-arrow-left"></i> Paper Reading
+            </a>
+        </div>
+
+        <article class="bg-white rounded-xl p-4 p-md-5 mb-4 wiki-note-card" data-pagefind-body>
+            <div class="blog-content wiki-note">
+                <h1 id="openthoughts-agentagent-模型不是只靠-rl数据配方本身就是主菜">OpenThoughts-Agent：agent 模型不是只靠 RL，数据配方本身就是主菜</h1>
+
+<ul>
+  <li><strong>Paper</strong>: <a href="https://arxiv.org/abs/2606.24855">OpenThoughts-Agent: Data Recipes for Agentic Models</a></li>
+  <li><strong>Version</strong>: arXiv v1, 2026-06-23</li>
+  <li><strong>Project</strong>: <a href="https://www.openthoughts.ai/">openthoughts.ai</a></li>
+  <li><strong>类型</strong>: agentic model post-training / SFT data curation / RL data ablation</li>
+  <li><strong>关键词</strong>: Qwen3-32B, OpenThinkerAgent-32B, agent traces, SFT pipeline, RLOO, SWE-Bench, Terminal-Bench</li>
+</ul>
+
+<h2 id="读法给人和-agent-的路标">读法：给人和 agent 的路标</h2>
+
+<p>这篇不要按“又一个 SWE-Bench 模型”读。它真正有价值的地方是 <strong>把 agentic SFT 数据怎么做这件事拆开做了 100+ controlled ablations</strong>，并且把 SFT 和 RL 放在同一个后训练链路里看。</p>
+
+<p>给 agent 之后检索，关键词是：<code class="language-plaintext highlighter-rouge">OpenThoughts-Agent</code>、<code class="language-plaintext highlighter-rouge">six-stage SFT pipeline</code>、<code class="language-plaintext highlighter-rouge">task source ablation</code>、<code class="language-plaintext highlighter-rouge">teacher model ablation</code>、<code class="language-plaintext highlighter-rouge">minimum-turn filter</code>、<code class="language-plaintext highlighter-rouge">synthetic task augmentation</code>、<code class="language-plaintext highlighter-rouge">pymethods2test RL</code>、<code class="language-plaintext highlighter-rouge">reward collapse</code>。</p>
+
+<h2 id="一句话判断">一句话判断</h2>
+
+<p>OpenThoughts-Agent 的核心结论是：<strong>agent 后训练的上限很大一部分来自数据源、轨迹过滤和规模化方式，而不是简单把更多 rollout 堆进 SFT 或把奖励接进 RL</strong>。它给出一套公开数据配方，把 Qwen3-32B 训到 7 个 agent benchmark 平均 <strong>44.8%</strong>，超过 Nemotron-Terminal-32B 的 <strong>40.9%</strong>。</p>
+
+<h2 id="图表优先读法">图表优先读法</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>先看</th>
+      <th>图/表</th>
+      <th>读完应该抓住什么</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Figure 2：SFT pipeline</td>
+      <td>agent 数据配方由 task source、mixing、augmentation、filter、teacher、rollout filter 共同决定</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Table 1</td>
+      <td>100K 高质量 traces 比 264K 粗规模更有价值</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Figure 3 / Figure 5</td>
+      <td>upsampling 会 plateau，synthetic task augmentation 才能继续扩语义多样性</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Figure 6 / Figure 7</td>
+      <td>RL 数据源会改变策略性格，也可能 reward collapse</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Table 10 / 11</td>
+      <td>RL 最适合接在 moderately strong SFT 后面</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><img src="../assets/paper-reading/openthoughts-agent/data-recipe-map.svg" alt="OpenThoughts-Agent data recipe map" /></p>
+
+<p>这张自制图把 OpenThoughts-Agent 的贡献从“又训了一个 agent 模型”拉回“数据配方对象化”：任务源、混合、过滤、teacher 和 rollout filter 都是可消融的旋钮；SFT 之后接 RL，则进一步改变探索风格，甚至可能 reward collapse。后文的 100+ ablations 就是围绕这些旋钮展开。</p>
+
+<h2 id="先看-sft-配方图">先看 SFT 配方图</h2>
+
+<p><img src="../assets/paper-reading/openthoughts-agent/sft-pipeline.png" alt="OpenThoughts-Agent SFT pipeline" /></p>
+
+<p>Figure 2 是全文最该先看的图。作者把 agent SFT 数据拆成六个独立可 ablate 的阶段：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>阶段</th>
+      <th>问题</th>
+      <th>论文发现</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Task source</td>
+      <td>任务从哪里来</td>
+      <td>这是影响最大的因素，任务源选择能在 SWE-Bench Verified-100 上拉开约 30pp</td>
+    </tr>
+    <tr>
+      <td>Source mixing</td>
+      <td>多个来源怎么混</td>
+      <td>Top-4/Top-8 比单一来源更稳，但不是越多越好</td>
+    </tr>
+    <tr>
+      <td>Task augmentation</td>
+      <td>是否改写任务描述</td>
+      <td>多种 LLM-driven augmentation 没有带来稳定收益</td>
+    </tr>
+    <tr>
+      <td>Task filtering</td>
+      <td>是否筛任务描述</td>
+      <td>LLM difficulty / quality filter 有约 +3pp 平均收益</td>
+    </tr>
+    <tr>
+      <td>Teacher model</td>
+      <td>谁来生成轨迹</td>
+      <td>最强 benchmark 模型不一定是最佳 teacher</td>
+    </tr>
+    <tr>
+      <td>Rollout filtering</td>
+      <td>保留哪些轨迹</td>
+      <td>保留更长、多轮工具交互的 trace 更有用</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这张图的意义不是“流程很多”，而是每个节点都对应一个可复现的设计选择。它把 agent 数据配方从经验玄学往工程实验拉了一步。</p>
+
+<h2 id="32b-主结果">32B 主结果</h2>
+
+<p>Table 1 的核心结果如下：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Model</th>
+      <th style="text-align: right">Train size</th>
+      <th>Method</th>
+      <th style="text-align: right">Avg</th>
+      <th style="text-align: right">SWE-Bench Verified</th>
+      <th style="text-align: right">Terminal-Bench 2.0</th>
+      <th style="text-align: right">BFCL-Parity</th>
+      <th style="text-align: right">FinanceAgent-Terminal</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>OpenThinkerAgent-32B</td>
+      <td style="text-align: right">100K</td>
+      <td>SFT</td>
+      <td style="text-align: right"><strong>44.8</strong></td>
+      <td style="text-align: right"><strong>54.0</strong></td>
+      <td style="text-align: right"><strong>26.2</strong></td>
+      <td style="text-align: right"><strong>85.9</strong></td>
+      <td style="text-align: right"><strong>44.0</strong></td>
+    </tr>
+    <tr>
+      <td>Nemotron-Terminal-32B</td>
+      <td style="text-align: right">264K</td>
+      <td>SFT</td>
+      <td style="text-align: right">40.9</td>
+      <td style="text-align: right">41.9</td>
+      <td style="text-align: right">25.1</td>
+      <td style="text-align: right">69.1</td>
+      <td style="text-align: right">40.7</td>
+    </tr>
+    <tr>
+      <td>SWE-Lego-Qwen3-32B</td>
+      <td style="text-align: right">18K</td>
+      <td>SFT</td>
+      <td style="text-align: right">34.7</td>
+      <td style="text-align: right">51.0</td>
+      <td style="text-align: right">16.1</td>
+      <td style="text-align: right">81.0</td>
+      <td style="text-align: right">15.3</td>
+    </tr>
+    <tr>
+      <td>Qwen3-32B base</td>
+      <td style="text-align: right">N/A</td>
+      <td>N/A</td>
+      <td style="text-align: right">22.8</td>
+      <td style="text-align: right">29.1</td>
+      <td style="text-align: right">7.5</td>
+      <td style="text-align: right">68.3</td>
+      <td style="text-align: right">9.3</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>我读这个表的重点不是“平均第一”，而是两个细节：</p>
+
+<ul>
+  <li><strong>Terminal-Bench 和 SWE-Bench 同时涨</strong>：很多 agent 数据只会把一个 benchmark 顶上去，这篇的核心诉求是跨 agent 任务泛化。</li>
+  <li><strong>训练量不是唯一解释</strong>：OpenThinkerAgent-32B 用 100K traces 超过了 264K 的 Nemotron-Terminal-32B，说明配方质量比规模粗暴堆叠更重要。</li>
+</ul>
+
+<h2 id="scaling为什么不是把-top-tasks-重复采样就行">Scaling：为什么不是把 Top tasks 重复采样就行</h2>
+
+<p><img src="../assets/paper-reading/openthoughts-agent/scaling-methods.png" alt="OpenThoughts-Agent scaling methods" /></p>
+
+<p><img src="../assets/paper-reading/openthoughts-agent/ot-agent-8b-scaling.png" alt="OpenThoughts-Agent 8B scaling" /></p>
+
+<p>作者对 100K 数据扩展做了几种尝试。最关键的对比是：</p>
+
+<ul>
+  <li><strong>Method 1: upsample top task descriptions</strong>，从 31.6K 到 100K 会 plateau，SWE-Bench Verified-100 只约 +3pp，Terminal-Bench 2.0 反而约 -2pp。</li>
+  <li><strong>Method 3: synthetic task augmentation</strong>，对已有高质量 task 做合成扩展，能更稳定继续提升。</li>
+  <li><strong>Method 4: 增加更多来源到 Top-8/Top-16</strong>，Table 8 显示在 100K 规模下并没有可靠超过 Top-4。</li>
+</ul>
+
+<p>这其实很像数据 flywheel 的一个常见坑：重复采样高分来源会很快把模型带进窄分布；真正要扩大规模，需要创造 <strong>语义多样性</strong>，而不是只把同一类任务多跑几遍。</p>
+
+<h2 id="sft-里的几个反直觉细节">SFT 里的几个反直觉细节</h2>
+
+<h3 id="1-最强模型不一定是最佳-teacher">1. 最强模型不一定是最佳 teacher</h3>
+
+<p>Table 6 的结论很有意思：GPT-5.3-Codex 是更强的 task-solving 模型，但作为轨迹 teacher 不如 GLM-4.7-AWQ，尤其在 Terminal-Bench 2.0 上落后约 <strong>5pp</strong>。</p>
+
+<p>合理推断是：SFT teacher 的目标不是“自己把题做对”，而是生成适合学生模型学习的轨迹。轨迹格式、工具使用风格、思考长度、错误恢复方式都会影响可蒸馏性。</p>
+
+<h3 id="2-更长轨迹不是噪声可能是-agent-行为信号">2. 更长轨迹不是噪声，可能是 agent 行为信号</h3>
+
+<p>Table 7 和 Appendix Table 15 都支持 minimum-turn filter。即使在 matched token budget 下，保留至少 5 turn 的轨迹也比随机子集强：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>对比</th>
+      <th style="text-align: right">SWE-Bench Verified-100</th>
+      <th style="text-align: right">Terminal-Bench 2.0</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>min-turn filter vs random, token-matched</td>
+      <td style="text-align: right">+5.4pp</td>
+      <td style="text-align: right">+3.8pp</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这对 agent 数据很重要：短轨迹可能只是简单题或浅层工具调用，长轨迹更包含搜索、试错、恢复、验证这些真正的 agent 行为。</p>
+
+<h3 id="3-rl-数据源会改变策略性格">3. RL 数据源会改变策略性格</h3>
+
+<p>论文不只跑 SFT，也在 8B 上系统比较 RL data source。Table 9 里 <code class="language-plaintext highlighter-rouge">pymethods2test</code> 是最强 RL source，后续行为分析显示它把策略推向更强探索：</p>
+
+<ul>
+  <li>post-RL 平均增加约 <strong>+12.9 turns</strong>；</li>
+  <li>token 数增加约 <strong>+29%</strong>；</li>
+  <li>在 30 个同题 pre/post trace pair 上，LLM judge 认为 post-RL 更好，比例 <strong>25/30 = 83.3%</strong>；</li>
+  <li>held-out SWE-Bench Verified 上出现 <strong>18 个 fail -&gt; pass</strong> flip。</li>
+</ul>
+
+<p>但这不是纯好事。Figure 6 显示 hero run 的 reward 先升到约 <strong>0.51</strong>，之后 collapse 到约 <strong>0.13</strong>。也就是说，这种“更多探索”的行为可能带来泛化收益，也可能触发 reward collapse。</p>
+
+<p><img src="../assets/paper-reading/openthoughts-agent/rl-hero-reward-collapse.png" alt="OpenThoughts-Agent RL reward collapse" /></p>
+
+<p><img src="../assets/paper-reading/openthoughts-agent/rl-baseline-reward-monotone.png" alt="OpenThoughts-Agent baseline RL monotone reward" /></p>
+
+<p>两张 RL 曲线要一起看：<code class="language-plaintext highlighter-rouge">pymethods2test</code> 这类 hero source 会把策略推向更强探索，但探索过头会 collapse；<code class="language-plaintext highlighter-rouge">llm-verifier-freelancer</code> baseline 则更像逐步压缩行为，reward 更平滑上升。这里的 takeaway 不是“某个 source 永远更好”，而是 <strong>RL 数据源会塑造 agent 的行为风格</strong>，所以只看最终 benchmark 分数会漏掉训练动态。</p>
+
+<h2 id="8bsft-和-rl-怎么组合">8B：SFT 和 RL 怎么组合</h2>
+
+<p>Table 10 和 Table 11 的核心结论是：RL 最适合接在 <strong>moderately strong SFT</strong> 后面，而不是裸 base 或已经过度蒸馏的 SFT 后面。</p>
+
+<p>Table 11 很直接：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Recipe</th>
+      <th style="text-align: right">SWE-Bench Verified-100</th>
+      <th style="text-align: right">OT-TBLite</th>
+      <th style="text-align: right">Terminal-Bench 2.0</th>
+      <th style="text-align: right">Raw avg</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>OT-Agent-ColdSFT+RL-8B</td>
+      <td style="text-align: right"><strong>35.7</strong></td>
+      <td style="text-align: right"><strong>16.0</strong></td>
+      <td style="text-align: right"><strong>13.5</strong></td>
+      <td style="text-align: right"><strong>21.7</strong></td>
+    </tr>
+    <tr>
+      <td>OT-Agent-SFT-8B (10K)</td>
+      <td style="text-align: right">24.3</td>
+      <td style="text-align: right">15.6</td>
+      <td style="text-align: right">7.9</td>
+      <td style="text-align: right">15.9</td>
+    </tr>
+    <tr>
+      <td>OT-Agent-ColdSFT</td>
+      <td style="text-align: right">23.7</td>
+      <td style="text-align: right">14.8</td>
+      <td style="text-align: right">6.7</td>
+      <td style="text-align: right">15.1</td>
+    </tr>
+    <tr>
+      <td>RL on Qwen3-8B, no SFT</td>
+      <td style="text-align: right">1.0</td>
+      <td style="text-align: right">7.8</td>
+      <td style="text-align: right">1.9</td>
+      <td style="text-align: right">3.6</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这点对自己的训练 pipeline 很实用：SFT 不是 RL 的替代品，也不是越强越好；它更像给 RL 准备可探索的起点。太弱没有 coverage，太强可能已经把行为分布锁死。</p>
+
+<h2 id="我怎么判断">我怎么判断</h2>
+
+<h3 id="可信之处">可信之处</h3>
+
+<ul>
+  <li><strong>控制变量多</strong>：100+ ablation 让它不像单次 hero run。</li>
+  <li><strong>跨 benchmark</strong>：核心评估覆盖 SWE-Bench、Terminal-Bench、Aider、BFCL、GAIA、FinanceAgent、MedAgentBench。</li>
+  <li><strong>有行为分析</strong>：Appendix F 不只报分数，还分析 RL 学到了什么行为。</li>
+  <li><strong>公开 artifacts</strong>：论文承诺释放数据、pipeline、实验数据、模型。</li>
+</ul>
+
+<h3 id="需要警惕">需要警惕</h3>
+
+<ul>
+  <li><strong>base model 单一</strong>：主要从 Qwen3 family 出发，是否迁移到 Qwen3.5、DeepSeek、Kimi 等不同底座还没 ablate。</li>
+  <li><strong>RL 只在 8B 做系统研究</strong>：作者也承认 32B 是否复用同一 RL recipe 是开放问题。</li>
+  <li><strong>benchmark 仍可能塑形数据配方</strong>：虽然比单 benchmark 强，但 agent 评测本身仍偏 coding/terminal/tool-use。</li>
+  <li><strong>reward collapse 说明 RL 很脆</strong>：数据源强并不等于训练稳定，策略可能朝探索或收缩两个方向漂移。</li>
+</ul>
+
+<h2 id="对我的价值">对我的价值</h2>
+
+<p>这篇最适合沉淀成一个 agent training checklist：</p>
+
+<ol>
+  <li><strong>先做 task-source ablation</strong>，不要急着优化 teacher 或 RL。</li>
+  <li><strong>SFT 数据要看轨迹结构</strong>，不是只看 final pass/fail。</li>
+  <li><strong>扩数据优先扩语义多样性</strong>，少做简单 upsample。</li>
+  <li><strong>teacher 要按 student 学习效果选</strong>，不是按 teacher 自己 leaderboard 选。</li>
+  <li><strong>RL source 会改变策略性格</strong>，需要行为指标和 reward 曲线一起看。</li>
+</ol>
+
+<p>如果以后我要自己 build agent sandbox/training pipeline，这篇可以作为“数据配方基线”：先复刻小规模 10K ablation，再考虑 100K scale-up 和 RL。</p>
+
+<h2 id="一句话收束">一句话收束</h2>
+
+<p>OpenThoughts-Agent 最好的地方是把“agent 后训练靠感觉调数据”变成了一组可讨论、可复用、可失败的实验配方。它不完美，但足够像一个公开 cookbook。</p>
+
+            </div>
+        </article>
+    </div>
+
+    <aside class="blog-toc-sidebar">
+        <nav id="blog-toc" class="blog-toc-nav" aria-label="Table of contents">
+            <div class="blog-toc-header">
+                <div class="blog-toc-title">On This Page</div>
+                <button
+                    id="blog-toc-toggle"
+                    class="blog-toc-toggle"
+                    type="button"
+                    aria-controls="blog-toc-list"
+                    aria-expanded="true"
+                    aria-label="收起目录"
+                    title="收起目录"
+                >
+                    <svg class="blog-toc-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="blog-toc-list" class="blog-toc-list"></div>
+        </nav>
+    </aside>
+</div>
+
+    </div>
+    <footer class="footer border-top py-2 mt-5 bg-white small">
+    <div class="container-lg">
+        <div class="row my-3">
+            <div class="col-6">
+                <div class="text-muted">
+                    <i>Last updated: Jul 2026</i>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="text-right text-muted">
+                    Built with <a href="https://github.com/luost26/academic-homepage" target="_blank"><i class="fas fa-pencil-ruler"></i> academic-homepage</a>.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <pagefind-config
+        bundle-path="/Ryanhu2001/pagefind/"
+        base-url="/Ryanhu2001/"
+        excerpt-length="30"
+        lang="zh-CN"></pagefind-config>
+    <div class="modal fade site-search-modal" id="siteSearchModal" tabindex="-1" role="dialog" aria-labelledby="siteSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 mb-0" id="siteSearchModalLabel">Search</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <pagefind-searchbox placeholder="搜索 wiki、论文笔记、关键词..." show-sub-results="true" hide-shortcut="true"></pagefind-searchbox>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/github-buttons/2.14.2/buttons.min.js" integrity="sha512-OYwZx04hKFeFNYrWxIyo3atgGpb+cxU0ENWBZs72X7T9U+NoHPM1ftUn/Mfw7dRDXrqWA6M1wBg6z6fGE32aeA==" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+    <script type="module" src="/Ryanhu2001/pagefind/pagefind-component-ui.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tocbot@4.36.8/dist/tocbot.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+              delimiters: [
+                  {left: '$$', right: '$$', display: true},
+                  {left: '\\[', right: '\\]', display: true},
+                  {left: '$', right: '$', display: false},
+                  {left: '\\(', right: '\\)', display: false}
+              ],
+              throwOnError : false
+            });
+            
+            Prism.highlightAll();
+            
+
+            var siteSearchModal = document.getElementById("siteSearchModal");
+            var siteSearchBox = siteSearchModal ? siteSearchModal.querySelector("pagefind-searchbox") : null;
+            function focusSiteSearch() {
+                window.setTimeout(function() {
+                    if (siteSearchBox && typeof siteSearchBox.focus === "function") {
+                        siteSearchBox.focus();
+                    }
+                }, 80);
+            }
+            if (siteSearchModal && window.jQuery) {
+                window.jQuery(siteSearchModal).on("shown.bs.modal", focusSiteSearch);
+            }
+            document.addEventListener("keydown", function(event) {
+                var key = String(event.key || "").toLowerCase();
+                var isSearchShortcut = key === "k" && (event.metaKey || event.ctrlKey);
+                var isModalOpen = siteSearchModal && siteSearchModal.classList.contains("show");
+                var target = event.target;
+                var isTyping = target && (
+                    target.tagName === "INPUT" ||
+                    target.tagName === "TEXTAREA" ||
+                    target.isContentEditable
+                );
+                if (!isSearchShortcut || (isTyping && isModalOpen) || !siteSearchModal || !window.jQuery) return;
+                event.preventDefault();
+                window.jQuery(siteSearchModal).modal("show");
+            });
+        });
+    </script>
+    
+    <script src="/Ryanhu2001/assets/js/blog.js"></script>
+    
+    <script src="/Ryanhu2001/assets/js/common.js"></script>
+    <script src="/Ryanhu2001/assets/js/bubble_visual_hash.js"></script>
+</body>
+</html>

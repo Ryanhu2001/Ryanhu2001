@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="760" viewBox="0 0 1400 760" role="img" aria-labelledby="title desc">
+  <title id="title">Agent evaluation flywheel</title>
+  <desc id="desc">A self-made diagram showing task bank, isolated trials, trajectory and outcome capture, hybrid graders, transcript review, and iteration into capability and regression suites.</desc>
+  <defs>
+    <style>
+      .bg { fill: #fbf6ea; }
+      .panel { fill: #fffdf7; stroke: #8b8679; stroke-width: 3; }
+      .soft { fill: #f3ead8; stroke: #8b8679; stroke-width: 3; }
+      .mint { fill: #e5f4ee; stroke: #6d8f80; stroke-width: 3; }
+      .rose { fill: #f8e5de; stroke: #a77b69; stroke-width: 3; }
+      .lav { fill: #eceaf9; stroke: #807b9b; stroke-width: 3; }
+      .ink { fill: #24221f; font-family: Inter, Arial, sans-serif; }
+      .muted { fill: #68645d; font-family: Inter, Arial, sans-serif; }
+      .mono { fill: #3a3833; font-family: "JetBrains Mono", Menlo, monospace; }
+      .arrow { stroke: #77736a; stroke-width: 4; fill: none; marker-end: url(#arrow); }
+      .dash { stroke: #9b9588; stroke-width: 3; stroke-dasharray: 10 10; fill: none; marker-end: url(#arrow); }
+    </style>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
+      <path d="M 1 1 L 11 6 L 1 11 z" fill="#77736a"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1400" height="760"/>
+  <text class="ink" x="700" y="72" font-size="46" font-weight="800" text-anchor="middle">Agent eval is a product loop, not a scoreboard</text>
+  <text class="muted" x="700" y="112" font-size="22" text-anchor="middle">Good evals convert messy failures into reusable tasks, calibrated graders, and safer releases.</text>
+
+  <rect class="panel" x="70" y="170" rx="22" ry="22" width="1260" height="440"/>
+
+  <rect class="mint" x="115" y="235" rx="18" ry="18" width="230" height="122"/>
+  <text class="ink" x="230" y="278" font-size="27" font-weight="800" text-anchor="middle">Task bank</text>
+  <text class="muted" x="230" y="314" font-size="18" text-anchor="middle">real failures</text>
+  <text class="muted" x="230" y="340" font-size="18" text-anchor="middle">positive + negative cases</text>
+
+  <rect class="soft" x="430" y="235" rx="18" ry="18" width="230" height="122"/>
+  <text class="ink" x="545" y="278" font-size="27" font-weight="800" text-anchor="middle">Isolated trials</text>
+  <text class="muted" x="545" y="314" font-size="18" text-anchor="middle">same harness as prod</text>
+  <text class="muted" x="545" y="340" font-size="18" text-anchor="middle">clean environment</text>
+
+  <rect class="lav" x="745" y="235" rx="18" ry="18" width="230" height="122"/>
+  <text class="ink" x="860" y="278" font-size="27" font-weight="800" text-anchor="middle">Evidence</text>
+  <text class="muted" x="860" y="314" font-size="18" text-anchor="middle">trajectory + outcome</text>
+  <text class="muted" x="860" y="340" font-size="18" text-anchor="middle">tool calls, state, costs</text>
+
+  <rect class="rose" x="1060" y="235" rx="18" ry="18" width="230" height="122"/>
+  <text class="ink" x="1175" y="278" font-size="27" font-weight="800" text-anchor="middle">Hybrid graders</text>
+  <text class="muted" x="1175" y="314" font-size="18" text-anchor="middle">code, model, human</text>
+  <text class="muted" x="1175" y="340" font-size="18" text-anchor="middle">partial credit + rubrics</text>
+
+  <path class="arrow" d="M 345 296 H 412"/>
+  <path class="arrow" d="M 660 296 H 727"/>
+  <path class="arrow" d="M 975 296 H 1042"/>
+
+  <rect class="soft" x="275" y="440" rx="18" ry="18" width="250" height="108"/>
+  <text class="ink" x="400" y="480" font-size="25" font-weight="800" text-anchor="middle">Transcript review</text>
+  <text class="muted" x="400" y="515" font-size="18" text-anchor="middle">is the failure fair?</text>
+
+  <rect class="mint" x="575" y="440" rx="18" ry="18" width="250" height="108"/>
+  <text class="ink" x="700" y="480" font-size="25" font-weight="800" text-anchor="middle">Fix the right thing</text>
+  <text class="muted" x="700" y="515" font-size="18" text-anchor="middle">agent, task, harness, grader</text>
+
+  <rect class="lav" x="875" y="440" rx="18" ry="18" width="250" height="108"/>
+  <text class="ink" x="1000" y="480" font-size="25" font-weight="800" text-anchor="middle">Suite health</text>
+  <text class="muted" x="1000" y="515" font-size="18" text-anchor="middle">capability hill + regression wall</text>
+
+  <path class="arrow" d="M 1175 358 C 1175 410 1115 410 1050 437"/>
+  <path class="arrow" d="M 875 494 H 842"/>
+  <path class="arrow" d="M 575 494 H 542"/>
+  <path class="arrow" d="M 345 440 C 265 405 205 390 205 360"/>
+  <path class="dash" d="M 1000 548 C 1000 660 170 660 170 358"/>
+
+  <rect class="panel" x="145" y="640" rx="16" ry="16" width="1110" height="70"/>
+  <text class="ink" x="175" y="684" font-size="23" font-weight="800">Production signals:</text>
+  <text class="muted" x="405" y="684" font-size="21">monitoring, A/B tests, user feedback, and human studies keep synthetic evals honest.</text>
+</svg>

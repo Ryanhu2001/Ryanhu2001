@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<!-- Template: https://github.com/luost26/academic-homepage -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Self-Compacting Language Model Agents - Ryan</title>
+    <link rel="icon" href="/Ryanhu2001/assets/ryan/avator.jpg" type="image/jpeg">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/pagefind/pagefind-component-ui.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/blog.css">
+    
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/global.css">
+</head>
+<body class="bg-light" >
+    <nav class="navbar navbar-expand-sm navbar-light fixed-top mb-5 shadow-sm">
+    <div class="container-lg">
+        <a class="navbar-brand" href="/Ryanhu2001/"><strong>Ryan</strong></a>
+        <button class="navbar-toggler" style="font-size: 1em; padding: 0.5em;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-map"></i> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/">Home</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/wiki/">Wiki</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/paper-reading/">Paper Reading</a>
+                </li>
+                
+                <li class="nav-item nav-search-item">
+                    <button class="nav-link nav-search-button" type="button" data-toggle="modal" data-target="#siteSearchModal" aria-label="Search site">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <span>Search</span>
+                        <kbd>⌘K</kbd>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <div class="container-lg">
+        
+
+
+
+
+<div class="reading-progress" aria-hidden="true">
+    <span></span>
+</div>
+
+<div class="blog-layout-wrapper">
+    <div class="blog-main">
+        <div class="mb-3">
+            <a class="small" href="/Ryanhu2001/paper-reading/">
+                <i class="fas fa-arrow-left"></i> Paper Reading
+            </a>
+        </div>
+
+        <article class="bg-white rounded-xl p-4 p-md-5 mb-4 wiki-note-card" data-pagefind-body>
+            <div class="blog-content wiki-note">
+                <h1 id="selfcompact上下文压缩的关键不是会总结而是什么时候总结">SelfCompact：上下文压缩的关键不是会总结，而是什么时候总结</h1>
+
+<ul>
+  <li><strong>Paper</strong>: <a href="https://arxiv.org/abs/2606.23525">Self-Compacting Language Model Agents</a></li>
+  <li><strong>Version</strong>: arXiv v1, 2026-06-22</li>
+  <li><strong>类型</strong>: inference-time agent scaffold / context compaction / long-horizon reasoning</li>
+  <li><strong>关键词</strong>: SelfCompact, context rot, rubric-gated summarization, BrowseComp, DeepSearchQA, fixed-interval compaction</li>
+</ul>
+
+<h2 id="读法给人和-agent-的路标">读法：给人和 agent 的路标</h2>
+
+<p>这篇应该按 <strong>context engineering</strong> 来读。它不是提出一个更强 summarizer，而是在问：长轨迹 agent 什么时候应该把历史压缩成摘要？</p>
+
+<p>给 agent 之后检索，关键词是：<code class="language-plaintext highlighter-rouge">SelfCompact</code>、<code class="language-plaintext highlighter-rouge">rubric-gated compaction</code>、<code class="language-plaintext highlighter-rouge">COMPRESS CONTINUE</code>、<code class="language-plaintext highlighter-rouge">context rot</code>、<code class="language-plaintext highlighter-rouge">BrowseComp Medusa mushroom</code>、<code class="language-plaintext highlighter-rouge">fixed interval summary</code>、<code class="language-plaintext highlighter-rouge">KV cache reuse</code>。</p>
+
+<h2 id="一句话判断">一句话判断</h2>
+
+<p>SelfCompact 的核心结论是：固定 token 阈值压缩太粗糙，容易在推理或搜索还没闭合时删掉关键中间事实；如果给模型一个轻量 rubric，让它只在“子任务已解决、轨迹开始收敛”时触发总结，就能在不训练模型的情况下提升数学和搜索 agent 表现，并降低 30% 到 70% 的 per-question cost。</p>
+
+<h2 id="图表优先读法">图表优先读法</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>先看</th>
+      <th>图/表</th>
+      <th>它回答的问题</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Figure 1：BrowseComp case</td>
+      <td>固定间隔总结为什么会把已验证事实删掉？</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>SelfCompact rubric loop</td>
+      <td>系统怎么判断 <code class="language-plaintext highlighter-rouge">COMPRESS</code> 还是 <code class="language-plaintext highlighter-rouge">CONTINUE</code>？</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Table 1 / Table 4</td>
+      <td>数学推理和搜索 agent 上是否真的涨分、是否更便宜？</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Figure 2 / Figure 3</td>
+      <td>SelfCompact 是不是只是更早压缩？它主要帮哪类难题？</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这篇最好的读法不是从 Table 1 开始，而是先看 Figure 1 的 <code class="language-plaintext highlighter-rouge">Medusa mushroom</code> 例子：一旦意识到“摘要时间点错了会删掉刚验证出的事实”，后面的 rubric、KV cache 成本、难度分桶都会自然连起来。</p>
+
+<h2 id="我整理的机制图">我整理的机制图</h2>
+
+<p><img src="../assets/paper-reading/selfcompact/selfcompact-rubric-loop.svg" alt="SelfCompact rubric loop" /></p>
+
+<p>SelfCompact 有两个组件：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>组件</th>
+      <th>做什么</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Summarization tool</td>
+      <td>把当前 prompt + trajectory 压成 summary，再从 prompt + summary 继续生成</td>
+    </tr>
+    <tr>
+      <td>Rubric probe</td>
+      <td>定期问模型：现在应该 <code class="language-plaintext highlighter-rouge">COMPRESS</code> 还是 <code class="language-plaintext highlighter-rouge">CONTINUE</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>关键点：summarizer 和 rubric judge 都是同一个模型，不需要外部 verifier，也不需要 fine-tuning。</p>
+
+<p>Algorithm 1 的流程可以压成：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>generate next step
+if final answer: return
+if probe interval reached:
+  append rubric prompt
+  model returns COMPRESS or CONTINUE
+  if COMPRESS:
+    append summarizer prompt
+    model writes summary
+    reset context to original prompt + summary
+  else:
+    remove probe and continue with full trajectory
+</code></pre></div></div>
+
+<h2 id="browsecomp-case为什么固定压缩会错">BrowseComp case：为什么固定压缩会错</h2>
+
+<p>论文用一个 BrowseComp 问题做 motivating example：答案是 <code class="language-plaintext highlighter-rouge">Medusa mushroom</code>，需要验证多个事实链条，比如 Agaricus、Bon 1983、1981 电影角色、1970s bronze statuette 等。</p>
+
+<p><img src="../assets/paper-reading/selfcompact/fig1-browsecomp-strategies.png" alt="SelfCompact BrowseComp motivating case" /></p>
+
+<p>这张图是全篇最值得先看的地方。它把三种轨迹压到同一个问题里：</p>
+
+<ul>
+  <li><strong>No compaction</strong> 没有丢信息，但会把预算烧在无效搜索和长 monologue 上。</li>
+  <li><strong>Fixed interval</strong> 在固定轨迹数后触发总结，正好发生在事实还没有闭合的时候，于是 <code class="language-plaintext highlighter-rouge">Agaricus</code>、<code class="language-plaintext highlighter-rouge">Bon 1983</code>、<code class="language-plaintext highlighter-rouge">Harryhausen</code> 这些证据被擦掉，最后猜成 <code class="language-plaintext highlighter-rouge">Morel Mushroom</code>。</li>
+  <li><strong>SelfCompact</strong> 只在一个事实验证完成后触发总结，相当于把局部证据“固化”进短摘要，后续继续搜索时不会反复丢线索。</li>
+</ul>
+
+<p>三种策略的行为：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>策略</th>
+      <th>发生了什么</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>No compaction</td>
+      <td>做了一些无效搜索，然后进入超长 monologue，最后没答出来</td>
+    </tr>
+    <tr>
+      <td>Fixed interval</td>
+      <td>每两个搜索轨迹压缩一次，但在中途删掉已验证事实，最后猜成 Morel Mushroom</td>
+    </tr>
+    <tr>
+      <td>SelfCompact</td>
+      <td>每次在一个事实闭合后总结，把已验证事实固化，最后答对 Medusa mushroom</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这就是这篇最核心的 intuition：<strong>坏摘要不是摘要能力差，而是摘要时间点错了。</strong></p>
+
+<h2 id="数学推理结果">数学推理结果</h2>
+
+<p>Table 1 在 competition math 上比较 no compaction、fixed interval summary 和 SelfCompact。fixed interval 的 token budget 被约束到和 SelfCompact 接近。</p>
+
+<p><img src="../assets/paper-reading/selfcompact/table1-math-results.png" alt="SelfCompact math benchmark table" /></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Model</th>
+      <th style="text-align: right">No compaction avg</th>
+      <th style="text-align: right">Fixed avg</th>
+      <th style="text-align: right">SelfCompact avg</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Qwen3-4B-Instruct-2507</td>
+      <td style="text-align: right">38.7</td>
+      <td style="text-align: right">41.5</td>
+      <td style="text-align: right"><strong>45.1</strong></td>
+    </tr>
+    <tr>
+      <td>Qwen3-30B-A3B-Instruct-2507</td>
+      <td style="text-align: right">50.6</td>
+      <td style="text-align: right">54.9</td>
+      <td style="text-align: right"><strong>56.4</strong></td>
+    </tr>
+    <tr>
+      <td>Qwen3.5-9B, thinking disabled</td>
+      <td style="text-align: right">32.5</td>
+      <td style="text-align: right">40.1</td>
+      <td style="text-align: right"><strong>47.3</strong></td>
+    </tr>
+    <tr>
+      <td>Qwen3.5-4B, thinking disabled</td>
+      <td style="text-align: right">21.9</td>
+      <td style="text-align: right">30.7</td>
+      <td style="text-align: right"><strong>33.8</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>最显著的是 Qwen3.5-9B：平均从 <strong>32.5</strong> 到 <strong>47.3</strong>。论文摘要里的 “up to 18.1 points” 对应 IMOBench 上从 25.0 到 41.4。</p>
+
+<p>Table 3 还有一个 oracle 分析：在 Qwen3-4B 的 IMO-Answerbench 上，如果 fixed interval 能 oracle 地跳过“当前答案已正确”的 case，准确率可到 <strong>52.9</strong>，说明 adaptive compaction 还有空间。</p>
+
+<h2 id="搜索-agent-结果">搜索 agent 结果</h2>
+
+<p>Table 4 覆盖 BrowseComp、BrowseComp-Plus、DeepSearchQA，评估 150 subsampled questions per benchmark。</p>
+
+<p><img src="../assets/paper-reading/selfcompact/table4-search-cost.png" alt="SelfCompact search accuracy and cost table" /></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Model</th>
+      <th style="text-align: right">No compaction overall</th>
+      <th style="text-align: right">Fixed overall</th>
+      <th style="text-align: right">SelfCompact overall</th>
+      <th style="text-align: right">Cost change vs no compaction</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GLM-4.7-Flash</td>
+      <td style="text-align: right">36.6, USD 0.13</td>
+      <td style="text-align: right">41.5, USD 0.05</td>
+      <td style="text-align: right"><strong>46.4, USD 0.07</strong></td>
+      <td style="text-align: right">-46%</td>
+    </tr>
+    <tr>
+      <td>MiniMax-M2.5</td>
+      <td style="text-align: right">54.6, USD 0.19</td>
+      <td style="text-align: right">59.3, USD 0.06</td>
+      <td style="text-align: right"><strong>63.9, USD 0.08</strong></td>
+      <td style="text-align: right">-58%</td>
+    </tr>
+    <tr>
+      <td>MiMo-V2-Flash</td>
+      <td style="text-align: right">48.9, USD 0.25</td>
+      <td style="text-align: right">54.7, USD 0.14</td>
+      <td style="text-align: right"><strong>59.2, USD 0.13</strong></td>
+      <td style="text-align: right">-48%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>BrowseComp-Plus 上提升尤其清楚：</p>
+
+<ul>
+  <li>GLM-4.7-Flash: 45.6 -&gt; 54.1, cost 0.12 -&gt; 0.04；</li>
+  <li>MiniMax-M2.5: 62.0 -&gt; 71.2, cost 0.19 -&gt; 0.07；</li>
+  <li>MiMo-V2-Flash: 57.6 -&gt; 62.9, cost 0.24 -&gt; 0.16。</li>
+</ul>
+
+<p>这说明 rubric probe 的额外调用没有让成本上升，反而因为后续 prompt 只 attend summary，整体成本下降。</p>
+
+<h2 id="触发时机和难度分桶">触发时机和难度分桶</h2>
+
+<p><img src="../assets/paper-reading/selfcompact/fig2-compaction-trigger-distribution.png" alt="SelfCompact compaction trigger distribution" /></p>
+
+<p>Figure 2 说明 SelfCompact 并不是“把 30% 阈值换成另一个固定阈值”。固定间隔方法的触发点天然挤在红色虚线附近；SelfCompact 的触发点分布更散，因为它看的是子问题是否闭合，而不是 token 是否到点。GLM-4.7-Flash 上 SelfCompact 经常更早压缩，MiniMax-M2.5 上更接近中后段，MiMo-V2-Flash 的样本少但同样不是硬阈值形态。</p>
+
+<p><img src="../assets/paper-reading/selfcompact/fig3-difficulty-bins.png" alt="SelfCompact difficulty bins" /></p>
+
+<p>Figure 3 更能解释适用边界：easy bins 上三种策略差别不大，SelfCompact 的优势主要出现在最难的分桶。换句话说，它解决的不是短任务的“省 token”，而是长搜索里证据链不断堆积、上下文开始腐烂的问题。</p>
+
+<h2 id="为什么-rubric-必须存在">为什么 rubric 必须存在</h2>
+
+<p>作者做了一个很关键的 ablation：去掉 rubric，让模型自己随时决定是否总结。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>GLM-4.7-Flash method</th>
+      <th style="text-align: right">BrowseComp</th>
+      <th style="text-align: right">BrowseComp-Plus</th>
+      <th style="text-align: right">DeepSearchQA</th>
+      <th style="text-align: right">Avg</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>No compaction</td>
+      <td style="text-align: right">30.1</td>
+      <td style="text-align: right">45.6</td>
+      <td style="text-align: right">34.2</td>
+      <td style="text-align: right">36.6</td>
+    </tr>
+    <tr>
+      <td>Fixed interval</td>
+      <td style="text-align: right">35.4</td>
+      <td style="text-align: right">50.0</td>
+      <td style="text-align: right">39.1</td>
+      <td style="text-align: right">41.5</td>
+    </tr>
+    <tr>
+      <td>SelfCompact w/o rubrics</td>
+      <td style="text-align: right">33.6</td>
+      <td style="text-align: right">51.9</td>
+      <td style="text-align: right">37.6</td>
+      <td style="text-align: right">41.0</td>
+    </tr>
+    <tr>
+      <td>SelfCompact</td>
+      <td style="text-align: right"><strong>41.2</strong></td>
+      <td style="text-align: right"><strong>54.1</strong></td>
+      <td style="text-align: right"><strong>44.0</strong></td>
+      <td style="text-align: right"><strong>46.4</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Qwen3-4B-Instruct-2507 的 IMOBench 也类似：no compaction <strong>38.9</strong>，w/o rubric <strong>40.9</strong>，SelfCompact <strong>45.5</strong>。</p>
+
+<p>结论很直接：不是“给模型一个 summary tool”就行。模型如果没有明确判断标准，会在不该总结时总结，或者该总结时不总结。</p>
+
+<h2 id="成本机制">成本机制</h2>
+
+<p>SelfCompact 之所以便宜，靠的是 KV cache reuse：</p>
+
+<ul>
+  <li>rubric probe 是 append 到现有 context 后面，只需要生成一个短 verdict；</li>
+  <li>summarizer 也 append 到现有 context，不需要重新 prefill 全轨迹；</li>
+  <li>一旦压缩，后续调用 attend 的是短 summary，而不是完整历史。</li>
+</ul>
+
+<p>论文给出的直觉 break-even 是：如果原轨迹长度和 summary 长度比例 <code class="language-plaintext highlighter-rouge">L / l &gt; 10</code>，压缩通常值得。搜索任务里这个比例经常满足。</p>
+
+<h2 id="我怎么判断">我怎么判断</h2>
+
+<h3 id="可信之处">可信之处</h3>
+
+<ul>
+  <li><strong>问题非常真实</strong>：context rot 和长轨迹垃圾信息是 agent 系统里的日常痛点。</li>
+  <li><strong>对比公平</strong>：数学实验把 fixed interval 的 token budget 匹配到 SelfCompact 附近。</li>
+  <li><strong>有 cost accounting</strong>：主文和 appendix 都报 token/cost，不只是准确率。</li>
+  <li><strong>ablation 抓住核心</strong>：rubric 是真正贡献，不是 summarizer 本身。</li>
+</ul>
+
+<h3 id="需要警惕">需要警惕</h3>
+
+<ul>
+  <li><strong>rubric 是手写 scaffold</strong>：不同任务需要不同 rubric，泛化靠工程。</li>
+  <li><strong>summary 质量仍是瓶颈</strong>：如果模型总结时漏掉关键证据，后续仍会失败。</li>
+  <li><strong>无训练版本只是第一步</strong>：更强的做法可能是让模型通过 RL 学会何时/怎么 compact。</li>
+  <li><strong>对短任务收益有限</strong>：Figure 3 显示 easy bins 三种策略差不多，SelfCompact 主要帮长难任务。</li>
+</ul>
+
+<h2 id="对我的价值">对我的价值</h2>
+
+<p>这篇可以直接进入自己的 agent harness 设计：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>不要只按 token 阈值 auto-compact
+  -&gt; 定义任务态 rubric
+  -&gt; 只有 subgoal closed / evidence consolidated 才压缩
+  -&gt; summary 必须保留已验证事实、未解决问题、下一步计划
+</code></pre></div></div>
+
+<p>对 paper-reading agent 也很有用：读长论文或综述时，不应该每隔固定 token 总结，而应该在“一个 section 的 claim/evidence/limitation 闭合”后总结。</p>
+
+<h2 id="一句话收束">一句话收束</h2>
+
+<p>SelfCompact 这篇最好的地方是把“上下文管理”从长度问题改成状态问题：不是满了才整理，而是事情告一段落时就把有用信息固化下来。</p>
+
+            </div>
+        </article>
+    </div>
+
+    <aside class="blog-toc-sidebar">
+        <nav id="blog-toc" class="blog-toc-nav" aria-label="Table of contents">
+            <div class="blog-toc-header">
+                <div class="blog-toc-title">On This Page</div>
+                <button
+                    id="blog-toc-toggle"
+                    class="blog-toc-toggle"
+                    type="button"
+                    aria-controls="blog-toc-list"
+                    aria-expanded="true"
+                    aria-label="收起目录"
+                    title="收起目录"
+                >
+                    <svg class="blog-toc-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="blog-toc-list" class="blog-toc-list"></div>
+        </nav>
+    </aside>
+</div>
+
+    </div>
+    <footer class="footer border-top py-2 mt-5 bg-white small">
+    <div class="container-lg">
+        <div class="row my-3">
+            <div class="col-6">
+                <div class="text-muted">
+                    <i>Last updated: Jul 2026</i>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="text-right text-muted">
+                    Built with <a href="https://github.com/luost26/academic-homepage" target="_blank"><i class="fas fa-pencil-ruler"></i> academic-homepage</a>.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <pagefind-config
+        bundle-path="/Ryanhu2001/pagefind/"
+        base-url="/Ryanhu2001/"
+        excerpt-length="30"
+        lang="zh-CN"></pagefind-config>
+    <div class="modal fade site-search-modal" id="siteSearchModal" tabindex="-1" role="dialog" aria-labelledby="siteSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 mb-0" id="siteSearchModalLabel">Search</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <pagefind-searchbox placeholder="搜索 wiki、论文笔记、关键词..." show-sub-results="true" hide-shortcut="true"></pagefind-searchbox>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/github-buttons/2.14.2/buttons.min.js" integrity="sha512-OYwZx04hKFeFNYrWxIyo3atgGpb+cxU0ENWBZs72X7T9U+NoHPM1ftUn/Mfw7dRDXrqWA6M1wBg6z6fGE32aeA==" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+    <script type="module" src="/Ryanhu2001/pagefind/pagefind-component-ui.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tocbot@4.36.8/dist/tocbot.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+              delimiters: [
+                  {left: '$$', right: '$$', display: true},
+                  {left: '\\[', right: '\\]', display: true},
+                  {left: '$', right: '$', display: false},
+                  {left: '\\(', right: '\\)', display: false}
+              ],
+              throwOnError : false
+            });
+            
+            Prism.highlightAll();
+            
+
+            var siteSearchModal = document.getElementById("siteSearchModal");
+            var siteSearchBox = siteSearchModal ? siteSearchModal.querySelector("pagefind-searchbox") : null;
+            function focusSiteSearch() {
+                window.setTimeout(function() {
+                    if (siteSearchBox && typeof siteSearchBox.focus === "function") {
+                        siteSearchBox.focus();
+                    }
+                }, 80);
+            }
+            if (siteSearchModal && window.jQuery) {
+                window.jQuery(siteSearchModal).on("shown.bs.modal", focusSiteSearch);
+            }
+            document.addEventListener("keydown", function(event) {
+                var key = String(event.key || "").toLowerCase();
+                var isSearchShortcut = key === "k" && (event.metaKey || event.ctrlKey);
+                var isModalOpen = siteSearchModal && siteSearchModal.classList.contains("show");
+                var target = event.target;
+                var isTyping = target && (
+                    target.tagName === "INPUT" ||
+                    target.tagName === "TEXTAREA" ||
+                    target.isContentEditable
+                );
+                if (!isSearchShortcut || (isTyping && isModalOpen) || !siteSearchModal || !window.jQuery) return;
+                event.preventDefault();
+                window.jQuery(siteSearchModal).modal("show");
+            });
+        });
+    </script>
+    
+    <script src="/Ryanhu2001/assets/js/blog.js"></script>
+    
+    <script src="/Ryanhu2001/assets/js/common.js"></script>
+    <script src="/Ryanhu2001/assets/js/bubble_visual_hash.js"></script>
+</body>
+</html>

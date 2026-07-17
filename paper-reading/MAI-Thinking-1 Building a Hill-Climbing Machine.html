@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<!-- Template: https://github.com/luost26/academic-homepage -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>MAI-Thinking-1: Building a Hill-Climbing Machine - Ryan</title>
+    <link rel="icon" href="/Ryanhu2001/assets/ryan/avator.jpg" type="image/jpeg">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/pagefind/pagefind-component-ui.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/blog.css">
+    
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/global.css">
+</head>
+<body class="bg-light" >
+    <nav class="navbar navbar-expand-sm navbar-light fixed-top mb-5 shadow-sm">
+    <div class="container-lg">
+        <a class="navbar-brand" href="/Ryanhu2001/"><strong>Ryan</strong></a>
+        <button class="navbar-toggler" style="font-size: 1em; padding: 0.5em;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-map"></i> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/">Home</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/wiki/">Wiki</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/paper-reading/">Paper Reading</a>
+                </li>
+                
+                <li class="nav-item nav-search-item">
+                    <button class="nav-link nav-search-button" type="button" data-toggle="modal" data-target="#siteSearchModal" aria-label="Search site">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <span>Search</span>
+                        <kbd>⌘K</kbd>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <div class="container-lg">
+        
+
+
+
+
+<div class="reading-progress" aria-hidden="true">
+    <span></span>
+</div>
+
+<div class="blog-layout-wrapper">
+    <div class="blog-main">
+        <div class="mb-3">
+            <a class="small" href="/Ryanhu2001/paper-reading/">
+                <i class="fas fa-arrow-left"></i> Paper Reading
+            </a>
+        </div>
+
+        <article class="bg-white rounded-xl p-4 p-md-5 mb-4 wiki-note-card" data-pagefind-body>
+            <div class="blog-content wiki-note">
+                <h1 id="mai-thinking-1这篇更像如何搭一台爬坡机器不是只发布一个模型">MAI-Thinking-1：这篇更像“如何搭一台爬坡机器”，不是只发布一个模型</h1>
+
+<ul>
+  <li><strong>Paper</strong>: MAI-Thinking-1: Building a Hill-Climbing Machine</li>
+  <li><strong>机构</strong>: Microsoft AI Team</li>
+  <li><strong>类型</strong>: model report / pretraining + midtraining + RL system / safety and evaluation report</li>
+  <li><strong>关键词</strong>: sparse MoE, hill-climbing machine, GB200, data mixture, STEM RL, agentic RL, 256K context</li>
+</ul>
+
+<h2 id="读法给人和-agent-的路标">读法：给人和 agent 的路标</h2>
+
+<p>这篇要按“训练组织能力”读，而不是按“某个榜单高不高”读。快速路线是：先看 hill-climbing machine 图，理解 pretraining/mid-training/post-training 三段；再看数据 mixture 和训练 recipe；最后看 Table 11，把 STEM 强项和 agentic coding 弱项分开。</p>
+
+<p>给 agent 以后检索时，关键词是：<code class="language-plaintext highlighter-rouge">35B active / 1T total MoE</code>、<code class="language-plaintext highlighter-rouge">30T pre-training</code>、<code class="language-plaintext highlighter-rouge">3.55T mid-training</code>、<code class="language-plaintext highlighter-rouge">256K context</code>、<code class="language-plaintext highlighter-rouge">STEM climb</code>、<code class="language-plaintext highlighter-rouge">agentic climb</code>、<code class="language-plaintext highlighter-rouge">helpfulness safety climb</code>、<code class="language-plaintext highlighter-rouge">consolidation</code>、<code class="language-plaintext highlighter-rouge">Sandbox Execution Environment</code>。这篇适合和 Composer 2 对照：MAI 写的是通用模型爬坡机器，Composer 写的是产品 coding agent 爬坡机器。</p>
+
+<h2 id="一句话判断">一句话判断</h2>
+
+<p>MAI-Thinking-1 的真正主题不是某个单点 benchmark，而是 Microsoft AI 如何把数据、训练基础设施、评测、RL 环境、reward、safety 和部署硬件组织成一台可持续爬坡的机器；模型本身是 35B active / 1T total sparse MoE，强在 STEM reasoning 和 coding，但 agentic coding 还不是全面领先。</p>
+
+<h2 id="图表优先读法">图表优先读法</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>先看</th>
+      <th>图/表</th>
+      <th>读完应该抓住什么</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>hill-climbing machine 图</td>
+      <td>这篇报告讲的是持续爬坡系统，不只是一个模型 checkpoint</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>data mix / training recipe 表</td>
+      <td>数据、RL、评测、safety 和硬件共同定义模型能力</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>RL climb 图</td>
+      <td>post-training 是多轮改进闭环，不是一次 SFT/RL</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>evaluation table</td>
+      <td>STEM/coding 强，但 agentic coding 不是全面领先</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>附录 case</td>
+      <td>具体失败/成功样例比总分更能说明模型边界</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="先抓住四个点">先抓住四个点</h2>
+
+<ol>
+  <li><strong>模型规模和训练来源很明确。</strong> MAI-Base-1 是 35B active / 1T total sparse MoE，从零开始在 8K GB200 上训练，预训练 30T tokens，声明不使用第三方模型蒸馏。</li>
+  <li><strong>架构选择很工程化。</strong> decoder-only Transformer，周期性 local/global attention，dense FFN 和 MoE 交替，MoE 是 top-8/512 experts，tokenizer 用 <code class="language-plaintext highlighter-rouge">o200k_base</code>，vocab 200,019。</li>
+  <li><strong>mid-training 明显偏 STEM/math/code。</strong> 预训练后再做 3.55T mid-training，上下文扩到 64K 再到 256K；中期 mixture 里 STEM/math 35%、code 55%、background 10%。</li>
+  <li><strong>post-training 是多条 climb 合并。</strong> STEM climb、agentic climb、helpfulness/safety climb 都有各自 reward 和数据管线，最后通过 consolidation 汇成 MAI-Thinking-1。</li>
+</ol>
+
+<h2 id="先看我整理的结构图">先看我整理的结构图</h2>
+
+<p><img src="../assets/paper-reading/mai-thinking-1/hill-climbing-machine.svg" alt="MAI-Thinking-1 hill-climbing machine" /></p>
+
+<p>MAI-Thinking-1 最适合被读成一台持续爬坡的机器：pretraining/mid-training 提供底座，STEM、agentic、helpfulness/safety 三条 climb 分别优化，再通过 consolidation 合并。它的强 STEM 分数说明这套机器在某些方向已经能爬，Terminal-Bench 46.0 则提醒 agentic climb 还没到全面领先。</p>
+
+<p>图里有三个锚点：</p>
+
+<ul>
+  <li><strong>底座很重</strong>：35B active / 1T total sparse MoE，加上 30T pre-training 和 3.55T mid-training，说明 post-training 不是凭空变魔法。</li>
+  <li><strong>climb 是分工的</strong>：数学/科学、agentic coding、helpfulness/safety 分开爬，再 consolidation，避免一个混合 RL 目标互相污染。</li>
+  <li><strong>结果不均衡</strong>：STEM climb 很有效，agentic coding 仍明显落后 Kimi/DeepSeek/GPT，这恰好说明报告没有把短板藏起来。</li>
+</ul>
+
+<h2 id="论文原图--数据作为证据">论文原图 / 数据作为证据</h2>
+
+<p><img src="../assets/paper-reading/mai-thinking-1/fig1-rl-climb.png" alt="MAI-Thinking-1 RL climb" /></p>
+
+<p>Figure 1 是标题里 hill-climbing 的直观证据：模型在 STEM 和 coding RL 过程中持续爬升。它不是解释机制的图，但解释了这篇报告为什么把“机器”而不是“模型”放在中心。</p>
+
+<p>这张图的价值不是告诉我们“RL 一定有效”，而是提醒读者看这篇报告时要关注 <strong>爬坡过程</strong>：数据、环境、reward、grader、失败分析、consolidation 怎样让能力持续变好。单个 checkpoint 分数只是这台机器跑出来的一帧。</p>
+
+<h2 id="模型架构">模型架构</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>项</th>
+      <th>MAI-Base-1 / MAI-Thinking-1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>模型类型</td>
+      <td>Decoder-only Transformer</td>
+    </tr>
+    <tr>
+      <td>参数规模</td>
+      <td>35B active / 1T total sparse MoE</td>
+    </tr>
+    <tr>
+      <td>训练硬件</td>
+      <td>8K GB200 GPUs on Azure</td>
+    </tr>
+    <tr>
+      <td>Tokenizer</td>
+      <td><code class="language-plaintext highlighter-rouge">o200k_base</code></td>
+    </tr>
+    <tr>
+      <td>Vocabulary size</td>
+      <td>200,019</td>
+    </tr>
+    <tr>
+      <td>Attention</td>
+      <td>周期性 local/global attention，5 local + 1 global</td>
+    </tr>
+    <tr>
+      <td>Local attention window</td>
+      <td>512</td>
+    </tr>
+    <tr>
+      <td>KV heads</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <td>MoE</td>
+      <td>top-8 / 512 experts</td>
+    </tr>
+    <tr>
+      <td>MoE implementation</td>
+      <td>LatentMoE，routing based on original representation</td>
+    </tr>
+    <tr>
+      <td>Context after mid-training</td>
+      <td>256K</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>两个设计细节值得记：</p>
+
+<ul>
+  <li>它没有每层都用 MoE，而是高稀疏 MoE 与 dense FFN 交错。作者认为这种设计在 wall-clock 上更有效。</li>
+  <li>它用了 fully dropless MoE implementation，避免 token dropping 带来的因果泄漏和容量相关结论偏移。</li>
+</ul>
+
+<h2 id="数据-pipeline">数据 Pipeline</h2>
+
+<p><img src="../assets/paper-reading/mai-thinking-1/table5-data-mix.png" alt="MAI data mixture" /></p>
+
+<p>预训练数据构成很具体：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Source family</th>
+      <th style="text-align: right">Unique tokens</th>
+      <th style="text-align: right">Training tokens</th>
+      <th style="text-align: right">Mix %</th>
+      <th style="text-align: right">Avg epochs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Code</td>
+      <td style="text-align: right">7.4T</td>
+      <td style="text-align: right">16.4T</td>
+      <td style="text-align: right">54.6%</td>
+      <td style="text-align: right">2.22x</td>
+    </tr>
+    <tr>
+      <td>STEM</td>
+      <td style="text-align: right">2.2T</td>
+      <td style="text-align: right">4.7T</td>
+      <td style="text-align: right">15.8%</td>
+      <td style="text-align: right">2.17x</td>
+    </tr>
+    <tr>
+      <td>Math</td>
+      <td style="text-align: right">0.3T</td>
+      <td style="text-align: right">1.6T</td>
+      <td style="text-align: right">5.4%</td>
+      <td style="text-align: right">5.28x</td>
+    </tr>
+    <tr>
+      <td>Books and journals</td>
+      <td style="text-align: right">0.6T</td>
+      <td style="text-align: right">0.9T</td>
+      <td style="text-align: right">3.1%</td>
+      <td style="text-align: right">1.65x</td>
+    </tr>
+    <tr>
+      <td>PDFs</td>
+      <td style="text-align: right">2.7T</td>
+      <td style="text-align: right">1.4T</td>
+      <td style="text-align: right">4.7%</td>
+      <td style="text-align: right">0.53x</td>
+    </tr>
+    <tr>
+      <td>Web text</td>
+      <td style="text-align: right">8.1T</td>
+      <td style="text-align: right">4.5T</td>
+      <td style="text-align: right">14.9%</td>
+      <td style="text-align: right">0.55x</td>
+    </tr>
+    <tr>
+      <td>Multilingual other</td>
+      <td style="text-align: right">8.1T</td>
+      <td style="text-align: right">0.5T</td>
+      <td style="text-align: right">1.6%</td>
+      <td style="text-align: right">0.06x</td>
+    </tr>
+    <tr>
+      <td>Total</td>
+      <td style="text-align: right">29.2T</td>
+      <td style="text-align: right">30.0T</td>
+      <td style="text-align: right">100.0%</td>
+      <td style="text-align: right">1.03x</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>几个数据细节有价值：</p>
+
+<ul>
+  <li>Math unique token 只有 0.3T，但训练 token 1.6T，平均 5.28x，是最高重复采样。</li>
+  <li>Code 是最大头，16.4T training tokens，占 54.6%。</li>
+  <li>Web text 和 PDF 都没有吃完整 corpus，分别 0.55x 和 0.53x。</li>
+  <li>多语言 other 被强烈下采样，8.1T unique 只取 0.5T。</li>
+</ul>
+
+<p>中期训练不引入新 synthetic source，而是从预训练 corpus 里筛更高质量子集，并重新加权：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Mid-training 类别</th>
+      <th style="text-align: right">比例</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>STEM/math</td>
+      <td style="text-align: right">35%</td>
+    </tr>
+    <tr>
+      <td>Code</td>
+      <td style="text-align: right">55%</td>
+    </tr>
+    <tr>
+      <td>Background</td>
+      <td style="text-align: right">10%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>代码数据还做了两个额外处理：</p>
+
+<ul>
+  <li>按 repo quality tier 过滤 file extension。比如 HTML/CSS/SVG 在高质量 repo 里可能是正常前端工程，在低质量 repo 里可能是孤立低质页面。</li>
+  <li>同时使用 repo-level format 和 file-level document format，让模型既学仓库整体，也学单文件理解。</li>
+</ul>
+
+<h2 id="训练-recipe">训练 Recipe</h2>
+
+<p><img src="../assets/paper-reading/mai-thinking-1/table6-training-recipe.png" alt="MAI training recipe" /></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Phase</th>
+      <th style="text-align: right">Tokens</th>
+      <th style="text-align: right">Context length</th>
+      <th style="text-align: right">GB200 GPUs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Pre-training</td>
+      <td style="text-align: right">30T</td>
+      <td style="text-align: right">16,384</td>
+      <td style="text-align: right">8,192</td>
+    </tr>
+    <tr>
+      <td>Mid-training 1</td>
+      <td style="text-align: right">3.4T</td>
+      <td style="text-align: right">65,536</td>
+      <td style="text-align: right">8,192</td>
+    </tr>
+    <tr>
+      <td>Mid-training 2</td>
+      <td style="text-align: right">150B</td>
+      <td style="text-align: right">262,144</td>
+      <td style="text-align: right">4,096</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>超参也给得很细：</p>
+
+<ul>
+  <li>Optimizer: AdamW</li>
+  <li><code class="language-plaintext highlighter-rouge">beta1=0.95</code></li>
+  <li><code class="language-plaintext highlighter-rouge">beta2=0.925</code></li>
+  <li><code class="language-plaintext highlighter-rouge">epsilon=1e-8</code></li>
+  <li>weight decay 0.1，attention weights 0.01，embedding weights 0.005</li>
+  <li>global gradient norm clip 1.0</li>
+  <li>warmup 约 12B tokens</li>
+  <li>peak LR <code class="language-plaintext highlighter-rouge">2e-4</code>，minimum LR <code class="language-plaintext highlighter-rouge">2e-5</code></li>
+  <li>layer output dropout 0.15</li>
+</ul>
+
+<p>这些细节说明它不是只有 benchmark，而是想公开一部分可审计的训练 recipe。</p>
+
+<p>这张训练 recipe 表的意义是：它把“长上下文能力”放进训练阶段，而不是只在推理时拉大窗口。先 16K pre-training，再 64K mid-training，最后短阶段扩到 256K，这是一条更省钱的路线。对个人项目的类比是：不要一开始就把所有材料塞进最大上下文，先让流程在短上下文里稳定，再扩大任务长度。</p>
+
+<h2 id="post-training--hill-climbing-pipeline">Post-training / Hill-Climbing Pipeline</h2>
+
+<p>MAI-Thinking-1 的 post-training 分三条主线：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Climb</th>
+      <th>目标</th>
+      <th>Reward / 训练信号</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>STEM climb</td>
+      <td>数学、科学、竞赛编程</td>
+      <td>verifiable rewards、self-distillation、长度扩展</td>
+    </tr>
+    <tr>
+      <td>Agentic climb</td>
+      <td>SWE、工具使用、多步环境交互</td>
+      <td>sandbox execution environment、测试/状态 reward、AI feedback</td>
+    </tr>
+    <tr>
+      <td>Helpfulness &amp; safety climb</td>
+      <td>人类偏好、IF、安全、诚实、风格</td>
+      <td>human preference reward model、rubric AI judge、verifiable rewards</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Agentic climb 的 loop 很接近真实 coding agent：</p>
+
+<ol>
+  <li>环境给出 task specification。</li>
+  <li>模型在 SEE，也就是 Sandbox Execution Environment 中产生 tool calls 或 final answer。</li>
+  <li>工具输出被 append 回上下文。</li>
+  <li>多步 trajectory 完成后由 tests、state comparison、AI judge 等 grader 评分。</li>
+  <li>credit assignment 统一作用到所有 policy steps 的 tokens。</li>
+</ol>
+
+<p>软件工程任务里工具包括 read/edit files、shell commands、inspect repository state。General tool use 则是结构化工具和可变 task state，例如数据库。</p>
+
+<p>这里和 Harness Engineering 的关系很强：MAI 的 agentic climb 本质上是在一个 sandbox harness 里训练模型。模型不是只回答文本，而是在 SEE 里调用工具、观察状态、被 grader 评分。这说明“agent 能力”越来越像模型和环境共同训练出来的东西，而不是单靠 instruction tuning。</p>
+
+<h2 id="关键结果">关键结果</h2>
+
+<p><img src="../assets/paper-reading/mai-thinking-1/table11-evaluation.png" alt="MAI benchmark results" /></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Benchmark</th>
+      <th style="text-align: right">MAI-Thinking-1</th>
+      <th style="text-align: right">Kimi K2.6</th>
+      <th style="text-align: right">DeepSeek V4</th>
+      <th style="text-align: right">GLM-5.1</th>
+      <th style="text-align: right">Opus 4.6</th>
+      <th style="text-align: right">GPT-5.4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>AIME 2025</td>
+      <td style="text-align: right">97.0</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">99.8</td>
+      <td style="text-align: right">-</td>
+    </tr>
+    <tr>
+      <td>AIME 2026</td>
+      <td style="text-align: right">94.5</td>
+      <td style="text-align: right">96.4</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">95.3</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">-</td>
+    </tr>
+    <tr>
+      <td>HMMT Feb 2026</td>
+      <td style="text-align: right">84.9</td>
+      <td style="text-align: right">92.7</td>
+      <td style="text-align: right">95.2</td>
+      <td style="text-align: right">82.6</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">-</td>
+    </tr>
+    <tr>
+      <td>GPQA Diamond</td>
+      <td style="text-align: right">84.2</td>
+      <td style="text-align: right">90.5</td>
+      <td style="text-align: right">90.1</td>
+      <td style="text-align: right">86.2</td>
+      <td style="text-align: right">91.3</td>
+      <td style="text-align: right">92.8</td>
+    </tr>
+    <tr>
+      <td>LCB v6</td>
+      <td style="text-align: right">87.7</td>
+      <td style="text-align: right">89.6</td>
+      <td style="text-align: right">93.5</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">-</td>
+    </tr>
+    <tr>
+      <td>Terminal-Bench 2.0</td>
+      <td style="text-align: right">46.0</td>
+      <td style="text-align: right">66.7</td>
+      <td style="text-align: right">67.9</td>
+      <td style="text-align: right">69.0</td>
+      <td style="text-align: right">65.4</td>
+      <td style="text-align: right">75.1</td>
+    </tr>
+    <tr>
+      <td>SWE-bench Verified</td>
+      <td style="text-align: right">73.5</td>
+      <td style="text-align: right">80.2</td>
+      <td style="text-align: right">80.6</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">80.8</td>
+      <td style="text-align: right">-</td>
+    </tr>
+    <tr>
+      <td>SWE-Bench Pro</td>
+      <td style="text-align: right">52.8</td>
+      <td style="text-align: right">58.6</td>
+      <td style="text-align: right">55.4</td>
+      <td style="text-align: right">58.4</td>
+      <td style="text-align: right">53.4</td>
+      <td style="text-align: right">57.7</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>读法：</p>
+
+<ul>
+  <li>MAI-Thinking-1 的 STEM 能力很强，AIME 2025 97.0 是亮点。</li>
+  <li>Coding reasoning 也不错，LCB v6 87.7，但不如 DeepSeek V4 和 Kimi K2.6。</li>
+  <li>Agentic coding 不是它最强项。Terminal-Bench 2.0 46.0 明显落后；SWE-bench Verified 73.5 也低于 Kimi/DeepSeek/Opus。</li>
+  <li>SWE-Bench Pro 52.8 接近 Opus 4.6 的 53.4，但低于 Kimi K2.6、DeepSeek V4、GLM-5.1、GPT-5.4。</li>
+</ul>
+
+<p>所以这篇不能读成“MAI 全面超过 frontier coding models”。更准确的定位是：它展示了 Microsoft AI 自建 hill-climbing pipeline 的第一代结果，在 STEM 很强，在 agentic coding 仍有明显提升空间。</p>
+
+<p>这个结论很重要，因为它防止误读：MAI-Thinking-1 是一份透明度很高的训练系统报告，不是一份“全面领先 coding agent”报告。它真正值得学的是怎么组织爬坡机器，而不是拿 Terminal-Bench 46.0 去吹 coding agent。</p>
+
+<h2 id="agentic-coding-评测细节">Agentic coding 评测细节</h2>
+
+<p>Appendix I 里有具体设置：</p>
+
+<ul>
+  <li>SWE-bench Verified、SWE-Bench Pro、Terminal-Bench 2.0 都是多轮环境交互。</li>
+  <li>使用简单 ReAct-style always-append agent loop。</li>
+  <li>总 context length 256K tokens。</li>
+  <li>SWE-bench Verified / Pro 最大输出 8K tokens。</li>
+  <li>Terminal-Bench 2.0 最大输出 32K tokens。</li>
+  <li>最大 1,000 steps。</li>
+  <li>SWE-bench Verified / Pro 使用和训练 climb 相同的两个工具：bash 和 string replace editor。</li>
+  <li>Terminal-Bench 2.0 只使用 bash tool。</li>
+</ul>
+
+<p>这个设置对解读分数很重要：它的 agentic coding 并不是复杂 IDE harness，也不是和 Cursor 一样的产品工具集，而是相对简单的 ReAct loop。</p>
+
+<p>因此，MAI 的 agentic coding 分数有两种读法：一方面，它说明模型和基础 RL 还需要继续爬；另一方面，它也可能低估了模型在更强 harness 下的潜力。和 Composer 2 对比会很有意思：Composer 的优势恰恰在于产品 harness、真实 CursorBench 和复杂基础设施。</p>
+
+<h2 id="附录里值得看的-case">附录里值得看的 case</h2>
+
+<p>Appendix D 讲了一些 reasoning behavior。一个 AIME case 里，强模型会先推导候选 <code class="language-plaintext highlighter-rouge">k</code>，再用 domain condition 排除不合法解；弱模型则更像从可见 root 猜 candidate，最后漏掉 corner case。</p>
+
+<p>这个例子想表达的不是“会写更长 CoT”，而是强 reasoning model 会更愿意怀疑自己的中间结论，重新检查 domain constraint 和边界条件。这和作者所谓 hill-climbing 里的 behavior evolution 是一致的：RL 不只是提高最终分数，也在塑造解题习惯。</p>
+
+<h2 id="我怎么看">我怎么看</h2>
+
+<p>可信之处：</p>
+
+<ul>
+  <li>训练数据、模型架构、阶段 tokens、上下文长度、GPU 数、超参给得很细，透明度高。</li>
+  <li>Table 11 没有掩盖 Terminal-Bench 明显弱项。</li>
+  <li>数据 mixture 和 rank non-invariance 的讨论很有价值：小规模最优 mixture 不一定是大规模最优 mixture。</li>
+  <li>256K long-context extension 的附录很实用，尤其是先 64K mid-training 再短阶段扩到 256K 的 recipe。</li>
+</ul>
+
+<p>需要警惕：</p>
+
+<ul>
+  <li>报告很长，很多评测和数据是内部构造，外部无法完全复查。</li>
+  <li>“无第三方模型蒸馏”是重要声明，但仍有大量数据过滤、AI judge、synthetic environment 细节依赖内部系统。</li>
+  <li>Agentic coding 结果说明这台机器还在爬坡，不能只拿 AIME 高分外推到 coding agent。</li>
+</ul>
+
+<h2 id="对我的价值">对我的价值</h2>
+
+<p>如果把这篇放进个人研究线，我会记三件事：</p>
+
+<ol>
+  <li><strong>数据 mixture 要按目标能力重配。</strong> paper-reading/coding agent 的数据不应只堆 web text，代码、STEM、长文档、工具轨迹要分桶。</li>
+  <li><strong>长上下文扩展可以是短阶段校准。</strong> 不是所有训练都要在最大 context 下烧钱，先短 context 建能力，再做 target context extension 可能更划算。</li>
+  <li><strong>agent pipeline 要用环境和 grader。</strong> 真正的 coding agent 训练信号来自环境状态、测试、工具轨迹和行为质量，而不是单轮文本偏好。</li>
+</ol>
+
+<p>我还会把它变成一个个人 wiki 原则：想让一个长期 workflow 变强，不能只改 prompt。要有数据分桶、任务环境、外部 grader、失败记录、阶段性 consolidation。paper-reading pipeline 也是一样，先保证来源、图、公式、构建、部署这些环节都有检查点，再谈“自动读得更好”。</p>
+
+<h2 id="一句话收束">一句话收束</h2>
+
+<p>MAI-Thinking-1 最值得记住的不是 97.0 AIME，而是“hill-climbing machine”这个工程范式：模型能力来自数据、基础设施、评测、环境、reward 和安全系统持续闭环，而不只是一次训练 run。</p>
+
+            </div>
+        </article>
+    </div>
+
+    <aside class="blog-toc-sidebar">
+        <nav id="blog-toc" class="blog-toc-nav" aria-label="Table of contents">
+            <div class="blog-toc-header">
+                <div class="blog-toc-title">On This Page</div>
+                <button
+                    id="blog-toc-toggle"
+                    class="blog-toc-toggle"
+                    type="button"
+                    aria-controls="blog-toc-list"
+                    aria-expanded="true"
+                    aria-label="收起目录"
+                    title="收起目录"
+                >
+                    <svg class="blog-toc-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="blog-toc-list" class="blog-toc-list"></div>
+        </nav>
+    </aside>
+</div>
+
+    </div>
+    <footer class="footer border-top py-2 mt-5 bg-white small">
+    <div class="container-lg">
+        <div class="row my-3">
+            <div class="col-6">
+                <div class="text-muted">
+                    <i>Last updated: Jul 2026</i>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="text-right text-muted">
+                    Built with <a href="https://github.com/luost26/academic-homepage" target="_blank"><i class="fas fa-pencil-ruler"></i> academic-homepage</a>.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <pagefind-config
+        bundle-path="/Ryanhu2001/pagefind/"
+        base-url="/Ryanhu2001/"
+        excerpt-length="30"
+        lang="zh-CN"></pagefind-config>
+    <div class="modal fade site-search-modal" id="siteSearchModal" tabindex="-1" role="dialog" aria-labelledby="siteSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 mb-0" id="siteSearchModalLabel">Search</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <pagefind-searchbox placeholder="搜索 wiki、论文笔记、关键词..." show-sub-results="true" hide-shortcut="true"></pagefind-searchbox>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/github-buttons/2.14.2/buttons.min.js" integrity="sha512-OYwZx04hKFeFNYrWxIyo3atgGpb+cxU0ENWBZs72X7T9U+NoHPM1ftUn/Mfw7dRDXrqWA6M1wBg6z6fGE32aeA==" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+    <script type="module" src="/Ryanhu2001/pagefind/pagefind-component-ui.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tocbot@4.36.8/dist/tocbot.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+              delimiters: [
+                  {left: '$$', right: '$$', display: true},
+                  {left: '\\[', right: '\\]', display: true},
+                  {left: '$', right: '$', display: false},
+                  {left: '\\(', right: '\\)', display: false}
+              ],
+              throwOnError : false
+            });
+            
+            Prism.highlightAll();
+            
+
+            var siteSearchModal = document.getElementById("siteSearchModal");
+            var siteSearchBox = siteSearchModal ? siteSearchModal.querySelector("pagefind-searchbox") : null;
+            function focusSiteSearch() {
+                window.setTimeout(function() {
+                    if (siteSearchBox && typeof siteSearchBox.focus === "function") {
+                        siteSearchBox.focus();
+                    }
+                }, 80);
+            }
+            if (siteSearchModal && window.jQuery) {
+                window.jQuery(siteSearchModal).on("shown.bs.modal", focusSiteSearch);
+            }
+            document.addEventListener("keydown", function(event) {
+                var key = String(event.key || "").toLowerCase();
+                var isSearchShortcut = key === "k" && (event.metaKey || event.ctrlKey);
+                var isModalOpen = siteSearchModal && siteSearchModal.classList.contains("show");
+                var target = event.target;
+                var isTyping = target && (
+                    target.tagName === "INPUT" ||
+                    target.tagName === "TEXTAREA" ||
+                    target.isContentEditable
+                );
+                if (!isSearchShortcut || (isTyping && isModalOpen) || !siteSearchModal || !window.jQuery) return;
+                event.preventDefault();
+                window.jQuery(siteSearchModal).modal("show");
+            });
+        });
+    </script>
+    
+    <script src="/Ryanhu2001/assets/js/blog.js"></script>
+    
+    <script src="/Ryanhu2001/assets/js/common.js"></script>
+    <script src="/Ryanhu2001/assets/js/bubble_visual_hash.js"></script>
+</body>
+</html>

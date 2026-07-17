@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="520" viewBox="0 0 1080 520" role="img" aria-labelledby="title desc">
+  <title id="title">AutoData data collection loop</title>
+  <desc id="desc">A self-made diagram showing how AutoData turns a natural language request into a verified dataset through research, cache, development, and validation stages.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4f5f66"/>
+    </marker>
+    <style>
+      .bg { fill: #fbf6ea; }
+      .box { fill: #fffaf0; stroke: #b89a62; stroke-width: 2; rx: 18; }
+      .box2 { fill: #f7fbf7; stroke: #6f9b7b; stroke-width: 2; rx: 18; }
+      .box3 { fill: #f6f8fb; stroke: #7893b0; stroke-width: 2; rx: 18; }
+      .text { fill: #1f2428; font-family: Inter, Arial, sans-serif; font-size: 25px; font-weight: 700; }
+      .small { fill: #4f5459; font-family: Inter, Arial, sans-serif; font-size: 17px; font-weight: 500; }
+      .line { stroke: #4f5f66; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+      .dash { stroke-dasharray: 8 8; }
+    </style>
+  </defs>
+  <rect class="bg" width="1080" height="520"/>
+  <text class="text" x="54" y="62">AutoData: from request to reusable dataset</text>
+  <text class="small" x="54" y="94">The main trick is separating research, executable collection code, and artifact/cache management.</text>
+
+  <rect class="box" x="60" y="150" width="190" height="112"/>
+  <text class="text" x="88" y="196">User task</text>
+  <text class="small" x="88" y="226">natural-language</text>
+  <text class="small" x="88" y="249">data need</text>
+
+  <rect class="box2" x="320" y="130" width="215" height="150"/>
+  <text class="text" x="350" y="176">Research squad</text>
+  <text class="small" x="350" y="207">browse sources</text>
+  <text class="small" x="350" y="231">infer schema</text>
+  <text class="small" x="350" y="255">write blueprint</text>
+
+  <rect class="box3" x="605" y="130" width="215" height="150"/>
+  <text class="text" x="638" y="176">Develop squad</text>
+  <text class="small" x="638" y="207">implement collector</text>
+  <text class="small" x="638" y="231">run and debug</text>
+  <text class="small" x="638" y="255">validate rows</text>
+
+  <rect class="box" x="890" y="150" width="145" height="112"/>
+  <text class="text" x="922" y="196">Dataset</text>
+  <text class="small" x="922" y="226">structured</text>
+  <text class="small" x="922" y="249">verified</text>
+
+  <rect class="box" x="320" y="340" width="500" height="105"/>
+  <text class="text" x="354" y="384">OHCache</text>
+  <text class="small" x="354" y="415">oriented message hypergraph + local artifact cache</text>
+
+  <path class="line" d="M250 206 H312"/>
+  <path class="line" d="M535 206 H597"/>
+  <path class="line" d="M820 206 H882"/>
+  <path class="line dash" d="M428 280 V332"/>
+  <path class="line dash" d="M712 280 V332"/>
+  <path class="line dash" d="M570 340 V294"/>
+</svg>

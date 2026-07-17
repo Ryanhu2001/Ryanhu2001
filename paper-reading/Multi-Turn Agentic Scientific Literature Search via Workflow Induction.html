@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<!-- Template: https://github.com/luost26/academic-homepage -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Multi-Turn Agentic Scientific Literature Search via Workflow Induction - Ryan</title>
+    <link rel="icon" href="/Ryanhu2001/assets/ryan/avator.jpg" type="image/jpeg">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/pagefind/pagefind-component-ui.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/blog.css">
+    
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/global.css">
+</head>
+<body class="bg-light" >
+    <nav class="navbar navbar-expand-sm navbar-light fixed-top mb-5 shadow-sm">
+    <div class="container-lg">
+        <a class="navbar-brand" href="/Ryanhu2001/"><strong>Ryan</strong></a>
+        <button class="navbar-toggler" style="font-size: 1em; padding: 0.5em;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-map"></i> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/">Home</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/wiki/">Wiki</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/paper-reading/">Paper Reading</a>
+                </li>
+                
+                <li class="nav-item nav-search-item">
+                    <button class="nav-link nav-search-button" type="button" data-toggle="modal" data-target="#siteSearchModal" aria-label="Search site">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <span>Search</span>
+                        <kbd>⌘K</kbd>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <div class="container-lg">
+        
+
+
+
+
+<div class="reading-progress" aria-hidden="true">
+    <span></span>
+</div>
+
+<div class="blog-layout-wrapper">
+    <div class="blog-main">
+        <div class="mb-3">
+            <a class="small" href="/Ryanhu2001/paper-reading/">
+                <i class="fas fa-arrow-left"></i> Paper Reading
+            </a>
+        </div>
+
+        <article class="bg-white rounded-xl p-4 p-md-5 mb-4 wiki-note-card" data-pagefind-body>
+            <div class="blog-content wiki-note">
+                <h1 id="paperpilot把文献搜索从一次-query-变成可编辑-workflow">PaperPilot：把文献搜索从一次 query 变成可编辑 workflow</h1>
+
+<ul>
+  <li><strong>Paper</strong>: <a href="https://arxiv.org/abs/2607.00597">Multi-Turn Agentic Scientific Literature Search via Workflow Induction</a></li>
+  <li><strong>Version</strong>: arXiv v2, 2026-07-03</li>
+  <li><strong>Authors</strong>: Jisen Li, Bingxuan Li, Nanyi Jiang, Xuying Ning, Xiyao Wang, Yifan Shen, Heng Wang, Yuqing Jian, Xiaoxia Wu, Ben Athiwaratkun, Pan Lu, Jiaxuan You, Bingxin Zhao</li>
+  <li><strong>Project</strong>: <a href="https://paperpilot.papersearch.org/">paperpilot.papersearch.org</a></li>
+  <li><strong>Code</strong>: <a href="https://github.com/mtilyxuegao/PaperPilot">mtilyxuegao/PaperPilot</a></li>
+  <li><strong>类型</strong>: literature search agent / workflow induction / multi-turn retrieval / system + benchmark paper</li>
+  <li><strong>关键词</strong>: PaperPilot, workflow induction, DAG workflow, literature search, citation expansion, evidence grounding, multi-turn feedback</li>
+</ul>
+
+<h2 id="读法给人和-agent-的路标">读法：给人和 agent 的路标</h2>
+
+<p>这篇和我们自己的 paper-reading/wiki pipeline 很贴：它不是在做“给一个 query 返回一堆 paper”的搜索引擎，而是在研究 <strong>如何把用户含混、会变化的科研意图，翻译成一个可执行、可检查、可修改的搜索 workflow</strong>。</p>
+
+<p>如果只想快速 get 到主线，先读 <strong>一句话判断</strong>、<strong>Figure 2 的 workflow 图</strong>、<strong>训练数据怎么构造</strong> 和 <strong>Table 2 / Figure 5 的核心结果</strong>。如果要借鉴到自己的系统，再读 toolset、workflow editing、user simulator 和 limitations。</p>
+
+<p>给 agent 以后检索时，关键词是：<code class="language-plaintext highlighter-rouge">PaperPilot</code>、<code class="language-plaintext highlighter-rouge">workflow induction</code>、<code class="language-plaintext highlighter-rouge">typed operator DAG</code>、<code class="language-plaintext highlighter-rouge">citation expansion</code>、<code class="language-plaintext highlighter-rouge">NLI filter</code>、<code class="language-plaintext highlighter-rouge">workflow imitation</code>、<code class="language-plaintext highlighter-rouge">preference over corruptions</code>、<code class="language-plaintext highlighter-rouge">Qwen3.5-9B</code>、<code class="language-plaintext highlighter-rouge">multi-turn literature search</code>。</p>
+
+<h2 id="一句话判断">一句话判断</h2>
+
+<p>PaperPilot 的核心贡献是把科学文献搜索从“语言模型自己想一个搜索策略”改成“模型生成并编辑一个显式 DAG workflow”。这让文献搜索过程更可控、可检查、可针对用户反馈修改，也更像一个真正可维护的 research agent harness。</p>
+
+<p>我的判断是，这篇最有价值的地方不是 9B 模型打过某个大模型，而是它提出了一个很适合个人知识库的接口：<strong>搜索策略本身应该成为 artifact</strong>。用户不只是说“这些结果不对”，而是反馈会落到 workflow 里的 keyword、citation direction、filter、NLI axis、reranking criterion 这些可编辑对象上。</p>
+
+<h2 id="图表优先读法">图表优先读法</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>先看</th>
+      <th>图/表</th>
+      <th>读完应该抓住什么</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Figure 2：workflow overview</td>
+      <td>PaperPilot 生成的是 typed DAG，不是隐式搜索 prompt</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Workflow refinement DAG</td>
+      <td>用户反馈应该落成 node/edge/parameter edit</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Figure 5：main gains</td>
+      <td>训练 workflow model 能把 execution error 从 9.5% 压到 0%</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Search session demo</td>
+      <td>一个完整文献搜索 session 应该保存策略、结果和证据</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Figure 8：search scale</td>
+      <td>候选池不是越大越好，噪声会伤害 rerank/filter</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><img src="../assets/paper-reading/paperpilot-workflow-induction/workflow-as-artifact.svg" alt="PaperPilot workflow as artifact" /></p>
+
+<p>这张自制图把 PaperPilot 的 taste 画得更直白：搜索策略不是一段隐藏 prompt，而是一个可编辑、可复现、可审计的 typed DAG。用户反馈应该落到 operator、edge 和参数上，而不是变成下一轮自然语言补丁。这也是它对个人知识库最有迁移价值的地方。</p>
+
+<h2 id="先看核心流程图">先看核心流程图</h2>
+
+<p><img src="../assets/paper-reading/paperpilot-workflow-induction/fig2-workflow-overview.png" alt="PaperPilot workflow overview" /></p>
+
+<p>Figure 2 是全文最重要的图。它展示了一个完整 PaperPilot 流程：给定 anchor paper 和用户搜索意图，agent 先生成初始 DAG，问 clarification question，再根据用户回答修改 DAG，最终执行 workflow 并输出带分数和解释的 paper list。</p>
+
+<p>这张图里有三个锚点：</p>
+
+<ul>
+  <li><strong>输入不是裸 query</strong>：输入包含 anchor paper、user query 和 search direction，例如 predecessor、successor、sibling、benchmark、survey。</li>
+  <li><strong>workflow 是 typed operator DAG</strong>：节点不是自然语言步骤，而是关键词搜索、引用扩展、union、filter、NLI filter、score、rerank、top-k、evidence extraction 等 operator。</li>
+  <li><strong>反馈修改的是 workflow</strong>：用户说“更关注 architecture，不要 applications”或“只看 2020 后”，系统不是把这句话拼进 query，而是修改 filter、NLI axis、ranking weights。</li>
+</ul>
+
+<h2 id="1-这篇到底想解决什么问题">1. 这篇到底想解决什么问题？</h2>
+
+<p>论文的出发点很对：科研文献搜索通常不是一次 query 能完成的。比如“找这篇 paper 的 follow-up work”可能有很多含义：</p>
+
+<ul>
+  <li>是找 <strong>直接引用它</strong> 的 paper？</li>
+  <li>是找 <strong>同一方法路线的延伸</strong>？</li>
+  <li>是找 <strong>同一 benchmark 上的强 baseline</strong>？</li>
+  <li>是找 <strong>应用到相邻领域</strong> 的 work？</li>
+  <li>是找 <strong>最近两年真正 building upon 它的 paper</strong>？</li>
+</ul>
+
+<p>传统 search agent 常有两类问题。第一类是 fixed pipeline，不管用户想找 predecessor、successor 还是 benchmark paper，都走同一套 retrieve-rerank-summarize。第二类是 implicit reasoning，LLM 在自由文本里“想”搜索策略，但用户很难知道它到底改了什么，也很难稳定复现。</p>
+
+<p>PaperPilot 的答案是：把 literature search 表示成 workflow induction。搜索策略不是隐藏在 CoT 里，而是显式生成一个 DAG，用户反馈可以转成 DAG edit。</p>
+
+<h2 id="2-方法机制dag-workflow-是核心对象">2. 方法机制：DAG workflow 是核心对象</h2>
+
+<p>论文把一个 workflow 表示为：</p>
+
+\[G = \left(V, E\right)\]
+
+<p>其中每个节点是一个实例化的 paper-search operator：</p>
+
+\[v_i = \left(o_i, \theta_i\right), \quad o_i \in \text{PaperPilot-Toolset}\]
+
+<ul>
+  <li>$o_i$ 是 operator，例如 <code class="language-plaintext highlighter-rouge">keyword_search</code>、<code class="language-plaintext highlighter-rouge">citation_expand</code>、<code class="language-plaintext highlighter-rouge">filter</code>、<code class="language-plaintext highlighter-rouge">score</code>、<code class="language-plaintext highlighter-rouge">llm_rerank</code>。</li>
+  <li>$\theta_i$ 是参数，例如 query、top-k、citation direction、filter predicate、scoring formula。</li>
+  <li>边 $\left(v_i, v_j\right)$ 表示 $v_i$ 的输出会作为 $v_j$ 的输入。</li>
+</ul>
+
+<p>每一轮 rollout 可以理解成：</p>
+
+\[G_t = \text{Induce}\left(q, p_0, P_t, H_t\right)\]
+
+\[\left(P_{t+1}, y_t\right) = \text{Execute}\left(G_t, P_t\right)\]
+
+<p>其中 $q$ 是用户 query，$p_0$ 是 anchor paper，$P_t$ 是当前候选 paper set，$H_t$ 是历史交互。执行后，系统可以返回 ranked papers、evidence，或者继续问澄清问题。</p>
+
+<p>多轮反馈不是重复搜索，而是 workflow editing：</p>
+
+\[G_{t+1} = \text{Refine}\left(G_t, f_t, H_{t+1}\right)\]
+
+<p>也就是说，用户反馈 $f_t$ 应该改变 workflow 结构、operator 参数和中间候选集，而不是只变成下一轮 prompt 的一段文本。</p>
+
+<h3 id="paperpilot-toolset">PaperPilot Toolset</h3>
+
+<p>Appendix A.1 给了 17 个 operator，我会按功能压缩成这张表：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>类别</th>
+      <th>Operator</th>
+      <th>它解决什么</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Sourcing</td>
+      <td><code class="language-plaintext highlighter-rouge">keyword_search</code>, <code class="language-plaintext highlighter-rouge">citation_expand</code>, <code class="language-plaintext highlighter-rouge">web_resolve</code></td>
+      <td>从关键词、引用图或 URL 获取候选 paper</td>
+    </tr>
+    <tr>
+      <td>Combine / Filter</td>
+      <td><code class="language-plaintext highlighter-rouge">union</code>, <code class="language-plaintext highlighter-rouge">dedupe</code>, <code class="language-plaintext highlighter-rouge">filter</code></td>
+      <td>合并、去重、按年份/领域/约束过滤</td>
+    </tr>
+    <tr>
+      <td>Scoring / Cutting</td>
+      <td><code class="language-plaintext highlighter-rouge">score</code>, <code class="language-plaintext highlighter-rouge">top_k</code>, <code class="language-plaintext highlighter-rouge">above</code></td>
+      <td>给候选打分并截断</td>
+    </tr>
+    <tr>
+      <td>Rerank / Read</td>
+      <td><code class="language-plaintext highlighter-rouge">llm_rerank</code>, <code class="language-plaintext highlighter-rouge">nli_filter</code>, <code class="language-plaintext highlighter-rouge">fine_read</code></td>
+      <td>用 LLM 做细粒度重排、NLI 分类和精读</td>
+    </tr>
+    <tr>
+      <td>LLM keywords</td>
+      <td><code class="language-plaintext highlighter-rouge">llm_keywords</code>, <code class="language-plaintext highlighter-rouge">llm_keywords_from</code></td>
+      <td>生成搜索关键词或从候选 paper 里提取关键词</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td><code class="language-plaintext highlighter-rouge">extract_evidence</code>, <code class="language-plaintext highlighter-rouge">pairwise_nli</code>, <code class="language-plaintext highlighter-rouge">build_graph</code></td>
+      <td>输出证据、paper 关系和图结构</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这个 toolset 的意义是把“文献搜索”拆成可组合的小算子。我的分析是，这比直接让 LLM 写搜索 prompt 更接近 harness engineering：模型负责选择和编辑 workflow，执行和状态可以交给外部系统。</p>
+
+<h2 id="3-训练让模型学会生成-workflow也学会避开坏-workflow">3. 训练：让模型学会生成 workflow，也学会避开坏 workflow</h2>
+
+<p>PaperPilot-9B 的训练分两阶段。</p>
+
+<p>第一阶段是 <strong>workflow imitation</strong>。作者从 <strong>2,723</strong> 个 anchor-query training cases 出发，覆盖五类 search direction：predecessor、successor、sibling、benchmark、survey。强 teacher model 生成完整 search trajectories，作者保留那些 gold paper 出现在 top-5 且满足方向性 success condition 的 turn，得到 <strong>5,540</strong> 条 workflow supervision examples。</p>
+
+<p>第二阶段是 <strong>preference optimization over corrupted workflows</strong>。作者把成功 workflow 当 chosen response，再人工设计 corruption 生成 rejected response。corruption 包括：</p>
+
+<ul>
+  <li>invalid references；</li>
+  <li>missing inputs；</li>
+  <li>incorrect operators；</li>
+  <li>dropped critical nodes；</li>
+  <li>shifted filters；</li>
+  <li>vague NLI axes。</li>
+</ul>
+
+<p>过滤 easy pairs 后，保留 <strong>1,733</strong> 个 hard chosen-rejected workflow pairs，用 IPO-style DPO 训练。训练细节在 Appendix C.6：</p>
+
+<ul>
+  <li>SFT: 3 epochs，learning rate $2 \times 10^{-4}$，sequence length 14,336；</li>
+  <li>LoRA: attention 和 MLP projections；</li>
+  <li>Preference stage: 3 epochs，learning rate $3 \times 10^{-5}$，sequence length 16,384；</li>
+  <li>IPO-style DPO objective，$\beta = 0.2$，gradient clipping max norm 1.0。</li>
+</ul>
+
+<p>这个训练设计的重点不是让模型“知道更多 paper”，而是让模型更会生成和修改可执行 workflow。</p>
+
+<h2 id="4-实验设置这个-benchmark-在测什么">4. 实验设置：这个 benchmark 在测什么？</h2>
+
+<p>论文的 hold-out benchmark 是多轮科学文献搜索任务。每个 case 包含：</p>
+
+<ul>
+  <li>anchor paper；</li>
+  <li>user query；</li>
+  <li>search direction；</li>
+  <li>hidden gold-paper set；</li>
+  <li>interaction protocol。</li>
+</ul>
+
+<p>benchmark 覆盖五类 search direction：predecessor、successor、sibling、benchmark、survey。每个 case 有 <strong>6 到 15</strong> 篇 hidden gold papers，gold set 来自 citation graph signals、human filtering、LLM-assisted synthesis 和 related-work cohorts。</p>
+
+<p>多轮评测里，用户反馈来自固定的 <strong>Qwen3.5-397B-A17B user simulator</strong>。这个 simulator 能看到 hidden gold metadata，但 retrieval agent 看不到。作者还做了 leakage control：prompt 约束、deterministic string matching、以及 Qwen3.5-9B leak checker，避免 simulator 直接泄漏 gold paper 标题或作者。</p>
+
+<p>我的判断是，这个设置很聪明，但也要谨慎：它提高了可复现性，也引入了 user simulator bias。真实人类用户的偏好可能更模糊、更反复、更不按选项走。</p>
+
+<h2 id="5-关键结果workflow-induction-是否真的有用">5. 关键结果：workflow induction 是否真的有用？</h2>
+
+<p><img src="../assets/paper-reading/paperpilot-workflow-induction/fig5-main-gains.png" alt="PaperPilot main gains" /></p>
+
+<p>Figure 5 展示 PaperPilot-9B 相比 base Qwen3.5-9B toolset agent 的主结果。多轮设置下：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>系统</th>
+      <th style="text-align: right">Hit@5</th>
+      <th style="text-align: right">Recall@50</th>
+      <th style="text-align: right">MRR</th>
+      <th style="text-align: right">nDCG@10</th>
+      <th style="text-align: right">Workflow error</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Qwen3.5-9B + Toolset, multi-turn</td>
+      <td style="text-align: right">58.0</td>
+      <td style="text-align: right">34.8</td>
+      <td style="text-align: right">47.5</td>
+      <td style="text-align: right">26.8</td>
+      <td style="text-align: right">9.5%</td>
+    </tr>
+    <tr>
+      <td>PaperPilot-9B, multi-turn</td>
+      <td style="text-align: right">77.0</td>
+      <td style="text-align: right">40.0</td>
+      <td style="text-align: right">59.4</td>
+      <td style="text-align: right">32.5</td>
+      <td style="text-align: right">0%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这张图回答的是：训练一个 workflow-induction model 是否比直接给 base model 工具更稳定？答案是明显 yes。base 9B 在多轮交互里会因为 workflow editing 变复杂而出错，PaperPilot 通过 workflow imitation + preference training 把 execution error 从 <strong>9.5%</strong> 压到 <strong>0%</strong>。</p>
+
+<p>Table 2 里还可以看到更完整的定位：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>系统</th>
+      <th>设置</th>
+      <th style="text-align: right">Hit@5</th>
+      <th style="text-align: right">MRR</th>
+      <th style="text-align: right">nDCG@10</th>
+      <th style="text-align: right">Cost / case</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GPT-5.4 + Web Search + Toolset</td>
+      <td>multi-turn</td>
+      <td style="text-align: right">84.0</td>
+      <td style="text-align: right">71.8</td>
+      <td style="text-align: right">41.6</td>
+      <td style="text-align: right">USD 0.1508</td>
+    </tr>
+    <tr>
+      <td>OpenAI o4-mini DeepResearch</td>
+      <td>one-shot</td>
+      <td style="text-align: right">72.0</td>
+      <td style="text-align: right">53.0</td>
+      <td style="text-align: right">29.2</td>
+      <td style="text-align: right">USD 6.0903</td>
+    </tr>
+    <tr>
+      <td>Qwen3.5-9B + Toolset</td>
+      <td>multi-turn</td>
+      <td style="text-align: right">58.0</td>
+      <td style="text-align: right">47.5</td>
+      <td style="text-align: right">26.8</td>
+      <td style="text-align: right">USD 0.0134</td>
+    </tr>
+    <tr>
+      <td>PaperPilot-9B</td>
+      <td>multi-turn</td>
+      <td style="text-align: right">77.0</td>
+      <td style="text-align: right">59.4</td>
+      <td style="text-align: right">32.5</td>
+      <td style="text-align: right">USD 0.0180</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>PaperPilot-9B 没有超过最强的 GPT-5.4 + Web Search + Toolset，但它明显超过同尺寸 base agent，也比 DeepResearch 便宜很多。论文说它比 DeepResearch 便宜两个数量级，从 USD 6.0903 到 USD 0.0180 per case，量级上确实成立。</p>
+
+<h2 id="6-workflow-level-ablation它是真的会写-dag还是只是检索更好了">6. Workflow-level ablation：它是真的会写 DAG，还是只是检索更好了？</h2>
+
+<p>论文不只看最终 paper list，还评估 workflow generation 和 workflow editing。</p>
+
+<p><img src="../assets/paper-reading/paperpilot-workflow-induction/workflow-refinement-dag.png" alt="PaperPilot workflow refinement DAG" /></p>
+
+<p>Workflow generation 里，PaperPilot-9B 的 whole-workflow TF-IDF cosine 从 base Qwen3.5-9B 的 <strong>0.0470</strong> 提升到 <strong>0.3619</strong>；function signature similarity 从 <strong>0.0281</strong> 到 <strong>0.2238</strong>。GPT-5.4 绝对 similarity 更高，whole-workflow cosine 是 <strong>0.7010</strong>，但 cost/case 是 <strong>USD 0.12565</strong>，而 PaperPilot-9B 是 <strong>USD 0.00108</strong>。</p>
+
+<p>Workflow editing 里，PaperPilot-9B 的 final workflow cosine 是 <strong>0.9469</strong>，query-level cosine 是 <strong>0.8777</strong>，在 add-node、modify-node、remove-node refinement 上整体最稳。</p>
+
+<p>我的分析是，这个 ablation 很关键。它说明 PaperPilot 的收益不只是“拿了一个更好的 reranker”，而是模型确实学会了一部分 workflow construction/editing 行为。</p>
+
+<h2 id="7-搜索规模和人类研究两个有意思的细节">7. 搜索规模和人类研究：两个有意思的细节</h2>
+
+<p><img src="../assets/paper-reading/paperpilot-workflow-induction/fig8-search-scale.png" alt="PaperPilot search scale sensitivity" /></p>
+
+<p>Figure 8 很值得放进笔记，因为它反直觉：候选池不是越大越好。作者把 first-stage candidate pool 从 $K=8$ 扩到 $K=20$，发现很多指标在 $K=8$ 到 $K=10$ 附近最好，继续扩大反而引入 distractors。比如 Recall@50 从 $K=8$ 的 <strong>0.411</strong> 降到 $K=20$ 的 <strong>0.374</strong>，Hit@5 从 $K=10$ 的 <strong>0.705</strong> 降到 $K=20$ 的 <strong>0.660</strong>。</p>
+
+<p><img src="../assets/paper-reading/paperpilot-workflow-induction/search-session-demo.png" alt="PaperPilot search session demo" /></p>
+
+<p>这张 demo 图对我们自己的知识库很有启发：最后保存的不应该只是 paper list，还应该保存 workflow、用户反馈、每篇 paper 为什么入选、下一步该怎么缩小范围。也就是说，paper-reading 的“搜索过程”本身应该变成可复用资产。</p>
+
+<p>这个结论对自己的 paper search 很实用：不要以为“多抓一些候选 paper 总是更好”。如果后面的 filter/reranker 没有足够强，扩大候选池会让噪声淹没真正相关的 paper。</p>
+
+<p>Human study 里，作者让参与者和系统交互，每个参与者 5 个 sessions，比较 GPT-5.4、OpenAI DeepResearch 和 PaperPilot。Table 4 的结果：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>系统</th>
+      <th style="text-align: right">Success Rate</th>
+      <th style="text-align: right">Top-1 Distance</th>
+      <th style="text-align: right">Question Satisfaction</th>
+      <th style="text-align: right">Turns Until Satisfaction</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GPT-5.4</td>
+      <td style="text-align: right">32.0%</td>
+      <td style="text-align: right">7.8</td>
+      <td style="text-align: right">2.4</td>
+      <td style="text-align: right">4.0</td>
+    </tr>
+    <tr>
+      <td>OpenAI DeepResearch</td>
+      <td style="text-align: right">8.0%</td>
+      <td style="text-align: right">27.4</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">1.0</td>
+    </tr>
+    <tr>
+      <td>PaperPilot</td>
+      <td style="text-align: right">74.7%</td>
+      <td style="text-align: right">2.4</td>
+      <td style="text-align: right">4.2</td>
+      <td style="text-align: right">3.8</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这个 human study 支持“多轮 clarification + workflow editing 对真实用户更友好”的方向，但样本规模和参与者范围还需要更大实验确认。</p>
+
+<h2 id="8-我怎么看这篇">8. 我怎么看这篇</h2>
+
+<h3 id="可信之处">可信之处</h3>
+
+<ul>
+  <li><strong>机制和问题很匹配。</strong> 文献搜索确实是 preference-dependent、multi-turn、需要可解释策略的任务，用 workflow DAG 表示很自然。</li>
+  <li><strong>不只报最终检索分数。</strong> 论文还评估 workflow generation、editing consistency、cost-effectiveness、human study 和 search scale sensitivity。</li>
+  <li><strong>错误率下降很有说服力。</strong> Base 9B toolset agent 在 multi-turn 下 execution error 到 9.5%，PaperPilot-9B 降到 0%，说明专门训练 workflow editing 是必要的。</li>
+  <li><strong>成本意识比较好。</strong> 它没有只追最高分，而是把 per-case cost 和 successful cases per dollar 放进主表。</li>
+</ul>
+
+<h3 id="需要警惕的地方">需要警惕的地方</h3>
+
+<ul>
+  <li><strong>user simulator 是核心假设。</strong> 它让实验可复现，但真实用户的反馈更混乱，也未必按选项回答。</li>
+  <li><strong>gold set 构造仍有人工和 LLM 辅助。</strong> benchmark 质量依赖 citation graph、human filtering、LLM-assisted synthesis 和 related-work cohorts，外部复现成本不低。</li>
+  <li><strong>领域主要是 CS 文献。</strong> 论文自己也承认，跨医学、材料、法律、社会科学等领域时，operator library 和 relevance criteria 可能要重做。</li>
+  <li><strong>workflow library 是预定义的。</strong> 如果用户要做更复杂的 meta-analysis、实验复现、dataset audit，目前的 17 个 operator 可能不够。</li>
+  <li><strong>强 baseline 仍然更强。</strong> GPT-5.4 + Web Search + Toolset 在 Hit@5 和 MRR 上最好，只是成本更高。PaperPilot 的定位是高性价比和可控 workflow，不是所有指标第一。</li>
+</ul>
+
+<h2 id="9-对我的价值">9. 对我的价值</h2>
+
+<p>这篇可以直接放进个人 wiki/paper-reading pipeline 的设计原则里。</p>
+
+<p>我会借三点：</p>
+
+<ol>
+  <li><strong>把搜索策略落成 artifact。</strong> 以后找 related work，不应该只有“搜索关键词”和最终列表，还应该保存 search direction、citation expansion、filter、reranking criterion 和排除理由。</li>
+  <li><strong>把用户反馈转成 workflow edit。</strong> 比如我说“这几篇太 broad，想要 agent harness 相关的”，系统应该改 NLI/filter/rerank 标准，而不是只把这句话附到 query 后面。</li>
+  <li><strong>不要无限扩大候选池。</strong> 先做小而准的 candidate pool，再用 evidence extraction 和 reranker，可能比一口气抓 100 篇更好。</li>
+</ol>
+
+<p>如果要把它做进我的知识库，最小版本可以是：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>anchor paper + query
+  -&gt; choose direction: predecessor / successor / sibling / benchmark / survey
+  -&gt; keyword search + citation expansion
+  -&gt; filter by year / method / benchmark / domain
+  -&gt; score and rerank
+  -&gt; extract evidence snippets
+  -&gt; user feedback edits workflow
+  -&gt; save workflow + results into paper-reading
+</code></pre></div></div>
+
+<p>我的判断是，这和 Harness Engineering 那篇形成了很好的闭环：PaperPilot 其实就是一个面向文献搜索的 harness，把“如何搜索”从隐式推理变成显式、可编辑、可审计的 workflow。</p>
+
+<h2 id="一句话收束">一句话收束</h2>
+
+<p>PaperPilot 最值得记住的是：文献搜索不是一次性 query，而是一个可以被构造、执行、反馈和编辑的 workflow。对个人知识库来说，它提示我们不要只保存最终推荐 paper，更要保存搜索路径、过滤标准、证据和用户反馈如何改变了搜索策略。</p>
+
+            </div>
+        </article>
+    </div>
+
+    <aside class="blog-toc-sidebar">
+        <nav id="blog-toc" class="blog-toc-nav" aria-label="Table of contents">
+            <div class="blog-toc-header">
+                <div class="blog-toc-title">On This Page</div>
+                <button
+                    id="blog-toc-toggle"
+                    class="blog-toc-toggle"
+                    type="button"
+                    aria-controls="blog-toc-list"
+                    aria-expanded="true"
+                    aria-label="收起目录"
+                    title="收起目录"
+                >
+                    <svg class="blog-toc-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="blog-toc-list" class="blog-toc-list"></div>
+        </nav>
+    </aside>
+</div>
+
+    </div>
+    <footer class="footer border-top py-2 mt-5 bg-white small">
+    <div class="container-lg">
+        <div class="row my-3">
+            <div class="col-6">
+                <div class="text-muted">
+                    <i>Last updated: Jul 2026</i>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="text-right text-muted">
+                    Built with <a href="https://github.com/luost26/academic-homepage" target="_blank"><i class="fas fa-pencil-ruler"></i> academic-homepage</a>.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <pagefind-config
+        bundle-path="/Ryanhu2001/pagefind/"
+        base-url="/Ryanhu2001/"
+        excerpt-length="30"
+        lang="zh-CN"></pagefind-config>
+    <div class="modal fade site-search-modal" id="siteSearchModal" tabindex="-1" role="dialog" aria-labelledby="siteSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 mb-0" id="siteSearchModalLabel">Search</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <pagefind-searchbox placeholder="搜索 wiki、论文笔记、关键词..." show-sub-results="true" hide-shortcut="true"></pagefind-searchbox>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/github-buttons/2.14.2/buttons.min.js" integrity="sha512-OYwZx04hKFeFNYrWxIyo3atgGpb+cxU0ENWBZs72X7T9U+NoHPM1ftUn/Mfw7dRDXrqWA6M1wBg6z6fGE32aeA==" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+    <script type="module" src="/Ryanhu2001/pagefind/pagefind-component-ui.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tocbot@4.36.8/dist/tocbot.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+              delimiters: [
+                  {left: '$$', right: '$$', display: true},
+                  {left: '\\[', right: '\\]', display: true},
+                  {left: '$', right: '$', display: false},
+                  {left: '\\(', right: '\\)', display: false}
+              ],
+              throwOnError : false
+            });
+            
+            Prism.highlightAll();
+            
+
+            var siteSearchModal = document.getElementById("siteSearchModal");
+            var siteSearchBox = siteSearchModal ? siteSearchModal.querySelector("pagefind-searchbox") : null;
+            function focusSiteSearch() {
+                window.setTimeout(function() {
+                    if (siteSearchBox && typeof siteSearchBox.focus === "function") {
+                        siteSearchBox.focus();
+                    }
+                }, 80);
+            }
+            if (siteSearchModal && window.jQuery) {
+                window.jQuery(siteSearchModal).on("shown.bs.modal", focusSiteSearch);
+            }
+            document.addEventListener("keydown", function(event) {
+                var key = String(event.key || "").toLowerCase();
+                var isSearchShortcut = key === "k" && (event.metaKey || event.ctrlKey);
+                var isModalOpen = siteSearchModal && siteSearchModal.classList.contains("show");
+                var target = event.target;
+                var isTyping = target && (
+                    target.tagName === "INPUT" ||
+                    target.tagName === "TEXTAREA" ||
+                    target.isContentEditable
+                );
+                if (!isSearchShortcut || (isTyping && isModalOpen) || !siteSearchModal || !window.jQuery) return;
+                event.preventDefault();
+                window.jQuery(siteSearchModal).modal("show");
+            });
+        });
+    </script>
+    
+    <script src="/Ryanhu2001/assets/js/blog.js"></script>
+    
+    <script src="/Ryanhu2001/assets/js/common.js"></script>
+    <script src="/Ryanhu2001/assets/js/bubble_visual_hash.js"></script>
+</body>
+</html>

@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<!-- Template: https://github.com/luost26/academic-homepage -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Kimi K2.7 Code - Ryan</title>
+    <link rel="icon" href="/Ryanhu2001/assets/ryan/avator.jpg" type="image/jpeg">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/pagefind/pagefind-component-ui.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/blog.css">
+    
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/global.css">
+</head>
+<body class="bg-light" >
+    <nav class="navbar navbar-expand-sm navbar-light fixed-top mb-5 shadow-sm">
+    <div class="container-lg">
+        <a class="navbar-brand" href="/Ryanhu2001/"><strong>Ryan</strong></a>
+        <button class="navbar-toggler" style="font-size: 1em; padding: 0.5em;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-map"></i> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/">Home</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/wiki/">Wiki</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/paper-reading/">Paper Reading</a>
+                </li>
+                
+                <li class="nav-item nav-search-item">
+                    <button class="nav-link nav-search-button" type="button" data-toggle="modal" data-target="#siteSearchModal" aria-label="Search site">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <span>Search</span>
+                        <kbd>⌘K</kbd>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <div class="container-lg">
+        
+
+
+
+
+<div class="reading-progress" aria-hidden="true">
+    <span></span>
+</div>
+
+<div class="blog-layout-wrapper">
+    <div class="blog-main">
+        <div class="mb-3">
+            <a class="small" href="/Ryanhu2001/paper-reading/">
+                <i class="fas fa-arrow-left"></i> Paper Reading
+            </a>
+        </div>
+
+        <article class="bg-white rounded-xl p-4 p-md-5 mb-4 wiki-note-card" data-pagefind-body>
+            <div class="blog-content wiki-note">
+                <h1 id="kimi-k27-code把-coding-模型读成-agent-contract">Kimi K2.7 Code：把 coding 模型读成 agent contract</h1>
+
+<ul>
+  <li><strong>Source</strong>: <a href="https://platform.kimi.com/docs/guide/kimi-k2-7-code-quickstart">Kimi K2.7 Code 官方文档</a></li>
+  <li><strong>Background</strong>: <a href="https://www.kimi.com/blog/kimi-k2-6">Kimi K2.6 Tech Blog</a></li>
+  <li><strong>类型</strong>: 模型发布文档 / API 行为说明 / coding-agent benchmark report</li>
+  <li><strong>关键词</strong>: coding model, thinking mode, tool use, MCP, long-horizon coding, token efficiency</li>
+</ul>
+
+<h2 id="读法给人和-agent-的路标">读法：给人和 agent 的路标</h2>
+
+<p>这篇要按 <strong>agent contract</strong> 读，不要按传统模型报告读。快速路线是：先看 K2.7 Code 对 thinking、tool_choice、message history、采样参数的约束；再看 K2.7 相比 K2.6 的分数和 token 曲线；最后用 K2.6 blog 的 footnote 判断这些数字是在什么 harness 下来的。</p>
+
+<p>给 agent 以后检索时，关键词是：<code class="language-plaintext highlighter-rouge">thinking must stay enabled</code>、<code class="language-plaintext highlighter-rouge">reasoning_content</code>、<code class="language-plaintext highlighter-rouge">tool_choice auto/none</code>、<code class="language-plaintext highlighter-rouge">temperature locked</code>、<code class="language-plaintext highlighter-rouge">top_p locked</code>、<code class="language-plaintext highlighter-rouge">MCP Atlas</code>、<code class="language-plaintext highlighter-rouge">MCP Mark Verified</code>、<code class="language-plaintext highlighter-rouge">token efficiency</code>。这篇最适合记录“接入 Kimi coding model 时不能踩哪些 API 坑”。</p>
+
+<h2 id="一句话判断">一句话判断</h2>
+
+<p>Kimi K2.7 Code 不是一篇传统 paper，更像一份“模型能力 + API 行为 + agent 使用约束”的技术说明；真正需要记住的是：它把 K2.6 的 coding/agent 能力继续往专用代码模型推进，同时把很多 decoding 和 tool-use 参数固定下来，减少用户随手调参造成的 agent 行为漂移。</p>
+
+<h2 id="图表优先读法">图表优先读法</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>先看</th>
+      <th>图/表/接口</th>
+      <th>读完应该抓住什么</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>agent contract 图</td>
+      <td>Kimi 的重点是固定 agent 协议和参数，减少使用方随意调参</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>K2.7 / K2.6 数据图</td>
+      <td>release note 数字要分清新模型数据和背景模型数据</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>API / tool-use pipeline</td>
+      <td>对 coding agent 来说，reasoning_content、tool schema、temperature/top_p 约束很关键</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>具体 task</td>
+      <td>这类官方文档最有用的是如何正确调用，而不是只看 benchmark</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="先抓住四个点">先抓住四个点</h2>
+
+<ol>
+  <li><strong>K2.7 Code 是 Kimi 当前面向 coding 的最新专用模型。</strong> 官方文档标题就是 Kimi K2.7 Code，图中也直接把它和 K2.6、GPT-5.5、Opus 4.8 做 coding/agent 对比。</li>
+  <li><strong>它不是“纯文本补全模型”的用法。</strong> 文档要求 thinking 默认开启，<code class="language-plaintext highlighter-rouge">kimi-k2.7-code</code> 关闭 thinking 会报错；多步工具调用还必须保留 assistant message 里的 <code class="language-plaintext highlighter-rouge">reasoning_content</code>。</li>
+  <li><strong>很多采样参数被锁死。</strong> <code class="language-plaintext highlighter-rouge">temperature=1.0</code>、<code class="language-plaintext highlighter-rouge">top_p=0.95</code>、<code class="language-plaintext highlighter-rouge">n=1</code>、presence/frequency penalty 为 <code class="language-plaintext highlighter-rouge">0.0</code>，指定其他值会报错。这说明官方更希望用户把它当稳定 agent runtime，而不是普通可随意调采样的 chat model。</li>
+  <li><strong>K2.7 的公开材料比 K2.6 更像产品化 release。</strong> K2.6 blog 给了大量 benchmark 和 footnote；K2.7 文档给的是 API 约束、agent 接入、benchmark 图和 token/performance 图，所以这篇笔记会把 K2.6 当背景，不把它混写成同一份 paper。</li>
+</ol>
+
+<h2 id="先看我整理的结构图">先看我整理的结构图</h2>
+
+<p><img src="../assets/paper-reading/kimi-k27-code/agent-contract.svg" alt="Kimi K2.7 Code agent contract" /></p>
+
+<p>K2.7 Code 最值得先理解的不是某个单榜分数，而是它把模型暴露成一个更严格的 coding-agent contract：thinking 不能关，工具调用只能在固定选项里走，多轮 tool loop 还要求保留 <code class="language-plaintext highlighter-rouge">reasoning_content</code>。这会直接影响你怎么接 agent 框架。</p>
+
+<p>图里有三个锚点：</p>
+
+<ul>
+  <li><strong>thinking 是契约，不是开关</strong>：<code class="language-plaintext highlighter-rouge">kimi-k2.7-code</code> 关闭 thinking 会报错，说明它不是普通 chat completion 模型。</li>
+  <li><strong>message history 必须完整</strong>：多轮工具调用要保留 assistant message 的 <code class="language-plaintext highlighter-rouge">reasoning_content</code>，否则 agent loop 可能直接不兼容。</li>
+  <li><strong>采样参数被收束</strong>：temperature、top_p、n、penalty 都基本锁死，官方更希望用户把稳定性放在模型默认行为里。</li>
+</ul>
+
+<h2 id="官方图--数据作为证据">官方图 / 数据作为证据</h2>
+
+<p><img src="../assets/paper-reading/kimi-k27-code/k27.png" alt="Kimi K2.7 Code benchmark" /></p>
+
+<p>这张图值得先看，因为它把 K2.7 Code 放在两个维度里：左边是 coding benchmark，右边是 agent/MCP benchmark。它不是完整评测协议，但可以看出官方想强调的能力方向不是聊天，而是代码任务和工具任务。</p>
+
+<p>这张图要分开读：左边说明 K2.7 Code 相比 K2.6 在代码任务上整体前进，右边说明它也在工具/MCP 环境里前进。它不能单独证明“全面超过某个 frontier model”，但能说明 Kimi 这条线的优化目标越来越 agentic。</p>
+
+<p><img src="../assets/paper-reading/kimi-k27-code/k27-agent.png" alt="Kimi K2.7 Code token efficiency" /></p>
+
+<p>第二张图更重要：K2.7 Code 相比 K2.6 在几个 coding benchmark 上不只是分数上升，横轴 token 也向左移动。也就是说官方 claim 不是单纯“更强”，而是“更少 token 做出更高性能”。</p>
+
+<p>这张图对产品接入很关键：coding agent 不是只看 pass rate，还要看 token、延迟和工具轮数。一个模型如果多花一倍 token 才多拿一点分，产品体验可能并不划算；K2.7 图里想表达的是更靠近 Pareto frontier。</p>
+
+<h2 id="k27-code-的关键数据">K2.7 Code 的关键数据</h2>
+
+<p>下面的表是从官方 K2.7 Code 图里读出的数值。带星号的 benchmark 是官方图中标注的内部 benchmark。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Benchmark</th>
+      <th style="text-align: right">Kimi K2.7 Code</th>
+      <th style="text-align: right">Kimi K2.6</th>
+      <th style="text-align: right">GPT-5.5 xhigh</th>
+      <th style="text-align: right">Opus 4.8 xhigh</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Kimi Code Bench v2*</td>
+      <td style="text-align: right">62.0</td>
+      <td style="text-align: right">50.9</td>
+      <td style="text-align: right">68.0</td>
+      <td style="text-align: right">67.4</td>
+    </tr>
+    <tr>
+      <td>Program Bench</td>
+      <td style="text-align: right">58.6</td>
+      <td style="text-align: right">48.3</td>
+      <td style="text-align: right">69.1</td>
+      <td style="text-align: right">63.8</td>
+    </tr>
+    <tr>
+      <td>MLS Bench Lite</td>
+      <td style="text-align: right">35.1</td>
+      <td style="text-align: right">26.7</td>
+      <td style="text-align: right">35.5</td>
+      <td style="text-align: right">42.8</td>
+    </tr>
+    <tr>
+      <td>Kimi Claw 24/7 Bench*</td>
+      <td style="text-align: right">46.9</td>
+      <td style="text-align: right">42.9</td>
+      <td style="text-align: right">52.8</td>
+      <td style="text-align: right">50.4</td>
+    </tr>
+    <tr>
+      <td>MCP Atlas</td>
+      <td style="text-align: right">76.0</td>
+      <td style="text-align: right">69.4</td>
+      <td style="text-align: right">79.4</td>
+      <td style="text-align: right">81.3</td>
+    </tr>
+    <tr>
+      <td>MCP Mark Verified</td>
+      <td style="text-align: right">81.1</td>
+      <td style="text-align: right">72.8</td>
+      <td style="text-align: right">92.9</td>
+      <td style="text-align: right">76.4</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>读法：</p>
+
+<ul>
+  <li>K2.7 Code 相比 K2.6 在这六项上都涨了，尤其是 Kimi Code Bench v2、Program Bench、MLS Bench Lite。</li>
+  <li>和闭源 frontier 比，它不是所有项领先。Program Bench 和 MCP Mark Verified 仍能看到明显差距。</li>
+  <li>MCP Mark Verified 上 K2.7 Code 超过 Opus 4.8 xhigh，但仍明显低于 GPT-5.5 xhigh。这个点要谨慎读，因为不同模型/工具栈/评测 harness 的可比性需要看完整协议。</li>
+</ul>
+
+<h2 id="k26-背景数据为什么还值得放">K2.6 背景数据为什么还值得放</h2>
+
+<p>K2.7 文档公开的细节偏 API 和图，K2.6 blog 则给了更完整的公开 benchmark 与 footnote。它能帮我们理解 K2.7 是从什么能力底座上继续走的。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Benchmark</th>
+      <th style="text-align: right">Kimi K2.6</th>
+      <th style="text-align: right">GPT-5.4 xhigh</th>
+      <th style="text-align: right">Claude Opus 4.6 max</th>
+      <th style="text-align: right">Gemini 3.1 Pro high</th>
+      <th style="text-align: right">Kimi K2.5</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Terminal-Bench 2.0</td>
+      <td style="text-align: right">66.7</td>
+      <td style="text-align: right">65.4*</td>
+      <td style="text-align: right">65.4</td>
+      <td style="text-align: right">68.5</td>
+      <td style="text-align: right">50.8</td>
+    </tr>
+    <tr>
+      <td>SWE-Bench Pro</td>
+      <td style="text-align: right">58.6</td>
+      <td style="text-align: right">57.7</td>
+      <td style="text-align: right">53.4</td>
+      <td style="text-align: right">54.2</td>
+      <td style="text-align: right">50.7</td>
+    </tr>
+    <tr>
+      <td>SWE-Bench Multilingual</td>
+      <td style="text-align: right">76.7</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">77.8</td>
+      <td style="text-align: right">76.9*</td>
+      <td style="text-align: right">73.0</td>
+    </tr>
+    <tr>
+      <td>SWE-Bench Verified</td>
+      <td style="text-align: right">80.2</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">80.8</td>
+      <td style="text-align: right">80.6</td>
+      <td style="text-align: right">76.8</td>
+    </tr>
+    <tr>
+      <td>OSWorld-Verified</td>
+      <td style="text-align: right">73.1</td>
+      <td style="text-align: right">75.0</td>
+      <td style="text-align: right">72.7</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">63.3</td>
+    </tr>
+    <tr>
+      <td>LiveCodeBench v6</td>
+      <td style="text-align: right">89.6</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">88.8</td>
+      <td style="text-align: right">91.7</td>
+      <td style="text-align: right">85.0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>K2.6 blog 的 footnote 也很关键：</p>
+
+<ul>
+  <li>K2.6 / K2.5 的结果是在 thinking mode enabled 下测的。</li>
+  <li>K2.6 实验默认 <code class="language-plaintext highlighter-rouge">temperature=1.0</code>、<code class="language-plaintext highlighter-rouge">top_p=1.0</code>、context length 262,144 tokens。</li>
+  <li>coding tasks 是 10 次独立运行平均。</li>
+  <li>SWE-Bench 系列使用从 SWE-agent 改造的 in-house framework，工具包括 bash、createfile、insert、view、strreplace、submit。</li>
+  <li>Terminal-Bench 2.0 使用默认 Terminus-2 agent framework，并保留 thinking mode。</li>
+</ul>
+
+<p>这些说明让 K2.6/K2.7 的数字更像 agent-system score，而不是裸模型一次性回答能力。</p>
+
+<h2 id="api--tool-use-pipeline">API / Tool Use Pipeline</h2>
+
+<p>K2.7 Code 的使用方式可以理解成下面这个 contract：</p>
+
+<ol>
+  <li>用户把任务、历史消息、工具 schema 交给 Chat Completions API。</li>
+  <li>模型默认进入 thinking mode，生成可保留的 <code class="language-plaintext highlighter-rouge">reasoning_content</code>。</li>
+  <li>如果需要工具，模型只能在 <code class="language-plaintext highlighter-rouge">tool_choice=auto</code> 或 <code class="language-plaintext highlighter-rouge">none</code> 的约束下选择工具。</li>
+  <li>工具执行结果返回后，调用方必须把本轮 assistant message 里的 <code class="language-plaintext highlighter-rouge">reasoning_content</code> 一起保留进上下文。</li>
+  <li>多轮工具调用结束后，模型生成 final answer 或下一步 tool call。</li>
+</ol>
+
+<p>这里最容易踩坑的是第 4 点。很多 agent 框架会只保存 assistant 的 visible content 和 tool calls，而丢掉 reasoning trace；Kimi 文档明确说这样会报错。也就是说，K2.7 Code 对 message history 的要求比普通 OpenAI-compatible chat API 更严格。</p>
+
+<p>这也是我最想保留在笔记里的工程点：<strong>OpenAI-compatible API 不等于行为完全兼容。</strong> 字段名相似，但对 reasoning trace、tool loop 和参数的要求可能完全不同。接入之前要先看 contract，不要把它当随便替换 base URL 的模型。</p>
+
+<h2 id="参数约束">参数约束</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>字段</th>
+      <th>K2.7 Code 行为</th>
+      <th>工程含义</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">max_tokens</code></td>
+      <td>默认 32k，即 32768</td>
+      <td>长输出默认可用，但仍要自己管预算</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">thinking</code></td>
+      <td>默认 enabled，关闭会报错</td>
+      <td>它被设计成 thinking model，不是可选增强</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">temperature</code></td>
+      <td>固定 1.0</td>
+      <td>不鼓励用户调温度做行为控制</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">top_p</code></td>
+      <td>K2.7/K2.6/K2.5 固定 0.95</td>
+      <td>把采样策略收束成模型侧默认</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">n</code></td>
+      <td>固定 1</td>
+      <td>不支持单请求多候选</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">presence_penalty</code> / <code class="language-plaintext highlighter-rouge">frequency_penalty</code></td>
+      <td>固定 0.0</td>
+      <td>不建议用传统 chat 调参方式影响输出</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">tool_choice</code></td>
+      <td>仅支持 <code class="language-plaintext highlighter-rouge">auto</code> / <code class="language-plaintext highlighter-rouge">none</code></td>
+      <td>agent orchestration 交给模型和框架协同</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="具体-task-怎么理解">具体 task 怎么理解</h2>
+
+<p>从官方图和 K2.6 blog 看，Kimi 这条线的 task 可以分成三类。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Task 类别</th>
+      <th>典型任务</th>
+      <th>评测点</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Coding benchmark</td>
+      <td>Kimi Code Bench v2、Program Bench、MLS Bench Lite、LiveCodeBench</td>
+      <td>写代码、修 bug、算法/工程题、可能包含多语言或多文件</td>
+    </tr>
+    <tr>
+      <td>SWE agent</td>
+      <td>SWE-Bench Verified / Pro / Multilingual、Terminal-Bench</td>
+      <td>读仓库、改文件、跑命令、提交 patch</td>
+    </tr>
+    <tr>
+      <td>Tool / MCP agent</td>
+      <td>MCP Atlas、MCP Mark Verified、Kimi Claw 24/7 Bench</td>
+      <td>工具选择、MCP server 使用、长链路操作、状态保持</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>和“纯语言模型”的区别在于，很多 task 的成功条件并不只在文本里。它需要模型：</p>
+
+<ul>
+  <li>知道什么时候调用工具；</li>
+  <li>能保留中间推理和工具观察；</li>
+  <li>能从工具结果里修正计划；</li>
+  <li>能在 token budget 内完成足够多轮交互。</li>
+</ul>
+
+<p>这也解释了为什么用户只看 screenshot/GUI 的任务时，纯文本模型会卡住。K2.7 Code 本身还是文本/工具接口模型，但它的评测目标已经明显偏 agentic workflow。</p>
+
+<p>换句话说，K2.7 Code 的“code”不是代码补全意义上的 code，而是 <strong>coding agent runtime 里的 code</strong>：它要在工具观察、历史 reasoning、仓库文件和任务约束之间保持状态。这个区别比单个 benchmark 小数点更重要。</p>
+
+<h2 id="我怎么看">我怎么看</h2>
+
+<p>可信之处：</p>
+
+<ul>
+  <li>K2.7 图里直接展示了 K2.6 到 K2.7 的提升，而且包含 performance vs tokens，说明官方关心的不只是最高分。</li>
+  <li>API 约束写得很具体，尤其是 reasoning content 保留、参数锁定、tool_choice 限制，这些对真实 agent 接入非常有用。</li>
+  <li>K2.6 blog 的 footnote 给了评测设置，能帮助判断数字到底来自什么 harness。</li>
+</ul>
+
+<p>需要警惕：</p>
+
+<ul>
+  <li>K2.7 文档不是完整 technical report，训练数据、后训练 pipeline、benchmark 采样/置信区间等信息不完整。</li>
+  <li>Kimi Code Bench v2、Kimi Claw 24/7 Bench 是内部 benchmark，外部复查难度高。</li>
+  <li>与 GPT/Opus 的对比很可能依赖特定 harness、工具集和 reasoning effort，不能直接等同于“模型本体更强”。</li>
+</ul>
+
+<h2 id="对我的价值">对我的价值</h2>
+
+<p>如果要把 Kimi K2.7 Code 接到个人 coding agent 或 wiki/paper pipeline，我会先借鉴三点：</p>
+
+<ol>
+  <li><strong>不要乱调采样参数。</strong> 尊重官方默认，把稳定性放在第一位。</li>
+  <li><strong>message history 要完整保存。</strong> 特别是多步工具调用里的 <code class="language-plaintext highlighter-rouge">reasoning_content</code>，这可能是兼容 K2.7 的关键。</li>
+  <li><strong>评测要按 agent workflow 做。</strong> 只测单轮 answer 很容易低估或误判；应该测读仓库、改文件、跑命令、处理失败、最后交付的完整闭环。</li>
+</ol>
+
+<p>对我自己的 paper-reading pipeline，K2.7 Code 提醒我：不同模型需要不同 adapter。比如有的模型要求保留 reasoning trace，有的模型对 tool schema 更挑，有的模型不能改采样参数。个人 wiki 的 agent harness 应该把这些模型契约写成配置，而不是散落在 prompt 里。</p>
+
+<h2 id="一句话收束">一句话收束</h2>
+
+<p>Kimi K2.7 Code 最值得记住的不是“又一个更强 coding 模型”，而是它把 coding model 的使用边界往 agent runtime 推了一步：更强的代码/工具能力，配套更严格的上下文和参数约束。</p>
+
+            </div>
+        </article>
+    </div>
+
+    <aside class="blog-toc-sidebar">
+        <nav id="blog-toc" class="blog-toc-nav" aria-label="Table of contents">
+            <div class="blog-toc-header">
+                <div class="blog-toc-title">On This Page</div>
+                <button
+                    id="blog-toc-toggle"
+                    class="blog-toc-toggle"
+                    type="button"
+                    aria-controls="blog-toc-list"
+                    aria-expanded="true"
+                    aria-label="收起目录"
+                    title="收起目录"
+                >
+                    <svg class="blog-toc-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="blog-toc-list" class="blog-toc-list"></div>
+        </nav>
+    </aside>
+</div>
+
+    </div>
+    <footer class="footer border-top py-2 mt-5 bg-white small">
+    <div class="container-lg">
+        <div class="row my-3">
+            <div class="col-6">
+                <div class="text-muted">
+                    <i>Last updated: Jul 2026</i>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="text-right text-muted">
+                    Built with <a href="https://github.com/luost26/academic-homepage" target="_blank"><i class="fas fa-pencil-ruler"></i> academic-homepage</a>.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <pagefind-config
+        bundle-path="/Ryanhu2001/pagefind/"
+        base-url="/Ryanhu2001/"
+        excerpt-length="30"
+        lang="zh-CN"></pagefind-config>
+    <div class="modal fade site-search-modal" id="siteSearchModal" tabindex="-1" role="dialog" aria-labelledby="siteSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 mb-0" id="siteSearchModalLabel">Search</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <pagefind-searchbox placeholder="搜索 wiki、论文笔记、关键词..." show-sub-results="true" hide-shortcut="true"></pagefind-searchbox>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/github-buttons/2.14.2/buttons.min.js" integrity="sha512-OYwZx04hKFeFNYrWxIyo3atgGpb+cxU0ENWBZs72X7T9U+NoHPM1ftUn/Mfw7dRDXrqWA6M1wBg6z6fGE32aeA==" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+    <script type="module" src="/Ryanhu2001/pagefind/pagefind-component-ui.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tocbot@4.36.8/dist/tocbot.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+              delimiters: [
+                  {left: '$$', right: '$$', display: true},
+                  {left: '\\[', right: '\\]', display: true},
+                  {left: '$', right: '$', display: false},
+                  {left: '\\(', right: '\\)', display: false}
+              ],
+              throwOnError : false
+            });
+            
+            Prism.highlightAll();
+            
+
+            var siteSearchModal = document.getElementById("siteSearchModal");
+            var siteSearchBox = siteSearchModal ? siteSearchModal.querySelector("pagefind-searchbox") : null;
+            function focusSiteSearch() {
+                window.setTimeout(function() {
+                    if (siteSearchBox && typeof siteSearchBox.focus === "function") {
+                        siteSearchBox.focus();
+                    }
+                }, 80);
+            }
+            if (siteSearchModal && window.jQuery) {
+                window.jQuery(siteSearchModal).on("shown.bs.modal", focusSiteSearch);
+            }
+            document.addEventListener("keydown", function(event) {
+                var key = String(event.key || "").toLowerCase();
+                var isSearchShortcut = key === "k" && (event.metaKey || event.ctrlKey);
+                var isModalOpen = siteSearchModal && siteSearchModal.classList.contains("show");
+                var target = event.target;
+                var isTyping = target && (
+                    target.tagName === "INPUT" ||
+                    target.tagName === "TEXTAREA" ||
+                    target.isContentEditable
+                );
+                if (!isSearchShortcut || (isTyping && isModalOpen) || !siteSearchModal || !window.jQuery) return;
+                event.preventDefault();
+                window.jQuery(siteSearchModal).modal("show");
+            });
+        });
+    </script>
+    
+    <script src="/Ryanhu2001/assets/js/blog.js"></script>
+    
+    <script src="/Ryanhu2001/assets/js/common.js"></script>
+    <script src="/Ryanhu2001/assets/js/bubble_visual_hash.js"></script>
+</body>
+</html>

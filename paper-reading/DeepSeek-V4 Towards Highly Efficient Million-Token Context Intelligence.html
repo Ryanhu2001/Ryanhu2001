@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<!-- Template: https://github.com/luost26/academic-homepage -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>DeepSeek-V4: Towards Highly Efficient Million-Token Context Intelligence - Ryan</title>
+    <link rel="icon" href="/Ryanhu2001/assets/ryan/avator.jpg" type="image/jpeg">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/pagefind/pagefind-component-ui.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/blog.css">
+    
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/global.css">
+</head>
+<body class="bg-light" >
+    <nav class="navbar navbar-expand-sm navbar-light fixed-top mb-5 shadow-sm">
+    <div class="container-lg">
+        <a class="navbar-brand" href="/Ryanhu2001/"><strong>Ryan</strong></a>
+        <button class="navbar-toggler" style="font-size: 1em; padding: 0.5em;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-map"></i> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/">Home</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/wiki/">Wiki</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/paper-reading/">Paper Reading</a>
+                </li>
+                
+                <li class="nav-item nav-search-item">
+                    <button class="nav-link nav-search-button" type="button" data-toggle="modal" data-target="#siteSearchModal" aria-label="Search site">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <span>Search</span>
+                        <kbd>⌘K</kbd>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <div class="container-lg">
+        
+
+
+
+
+<div class="reading-progress" aria-hidden="true">
+    <span></span>
+</div>
+
+<div class="blog-layout-wrapper">
+    <div class="blog-main">
+        <div class="mb-3">
+            <a class="small" href="/Ryanhu2001/paper-reading/">
+                <i class="fas fa-arrow-left"></i> Paper Reading
+            </a>
+        </div>
+
+        <article class="bg-white rounded-xl p-4 p-md-5 mb-4 wiki-note-card" data-pagefind-body>
+            <div class="blog-content wiki-note">
+                <h1 id="deepseek-v4百万上下文的关键不是能放而是放得起">DeepSeek-V4：百万上下文的关键不是“能放”，而是“放得起”</h1>
+
+<ul>
+  <li><strong>Paper</strong>: DeepSeek-V4: Towards Highly Efficient Million-Token Context Intelligence</li>
+  <li><strong>arXiv</strong>: <a href="https://arxiv.org/abs/2606.19348">2606.19348</a></li>
+  <li><strong>机构</strong>: DeepSeek-AI</li>
+  <li><strong>类型</strong>: 模型架构 / 长上下文效率 / post-training report</li>
+  <li><strong>关键词</strong>: CSA, HCA, mHC, Muon, FP4 QAT, MoE, 1M context, on-policy distillation</li>
+</ul>
+
+<h2 id="读法给人和-agent-的路标">读法：给人和 agent 的路标</h2>
+
+<p>这篇要按“长上下文系统工程”读，不要按“谁家 context length 更长”读。快速路线是：先看 efficiency pipeline 图，抓住 CSA/HCA 怎么省 attention 和 KV cache；再看 1M context 下相对 V3.2 的 FLOPs/KV cache 数字；最后看 agent 评测和 tool-calling context path，判断它对真实 coding agent 有什么意义。</p>
+
+<p>给 agent 以后检索时，关键词是：<code class="language-plaintext highlighter-rouge">CSA</code>、<code class="language-plaintext highlighter-rouge">HCA</code>、<code class="language-plaintext highlighter-rouge">hybrid attention</code>、<code class="language-plaintext highlighter-rouge">mHC</code>、<code class="language-plaintext highlighter-rouge">Muon</code>、<code class="language-plaintext highlighter-rouge">FP4 QAT</code>、<code class="language-plaintext highlighter-rouge">heterogeneous KV cache</code>、<code class="language-plaintext highlighter-rouge">shared-prefix reuse</code>、<code class="language-plaintext highlighter-rouge">tool-calling reasoning persistence</code>。这篇最适合放在“长上下文如何变便宜”而不是“长上下文 benchmark 排名”里。</p>
+
+<h2 id="一句话判断">一句话判断</h2>
+
+<p>DeepSeek-V4 最重要的贡献不是宣布支持 1M context，而是把百万上下文的推理成本压下去：通过 CSA/HCA 混合注意力、mHC、Muon、FP4 QAT 和专门的 KV cache/inference infrastructure，让 DeepSeek-V4-Pro 在 1M context 下只需要 DeepSeek-V3.2 的 27% single-token FLOPs 和 10% KV cache。</p>
+
+<h2 id="图表优先读法">图表优先读法</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>先看</th>
+      <th>图/表</th>
+      <th>读完应该抓住什么</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Figure 1</td>
+      <td>能力图只是入口，右侧 FLOPs/KV cache 才是标题里的核心 claim</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Figure 2 / Figure 3</td>
+      <td>V4 通过 CSA/HCA 把远程上下文压缩、筛选，再保留局部细粒度依赖</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>KV cache layout</td>
+      <td>百万上下文能不能服务，最终要落到 cache block 和 shared-prefix reuse</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Table 6</td>
+      <td>V4 很强，但 agent benchmark 并不是所有项都领先</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Tool calling / thinking management</td>
+      <td>长上下文效果依赖消息协议和 reasoning retention，不只是 raw window</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="先抓住四个点">先抓住四个点</h2>
+
+<ol>
+  <li><strong>两个模型规模不同，目标也不同。</strong> DeepSeek-V4-Pro 是 1.6T total / 49B activated；DeepSeek-V4-Flash 是 284B total / 13B activated。两者都支持 1M context。</li>
+  <li><strong>核心架构升级是 hybrid attention。</strong> CSA 先压缩 KV，再做 sparse attention；HCA 做更重的 KV 压缩但保留 dense attention。两者交错使用，目的是让长上下文不被注意力成本拖死。</li>
+  <li><strong>训练和推理都为长上下文重做。</strong> 论文不只讲模型结构，还讲 Muon optimizer、mHC fused kernels、two-stage contextual parallelism、heterogeneous KV cache、shared-prefix reuse、FP4 QAT。</li>
+  <li><strong>post-training 用“专家训练 + 统一蒸馏”。</strong> 各 domain specialist 先独立 SFT/RL，再通过 on-policy distillation 汇总进统一模型，而不是直接混一个大 RL。</li>
+</ol>
+
+<h2 id="先看我整理的结构图">先看我整理的结构图</h2>
+
+<p><img src="../assets/paper-reading/deepseek-v4/efficiency-pipeline.svg" alt="DeepSeek-V4 million-token efficiency pipeline" /></p>
+
+<p>这张图是我把论文机制重新画了一遍：DeepSeek-V4 的主线不是“1M context”，而是用 CSA/HCA 把远距离 KV 压缩和选择，再靠 MoE、mHC、Muon、kernel、KV cache 和 FP4 QAT 把训练/推理系统一起配上。这样读 Figure 1/2/3 会更清楚。</p>
+
+<p>图里有三个锚点：</p>
+
+<ul>
+  <li><strong>注意力先分层</strong>：近邻 token 需要细粒度，远距离上下文可以压缩成块，再用 sparse selector 找回真正相关的部分。</li>
+  <li><strong>省成本不只靠架构</strong>：mHC、fused kernels、TileLang、contextual parallelism、KV cache layout 都在帮架构落地。</li>
+  <li><strong>post-training 继续配合系统目标</strong>：专家模型先各自 SFT/RL，再 on-policy distillation 合并，最后用 FP4 QAT 把服务成本压下来。</li>
+</ul>
+
+<h2 id="论文原图--数据作为证据">论文原图 / 数据作为证据</h2>
+
+<p><img src="../assets/paper-reading/deepseek-v4/fig1-benchmark-efficiency.png" alt="DeepSeek-V4 benchmark and efficiency" /></p>
+
+<p>Figure 1 右侧是整篇论文最有信息量的图：随着 context 到 1M，DeepSeek-V4-Pro / Flash 的 FLOPs 和 KV cache 增长斜率远低于 V3.2。左侧是能力图，但右侧才是 paper title 里 “Highly Efficient Million-Token” 的核心证据。</p>
+
+<p>这张图要分两层读：</p>
+
+<ul>
+  <li><strong>左侧能力图</strong>回答“V4 是否还是强模型”：它展示 reasoning、coding、long-context、agent 等方向的综合表现。</li>
+  <li><strong>右侧效率图</strong>回答“1M 是否跑得起”：它把 FLOPs 和 KV cache 随 context 增长的斜率画出来，这才是 V4 相比 V3.2 的真实系统差异。</li>
+  <li><strong>真正的 claim 是组合命题</strong>：如果只有能力，没有效率，1M context 只是昂贵展示；如果只有效率，没有能力，压缩就可能丢信息。V4 的主张是两者同时成立。</li>
+</ul>
+
+<h2 id="模型与训练规格">模型与训练规格</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>项</th>
+      <th style="text-align: right">DeepSeek-V4-Flash</th>
+      <th style="text-align: right">DeepSeek-V4-Pro</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Total parameters</td>
+      <td style="text-align: right">284B</td>
+      <td style="text-align: right">1.6T</td>
+    </tr>
+    <tr>
+      <td>Activated parameters</td>
+      <td style="text-align: right">13B</td>
+      <td style="text-align: right">49B</td>
+    </tr>
+    <tr>
+      <td>Context length</td>
+      <td style="text-align: right">1M</td>
+      <td style="text-align: right">1M</td>
+    </tr>
+    <tr>
+      <td>Transformer layers</td>
+      <td style="text-align: right">43</td>
+      <td style="text-align: right">61</td>
+    </tr>
+    <tr>
+      <td>Hidden dimension</td>
+      <td style="text-align: right">4096</td>
+      <td style="text-align: right">7168</td>
+    </tr>
+    <tr>
+      <td>CSA compression <code class="language-plaintext highlighter-rouge">m</code></td>
+      <td style="text-align: right">4</td>
+      <td style="text-align: right">4</td>
+    </tr>
+    <tr>
+      <td>CSA top-k</td>
+      <td style="text-align: right">512</td>
+      <td style="text-align: right">1024</td>
+    </tr>
+    <tr>
+      <td>HCA compression <code class="language-plaintext highlighter-rouge">m'</code></td>
+      <td style="text-align: right">128</td>
+      <td style="text-align: right">128</td>
+    </tr>
+    <tr>
+      <td>MoE routed experts</td>
+      <td style="text-align: right">256</td>
+      <td style="text-align: right">384</td>
+    </tr>
+    <tr>
+      <td>Activated routed experts</td>
+      <td style="text-align: right">6</td>
+      <td style="text-align: right">6</td>
+    </tr>
+    <tr>
+      <td>Pre-training tokens</td>
+      <td style="text-align: right">32T</td>
+      <td style="text-align: right">33T</td>
+    </tr>
+    <tr>
+      <td>Sequence length schedule</td>
+      <td style="text-align: right">4K -&gt; 16K -&gt; 64K -&gt; 1M</td>
+      <td style="text-align: right">4K -&gt; 16K -&gt; 64K -&gt; 1M</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>训练 recipe 里几个细节值得记：</p>
+
+<ul>
+  <li>Muon 用于大部分参数，embedding、prediction head、RMSNorm 权重仍用 AdamW。</li>
+  <li>Flash 最大 batch size 是 75.5M tokens；Pro 最大 batch size 是 94.4M tokens。</li>
+  <li>sparse attention 不是一开始就上，而是在训练到 64K sequence length 后引入，并先 warm up CSA 的 lightning indexer。</li>
+  <li>MTP loss weight 大部分训练阶段是 0.3，学习率衰减阶段降到 0.1。</li>
+</ul>
+
+<h2 id="方法-pipeline">方法 Pipeline</h2>
+
+<h3 id="1-hybrid-attention-csa--hca">1. Hybrid Attention: CSA + HCA</h3>
+
+<p><img src="../assets/paper-reading/deepseek-v4/official-architecture.png" alt="DeepSeek-V4 official architecture" /></p>
+
+<p>论文要解决的是 vanilla attention 在 ultra-long context 下的二次复杂度问题。它没有选择单一方案，而是把两种注意力交错使用：</p>
+
+<p><img src="../assets/paper-reading/deepseek-v4/csa-architecture.png" alt="DeepSeek-V4 CSA architecture" /></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>组件</th>
+      <th>做什么</th>
+      <th>好处</th>
+      <th>风险/代价</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>CSA</td>
+      <td>每 <code class="language-plaintext highlighter-rouge">m</code> 个 KV 压成一个，再用 DSA 选 top-k compressed KV entries</td>
+      <td>保留更细粒度选择能力，适合关键 token 检索</td>
+      <td>需要 indexer，工程复杂度高</td>
+    </tr>
+    <tr>
+      <td>HCA</td>
+      <td>每 <code class="language-plaintext highlighter-rouge">m'</code> 个 token 的 KV 压成一个，<code class="language-plaintext highlighter-rouge">m'</code> 远大于 <code class="language-plaintext highlighter-rouge">m</code></td>
+      <td>压缩更狠，KV cache 更省</td>
+      <td>信息损失风险更高</td>
+    </tr>
+    <tr>
+      <td>Sliding window branch</td>
+      <td>保留近邻细粒度依赖</td>
+      <td>防止局部依赖被压缩损坏</td>
+      <td>额外分支和 cache 管理</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这套设计的直觉是：远距离上下文可以更粗粒度，近距离依赖需要细粒度，真正相关的远程块再通过 sparse selector 拉回来。</p>
+
+<p>用更工程化的话说，CSA/HCA 是在回答一个现实问题：<strong>百万上下文里绝大多数 token 在某一步推理时都不是同等重要的。</strong> V4 不再把所有远程 token 当成同一粒度的注意力对象，而是先压缩、再选择、再保留局部精细信息。这和个人 wiki/paper-reading 也很像：不是把所有笔记塞进 prompt，而是先做索引和筛选。</p>
+
+<h3 id="2-mhc-residual-connection-的升级">2. mHC: residual connection 的升级</h3>
+
+<p>mHC 是 Manifold-Constrained Hyper-Connections，用来强化传统 residual connection。论文把它作为模型能力增强而不是长上下文效率组件；换句话说，CSA/HCA 主要省成本，mHC 主要补表达能力。</p>
+
+<h3 id="3-muon--infrastructure">3. Muon + infrastructure</h3>
+
+<p>论文花了很多篇幅讲工程实现，原因很简单：如果 attention 结构变复杂，但训练/推理 kernel 跟不上，理论省 FLOPs 没意义。</p>
+
+<p>它们做了几类优化：</p>
+
+<ul>
+  <li>MoE fused kernel，重叠 computation、communication、memory access。</li>
+  <li>TileLang DSL，用来兼顾 kernel 开发效率和运行效率。</li>
+  <li>deterministic kernel libraries，保证训练和推理可复现。</li>
+  <li>Muon 的 hybrid ZeRO strategy。</li>
+  <li>mHC recomputation 和 fused kernels。</li>
+  <li>推理侧 heterogeneous KV cache layout，加上 on-disk storage 做 shared-prefix reuse。</li>
+  <li>post-training 时对 MoE expert weights 和 CSA indexer QK path 做 FP4 QAT。</li>
+</ul>
+
+<p><img src="../assets/paper-reading/deepseek-v4/kv-cache-layout.png" alt="DeepSeek-V4 KV cache layout" /></p>
+
+<h2 id="关键效率数据">关键效率数据</h2>
+
+<p>论文最硬的效率 claim：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>1M context 下相对 DeepSeek-V3.2</th>
+      <th style="text-align: right">DeepSeek-V4-Pro</th>
+      <th style="text-align: right">DeepSeek-V4-Flash</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Single-token inference FLOPs</td>
+      <td style="text-align: right">27%</td>
+      <td style="text-align: right">10%</td>
+    </tr>
+    <tr>
+      <td>KV cache size</td>
+      <td style="text-align: right">10%</td>
+      <td style="text-align: right">7%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这个表是理解 V4 的核心。DeepSeek-V4-Pro activated params 比 V3.2 更大，但长上下文推理成本反而大幅下降。Flash 则是更激进的效率版。</p>
+
+<p>这组数字的含义很直接：V4-Pro 不是靠缩小模型换效率，它 activated params 更大，但通过注意力和 cache 设计让 1M 推理成本下降；V4-Flash 则更像面向高吞吐/低成本场景的版本。读这篇时，不要只记“1M context”，要记 <strong>1M 下 Pro 只要 V3.2 27% FLOPs、10% KV cache，Flash 是 10% FLOPs、7% KV cache</strong>。</p>
+
+<h2 id="关键评测数据">关键评测数据</h2>
+
+<p><img src="../assets/paper-reading/deepseek-v4/table6-evaluation.png" alt="DeepSeek-V4 evaluation table" /></p>
+
+<p>下面只摘和 long-context / coding-agent / reasoning 关系最密切的几项。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Benchmark</th>
+      <th style="text-align: right">DS-V4-Pro Max</th>
+      <th style="text-align: right">K2.6 Thinking</th>
+      <th style="text-align: right">GLM-5.1 Thinking</th>
+      <th style="text-align: right">Opus-4.6 Max</th>
+      <th style="text-align: right">GPT-5.4 xHigh</th>
+      <th style="text-align: right">Gemini-3.1 Pro High</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SimpleQA-Verified</td>
+      <td style="text-align: right">57.9</td>
+      <td style="text-align: right">36.9</td>
+      <td style="text-align: right">38.1</td>
+      <td style="text-align: right">46.2</td>
+      <td style="text-align: right">45.3</td>
+      <td style="text-align: right">75.6</td>
+    </tr>
+    <tr>
+      <td>HLE</td>
+      <td style="text-align: right">37.7</td>
+      <td style="text-align: right">36.4</td>
+      <td style="text-align: right">34.7</td>
+      <td style="text-align: right">40.0</td>
+      <td style="text-align: right">39.8</td>
+      <td style="text-align: right">44.4</td>
+    </tr>
+    <tr>
+      <td>LiveCodeBench</td>
+      <td style="text-align: right">93.5</td>
+      <td style="text-align: right">89.6</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">88.8</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">91.7</td>
+    </tr>
+    <tr>
+      <td>Codeforces rating</td>
+      <td style="text-align: right">3206</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">3168</td>
+      <td style="text-align: right">3052</td>
+    </tr>
+    <tr>
+      <td>MRCR 1M</td>
+      <td style="text-align: right">83.5</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">92.9</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">76.3</td>
+    </tr>
+    <tr>
+      <td>CorpusQA 1M</td>
+      <td style="text-align: right">62.0</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">71.7</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">53.8</td>
+    </tr>
+    <tr>
+      <td>Terminal Bench 2.0</td>
+      <td style="text-align: right">67.9</td>
+      <td style="text-align: right">66.7</td>
+      <td style="text-align: right">63.5</td>
+      <td style="text-align: right">65.4</td>
+      <td style="text-align: right">75.1</td>
+      <td style="text-align: right">68.5</td>
+    </tr>
+    <tr>
+      <td>SWE Verified</td>
+      <td style="text-align: right">80.6</td>
+      <td style="text-align: right">80.2</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">80.8</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">80.6</td>
+    </tr>
+    <tr>
+      <td>SWE Pro</td>
+      <td style="text-align: right">55.4</td>
+      <td style="text-align: right">58.6</td>
+      <td style="text-align: right">58.4</td>
+      <td style="text-align: right">57.3</td>
+      <td style="text-align: right">57.7</td>
+      <td style="text-align: right">54.2</td>
+    </tr>
+    <tr>
+      <td>SWE Multilingual</td>
+      <td style="text-align: right">76.2</td>
+      <td style="text-align: right">76.7</td>
+      <td style="text-align: right">73.3</td>
+      <td style="text-align: right">77.5</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">-</td>
+    </tr>
+    <tr>
+      <td>MCPAtlas Public</td>
+      <td style="text-align: right">73.6</td>
+      <td style="text-align: right">66.6</td>
+      <td style="text-align: right">71.8</td>
+      <td style="text-align: right">73.8</td>
+      <td style="text-align: right">67.2</td>
+      <td style="text-align: right">69.2</td>
+    </tr>
+    <tr>
+      <td>Toolathlon</td>
+      <td style="text-align: right">51.8</td>
+      <td style="text-align: right">50.0</td>
+      <td style="text-align: right">40.7</td>
+      <td style="text-align: right">47.2</td>
+      <td style="text-align: right">54.6</td>
+      <td style="text-align: right">48.8</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>读法：</p>
+
+<ul>
+  <li><strong>开源模型里，DeepSeek-V4-Pro-Max 很强，但不是所有 agent benchmark 都领先。</strong> SWE Pro 上它低于 K2.6 和 GLM-5.1；Terminal Bench 2.0 低于 GPT-5.4 和 Gemini 3.1 Pro。</li>
+  <li><strong>长上下文上有明确亮点。</strong> MRCR 1M 高于 Gemini 3.1 Pro，但低于 Opus 4.6；CorpusQA 1M 也是同样格局。</li>
+  <li><strong>推理/代码竞赛很强。</strong> LiveCodeBench 93.5、Codeforces 3206 是亮点。</li>
+</ul>
+
+<h2 id="agent-评测设置">Agent 评测设置</h2>
+
+<p>论文的 agent setup 有几个具体细节：</p>
+
+<ul>
+  <li>SWE-Verified、Terminal-Bench、SWE-Pro、SWE Multilingual 使用内部 evaluation framework。</li>
+  <li>工具是 minimal set：bash tool + file-edit tool。</li>
+  <li>最大 interaction steps 是 500。</li>
+  <li>最大 context length 是 512K tokens。</li>
+  <li>Terminal-Bench 2.0 仍报告原始 dataset 分数，同时承认 GLM-5.1 提到过环境相关问题。</li>
+  <li>Search agent 任务用 websearch 和 Python tool，同样最多 500 steps、512K context。</li>
+</ul>
+
+<p>这个设置说明 DeepSeek-V4 的 agent 数字不是纯文本分数，而是工具环境里的结果。但因为 harness 是 in-house，所以跨公司对比仍要保留一点不确定性。</p>
+
+<p>这里最该警惕的是归因问题：如果两个模型在不同公司内部 harness 下跑 Terminal-Bench 或 SWE-bench，分数差异可能来自 base model，也可能来自 tool schema、context retention、patch application、timeout、retry strategy。DeepSeek 把 agent 设置写出来是加分项，但仍不足以把跨模型分数当成完全干净的模型本体比较。</p>
+
+<h2 id="tool-calling-与-thinking-管理">Tool calling 与 thinking 管理</h2>
+
+<p>V4 还改了 tool-call schema：使用特殊 <code class="language-plaintext highlighter-rouge">|DSML|</code> token 和 XML-based tool invocation 格式，目标是减少 escaping failure 和 tool-call error。</p>
+
+<p>更有意思的是 thinking management：</p>
+
+<ul>
+  <li>Tool-calling 场景保留完整 reasoning content，包括跨 user message boundary。</li>
+  <li>普通对话场景仍在新 user message 到来时丢弃前一轮 reasoning，避免上下文浪费。</li>
+  <li>论文提醒：如果 agent framework 用 user messages 模拟工具交互，例如 Terminus，可能不会触发 tool-calling context path，也就不能利用增强的 thinking persistence。</li>
+</ul>
+
+<p>这和 Kimi K2.7 Code 文档里“必须保留 reasoning_content”的方向很一致：新一代 coding/agent 模型正在把 reasoning trace 当成 agent state 的一部分。</p>
+
+<p>这部分对 agent 框架特别重要。很多框架把工具结果包装成普通 user message，这可能会绕开模型专门为 tool-calling 设计的 context path。V4 的提示是：未来模型的“长上下文能力”可能越来越依赖消息类型、工具协议和 reasoning retention，而不是只有 raw token window。</p>
+
+<h2 id="我怎么看">我怎么看</h2>
+
+<p>可信之处：</p>
+
+<ul>
+  <li>论文的 efficiency claim 很具体，有 FLOPs 和 KV cache 相对比例，不只是说“更长”。</li>
+  <li>架构、训练、kernel、KV cache、FP4 QAT 都讲到了，说明作者确实围绕 1M context 做了系统级 co-design。</li>
+  <li>Table 6 没有只报自己领先的项，SWE Pro、Terminal Bench 这类不领先的地方也保留了。</li>
+</ul>
+
+<p>需要警惕：</p>
+
+<ul>
+  <li>很多评测使用内部 harness，跨模型可比性仍然依赖工具、prompt、context management 和失败计分。</li>
+  <li>1M context 的真实价值不等于 MRCR/CorpusQA；企业代码库、长日志、长论文复现都可能有不同噪声分布。</li>
+  <li>CSA/HCA 的实现复杂度很高，个人或小团队几乎不可能“复现同等系统”，更现实的是借鉴设计思想。</li>
+</ul>
+
+<h2 id="对我的价值">对我的价值</h2>
+
+<p>如果要借鉴 DeepSeek-V4，我会借三件事：</p>
+
+<ol>
+  <li><strong>长上下文要算 KV cache。</strong> 个人 wiki/paper pipeline 里，长上下文不是越多越好，要知道哪些内容值得进上下文。</li>
+  <li><strong>agent state 要保留，但要分场景。</strong> 工具调用里的 reasoning/context 可以保留，普通聊天不一定要无限保留。</li>
+  <li><strong>评测要同时看能力和成本。</strong> 一个模型在 1M context 下能跑，不代表它在成本、延迟、可靠性上可用。</li>
+</ol>
+
+<p>我会把它转成个人 wiki 的一个原则：长上下文不是懒得整理的借口。真正好的系统应该先做结构化索引、局部读取、图表/公式/代码块的 artifact 管理，再把必要上下文放进模型。V4 的工程哲学其实很“知识库”：先压缩和检索，再精读关键块。</p>
+
+<h2 id="一句话收束">一句话收束</h2>
+
+<p>DeepSeek-V4 最值得记住的是：百万上下文不是一个模型规格，而是一整套架构、训练、kernel、cache 和 post-training 的系统工程；它的真正创新点在于把 1M context 从“能塞进去”推进到“推理成本可控”。</p>
+
+            </div>
+        </article>
+    </div>
+
+    <aside class="blog-toc-sidebar">
+        <nav id="blog-toc" class="blog-toc-nav" aria-label="Table of contents">
+            <div class="blog-toc-header">
+                <div class="blog-toc-title">On This Page</div>
+                <button
+                    id="blog-toc-toggle"
+                    class="blog-toc-toggle"
+                    type="button"
+                    aria-controls="blog-toc-list"
+                    aria-expanded="true"
+                    aria-label="收起目录"
+                    title="收起目录"
+                >
+                    <svg class="blog-toc-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="blog-toc-list" class="blog-toc-list"></div>
+        </nav>
+    </aside>
+</div>
+
+    </div>
+    <footer class="footer border-top py-2 mt-5 bg-white small">
+    <div class="container-lg">
+        <div class="row my-3">
+            <div class="col-6">
+                <div class="text-muted">
+                    <i>Last updated: Jul 2026</i>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="text-right text-muted">
+                    Built with <a href="https://github.com/luost26/academic-homepage" target="_blank"><i class="fas fa-pencil-ruler"></i> academic-homepage</a>.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <pagefind-config
+        bundle-path="/Ryanhu2001/pagefind/"
+        base-url="/Ryanhu2001/"
+        excerpt-length="30"
+        lang="zh-CN"></pagefind-config>
+    <div class="modal fade site-search-modal" id="siteSearchModal" tabindex="-1" role="dialog" aria-labelledby="siteSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 mb-0" id="siteSearchModalLabel">Search</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <pagefind-searchbox placeholder="搜索 wiki、论文笔记、关键词..." show-sub-results="true" hide-shortcut="true"></pagefind-searchbox>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/github-buttons/2.14.2/buttons.min.js" integrity="sha512-OYwZx04hKFeFNYrWxIyo3atgGpb+cxU0ENWBZs72X7T9U+NoHPM1ftUn/Mfw7dRDXrqWA6M1wBg6z6fGE32aeA==" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+    <script type="module" src="/Ryanhu2001/pagefind/pagefind-component-ui.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tocbot@4.36.8/dist/tocbot.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+              delimiters: [
+                  {left: '$$', right: '$$', display: true},
+                  {left: '\\[', right: '\\]', display: true},
+                  {left: '$', right: '$', display: false},
+                  {left: '\\(', right: '\\)', display: false}
+              ],
+              throwOnError : false
+            });
+            
+            Prism.highlightAll();
+            
+
+            var siteSearchModal = document.getElementById("siteSearchModal");
+            var siteSearchBox = siteSearchModal ? siteSearchModal.querySelector("pagefind-searchbox") : null;
+            function focusSiteSearch() {
+                window.setTimeout(function() {
+                    if (siteSearchBox && typeof siteSearchBox.focus === "function") {
+                        siteSearchBox.focus();
+                    }
+                }, 80);
+            }
+            if (siteSearchModal && window.jQuery) {
+                window.jQuery(siteSearchModal).on("shown.bs.modal", focusSiteSearch);
+            }
+            document.addEventListener("keydown", function(event) {
+                var key = String(event.key || "").toLowerCase();
+                var isSearchShortcut = key === "k" && (event.metaKey || event.ctrlKey);
+                var isModalOpen = siteSearchModal && siteSearchModal.classList.contains("show");
+                var target = event.target;
+                var isTyping = target && (
+                    target.tagName === "INPUT" ||
+                    target.tagName === "TEXTAREA" ||
+                    target.isContentEditable
+                );
+                if (!isSearchShortcut || (isTyping && isModalOpen) || !siteSearchModal || !window.jQuery) return;
+                event.preventDefault();
+                window.jQuery(siteSearchModal).modal("show");
+            });
+        });
+    </script>
+    
+    <script src="/Ryanhu2001/assets/js/blog.js"></script>
+    
+    <script src="/Ryanhu2001/assets/js/common.js"></script>
+    <script src="/Ryanhu2001/assets/js/bubble_visual_hash.js"></script>
+</body>
+</html>

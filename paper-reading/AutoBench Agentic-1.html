@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<!-- Template: https://github.com/luost26/academic-homepage -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>AutoBench Agentic-1 - Ryan</title>
+    <link rel="icon" href="/Ryanhu2001/assets/ryan/avator.jpg" type="image/jpeg">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/pagefind/pagefind-component-ui.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/blog.css">
+    
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/global.css">
+</head>
+<body class="bg-light" >
+    <nav class="navbar navbar-expand-sm navbar-light fixed-top mb-5 shadow-sm">
+    <div class="container-lg">
+        <a class="navbar-brand" href="/Ryanhu2001/"><strong>Ryan</strong></a>
+        <button class="navbar-toggler" style="font-size: 1em; padding: 0.5em;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-map"></i> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/">Home</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/wiki/">Wiki</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/paper-reading/">Paper Reading</a>
+                </li>
+                
+                <li class="nav-item nav-search-item">
+                    <button class="nav-link nav-search-button" type="button" data-toggle="modal" data-target="#siteSearchModal" aria-label="Search site">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <span>Search</span>
+                        <kbd>⌘K</kbd>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <div class="container-lg">
+        
+
+
+
+
+<div class="reading-progress" aria-hidden="true">
+    <span></span>
+</div>
+
+<div class="blog-layout-wrapper">
+    <div class="blog-main">
+        <div class="mb-3">
+            <a class="small" href="/Ryanhu2001/paper-reading/">
+                <i class="fas fa-arrow-left"></i> Paper Reading
+            </a>
+        </div>
+
+        <article class="bg-white rounded-xl p-4 p-md-5 mb-4 wiki-note-card" data-pagefind-body>
+            <div class="blog-content wiki-note">
+                <h1 id="autobench-agentic-1动态虚拟企业环境里的-agent-benchmark">AutoBench Agentic-1：动态虚拟企业环境里的 agent benchmark</h1>
+
+<ul>
+  <li><strong>Source</strong>: <a href="https://autobench.org/blog/autobench-Agentic-1">AutoBench Blog</a></li>
+  <li><strong>Author</strong>: AutoBench Team</li>
+  <li><strong>Published</strong>: 2026-04-20</li>
+  <li><strong>原文体量</strong>: 本地抽取约 <strong>1707 words</strong>，页面标注 <strong>9 min read</strong></li>
+  <li><strong>类型</strong>: benchmark/product blog，不是正式论文</li>
+  <li><strong>关键词</strong>: dynamic benchmark, agentic evaluation, virtual environment, UIR, LLM-as-a-judge, cost-latency frontier</li>
+</ul>
+
+<h2 id="读法给人和-agent-的路标">读法：给人和 agent 的路标</h2>
+
+<p>这篇不用当论文读，应该当作一个 <strong>agent benchmark 设计备忘录</strong> 来读。它最有价值的地方不是某个模型排第一，而是把“真实 agent 任务为什么难测”拆成了几个工程维度：动态 business context、operator persona、memory line、native tool schema、distractor tools、mock errors、多轮执行、成本和延迟。</p>
+
+<p>给人读，先看 <strong>一句话判断</strong>、两张图和 <strong>April 2026 run 怎么读</strong>。给 agent 以后检索，关键词是：<code class="language-plaintext highlighter-rouge">dynamic virtual environment</code>、<code class="language-plaintext highlighter-rouge">Universal Intermediate Representation</code>、<code class="language-plaintext highlighter-rouge">memory lines</code>、<code class="language-plaintext highlighter-rouge">parameter complexity</code>、<code class="language-plaintext highlighter-rouge">cost per run</code>、<code class="language-plaintext highlighter-rouge">LLM-as-a-judge</code>、<code class="language-plaintext highlighter-rouge">closed-source benchmark risk</code>。</p>
+
+<h2 id="一句话判断">一句话判断</h2>
+
+<p>AutoBench Agentic 的核心价值在于把 agent benchmark 从“静态题目 + 单轮答案”推进到“运行时生成的虚拟企业环境 + 多轮工具轨迹评估”；但它当前仍是闭源产品公告，LLM-as-a-judge、动态数据生成和 leaderboard 分数都需要谨慎看，适合作为 benchmark 设计参考，不适合直接当作模型能力的最终判决。</p>
+
+<h2 id="图表优先读法">图表优先读法</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>先看</th>
+      <th>图/表/案例</th>
+      <th>读完应该抓住什么</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Agentic benchmark map</td>
+      <td>它测的是动态企业环境里的多轮工具轨迹，不是普通 QA</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Results 图</td>
+      <td>分数要和 judge、任务生成方式、闭源 leaderboard 一起读</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>完整 task 例子</td>
+      <td>这类 benchmark 最该保留 prompt、环境状态、工具轨迹和判分逻辑</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>风险小节</td>
+      <td>LLM-as-judge 和动态数据生成会让可复现性变弱</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="先看我整理的机制图">先看我整理的机制图</h2>
+
+<p><img src="../assets/paper-reading/autobench-agentic-1/autobench-agentic-map.svg" alt="AutoBench Agentic dynamic benchmark map" /></p>
+
+<p>这张图抓的是原文的主线：AutoBench Agentic 不只是生成一段 prompt，而是先把企业任务映射到一个 Universal Intermediate Representation，再动态注入 persona、memory、native tool schemas、干扰工具、错误返回和缺失参数，让模型真的走一遍 agent execution trace。最后用 Collective-LLM-as-a-Judge 从多个维度评估这条 trace。</p>
+
+<p>要注意三个点：</p>
+
+<ul>
+  <li><strong>Virtual Environment 是核心对象</strong>：它想模拟的是 agent 在生产环境里接到一个“已经在进行中”的任务，而不是白纸题目。</li>
+  <li><strong>工具 schema 比自然语言更重要</strong>：原文强调 UIR 会构造接近 LangChain、AutoGen 或 provider native API 的 <code class="language-plaintext highlighter-rouge">tools[]</code> JSON 数组，模型必须学会选工具、填参数、处理异常。</li>
+  <li><strong>评测对象是轨迹，不是最终文本</strong>：judge 看的包括 Tool Fidelity、Multi-Step Orchestration、Parameter Complexity 等 8 个细粒度 criteria。</li>
+</ul>
+
+<h2 id="它想解决什么问题">它想解决什么问题</h2>
+
+<p>原文对当前 agent benchmark 的批评主要有两条：</p>
+
+<ul>
+  <li><strong>太窄</strong>：很多 benchmark 只覆盖单一 niche，例如 telecom routing 或 rigid system instruction，和企业里混乱、多角色、多系统的真实工作距离很远。</li>
+  <li><strong>太静态</strong>：pre-baked dataset 容易被训练到，模型可能记住 benchmark pattern，而不是真的具备动态推理、工具编排和失败恢复能力。</li>
+</ul>
+
+<p>AutoBench Agentic 的应对方式是运行时生成测试环境。每次 run 都重新组合角色、业务域、任务类型、工具 schema 和 mock feedback，用动态性降低过拟合风险。原文把这个说成 strictly un-gameable，我会更保守地理解为：<strong>它比静态数据集更难被简单记忆，但并不天然不可被 gaming</strong>，因为生成器、judge rubric 和模型池本身仍可能形成可学习的偏置。</p>
+
+<h2 id="一个完整-task-大概长什么样">一个完整 task 大概长什么样</h2>
+
+<p>下面是我基于原文描述整理的 schematic example，不是 AutoBench 发布的原始样本。它用于说明这种 task 的完整形态：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>组件</th>
+      <th>示例</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Operator persona</td>
+      <td><code class="language-plaintext highlighter-rouge">Senior Cloud DevOps Engineer</code></td>
+    </tr>
+    <tr>
+      <td>Business domain</td>
+      <td>cloud migration / incident response</td>
+    </tr>
+    <tr>
+      <td>Memory line</td>
+      <td>前一轮数据库查询因为 syntax error 失败，客户还在线等待</td>
+    </tr>
+    <tr>
+      <td>Tool schema</td>
+      <td><code class="language-plaintext highlighter-rouge">query_logs</code>, <code class="language-plaintext highlighter-rouge">migrate_instance</code>, <code class="language-plaintext highlighter-rouge">notify_customer</code>, <code class="language-plaintext highlighter-rouge">rollback_config</code>，每个工具有复杂 JSON schema</td>
+    </tr>
+    <tr>
+      <td>Distractor tools</td>
+      <td>名字相近但不该调用的工具，例如只读 audit 工具或 billing 工具</td>
+    </tr>
+    <tr>
+      <td>Mock response</td>
+      <td>工具可能返回 timeout、missing parameter、permission denied 或部分结果</td>
+    </tr>
+    <tr>
+      <td>Agent task</td>
+      <td>先定位失败原因，再补齐参数，必要时诚实请求缺失信息，最后给出可执行下一步</td>
+    </tr>
+    <tr>
+      <td>Judge 关注点</td>
+      <td>是否选对工具，参数是否填对，多轮恢复是否合理，遇到缺信息时有没有 hallucinate</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这类任务和普通文本 benchmark 的关键差别在于：模型必须在 <strong>状态、工具、错误和业务目标</strong> 之间持续对齐。一个只会写最终答案的语言模型，不一定能在这种 setup 里稳定工作。</p>
+
+<h2 id="它到底测什么">它到底测什么</h2>
+
+<p>AutoBench Agentic 覆盖三组 <code class="language-plaintext highlighter-rouge">10 x 10 x 10</code> 的组合：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>维度</th>
+      <th>原文说法</th>
+      <th>我的读法</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>10 operator roles</td>
+      <td>不同业务 persona</td>
+      <td>角色会改变措辞、权限、目标和风险偏好</td>
+    </tr>
+    <tr>
+      <td>10 business domains</td>
+      <td>不同企业场景</td>
+      <td>避免 benchmark 只围绕单一垂直领域</td>
+    </tr>
+    <tr>
+      <td>10 agentic task types</td>
+      <td>不同工具调用和执行模式</td>
+      <td>可以拆出 single tool、tool selection、multi-step、parameter complexity 等能力</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>它还不只报告总分，而是报告：</p>
+
+<ul>
+  <li><strong>performance score</strong>，1 到 5 分；</li>
+  <li><strong>average response cost</strong>；</li>
+  <li><strong>latency</strong>；</li>
+  <li><strong>P99</strong>；</li>
+  <li>按 10 类 agentic calls 细分的结果。</li>
+</ul>
+
+<p>这点对真实 agent pipeline 很重要。一个模型如果总分不错但 P99 很差，或者 tool selection 稳但 parameter mapping 很差，部署策略会完全不同。</p>
+
+<h2 id="april-2026-run-怎么读">April 2026 run 怎么读</h2>
+
+<p><img src="../assets/paper-reading/autobench-agentic-1/autobench-agentic-results.svg" alt="AutoBench Agentic April 2026 result guide" /></p>
+
+<p>原文给出的最关键数字是：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>观察</th>
+      <th style="text-align: right">数字 / 结论</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>总体分数区间</td>
+      <td style="text-align: right">所有模型在 <strong>2.2 到 3.3 / 5</strong></td>
+    </tr>
+    <tr>
+      <td>分数含义</td>
+      <td style="text-align: right"><strong>3</strong> 是 good，<strong>4</strong> 才是 robust/efficient，<strong>5</strong> 是 excellent</td>
+    </tr>
+    <tr>
+      <td>第一名</td>
+      <td style="text-align: right"><strong>Claude Opus 4.7</strong>, score <strong>3.295</strong></td>
+    </tr>
+    <tr>
+      <td>后续强模型</td>
+      <td style="text-align: right">Claude Opus 4.6、Gemini 3.1 Pro preview</td>
+    </tr>
+    <tr>
+      <td>成本效率点</td>
+      <td style="text-align: right"><strong>GLM-5.1</strong>, score <strong>3.148</strong>, <strong>USD 0.005 per run</strong></td>
+    </tr>
+    <tr>
+      <td>成本对比</td>
+      <td style="text-align: right">GLM-5.1 约比 Claude Opus 4.6 便宜 <strong>5x</strong></td>
+    </tr>
+    <tr>
+      <td>关键薄弱项</td>
+      <td style="text-align: right">Parameter Complexity 没有模型平均达到 <strong>3</strong></td>
+    </tr>
+    <tr>
+      <td>OpenAI 异常</td>
+      <td style="text-align: right">OpenAI 模型有 <strong>27% 到 47%</strong> responses 触发 refusal</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>我觉得最值得记的不是“Claude Opus 4.7 第一”，而是 <strong>Parameter Complexity 仍然卡住</strong>。这和我们平时用 coding/agent 模型的体验一致：模型能做 high-level plan，但具体到 schema 选择、参数补齐、边界条件和异常恢复，仍然容易出错。</p>
+
+<h2 id="这篇的强点">这篇的强点</h2>
+
+<p><strong>强点 1：把 benchmark 对齐到 agent 的真实失败面。</strong>
+真实 agent 失败通常不是因为它不会写一段解释，而是因为它选错工具、漏填参数、没处理 timeout、没意识到已有 memory 状态，或者在信息不足时硬编。AutoBench Agentic 把这些失败面显式放进任务。</p>
+
+<p><strong>强点 2：成本和延迟被放进 leaderboard。</strong>
+agent 系统不是 single-shot QA。多轮调用里，成本、latency 和 P99 可能比 1 个点的 accuracy 更重要。GLM-5.1 这种“分数接近但成本极低”的模型，只有在 cost-performance 视图里才会被看见。</p>
+
+<p><strong>强点 3：动态生成比静态题库更接近生产。</strong>
+persona、memory line、mock feedback 和 distractor tools 每次变动，可以逼模型处理分布变化。它不等于完全不可过拟合，但比固定 JSON task list 更有现实意义。</p>
+
+<h2 id="需要警惕的地方">需要警惕的地方</h2>
+
+<p><strong>疑点 1：当前 Agentic 版本闭源。</strong>
+原文明确说 AutoBench 1.0 是 open-source，但 AutoBench 2.0 和 Agentic evolution 是 proprietary and closed-source。也就是说，外部读者很难审计任务生成器、judge prompt、rubric、模型池组成和数据过滤。</p>
+
+<p><strong>疑点 2：Collective-LLM-as-a-Judge 仍然是 judge。</strong>
+多个 LLM judge 可以降低单模型偏置，但不能自动消除偏置。尤其是 agent trace 的评价很依赖 rubric 细节：什么算合理 deferral，什么算参数复杂度，什么算多轮恢复成功，都可能影响分数。</p>
+
+<p><strong>疑点 3：“un-gameable”说法太满。</strong>
+动态生成确实更难 memorization，但如果生成器、UIR schema、task taxonomy 和 judge rubric 长期稳定，模型或开发者仍可能学会针对这个分布优化。</p>
+
+<p><strong>疑点 4：OpenAI refusal 异常污染了本轮比较。</strong>
+原文说 OpenAI API anti-distillation filters 让 27% 到 47% responses 返回 refusal。因此这轮榜单不能简单解读成“OpenAI agentic reasoning 更差”，至少要把 safety/refusal channel 和 reasoning failure 分开。</p>
+
+<h2 id="对我的价值">对我的价值</h2>
+
+<p>这篇对我最大的价值不是选模型，而是给自己的 agent/wiki/paper-reading pipeline 提醒了一个 benchmark checklist：</p>
+
+<ul>
+  <li><strong>不要只看最终答案</strong>：要记录完整 trace、工具选择、参数、错误恢复和人类干预点。</li>
+  <li><strong>任务要有状态</strong>：memory line 很重要，agent 经常是在半途中接任务，不是在空白世界里开始。</li>
+  <li><strong>schema 要真实</strong>：如果工具 schema 永远干净简单，测不出真实调用能力。</li>
+  <li><strong>评估要有成本维度</strong>：paper-reading、代码修复、sandbox 构建这类长流程里，USD/run、latency 和 P99 都是工程指标。</li>
+  <li><strong>要保留闭源怀疑</strong>：benchmark 分数有用，但不能替代可审计数据、可复现任务和自己场景下的 shadow eval。</li>
+</ul>
+
+<h2 id="建议动作">建议动作</h2>
+
+<p>我会把 AutoBench Agentic 放在 “agent evaluation / benchmark design” 这条线里，作为设计参考。它不适合作为模型排名的唯一依据，但很适合指导我们以后做自己的小型 eval：动态工具 schema、memory line、错误返回、细粒度 rubric、成本和延迟都应该进评测表。</p>
+
+            </div>
+        </article>
+    </div>
+
+    <aside class="blog-toc-sidebar">
+        <nav id="blog-toc" class="blog-toc-nav" aria-label="Table of contents">
+            <div class="blog-toc-header">
+                <div class="blog-toc-title">On This Page</div>
+                <button
+                    id="blog-toc-toggle"
+                    class="blog-toc-toggle"
+                    type="button"
+                    aria-controls="blog-toc-list"
+                    aria-expanded="true"
+                    aria-label="收起目录"
+                    title="收起目录"
+                >
+                    <svg class="blog-toc-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="blog-toc-list" class="blog-toc-list"></div>
+        </nav>
+    </aside>
+</div>
+
+    </div>
+    <footer class="footer border-top py-2 mt-5 bg-white small">
+    <div class="container-lg">
+        <div class="row my-3">
+            <div class="col-6">
+                <div class="text-muted">
+                    <i>Last updated: Jul 2026</i>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="text-right text-muted">
+                    Built with <a href="https://github.com/luost26/academic-homepage" target="_blank"><i class="fas fa-pencil-ruler"></i> academic-homepage</a>.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <pagefind-config
+        bundle-path="/Ryanhu2001/pagefind/"
+        base-url="/Ryanhu2001/"
+        excerpt-length="30"
+        lang="zh-CN"></pagefind-config>
+    <div class="modal fade site-search-modal" id="siteSearchModal" tabindex="-1" role="dialog" aria-labelledby="siteSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 mb-0" id="siteSearchModalLabel">Search</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <pagefind-searchbox placeholder="搜索 wiki、论文笔记、关键词..." show-sub-results="true" hide-shortcut="true"></pagefind-searchbox>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/github-buttons/2.14.2/buttons.min.js" integrity="sha512-OYwZx04hKFeFNYrWxIyo3atgGpb+cxU0ENWBZs72X7T9U+NoHPM1ftUn/Mfw7dRDXrqWA6M1wBg6z6fGE32aeA==" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+    <script type="module" src="/Ryanhu2001/pagefind/pagefind-component-ui.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tocbot@4.36.8/dist/tocbot.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+              delimiters: [
+                  {left: '$$', right: '$$', display: true},
+                  {left: '\\[', right: '\\]', display: true},
+                  {left: '$', right: '$', display: false},
+                  {left: '\\(', right: '\\)', display: false}
+              ],
+              throwOnError : false
+            });
+            
+            Prism.highlightAll();
+            
+
+            var siteSearchModal = document.getElementById("siteSearchModal");
+            var siteSearchBox = siteSearchModal ? siteSearchModal.querySelector("pagefind-searchbox") : null;
+            function focusSiteSearch() {
+                window.setTimeout(function() {
+                    if (siteSearchBox && typeof siteSearchBox.focus === "function") {
+                        siteSearchBox.focus();
+                    }
+                }, 80);
+            }
+            if (siteSearchModal && window.jQuery) {
+                window.jQuery(siteSearchModal).on("shown.bs.modal", focusSiteSearch);
+            }
+            document.addEventListener("keydown", function(event) {
+                var key = String(event.key || "").toLowerCase();
+                var isSearchShortcut = key === "k" && (event.metaKey || event.ctrlKey);
+                var isModalOpen = siteSearchModal && siteSearchModal.classList.contains("show");
+                var target = event.target;
+                var isTyping = target && (
+                    target.tagName === "INPUT" ||
+                    target.tagName === "TEXTAREA" ||
+                    target.isContentEditable
+                );
+                if (!isSearchShortcut || (isTyping && isModalOpen) || !siteSearchModal || !window.jQuery) return;
+                event.preventDefault();
+                window.jQuery(siteSearchModal).modal("show");
+            });
+        });
+    </script>
+    
+    <script src="/Ryanhu2001/assets/js/blog.js"></script>
+    
+    <script src="/Ryanhu2001/assets/js/common.js"></script>
+    <script src="/Ryanhu2001/assets/js/bubble_visual_hash.js"></script>
+</body>
+</html>

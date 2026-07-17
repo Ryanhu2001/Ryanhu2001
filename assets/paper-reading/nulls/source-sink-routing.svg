@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="520" viewBox="0 0 1080 520" role="img" aria-labelledby="title desc">
+  <title id="title">NULLs source sink routing</title>
+  <desc id="desc">A self-made diagram showing how NULLs route source-specific information into sink neurons while keeping shared knowledge in the backbone.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#4f5f66"/></marker>
+    <style>
+      .bg { fill: #fbf6ea; }
+      .box { fill: #fffaf0; stroke: #b89a62; stroke-width: 2; rx: 18; }
+      .backbone { fill: #f7fbf7; stroke: #6f9b7b; stroke-width: 2; rx: 18; }
+      .sink { fill: #f6f8fb; stroke: #7893b0; stroke-width: 2; rx: 12; }
+      .off { fill: #f5f1e8; stroke: #c9bfae; stroke-width: 2; rx: 12; opacity: 0.65; }
+      .text { fill: #1f2428; font-family: Inter, Arial, sans-serif; font-size: 24px; font-weight: 700; }
+      .small { fill: #4f5459; font-family: Inter, Arial, sans-serif; font-size: 16px; font-weight: 500; }
+      .line { stroke: #4f5f66; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect class="bg" width="1080" height="520"/>
+  <text class="text" x="56" y="62">NULLs: make source-level unlearning a routing problem</text>
+  <text class="small" x="56" y="94">Shared facts live in the backbone; source-specific facts are routed into removable sink neurons.</text>
+
+  <rect class="box" x="70" y="190" width="190" height="100"/>
+  <text class="text" x="106" y="231">Source id</text>
+  <text class="small" x="106" y="260">article / corpus item</text>
+
+  <rect class="backbone" x="355" y="120" width="360" height="110"/>
+  <text class="text" x="410" y="163">Shared backbone</text>
+  <text class="small" x="410" y="193">general knowledge stays active</text>
+
+  <rect class="sink" x="350" y="300" width="125" height="88"/>
+  <text class="text" x="386" y="350">Sink A</text>
+  <rect class="sink" x="495" y="300" width="125" height="88"/>
+  <text class="text" x="531" y="350">Sink B</text>
+  <rect class="off" x="640" y="300" width="125" height="88"/>
+  <text class="text" x="676" y="350">Sink C</text>
+
+  <rect class="box" x="840" y="190" width="180" height="100"/>
+  <text class="text" x="882" y="231">Deploy</text>
+  <text class="small" x="882" y="260">mask off source</text>
+
+  <path class="line" d="M260 240 H347"/>
+  <path class="line" d="M535 230 V292"/>
+  <path class="line" d="M715 175 H832"/>
+  <path class="line" d="M765 344 C825 340 825 270 832 250"/>
+  <text class="small" x="335" y="432">unlearning = deactivate the target source mask, not run gradient cleanup</text>
+</svg>

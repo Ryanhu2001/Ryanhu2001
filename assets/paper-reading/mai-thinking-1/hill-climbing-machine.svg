@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="700" viewBox="0 0 1120 700" role="img" aria-labelledby="title desc">
+  <title id="title">MAI-Thinking-1 hill-climbing machine</title>
+  <desc id="desc">A hand-drawn pipeline diagram showing MAI-Thinking-1 as a model, data, infrastructure, RL, safety, and evaluation system.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#243036"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfaf7; }
+      .title { font: 700 30px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111; }
+      .subtitle { font: 500 15px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #5b625f; }
+      .box { fill: #fff; stroke: #27323a; stroke-width: 1.5; rx: 16; }
+      .data { fill: #eef5ff; stroke: #3a5f90; stroke-width: 1.5; rx: 16; }
+      .rl { fill: #eef8ef; stroke: #3d704a; stroke-width: 1.5; rx: 16; }
+      .safe { fill: #fff1dc; stroke: #9b6518; stroke-width: 1.5; rx: 16; }
+      .eval { fill: #f4eefb; stroke: #6f4b91; stroke-width: 1.5; rx: 16; }
+      .label { font: 700 16px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #162025; }
+      .small { font: 500 13px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #394246; }
+      .metric { font: 800 24px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #162025; }
+      .mono { font: 600 13px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #253036; }
+      .line { stroke: #243036; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .feedback { stroke: #6f4b91; stroke-width: 2; fill: none; marker-end: url(#arrow); stroke-dasharray: 7 6; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1120" height="700"/>
+  <text class="title" x="54" y="58">MAI-Thinking-1: a hill-climbing machine, not just a model card</text>
+  <text class="subtitle" x="55" y="86">The report is best read as a closed loop across data, training, environments, reward, safety, and eval.</text>
+
+  <rect class="data" x="55" y="145" width="230" height="145"/>
+  <text class="label" x="92" y="180">Pretraining base</text>
+  <text class="metric" x="92" y="218">30T</text>
+  <text class="small" x="154" y="216">tokens</text>
+  <text class="small" x="92" y="246">8K GB200 GPUs</text>
+  <text class="small" x="92" y="270">1T total / 35B active MoE</text>
+
+  <rect class="data" x="355" y="145" width="230" height="145"/>
+  <text class="label" x="392" y="180">Mid-training</text>
+  <text class="metric" x="392" y="218">3.55T</text>
+  <text class="small" x="470" y="216">tokens</text>
+  <text class="small" x="392" y="246">64K then 256K context</text>
+  <text class="small" x="392" y="270">STEM/math 35%, code 55%</text>
+
+  <rect class="rl" x="655" y="118" width="365" height="200"/>
+  <text class="label" x="700" y="153">Three climbs</text>
+  <text class="small" x="700" y="187">STEM: verifiable rewards + self-distillation</text>
+  <text class="small" x="700" y="217">Agentic: SEE, tools, tests, state graders</text>
+  <text class="small" x="700" y="247">Helpfulness/safety: preference RM + rubric judges</text>
+  <text class="small" x="700" y="277">Consolidation merges specialist gains</text>
+
+  <path class="line" d="M285 218 H355"/>
+  <path class="line" d="M585 218 H655"/>
+
+  <rect class="box" x="120" y="405" width="245" height="130"/>
+  <text class="label" x="155" y="440">Architecture details</text>
+  <text class="mono" x="155" y="470">top-8 / 512 experts</text>
+  <text class="small" x="155" y="496">5 local + 1 global attention</text>
+  <text class="small" x="155" y="520">dropless MoE implementation</text>
+
+  <rect class="safe" x="445" y="405" width="245" height="130"/>
+  <text class="label" x="480" y="440">Environment and graders</text>
+  <text class="small" x="480" y="470">sandbox execution</text>
+  <text class="small" x="480" y="496">tool trajectory scoring</text>
+  <text class="small" x="480" y="520">AI judge + tests + state diff</text>
+
+  <rect class="eval" x="770" y="405" width="245" height="130"/>
+  <text class="label" x="805" y="440">What the scores say</text>
+  <text class="small" x="805" y="470">AIME 2025: 97.0</text>
+  <text class="small" x="805" y="496">LCB v6: 87.7</text>
+  <text class="small" x="805" y="520">Terminal-Bench: 46.0</text>
+
+  <path class="line" d="M837 318 C837 360 835 375 835 405"/>
+  <path class="line" d="M755 318 C665 370 550 382 550 405"/>
+  <path class="line" d="M690 318 C520 365 250 365 242 405"/>
+
+  <path class="feedback" d="M892 405 C905 345 980 330 980 238"/>
+  <text class="subtitle" x="95" y="610">Reading frame: strong STEM results prove the climb works somewhere; weak Terminal-Bench says the agentic climb is still unfinished.</text>
+</svg>

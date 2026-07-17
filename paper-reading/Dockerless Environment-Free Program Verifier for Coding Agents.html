@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<!-- Template: https://github.com/luost26/academic-homepage -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Dockerless: Environment-Free Program Verifier for Coding Agents - Ryan</title>
+    <link rel="icon" href="/Ryanhu2001/assets/ryan/avator.jpg" type="image/jpeg">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/pagefind/pagefind-component-ui.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/blog.css">
+    
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/global.css">
+</head>
+<body class="bg-light" >
+    <nav class="navbar navbar-expand-sm navbar-light fixed-top mb-5 shadow-sm">
+    <div class="container-lg">
+        <a class="navbar-brand" href="/Ryanhu2001/"><strong>Ryan</strong></a>
+        <button class="navbar-toggler" style="font-size: 1em; padding: 0.5em;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-map"></i> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/">Home</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/wiki/">Wiki</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/paper-reading/">Paper Reading</a>
+                </li>
+                
+                <li class="nav-item nav-search-item">
+                    <button class="nav-link nav-search-button" type="button" data-toggle="modal" data-target="#siteSearchModal" aria-label="Search site">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <span>Search</span>
+                        <kbd>⌘K</kbd>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <div class="container-lg">
+        
+
+
+
+
+<div class="reading-progress" aria-hidden="true">
+    <span></span>
+</div>
+
+<div class="blog-layout-wrapper">
+    <div class="blog-main">
+        <div class="mb-3">
+            <a class="small" href="/Ryanhu2001/paper-reading/">
+                <i class="fas fa-arrow-left"></i> Paper Reading
+            </a>
+        </div>
+
+        <article class="bg-white rounded-xl p-4 p-md-5 mb-4 wiki-note-card" data-pagefind-body>
+            <div class="blog-content wiki-note">
+                <h1 id="dockerless-无需执行环境的编码智能体验证器">Dockerless: 无需执行环境的编码智能体验证器</h1>
+
+<ul>
+  <li><strong>Paper</strong>: Dockerless: Environment-Free Program Verifier for Coding Agents</li>
+  <li><strong>arXiv</strong>: <a href="https://arxiv.org/abs/2606.28436">2606.28436</a></li>
+  <li><strong>机构</strong>: Shanghai Jiao Tong University, Douyin Group</li>
+  <li><strong>类型</strong>: SWE agent verifier / post-training pipeline / system + method paper</li>
+  <li><strong>关键词</strong>: coding agent, patch verifier, environment-free training, SFT filtering, RL reward</li>
+</ul>
+
+<h2 id="读法给人和-agent-的路标">读法：给人和 agent 的路标</h2>
+
+<p>这篇先抓一句话：<strong>Dockerless 不是取消执行测试，而是把训练后筛选和 RL reward 里最麻烦的 per-repository Docker 执行，换成一个会读仓库、会收集证据的 verifier。</strong> 如果只想快速理解，读“一句话判断”、下面这张流程图、Table 2/3/1 的三层证据，再看“需要警惕的地方”。</p>
+
+<p>给 agent 以后检索时，关键词是：<code class="language-plaintext highlighter-rouge">repo-grounded verifier</code>、<code class="language-plaintext highlighter-rouge">verification questions</code>、<code class="language-plaintext highlighter-rouge">read-only explorer</code>、<code class="language-plaintext highlighter-rouge">dense reward</code>、<code class="language-plaintext highlighter-rouge">SFT filtering</code>、<code class="language-plaintext highlighter-rouge">GRPO reward</code>、<code class="language-plaintext highlighter-rouge">execution labels remain external</code>。这篇最适合放在“coding agent 后训练 / verifier / 环境替代”这条线里，而不是放在普通 LLM judge 里。</p>
+
+<h2 id="一句话判断">一句话判断</h2>
+
+<p>Dockerless 的核心贡献不是简单地说“不要 Docker”，而是把程序验证器从一个静态 LLM judge 变成一个会主动读仓库、分解验证问题、并行收集证据、再给 patch 打分的 agentic verifier；它让 SWE agent 的 SFT 筛选和 RL reward 可以少依赖 per-repository test execution，但并没有完全摆脱执行信号，因为 verifier 的训练和评测标签仍来自执行测试。</p>
+
+<h2 id="图表优先读法">图表优先读法</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>先看</th>
+      <th>图/表</th>
+      <th>读完应该抓住什么</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Figure 1 / Figure 2</td>
+      <td>Dockerless 的位置：比 LLM judge 更 repo-grounded，比 Docker execution 更便宜</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Table 2</td>
+      <td>它作为 verifier 本身是否比 frontier LLM judge 强</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Figure 5</td>
+      <td>verification questions 有用，但 2-4 个是 sweet spot</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Table 3 / Table 1</td>
+      <td>verifier 分数能不能变成 SFT filtering 和 RL reward 的真实收益</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Figure 6</td>
+      <td>省 Docker 之后是不是把成本转移到 verifier 上</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="先抓住四个点">先抓住四个点</h2>
+
+<ol>
+  <li><strong>它解决的是训练瓶颈，不是部署时写代码本身。</strong> 编码智能体后训练需要知道哪些 rollout 真修好了 issue。传统做法是每个仓库搭 Docker、装依赖、跑测试，工程成本很高。</li>
+  <li><strong>真正创新点是 repo-grounded verification。</strong> Dockerless 不只看 issue、reference patch、candidate patch 的文本相似度，而是生成 2-4 个 verification questions，让子智能体用只读工具去仓库里找证据。</li>
+  <li><strong>证据链比口号硬。</strong> verifier AUC、SFT filtering、RL reward 三层实验都做了；Dockerless-RL-9B 在 SWE-bench Verified / Multilingual / Pro 上达到 62.0 / 50.0 / 35.2，接近 Test-Execution RL 的 62.4 / 51.3 / 35.7。</li>
+  <li><strong>边界也很清楚。</strong> 对 Rust/C 这类依赖编译诊断的语言，env-based SFT 仍明显占优；Dockerless 更像强 verifier/filter，不是完整 execution oracle。</li>
+</ol>
+
+<h2 id="问题背景">问题背景</h2>
+
+<p>训练 coding agent 时，verifier 至少出现在两个关键位置：</p>
+
+<ul>
+  <li><strong>SFT / RFT 数据筛选</strong>：从大量 rollouts 里挑出真正解决 issue 的轨迹。</li>
+  <li><strong>RL reward</strong>：给每个 rollout 的 final patch 打分，作为 GRPO 等算法的奖励。</li>
+</ul>
+
+<p>传统 gold signal 是 execution-based verification：把 candidate patch 放进仓库专属 Docker 环境，跑 held-out tests，然后得到 pass/fail。它的优势是信号强，问题是成本也很硬：</p>
+
+<ul>
+  <li>每个仓库需要定制 Docker image、依赖、测试选择、runner 和结果解析。</li>
+  <li>很多私有、企业、遗留仓库没有可复现环境或完整测试。</li>
+  <li>即使 rollout 可以在 minimal base image 里收集，verifier 仍然会卡在 per-repo execution 上。</li>
+</ul>
+
+<p>这篇论文的切口就是：如果 rollout 已经可以 env-free 地收集，能不能把 verifier 也做成 env-free？更准确地说，是让 <strong>训练时的过滤和 RL reward</strong> env-free，而不是把所有执行信号从世界上抹掉。</p>
+
+<p><img src="../assets/paper-reading/dockerless/verifier-comparison.png" alt="Dockerless verifier comparison" /></p>
+
+<p>这张官方 Figure 1 把定位讲得很清楚：Docker-based tests 准但需要每个仓库的执行环境；LLM scorer 便宜但只看表面文本；Dockerless 的中间路线是让 verifier 主动读仓库，从 evidence 而不是 surface similarity 下判断。</p>
+
+<h2 id="先看我整理的流程图">先看我整理的流程图</h2>
+
+<p><img src="../assets/paper-reading/dockerless/dockerless-verifier-loop.svg" alt="Dockerless verifier workflow" /></p>
+
+<p>这张图的读法是：Dockerless 先拿到 issue、reference patch、candidate patch；再把“这个 patch 对不对”拆成 2 到 4 个可查证的问题；每个问题交给只读 repo explorer 去仓库里找证据；最后 judge 聚合 Q/A evidence，输出可以用于 SFT filtering 或 RL reward 的 dense score。</p>
+
+<p>图里有三个锚点：</p>
+
+<ul>
+  <li><strong>reference patch 不是拿来做相似度匹配</strong>：它更像“答案解析”，帮助 verifier 知道应该检查哪些语义条件。</li>
+  <li><strong>repo explorer 是信息增量</strong>：普通 LLM judge 只看文本，Dockerless 会主动查调用链、测试、配置和相关文件。</li>
+  <li><strong>执行测试仍在外层</strong>：训练 verifier 和评估 verifier 仍需要 execution labels；Dockerless 省的是每个训练 rollout 都跑 per-repo Docker 的成本。</li>
+</ul>
+
+<h2 id="方法-pipeline">方法 Pipeline</h2>
+
+<p>Dockerless 的输入是三样东西：</p>
+
+<p><img src="../assets/paper-reading/dockerless/official-architecture.png" alt="Dockerless official architecture" /></p>
+
+<ul>
+  <li>issue description <code class="language-plaintext highlighter-rouge">x</code></li>
+  <li>reference patch <code class="language-plaintext highlighter-rouge">y_ref</code></li>
+  <li>candidate patch <code class="language-plaintext highlighter-rouge">y</code></li>
+</ul>
+
+<p>输出是一个连续分数 <code class="language-plaintext highlighter-rouge">r_phi(x, y) in [0, 1]</code>，表示 candidate patch 是否解决 issue。</p>
+
+<h3 id="stage-1-生成验证问题">Stage 1: 生成验证问题</h3>
+
+<p>模型先根据 issue 和 reference patch 生成若干 verification questions。论文里 inference 时通常生成 <strong>2-4 个问题</strong>。这些问题不是泛泛地问“这个 patch 对不对”，而是把正确性拆成可查证的维度：</p>
+
+<ul>
+  <li>修复应该作用在仓库的哪个模块或调用链上？</li>
+  <li>修改后的行为应该是什么？</li>
+  <li>哪些测试、断言、配置或调用点能证明它是对的？</li>
+  <li>这个修改会不会破坏其他路径？</li>
+</ul>
+
+<p>这一步的意义是把“判断 patch 是否正确”变成几个可探索的 repo-grounded 子问题。</p>
+
+<h3 id="stage-2-并行仓库探索">Stage 2: 并行仓库探索</h3>
+
+<p>每个问题交给一个 sub-agent。sub-agent 只使用 read-only shell tools，例如 <code class="language-plaintext highlighter-rouge">find</code>、<code class="language-plaintext highlighter-rouge">grep</code>、<code class="language-plaintext highlighter-rouge">rg</code>，在仓库中找相关文件、调用关系、测试、配置和文档，最后返回一个 evidence-backed answer。</p>
+
+<p>这里和普通 LLM-as-judge 的差别很关键：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Verifier</th>
+      <th style="text-align: right">看仓库吗</th>
+      <th>怎么判断</th>
+      <th>主要风险</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>文本相似度 / 普通 LLM judge</td>
+      <td style="text-align: right">否</td>
+      <td>看 issue、golden patch、generated patch 的表层匹配</td>
+      <td>功能等价但写法不同会被低估</td>
+    </tr>
+    <tr>
+      <td>Docker-based tests</td>
+      <td style="text-align: right">是</td>
+      <td>在 per-repo Docker 里跑 held-out tests</td>
+      <td>准但环境成本高</td>
+    </tr>
+    <tr>
+      <td>Dockerless</td>
+      <td style="text-align: right">是</td>
+      <td>子智能体读仓库、收集证据，再聚合判断</td>
+      <td>静态/半静态证据可能漏掉运行时问题</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="stage-3-证据聚合与打分">Stage 3: 证据聚合与打分</h3>
+
+<p>最后的 judge 看到完整上下文：<code class="language-plaintext highlighter-rouge">x</code>、<code class="language-plaintext highlighter-rouge">y_ref</code>、<code class="language-plaintext highlighter-rouge">y</code>，以及所有 <code class="language-plaintext highlighter-rouge">(Q_k, A_k)</code> 证据对。它输出二分类 verdict token：<code class="language-plaintext highlighter-rouge">0</code> 表示没解决，<code class="language-plaintext highlighter-rouge">1</code> 表示解决。</p>
+
+<p>推理时并不只拿 hard label，而是读取 token <code class="language-plaintext highlighter-rouge">0</code> 和 <code class="language-plaintext highlighter-rouge">1</code> 的 logits，用 softmax 得到 dense score：</p>
+
+<p><code class="language-plaintext highlighter-rouge">r_phi(x, y) = exp(l_1) / (exp(l_0) + exp(l_1))</code></p>
+
+<p>这个连续分数就可以用于：</p>
+
+<ul>
+  <li>SFT/RFT 阶段按分数筛 top-K rollouts</li>
+  <li>RL 阶段作为 reward</li>
+</ul>
+
+<h2 id="verifier-怎么训练">Verifier 怎么训练</h2>
+
+<p>Dockerless 的训练不是纯自监督，也不是凭空学会验证。它仍然依赖 execution-labeled candidate patches：</p>
+
+<ol>
+  <li>每个训练样本是 <code class="language-plaintext highlighter-rouge">(x, y_ref, y, r*)</code>，其中 <code class="language-plaintext highlighter-rouge">r*</code> 是通过 held-out unit tests 得到的执行标签。</li>
+  <li>使用 teacher model 生成完整的 question-answer-judge trajectory。</li>
+  <li>如果 teacher 最后的 verdict <code class="language-plaintext highlighter-rouge">r_hat</code> 和执行标签 <code class="language-plaintext highlighter-rouge">r*</code> 一致，就保留这条轨迹；否则丢弃。</li>
+  <li>对负正样本比例做 4:1 cap，缓解类别不平衡。</li>
+  <li>用保留下来的 trajectories 对一个共享 backbone 做 next-token cross-entropy 训练。</li>
+</ol>
+
+<p>几个实现细节值得记：</p>
+
+<ul>
+  <li>训练语料来自 SWE-Gym 和 Multi-SWE-RL，覆盖 <strong>3.7K unique issues</strong>。</li>
+  <li>teacher model 是 <strong>GLM-5</strong>。</li>
+  <li>verifier backbone 使用 <strong>Qwen3.5-9B</strong>。</li>
+  <li>question generation、sub-agent exploration、final judgment 共享同一个 backbone。</li>
+  <li>candidate patch 和 Q&amp;A context 输入会被截断到 10,000 characters。</li>
+  <li>训练最大 sequence length 是 32,768。</li>
+</ul>
+
+<p>所以这篇的“environment-free”要精确理解：<strong>post-training rollout、SFT filtering、RL reward 可以不跑 per-repo Docker；但 verifier 的训练数据仍然来自执行标签。</strong></p>
+
+<h2 id="后训练-pipeline">后训练 Pipeline</h2>
+
+<p>有了 Dockerless，论文把它接到两个后训练环节。</p>
+
+<h3 id="env-free-rft--sft-filtering">Env-free RFT / SFT filtering</h3>
+
+<p>流程是：</p>
+
+<ol>
+  <li>在 minimal Linux image 中收集 env-free rollouts，不启动 per-repository Docker。</li>
+  <li>得到 16K candidate rollouts。</li>
+  <li>用 Dockerless 对每个 final patch 打分。</li>
+  <li>选全局 top 4K rollouts 作为 SFT 数据。</li>
+  <li>从 Qwen3.5-9B 初始化，做标准 SFT。</li>
+</ol>
+
+<p>这里的核心 claim 是：raw env-free rollout 不一定好，关键是要有强 verifier 做过滤。</p>
+
+<h3 id="env-free-rl-reward">Env-free RL reward</h3>
+
+<p>RL 阶段从 Dockerless-SFT-9B 出发：</p>
+
+<ol>
+  <li>每个 issue 采样一组 <code class="language-plaintext highlighter-rouge">G=8</code> rollouts。</li>
+  <li>每个 rollout 的 final patch 用 Dockerless 打分。</li>
+  <li>每个 reward 用 <code class="language-plaintext highlighter-rouge">M=2</code> 次 independent Dockerless passes 的平均值，失败 pass 会被丢弃。</li>
+  <li>用 group-normalized advantages 跑 GRPO。</li>
+  <li>RL 训练共 50 steps，过程中不跑 per-repository test execution。</li>
+</ol>
+
+<p>这里值得注意：Dockerless 不只是一个 offline data filter，也被当作 online-ish reward model 用进 RL。</p>
+
+<h2 id="实验结果">实验结果</h2>
+
+<h3 id="1-verifier-本身强不强">1. Verifier 本身强不强</h3>
+
+<p>论文构造了一个 balanced trajectory-level verifier benchmark，共 <strong>776 samples</strong>：</p>
+
+<ul>
+  <li>500 from SWE-bench Verified</li>
+  <li>276 from Multi-SWE-bench Flash</li>
+  <li>每个 split 内正负样本平衡</li>
+  <li>label 来自 per-repository Docker + held-out tests</li>
+</ul>
+
+<p>Table 2 的核心结果：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Verifier</th>
+      <th style="text-align: right">SWE-bench Verified AUC</th>
+      <th style="text-align: right">Multi-SWE AUC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>DeepSeek-V3.2 judge</td>
+      <td style="text-align: right">69.4</td>
+      <td style="text-align: right">58.5</td>
+    </tr>
+    <tr>
+      <td>Kimi-K2.5 judge</td>
+      <td style="text-align: right">70.7</td>
+      <td style="text-align: right">63.9</td>
+    </tr>
+    <tr>
+      <td>GLM-5 judge</td>
+      <td style="text-align: right">73.2</td>
+      <td style="text-align: right">62.5</td>
+    </tr>
+    <tr>
+      <td>GPT-5.4 judge</td>
+      <td style="text-align: right">75.9</td>
+      <td style="text-align: right">59.5</td>
+    </tr>
+    <tr>
+      <td>DeepSWE Verifier</td>
+      <td style="text-align: right">66.7</td>
+      <td style="text-align: right">62.9</td>
+    </tr>
+    <tr>
+      <td><strong>Dockerless</strong></td>
+      <td style="text-align: right"><strong>81.0</strong></td>
+      <td style="text-align: right"><strong>72.1</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这个表是整篇最重要的证据之一。Dockerless 相比最强 open-source verifier 提升 <strong>+14.3 / +9.2 AUC points</strong>；相比最强 frontier LLM judge 也提升 <strong>+5.1 / +8.2</strong>。这说明收益不是简单来自“模型更强”，而是来自 <strong>repo exploration + rejection-sampled trajectory training</strong> 这个 workflow。</p>
+
+<p>这张表也解释了为什么 Dockerless 不是“prompt 一个更强 judge”。如果只换更强模型，zero-shot frontier judge 应该已经接近上限；但结果显示，能进仓库查证据的 verifier 明显更稳。</p>
+
+<h3 id="2-问题数量-k-是否真的有用">2. 问题数量 K 是否真的有用</h3>
+
+<p>Figure 5 做了一个很好的 ablation：</p>
+
+<p><img src="../assets/paper-reading/dockerless/question-count-ablation.png" alt="Dockerless verification question ablation" /></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right"># Verification Questions</th>
+      <th style="text-align: right">AUC on SWE-bench Verified</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right">0</td>
+      <td style="text-align: right">78.3</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">1</td>
+      <td style="text-align: right">80.1</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">2</td>
+      <td style="text-align: right">80.8</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">4</td>
+      <td style="text-align: right">81.0</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">6</td>
+      <td style="text-align: right">79.6</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">8</td>
+      <td style="text-align: right">80.3</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>读法很直接：问问题和收集证据确实有帮助，但不是越多越好。<strong>2-4 个问题是 sweet spot</strong>；更多问题可能带来冗余或噪声。</p>
+
+<h3 id="3-sft-filtering-是否有效">3. SFT filtering 是否有效</h3>
+
+<p>Table 3 固定 Qwen3.5-9B backbone 和 SFT recipe，只改变训练数据来源：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>SFT Data</th>
+      <th style="text-align: right">Verified</th>
+      <th style="text-align: right">Multilingual</th>
+      <th style="text-align: right">Pro</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>None / base</td>
+      <td style="text-align: right">59.6</td>
+      <td style="text-align: right">41.3</td>
+      <td style="text-align: right">32.3</td>
+    </tr>
+    <tr>
+      <td>All 16K env-free</td>
+      <td style="text-align: right">58.8</td>
+      <td style="text-align: right">41.3</td>
+      <td style="text-align: right">31.9</td>
+    </tr>
+    <tr>
+      <td>Random 4K</td>
+      <td style="text-align: right">58.2</td>
+      <td style="text-align: right">44.3</td>
+      <td style="text-align: right">32.0</td>
+    </tr>
+    <tr>
+      <td>Env-based 4K</td>
+      <td style="text-align: right">60.0</td>
+      <td style="text-align: right">48.3</td>
+      <td style="text-align: right">33.9</td>
+    </tr>
+    <tr>
+      <td><strong>Dockerless 4K</strong></td>
+      <td style="text-align: right"><strong>60.6</strong></td>
+      <td style="text-align: right"><strong>47.7</strong></td>
+      <td style="text-align: right"><strong>35.3</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这个结果比“最终分数高”更有信息量：</p>
+
+<ul>
+  <li>All 16K 不如 base，说明 env-free rollouts 里噪声不小。</li>
+  <li>Random 4K 不稳，说明不是少训一点就好。</li>
+  <li>Dockerless 4K 接近 Env-based 4K，说明 verifier 提供了有效选择信号。</li>
+</ul>
+
+<h3 id="4-rl-reward-是否接近-test-execution">4. RL reward 是否接近 test execution</h3>
+
+<p>Table 1 对比了不同 RL reward source：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Model / Training</th>
+      <th style="text-align: right">Env-free training stage</th>
+      <th style="text-align: right">Verified</th>
+      <th style="text-align: right">Multilingual</th>
+      <th style="text-align: right">Pro</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Qwen3.5-9B base</td>
+      <td style="text-align: right">-</td>
+      <td style="text-align: right">59.6</td>
+      <td style="text-align: right">41.3</td>
+      <td style="text-align: right">32.3</td>
+    </tr>
+    <tr>
+      <td>Dockerless-SFT-9B</td>
+      <td style="text-align: right">Yes</td>
+      <td style="text-align: right">60.6</td>
+      <td style="text-align: right">47.7</td>
+      <td style="text-align: right">35.3</td>
+    </tr>
+    <tr>
+      <td>+ DeepSWE-Verifier RL</td>
+      <td style="text-align: right">Yes</td>
+      <td style="text-align: right">60.6</td>
+      <td style="text-align: right">47.3</td>
+      <td style="text-align: right">34.1</td>
+    </tr>
+    <tr>
+      <td>+ Test-Execution RL</td>
+      <td style="text-align: right">No</td>
+      <td style="text-align: right">62.4</td>
+      <td style="text-align: right">51.3</td>
+      <td style="text-align: right">35.7</td>
+    </tr>
+    <tr>
+      <td><strong>Dockerless-RL-9B</strong></td>
+      <td style="text-align: right"><strong>Yes</strong></td>
+      <td style="text-align: right"><strong>62.0</strong></td>
+      <td style="text-align: right"><strong>50.0</strong></td>
+      <td style="text-align: right"><strong>35.2</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Dockerless-RL-9B 几乎追上 Test-Execution RL，同时明显超过 DeepSWE-Verifier RL。论文想证明的不是 Dockerless 比真实测试更准，而是：<strong>在训练阶段，用 Dockerless 做 reward 已经足够接近 test-execution reward，且省掉了 per-repo Docker setup。</strong></p>
+
+<h3 id="5-成本是否真的可接受">5. 成本是否真的可接受</h3>
+
+<p>Dockerless 会派 sub-agents 探索仓库，所以 reward computation 比普通 verifier 更慢。Figure 6 给的 per-rollout wall-clock breakdown 是：</p>
+
+<p><img src="../assets/paper-reading/dockerless/reward-time-breakdown.png" alt="Dockerless reward time breakdown" /></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Reward source</th>
+      <th style="text-align: right">额外 reward time</th>
+      <th style="text-align: right">占总 per-rollout time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>DeepSWE Verifier</td>
+      <td style="text-align: right">+41s</td>
+      <td style="text-align: right">1.7%</td>
+    </tr>
+    <tr>
+      <td>Test Execution</td>
+      <td style="text-align: right">+83s</td>
+      <td style="text-align: right">3.5%</td>
+    </tr>
+    <tr>
+      <td>Dockerless</td>
+      <td style="text-align: right">+180s</td>
+      <td style="text-align: right">7.2%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>论文的解释是：RL 里 agent rollout 本身平均 <strong>2308s</strong>，reward evaluation 不是主要瓶颈。这个结论只在它们的 RL setting 下成立；如果你的 rollout 很短，Dockerless reward 的相对成本会更明显。</p>
+
+<h2 id="真正值得借鉴的创新点">真正值得借鉴的创新点</h2>
+
+<h3 id="1-verifier-变成一个-agentic-workflow">1. Verifier 变成一个 agentic workflow</h3>
+
+<p>很多 verifier 还是“一次 prompt，一次判断”。Dockerless 把 verifier 拆成 question generation、parallel evidence probing、judgment 三段。这让 verifier 不再只依赖模型内部知识，而是把仓库上下文作为外部证据引入判断。</p>
+
+<h3 id="2-reference-patch-用来生成验证问题而不是做相似度匹配">2. Reference patch 用来生成验证问题，而不是做相似度匹配</h3>
+
+<p>reference patch 很容易诱导模型做 diff similarity。Dockerless 更好的用法是：用 reference patch 帮模型知道“应该验证什么”，然后让 candidate patch 在仓库上下文里接受验证。</p>
+
+<h3 id="3-训练的是完整推理轨迹不只是最终-label">3. 训练的是完整推理轨迹，不只是最终 label</h3>
+
+<p>拒绝采样保留的是 question-answer-judge trajectory。模型学到的不是一个孤立的 0/1 分类器，而是“提出问题 -&gt; 查证据 -&gt; 下判决”的过程。这可能是它超过 zero-shot frontier judge 的关键。</p>
+
+<h3 id="4-dense-score-让它能接-sft-和-rl">4. Dense score 让它能接 SFT 和 RL</h3>
+
+<p>verdict token 的 logits 被转成连续分数，这一点很实用。它让同一个 verifier 同时服务于 top-K filtering 和 reward modeling，而不是只输出 hard pass/fail。</p>
+
+<h3 id="5-它把环境拆成了两层">5. 它把“环境”拆成了两层</h3>
+
+<p>这篇最值得借鉴的抽象是：环境不一定只有“完整执行”一种形态。对 coding agent 来说，环境信号至少有两层：</p>
+
+<ul>
+  <li><strong>强执行信号</strong>：Docker、测试、编译器、真实服务状态，准但贵。</li>
+  <li><strong>证据调查信号</strong>：仓库搜索、调用链、测试意图、配置和文档，便宜些但不完备。</li>
+</ul>
+
+<p>Dockerless 的位置正好在中间：它不假装自己是 compiler/test oracle，但它比静态 judge 多了仓库证据。这个定位清楚，整篇 paper 才成立。</p>
+
+<h2 id="我怎么看这篇">我怎么看这篇</h2>
+
+<h3 id="可信之处">可信之处</h3>
+
+<ul>
+  <li>证据链完整：standalone verifier AUC、SFT filtering、RL reward 都有实验。</li>
+  <li>Table 3 是很强的控制实验，说明 Dockerless 的价值在筛选质量，而不是训练数据量。</li>
+  <li>Figure 5 证明了 verification questions 的 marginal value，并指出 2-4 个问题的 sweet spot。</li>
+  <li>Table 2 里 zero-shot frontier judges 不如 Dockerless，说明 repo-grounded agentic workflow 的确带来额外信息。</li>
+</ul>
+
+<h3 id="需要警惕的地方">需要警惕的地方</h3>
+
+<ul>
+  <li><strong>不是完全无执行。</strong> Verifier 的训练和评测仍依赖 execution-labeled patches。</li>
+  <li><strong>依赖 reference patch。</strong> 这在 benchmark / training data 里通常可用，但真实新 issue 未必有 reference patch。</li>
+  <li><strong>静态证据有上限。</strong> 编译错误、并发 bug、性能退化、外部服务交互等问题，还是可能只能通过运行暴露。</li>
+  <li><strong>Rust/C 是明显边界。</strong> Appendix E 里 env-based SFT 在 Rust / C 上分别有 +7.0 / +13.3 优势，作者也归因于 compiler diagnostics。</li>
+  <li><strong>成本被换形了。</strong> 它省掉 Docker/test setup，但引入 sub-agent exploration、vLLM serving、多次 verifier passes 和 timeout 管理。</li>
+  <li><strong>reference patch 是训练/benchmark 假设。</strong> 真实线上新 issue 通常没有 reference patch，所以 Dockerless 更自然的落点是训练数据筛选、benchmark verifier、或有 golden fix 的离线数据，而不是直接替代线上代码审查。</li>
+</ul>
+
+<h2 id="对我的启发">对我的启发</h2>
+
+<p>如果把它放进“智能体环境合成 / verifier / RL for coding agents”这条线，我会这样定位：</p>
+
+<ul>
+  <li>CLI-Universe / SWE-World 这类方向是在构造或复用可执行环境。</li>
+  <li>Qwen-AgentWorld 这类方向是在学一个环境动力学模型。</li>
+  <li>Dockerless 走的是第三条中间路线：<strong>不模拟完整环境，也不搭 per-repo Docker，而是训练一个会查证据的 verifier。</strong></li>
+</ul>
+
+<p>对个人复现或项目落地，最合理的顺序不是直接复现 RL，而是先做一个小 verifier benchmark：</p>
+
+<ol>
+  <li>准备 issue、reference patch、candidate patch、execution label。</li>
+  <li>实现 question generation，先固定生成 2-4 个问题。</li>
+  <li>每个问题开只读 repo explorer，用 <code class="language-plaintext highlighter-rouge">rg</code> / <code class="language-plaintext highlighter-rouge">sed</code> / <code class="language-plaintext highlighter-rouge">find</code> 找证据。</li>
+  <li>judge 聚合 Q&amp;A evidence 输出 0/1 和 score。</li>
+  <li>对比普通 LLM judge、文本相似度、agentic judge 的 AUC。</li>
+  <li>如果 AUC 有明显收益，再把它接入 SFT filtering；最后再考虑 RL reward。</li>
+</ol>
+
+<h2 id="一句话收束">一句话收束</h2>
+
+<p>Dockerless 最值得记住的不是“没有 Docker”，而是“把验证变成一次有证据链的仓库调查”。它不能完全取代执行测试，但非常适合成为大规模 coding-agent post-training 里的高质量 filter / reward model。</p>
+
+            </div>
+        </article>
+    </div>
+
+    <aside class="blog-toc-sidebar">
+        <nav id="blog-toc" class="blog-toc-nav" aria-label="Table of contents">
+            <div class="blog-toc-header">
+                <div class="blog-toc-title">On This Page</div>
+                <button
+                    id="blog-toc-toggle"
+                    class="blog-toc-toggle"
+                    type="button"
+                    aria-controls="blog-toc-list"
+                    aria-expanded="true"
+                    aria-label="收起目录"
+                    title="收起目录"
+                >
+                    <svg class="blog-toc-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="blog-toc-list" class="blog-toc-list"></div>
+        </nav>
+    </aside>
+</div>
+
+    </div>
+    <footer class="footer border-top py-2 mt-5 bg-white small">
+    <div class="container-lg">
+        <div class="row my-3">
+            <div class="col-6">
+                <div class="text-muted">
+                    <i>Last updated: Jul 2026</i>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="text-right text-muted">
+                    Built with <a href="https://github.com/luost26/academic-homepage" target="_blank"><i class="fas fa-pencil-ruler"></i> academic-homepage</a>.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <pagefind-config
+        bundle-path="/Ryanhu2001/pagefind/"
+        base-url="/Ryanhu2001/"
+        excerpt-length="30"
+        lang="zh-CN"></pagefind-config>
+    <div class="modal fade site-search-modal" id="siteSearchModal" tabindex="-1" role="dialog" aria-labelledby="siteSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 mb-0" id="siteSearchModalLabel">Search</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <pagefind-searchbox placeholder="搜索 wiki、论文笔记、关键词..." show-sub-results="true" hide-shortcut="true"></pagefind-searchbox>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/github-buttons/2.14.2/buttons.min.js" integrity="sha512-OYwZx04hKFeFNYrWxIyo3atgGpb+cxU0ENWBZs72X7T9U+NoHPM1ftUn/Mfw7dRDXrqWA6M1wBg6z6fGE32aeA==" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+    <script type="module" src="/Ryanhu2001/pagefind/pagefind-component-ui.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tocbot@4.36.8/dist/tocbot.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+              delimiters: [
+                  {left: '$$', right: '$$', display: true},
+                  {left: '\\[', right: '\\]', display: true},
+                  {left: '$', right: '$', display: false},
+                  {left: '\\(', right: '\\)', display: false}
+              ],
+              throwOnError : false
+            });
+            
+            Prism.highlightAll();
+            
+
+            var siteSearchModal = document.getElementById("siteSearchModal");
+            var siteSearchBox = siteSearchModal ? siteSearchModal.querySelector("pagefind-searchbox") : null;
+            function focusSiteSearch() {
+                window.setTimeout(function() {
+                    if (siteSearchBox && typeof siteSearchBox.focus === "function") {
+                        siteSearchBox.focus();
+                    }
+                }, 80);
+            }
+            if (siteSearchModal && window.jQuery) {
+                window.jQuery(siteSearchModal).on("shown.bs.modal", focusSiteSearch);
+            }
+            document.addEventListener("keydown", function(event) {
+                var key = String(event.key || "").toLowerCase();
+                var isSearchShortcut = key === "k" && (event.metaKey || event.ctrlKey);
+                var isModalOpen = siteSearchModal && siteSearchModal.classList.contains("show");
+                var target = event.target;
+                var isTyping = target && (
+                    target.tagName === "INPUT" ||
+                    target.tagName === "TEXTAREA" ||
+                    target.isContentEditable
+                );
+                if (!isSearchShortcut || (isTyping && isModalOpen) || !siteSearchModal || !window.jQuery) return;
+                event.preventDefault();
+                window.jQuery(siteSearchModal).modal("show");
+            });
+        });
+    </script>
+    
+    <script src="/Ryanhu2001/assets/js/blog.js"></script>
+    
+    <script src="/Ryanhu2001/assets/js/common.js"></script>
+    <script src="/Ryanhu2001/assets/js/bubble_visual_hash.js"></script>
+</body>
+</html>

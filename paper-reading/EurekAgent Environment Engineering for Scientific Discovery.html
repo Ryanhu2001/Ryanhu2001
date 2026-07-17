@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<!-- Template: https://github.com/luost26/academic-homepage -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>EurekAgent Environment Engineering for Scientific Discovery - Ryan</title>
+    <link rel="icon" href="/Ryanhu2001/assets/ryan/avator.jpg" type="image/jpeg">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/pagefind/pagefind-component-ui.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/blog.css">
+    
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/global.css">
+</head>
+<body class="bg-light" >
+    <nav class="navbar navbar-expand-sm navbar-light fixed-top mb-5 shadow-sm">
+    <div class="container-lg">
+        <a class="navbar-brand" href="/Ryanhu2001/"><strong>Ryan</strong></a>
+        <button class="navbar-toggler" style="font-size: 1em; padding: 0.5em;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-map"></i> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/">Home</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/wiki/">Wiki</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/paper-reading/">Paper Reading</a>
+                </li>
+                
+                <li class="nav-item nav-search-item">
+                    <button class="nav-link nav-search-button" type="button" data-toggle="modal" data-target="#siteSearchModal" aria-label="Search site">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <span>Search</span>
+                        <kbd>⌘K</kbd>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <div class="container-lg">
+        
+
+
+
+
+<div class="reading-progress" aria-hidden="true">
+    <span></span>
+</div>
+
+<div class="blog-layout-wrapper">
+    <div class="blog-main">
+        <div class="mb-3">
+            <a class="small" href="/Ryanhu2001/paper-reading/">
+                <i class="fas fa-arrow-left"></i> Paper Reading
+            </a>
+        </div>
+
+        <article class="bg-white rounded-xl p-4 p-md-5 mb-4 wiki-note-card" data-pagefind-body>
+            <div class="blog-content wiki-note">
+                <h1 id="eurekagent把-autonomous-science-的瓶颈从-workflow-推到-environment">EurekAgent：把 autonomous science 的瓶颈从 workflow 推到 environment</h1>
+
+<ul>
+  <li><strong>Paper</strong>: <a href="https://arxiv.org/abs/2606.13662">EurekAgent: Agent Environment Engineering is All You Need For Autonomous Scientific Discovery</a></li>
+  <li><strong>arXiv</strong>: 2606.13662v2, 2026-06-12</li>
+  <li><strong>Code</strong>: <a href="https://github.com/THU-Team-Eureka/EurekAgent">THU-Team-Eureka/EurekAgent</a></li>
+  <li><strong>机构</strong>: Tsinghua University, Renmin University of China</li>
+  <li><strong>类型</strong>: autonomous research system / environment engineering / metric-driven discovery</li>
+  <li><strong>关键词</strong>: CLI agent, scientific discovery, sandbox, hidden evaluator, artifact memory, budget control, human-in-the-loop</li>
+</ul>
+
+<h2 id="读法给人和-agent-的路标">读法：给人和 agent 的路标</h2>
+
+<p>这篇先抓一句话：<strong>EurekAgent 不想再规定 agent 每一步该怎么想，而是把 agent 放进一个设计好的研究环境，让权限、文件、Git、评测、预算和人类监督共同塑造行为。</strong> 如果只想快速 get 到主线，读“一句话判断”、Figure 2、四个 environment engineering 维度和实验总表。</p>
+
+<p>给 agent 以后检索，关键词是：<code class="language-plaintext highlighter-rouge">environment engineering</code>、<code class="language-plaintext highlighter-rouge">permission engineering</code>、<code class="language-plaintext highlighter-rouge">artifact engineering</code>、<code class="language-plaintext highlighter-rouge">budget engineering</code>、<code class="language-plaintext highlighter-rouge">human-in-the-loop engineering</code>、<code class="language-plaintext highlighter-rouge">hidden evaluator</code>、<code class="language-plaintext highlighter-rouge">same-round isolation</code>、<code class="language-plaintext highlighter-rouge">filesystem and Git memory</code>、<code class="language-plaintext highlighter-rouge">prepare propose implement</code>。</p>
+
+<h2 id="一句话判断">一句话判断</h2>
+
+<p>EurekAgent 的贡献不是发明新的 reasoning 算法，而是把强 CLI agent 的工作环境工程化：用容器和隐藏评测器保住研究完整性，用文件系统和 Git 存储长期记忆，用预算系统约束探索，用 TUI/Web monitor 保持人类可监督；它在 metric-driven、可执行评测的任务上给出很强结果，但不能被直接外推成“开放式科学发现已经解决”。</p>
+
+<h2 id="图表优先读法">图表优先读法</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>先看</th>
+      <th>图/表</th>
+      <th>读完应该抓住什么</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Figure 2：system overview</td>
+      <td>EurekAgent 的核心是 prepare/propose/parallel implement 加环境工程层</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>26-circle score evolution</td>
+      <td>它擅长 metric-driven search，而不是任意开放科学发现</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Web monitor / TUI</td>
+      <td>人类监督、预算、artifact memory 是系统贡献的一部分</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>实验总表</td>
+      <td>数学、kernel engineering、MLE-Bench 的证据强弱不同，要分开读</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>成本和超参</td>
+      <td>这类系统的收益必须和预算、parallelism、hidden evaluator 一起看</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><img src="../assets/paper-reading/eurekagent/environment-engineering-loop.svg" alt="EurekAgent environment engineering loop" /></p>
+
+<p>这张自制图强调 EurekAgent 的核心不是把 agent workflow 写得更花，而是把 evaluator、权限、artifact、预算和人类监督放在 agent loop 外层。后面看 Figure 2 时，可以把 Prepare/Propose/Implement 读成内部研究循环，把 environment engineering 读成真正控制系统行为边界的外壳。</p>
+
+<h2 id="它到底想改变什么">它到底想改变什么</h2>
+
+<p>很多 autonomous research 系统会把创新放在 workflow 上，例如固定的 propose、mutate、select、reflect、debate、self-review。EurekAgent 的判断是：随着 Claude Code、Codex 这类通用 CLI agent 变强，瓶颈会从“给 agent 写更细的流程”转向“给 agent 一个更好的环境”。</p>
+
+<p>这个环境要同时放大和抑制两类 affordance：</p>
+
+<ul>
+  <li>放大 <strong>productive behaviors</strong>：开放探索、系统化 artifact 管理、多 agent 协作、可恢复的长任务。</li>
+  <li>抑制 <strong>harmful behaviors</strong>：reward hacking、evaluator leakage、artifact tampering、不可观测失败、预算失控。</li>
+</ul>
+
+<p>换句话说，EurekAgent 的核心是把 autonomous science 重新写成一个 sandbox 问题：强 agent 可以自由探索，但 evaluator、权限、状态、成本和可审计轨迹必须由外部环境托住。</p>
+
+<h2 id="系统总览figure-2-是最重要的图">系统总览：Figure 2 是最重要的图</h2>
+
+<p><img src="../assets/paper-reading/eurekagent/fig2-system-overview.png" alt="EurekAgent system overview" /></p>
+
+<p>原文 Figure 2 展示了 EurekAgent 的整体架构：输入任务和预算之后，系统先执行一次 Prepare，再进入多轮 Propose 和并行 Implement。底层 environment engineering layer 提供 secure evaluation、artifact memory、budget control 和 human oversight。</p>
+
+<p>读这张图时，重点看四层：</p>
+
+<ul>
+  <li><strong>Task inputs</strong>：problem description、hidden eval code、submission spec、optional initial code、time budget、API cost budget。这里已经说明它适合的是有明确 metric 和 evaluator 的任务。</li>
+  <li><strong>Outer loop</strong>：Prepare 一次；每一轮 Propose 生成最多 P 个 hypothesis；Implement 阶段把这些 hypothesis 分配给 P 个隔离 workspace 并行做实验。</li>
+  <li><strong>Agent autonomy</strong>：环境只负责初始化 workspace、切阶段、记录结果、排名、保存状态和 enforce budget；具体研究策略让 CLI agent 自己决定。</li>
+  <li><strong>Environment layer</strong>：permissions、artifacts、budget、human-in-loop 是一等公民，不是事后补丁。</li>
+</ul>
+
+<p>用文本写就是：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Prepare once
+  -&gt; for r in 1..R:
+       Propose up to P hypotheses
+       Run up to P isolated Implement sessions in parallel
+       Evaluate submissions through hidden evaluator
+       Rank valid solutions and update shared history
+</code></pre></div></div>
+
+<h2 id="三个阶段怎么工作">三个阶段怎么工作</h2>
+
+<p><strong>Prepare stage</strong> 只执行一次。agent 读 problem description、submission spec、initial code，测试 hidden evaluator 服务，安装或验证依赖。如果环境不清楚或 broken，agent 可以暂停并问人，而不是在错误 setup 上继续优化。最后它写出 preparation summary 和 completion artifact，给后续阶段共享。</p>
+
+<p><strong>Propose stage</strong> 是 fan-in。每一轮开始时，proposal session 会读任务输入、准备摘要、上一轮 ranked best solutions，也可以查 previous-round workspaces 和 web search。它输出最多 P 个候选 hypothesis，每个都要足够明确，能直接交给 implement session。</p>
+
+<p><strong>Implement stage</strong> 是 fan-out。每个 hypothesis 进入独立 workspace，agent 可以实现、调试、跑 evaluator、迭代修改。所有 candidate solution 通过 secure evaluation service 评分，系统自动记录有效提交、排名、更新 shared history。并行 session 之间同轮隔离，下一轮才能看到上一轮的结果。</p>
+
+<p>这套 loop 的重点不是复杂，而是 <strong>artifact-driven</strong>。真正传递经验的不是聊天上下文，而是 preparation summary、proposal manifest、hypothesis 文件、solution code、evaluator feedback、scored submissions 和 ranked history。</p>
+
+<h2 id="四个-environment-engineering-维度">四个 environment engineering 维度</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>维度</th>
+      <th>具体机制</th>
+      <th>解决什么问题</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Permissions engineering</td>
+      <td>Docker run isolation、hidden evaluator outside workspace、secure grading service、controller-owned result files、same-round isolation、GPU helper API default-deny</td>
+      <td>防 evaluator 泄露、score tampering、同轮抄答案、GPU 争抢</td>
+    </tr>
+    <tr>
+      <td>Artifact engineering</td>
+      <td>filesystem + Git history、prep summary、proposal manifest、hypotheses、solution code、evaluator feedback、ranked historical solutions、web-search cache</td>
+      <td>长期记忆、跨 session 协作、可恢复、可审计</td>
+    </tr>
+    <tr>
+      <td>Budget engineering</td>
+      <td>proposal/implement 分开限时、time-check helper API、deadline warning、API cost tracking、cost limit abort with preserved workspace</td>
+      <td>防止时间和 API 成本失控，让中断后可继续</td>
+    </tr>
+    <tr>
+      <td>Human-in-the-loop engineering</td>
+      <td>terminal UI、web monitor、live logs、score evolution、budget status、chat intervention</td>
+      <td>保持 agent 自主，但让人随时能看见、介入和纠偏</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>我觉得这张表几乎可以直接当作我们自己 build sandbox 的 checklist：<strong>隔离什么、共享什么、记录什么、谁拥有 evaluator、预算怎么停止、失败后怎么恢复、人在什么界面介入。</strong></p>
+
+<h2 id="具体例子26-circle-packing-的演化过程">具体例子：26-circle packing 的演化过程</h2>
+
+<p><img src="../assets/paper-reading/eurekagent/fig1-score-evolution.png" alt="EurekAgent score evolution on 26-circle packing" /></p>
+
+<p>Figure 1 是 26-circle packing 的 score evolution。这个任务要求在 unit square 里放 26 个不重叠圆，目标是 maximize sum of radii。图里的过程很像一个 agentic research loop：</p>
+
+<ul>
+  <li><strong>First valid baseline = 1.439</strong>：系统先找到能通过约束的可行解。</li>
+  <li><strong>R1 进入 2.632 local basin</strong>：第一轮迅速找到不错但局部的区域。</li>
+  <li><strong>R2 通过 web search 发现并采用 public AlphaEvolve solution，约 2.635983</strong>：这说明环境允许 agent 使用外部知识，但后续仍需通过 hidden evaluator 验证。</li>
+  <li><strong>R3 crossing previous SOTA</strong>：第三轮超过 prior best。</li>
+  <li><strong>R4 到 R5 继续改进</strong>：通过 relaxed LP、adaptive tolerance、joint SLSQP 进一步把结果推到 2.635999。</li>
+</ul>
+
+<p>这张图的价值在于，它不是只给 final score，而是展示了 artifact + web search + evaluator feedback 如何积累成跨轮改进。它也暴露了一个重要假设：如果任务没有可执行 evaluator 或明确 metric，这套 loop 的反馈会弱很多。</p>
+
+<h2 id="实验结果先看总表">实验结果：先看总表</h2>
+
+<p>论文在 mathematics、kernel engineering 和 machine learning engineering 三类任务上做实验，统一使用 <strong>Claude Code as CLI agent + GLM-5.1 as base LLM</strong>。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>任务</th>
+      <th style="text-align: right">方向</th>
+      <th style="text-align: right">Previous best human</th>
+      <th style="text-align: right">Previous best AI</th>
+      <th style="text-align: right">EurekAgent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Circle Packing</td>
+      <td style="text-align: right">↑</td>
+      <td style="text-align: right">约 2.634</td>
+      <td style="text-align: right">2.635986</td>
+      <td style="text-align: right"><strong>2.635999</strong></td>
+    </tr>
+    <tr>
+      <td>Erdős Min. Overlap</td>
+      <td style="text-align: right">↓</td>
+      <td style="text-align: right">0.380927</td>
+      <td style="text-align: right">0.380876</td>
+      <td style="text-align: right"><strong>0.380870</strong></td>
+    </tr>
+    <tr>
+      <td>1st Autocorr. Ineq.</td>
+      <td style="text-align: right">↓</td>
+      <td style="text-align: right">1.509730</td>
+      <td style="text-align: right">1.502863</td>
+      <td style="text-align: right"><strong>1.502861</strong></td>
+    </tr>
+    <tr>
+      <td>TriMul</td>
+      <td style="text-align: right">↓</td>
+      <td style="text-align: right">2096.04 µs</td>
+      <td style="text-align: right">2247.78 µs</td>
+      <td style="text-align: right"><strong>2005.03 µs</strong></td>
+    </tr>
+    <tr>
+      <td>MLE-Bench subset</td>
+      <td style="text-align: right">↑</td>
+      <td style="text-align: right">N/A</td>
+      <td style="text-align: right">71.43%</td>
+      <td style="text-align: right"><strong>85.71%</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这张 Table 1 支撑了论文的 headline claim：在这些 metric-driven tasks 上，environment engineering 足以把 strong CLI agent 的能力转成 SOTA 或接近 SOTA 的结果。</p>
+
+<h2 id="数学任务training-free-但-evaluator-guided">数学任务：training-free 但 evaluator-guided</h2>
+
+<p>Table 2 的三个数学任务都报告了比 previous best AI 更好的数值：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Task</th>
+      <th style="text-align: right">EurekAgent</th>
+      <th>Base LLM</th>
+      <th style="text-align: right">Prev. Best AI</th>
+      <th>Previous system LLM</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Circle Packing</td>
+      <td style="text-align: right"><strong>2.635999</strong></td>
+      <td>GLM-5.1</td>
+      <td style="text-align: right">2.635986</td>
+      <td>R1-Distill-Qwen3-8B</td>
+    </tr>
+    <tr>
+      <td>Erdős Min. Overlap</td>
+      <td style="text-align: right"><strong>0.380870</strong></td>
+      <td>GLM-5.1</td>
+      <td style="text-align: right">0.380876</td>
+      <td>gpt-oss-120b</td>
+    </tr>
+    <tr>
+      <td>1st Autocorr. Ineq.</td>
+      <td style="text-align: right"><strong>1.502861</strong></td>
+      <td>GLM-5.1</td>
+      <td style="text-align: right">1.502863</td>
+      <td>gpt-oss-120b</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>论文强调 previous best AI 来自 test-time training systems，而 EurekAgent 是 training-free，只做 environment engineering。这个说法有说服力，但要精确理解：它没有更新 backbone model，但它仍然大量依赖可执行 evaluator、web search、代码实验、跨轮 artifact 和预算内的 trial-and-error。</p>
+
+<h2 id="kernel-engineeringtrimul-的结果更像系统工程证据">Kernel engineering：TriMul 的结果更像系统工程证据</h2>
+
+<p>TriMul 目标是优化 triangular matrix multiplication，指标是 geometric mean runtime，越低越好。因为官方 GPUMODE leaderboard 已关闭，作者在 A100 上用 TTT-Discover setting 本地 regrade 了 top leaderboard scripts，并用同一 correctness tests、benchmark cases、scoring rule 和 timing logic 对比。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right">Rank</th>
+      <th>Solution</th>
+      <th>LLM</th>
+      <th style="text-align: right">Median µs ↓</th>
+      <th style="text-align: right">Mean µs ↓</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right">1</td>
+      <td>EurekAgent-CUDA Graph</td>
+      <td>GLM-5.1</td>
+      <td style="text-align: right"><strong>2005.0307</strong></td>
+      <td style="text-align: right">2014.1874</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">2</td>
+      <td>EurekAgent-INT8 BMM</td>
+      <td>GLM-5.1</td>
+      <td style="text-align: right">2006.9998</td>
+      <td style="text-align: right"><strong>2013.5141</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: right">3</td>
+      <td>EurekAgent-Fused Front-End</td>
+      <td>GLM-5.1</td>
+      <td style="text-align: right">2016.5718</td>
+      <td style="text-align: right">2020.2674</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">4</td>
+      <td>EurekAgent-Triton Autotune</td>
+      <td>GLM-5.1</td>
+      <td style="text-align: right">2030.6877</td>
+      <td style="text-align: right">2041.5578</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">5</td>
+      <td>josusamartin</td>
+      <td>N/A</td>
+      <td style="text-align: right">2096.0441</td>
+      <td style="text-align: right">2105.1655</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">6</td>
+      <td>TTT-Discover</td>
+      <td>gpt-oss-120b</td>
+      <td style="text-align: right">2247.7849</td>
+      <td style="text-align: right">2248.2307</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>作者说最优 kernel 相比 strongest regraded leaderboard solution 提升约 <strong>4.3%</strong>，相比 TTT-Discover 提升约 <strong>10.8%</strong>。这组结果很有意思，因为它说明环境不只是保存文本思路，还能支持 GPU benchmark、correctness tests、timing protocols 和并行优化。</p>
+
+<h2 id="mle-bench-subset结果强但评估范围要看清">MLE-Bench subset：结果强，但评估范围要看清</h2>
+
+<p>EurekAgent 只评估了 MLE-Bench Lite 的 <strong>7 个 selected competitions</strong>，不是完整 benchmark。选择方式是从 22 个 Lite competitions 中按难度抽样：2 easy、2 medium、3 hard，覆盖 image、text、audio 和 tabular prediction。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Agent</th>
+      <th>LLM</th>
+      <th style="text-align: right">Any Medal</th>
+      <th style="text-align: right">Gold</th>
+      <th style="text-align: right">Above Median</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>EurekAgent</td>
+      <td>GLM-5.1</td>
+      <td style="text-align: right"><strong>85.71%</strong></td>
+      <td style="text-align: right"><strong>71.43%</strong></td>
+      <td style="text-align: right"><strong>100.00%</strong></td>
+    </tr>
+    <tr>
+      <td>AIBuildAI</td>
+      <td>Claude Opus 4.6</td>
+      <td style="text-align: right">71.43%</td>
+      <td style="text-align: right">57.14%</td>
+      <td style="text-align: right">85.71%</td>
+    </tr>
+    <tr>
+      <td>Famou-Agent</td>
+      <td>Gemini 2.5 Pro</td>
+      <td style="text-align: right">71.43%</td>
+      <td style="text-align: right">57.14%</td>
+      <td style="text-align: right">100.00%</td>
+    </tr>
+    <tr>
+      <td>Famou-Agent 2.0</td>
+      <td>Gemini 2.5 Pro</td>
+      <td style="text-align: right">71.43%</td>
+      <td style="text-align: right">65.39%</td>
+      <td style="text-align: right">95.24%</td>
+    </tr>
+    <tr>
+      <td>CAIR MARS+</td>
+      <td>Gemini 3 Pro Preview</td>
+      <td style="text-align: right">71.43%</td>
+      <td style="text-align: right"><strong>71.43%</strong></td>
+      <td style="text-align: right"><strong>100.00%</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>我的读法是：这说明 environment-engineered iteration 在 ML engineering 上很有潜力，尤其是它用 GLM-5.1 这种 open model 也能跑出强结果。但因为是 selected subset，而且 baseline 有些是 multi-run aggregated score 的 upper end，不能把它直接等同于完整 MLE-Bench 的绝对排名。</p>
+
+<h2 id="成本和超参">成本和超参</h2>
+
+<p>论文给了一个很重要的成本信号：使用 Claude Code + GLM-5.1，在三个数学任务上平均 API cost below <strong>USD 17</strong>，其中 26-circle packing 最低 <strong>USD 11</strong>。这比很多“自动科学发现”叙事更工程化，因为它至少给了一个可感知的成本量级。</p>
+
+<p>附录 Table 5 给出的关键运行预算如下：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Task</th>
+      <th style="text-align: right">R rounds</th>
+      <th style="text-align: right">P parallel</th>
+      <th style="text-align: right">propose time</th>
+      <th style="text-align: right">implement time</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Circle Packing</td>
+      <td style="text-align: right">5</td>
+      <td style="text-align: right">3</td>
+      <td style="text-align: right">20 min</td>
+      <td style="text-align: right">120 min</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Erdős Min. Overlap</td>
+      <td style="text-align: right">8</td>
+      <td style="text-align: right">3</td>
+      <td style="text-align: right">20 min</td>
+      <td style="text-align: right">120 min</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>1st Autocorr. Ineq.</td>
+      <td style="text-align: right">8</td>
+      <td style="text-align: right">3</td>
+      <td style="text-align: right">20 min</td>
+      <td style="text-align: right">120 min</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>TriMul</td>
+      <td style="text-align: right">13</td>
+      <td style="text-align: right">3</td>
+      <td style="text-align: right">20 min</td>
+      <td style="text-align: right">160 min</td>
+      <td>A100 evaluation setting</td>
+    </tr>
+    <tr>
+      <td>MLE-Bench Lite</td>
+      <td style="text-align: right">12</td>
+      <td style="text-align: right">3</td>
+      <td style="text-align: right">20 min</td>
+      <td style="text-align: right">100 min</td>
+      <td>one GPU per run</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这张表说明 EurekAgent 不是“短 prompt 出奇迹”。它是多轮、多 session、带 evaluator feedback 的长流程，真正的系统贡献在于让这个长流程不乱、不泄露、不超预算，并且可恢复。</p>
+
+<h2 id="人类监督界面">人类监督界面</h2>
+
+<p><img src="../assets/paper-reading/eurekagent/fig3-web-monitor.png" alt="EurekAgent web monitor" /></p>
+
+<p>Figure 3 是 web monitor。它显示 status logs、score evolution、per-round/global best approaches、budget usage，并把完整 session transcripts 组织起来。这个 UI 不是装饰，它解决的是 autonomous research 最现实的问题：长任务跑几个小时以后，人必须能知道它走到哪、花了多少钱、为什么某个方案赢、现在该不该干预。</p>
+
+<p>我觉得这点和我们自己的 paper-reading/wiki pipeline 很像。agent 写笔记不是只要最后的 Markdown，还需要保留 source、图、草稿、构建日志、git diff、失败原因和部署状态。否则一旦中断或结果变差，就没法恢复和复盘。</p>
+
+<h2 id="我怎么判断">我怎么判断</h2>
+
+<p><strong>可信之处：</strong></p>
+
+<ul>
+  <li>论文把系统边界讲得比较具体，不只是说“multi-agent collaboration”，而是列出 hidden evaluator、controller-owned files、same-round isolation、GPU helper API、Git history、budget warning 等工程机制。</li>
+  <li>结果覆盖数学优化、GPU kernel 和 ML engineering 三类任务，说明不是单一 toy setting。</li>
+  <li>成本、预算和附录超参给得比较明确，方便判断运行规模。</li>
+</ul>
+
+<p><strong>薄弱之处：</strong></p>
+
+<ul>
+  <li>核心评估仍集中在 <strong>metric-driven tasks with executable evaluators</strong>。这类任务适合自动探索，但不代表开放式科学问题也能同样工作。</li>
+  <li>TriMul 因为官方 leaderboard 关闭，只能本地 regrade。作者做了同一 protocol，但外部仍需要复现实验来确认。</li>
+  <li>MLE-Bench 是 7-task selected subset。这个结果有参考价值，但不能替代完整 benchmark。</li>
+  <li>“environment engineering is all you need” 是一个有力标题，但实际系统仍依赖强 CLI agent、GLM-5.1、可执行 evaluator、web search、GPU/容器基础设施和人工可监督界面。</li>
+</ul>
+
+<p><strong>隐含假设：</strong></p>
+
+<ul>
+  <li>任务必须能被 objective score 驱动，否则 prepare-propose-implement loop 缺少可靠反馈。</li>
+  <li>hidden evaluator 必须足够可信，且不被 agent 看到或修改。</li>
+  <li>artifacts 必须结构化到 agent 能读懂。只“落盘”不够，文件命名、rank history、score schema、summary 格式都决定了后续 session 能不能复用。</li>
+</ul>
+
+<h2 id="对我的价值">对我的价值</h2>
+
+<p>这篇对我最有用的不是某个 SOTA 数字，而是它把 sandbox/agent environment 的部件说清楚了。以后如果我要基于 sandbox build 一个可复制、互相隔离、能跑研究/论文/代码任务的环境，至少需要这些东西：</p>
+
+<ul>
+  <li><strong>可复制 runtime</strong>：Docker 或等价隔离环境、依赖安装脚本、任务级 workspace。</li>
+  <li><strong>隐藏评测接口</strong>：agent 只能 submit 和 receive score，不能读 evaluator 或 result owner 文件。</li>
+  <li><strong>artifact contract</strong>：每个阶段必须产出 summary、manifest、hypothesis、solution、score、log，且路径稳定。</li>
+  <li><strong>Git-backed memory</strong>：每个 session 的修改和理由进 commit/history，不靠聊天上下文记忆。</li>
+  <li><strong>并行隔离</strong>：同轮 P 个 hypothesis 互相不可见，下一轮才能共享 ranked history，避免过早坍缩。</li>
+  <li><strong>预算 API</strong>：agent 能知道剩余时间，但 API cost 由系统追踪，到线就 preserve workspace 并停止。</li>
+  <li><strong>human monitor</strong>：终端和 Web 两套入口，一个看细节，一个看全局状态和 score evolution。</li>
+</ul>
+
+<p>把这套思想迁移到个人 wiki/paper-reading，我会这样理解：wiki 不是一堆 Markdown，而是一个有 source、assets、build、deploy、review、git history 和人类 taste 的 environment。agent 真正能长期帮忙，靠的不是一次性写得多漂亮，而是整个环境允许它持续读、改、验证、恢复和被你纠偏。</p>
+
+<h2 id="建议动作">建议动作</h2>
+
+<p>我会把 EurekAgent 放在 “agent environment / sandbox / autonomous research” 这条线里，作为比普通 agent workflow 更值得参考的系统论文。要借鉴它，先不要照搬完整科学发现系统，而是先做一个最小闭环：<strong>任务描述 + 隔离 workspace + hidden evaluator + artifact schema + budget + git history + human monitor</strong>。这个闭环跑通之后，再谈并行 hypothesis、web search、GPU helper 和更复杂的 research loop。</p>
+
+            </div>
+        </article>
+    </div>
+
+    <aside class="blog-toc-sidebar">
+        <nav id="blog-toc" class="blog-toc-nav" aria-label="Table of contents">
+            <div class="blog-toc-header">
+                <div class="blog-toc-title">On This Page</div>
+                <button
+                    id="blog-toc-toggle"
+                    class="blog-toc-toggle"
+                    type="button"
+                    aria-controls="blog-toc-list"
+                    aria-expanded="true"
+                    aria-label="收起目录"
+                    title="收起目录"
+                >
+                    <svg class="blog-toc-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="blog-toc-list" class="blog-toc-list"></div>
+        </nav>
+    </aside>
+</div>
+
+    </div>
+    <footer class="footer border-top py-2 mt-5 bg-white small">
+    <div class="container-lg">
+        <div class="row my-3">
+            <div class="col-6">
+                <div class="text-muted">
+                    <i>Last updated: Jul 2026</i>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="text-right text-muted">
+                    Built with <a href="https://github.com/luost26/academic-homepage" target="_blank"><i class="fas fa-pencil-ruler"></i> academic-homepage</a>.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <pagefind-config
+        bundle-path="/Ryanhu2001/pagefind/"
+        base-url="/Ryanhu2001/"
+        excerpt-length="30"
+        lang="zh-CN"></pagefind-config>
+    <div class="modal fade site-search-modal" id="siteSearchModal" tabindex="-1" role="dialog" aria-labelledby="siteSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 mb-0" id="siteSearchModalLabel">Search</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <pagefind-searchbox placeholder="搜索 wiki、论文笔记、关键词..." show-sub-results="true" hide-shortcut="true"></pagefind-searchbox>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/github-buttons/2.14.2/buttons.min.js" integrity="sha512-OYwZx04hKFeFNYrWxIyo3atgGpb+cxU0ENWBZs72X7T9U+NoHPM1ftUn/Mfw7dRDXrqWA6M1wBg6z6fGE32aeA==" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+    <script type="module" src="/Ryanhu2001/pagefind/pagefind-component-ui.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tocbot@4.36.8/dist/tocbot.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+              delimiters: [
+                  {left: '$$', right: '$$', display: true},
+                  {left: '\\[', right: '\\]', display: true},
+                  {left: '$', right: '$', display: false},
+                  {left: '\\(', right: '\\)', display: false}
+              ],
+              throwOnError : false
+            });
+            
+            Prism.highlightAll();
+            
+
+            var siteSearchModal = document.getElementById("siteSearchModal");
+            var siteSearchBox = siteSearchModal ? siteSearchModal.querySelector("pagefind-searchbox") : null;
+            function focusSiteSearch() {
+                window.setTimeout(function() {
+                    if (siteSearchBox && typeof siteSearchBox.focus === "function") {
+                        siteSearchBox.focus();
+                    }
+                }, 80);
+            }
+            if (siteSearchModal && window.jQuery) {
+                window.jQuery(siteSearchModal).on("shown.bs.modal", focusSiteSearch);
+            }
+            document.addEventListener("keydown", function(event) {
+                var key = String(event.key || "").toLowerCase();
+                var isSearchShortcut = key === "k" && (event.metaKey || event.ctrlKey);
+                var isModalOpen = siteSearchModal && siteSearchModal.classList.contains("show");
+                var target = event.target;
+                var isTyping = target && (
+                    target.tagName === "INPUT" ||
+                    target.tagName === "TEXTAREA" ||
+                    target.isContentEditable
+                );
+                if (!isSearchShortcut || (isTyping && isModalOpen) || !siteSearchModal || !window.jQuery) return;
+                event.preventDefault();
+                window.jQuery(siteSearchModal).modal("show");
+            });
+        });
+    </script>
+    
+    <script src="/Ryanhu2001/assets/js/blog.js"></script>
+    
+    <script src="/Ryanhu2001/assets/js/common.js"></script>
+    <script src="/Ryanhu2001/assets/js/bubble_visual_hash.js"></script>
+</body>
+</html>

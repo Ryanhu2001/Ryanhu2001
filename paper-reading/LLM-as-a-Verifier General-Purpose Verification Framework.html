@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<!-- Template: https://github.com/luost26/academic-homepage -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>LLM-as-a-Verifier: General-Purpose Verification Framework - Ryan</title>
+    <link rel="icon" href="/Ryanhu2001/assets/ryan/avator.jpg" type="image/jpeg">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/pagefind/pagefind-component-ui.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/blog.css">
+    
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/global.css">
+</head>
+<body class="bg-light" >
+    <nav class="navbar navbar-expand-sm navbar-light fixed-top mb-5 shadow-sm">
+    <div class="container-lg">
+        <a class="navbar-brand" href="/Ryanhu2001/"><strong>Ryan</strong></a>
+        <button class="navbar-toggler" style="font-size: 1em; padding: 0.5em;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-map"></i> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/">Home</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/wiki/">Wiki</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/paper-reading/">Paper Reading</a>
+                </li>
+                
+                <li class="nav-item nav-search-item">
+                    <button class="nav-link nav-search-button" type="button" data-toggle="modal" data-target="#siteSearchModal" aria-label="Search site">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <span>Search</span>
+                        <kbd>⌘K</kbd>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <div class="container-lg">
+        
+
+
+
+
+<div class="reading-progress" aria-hidden="true">
+    <span></span>
+</div>
+
+<div class="blog-layout-wrapper">
+    <div class="blog-main">
+        <div class="mb-3">
+            <a class="small" href="/Ryanhu2001/paper-reading/">
+                <i class="fas fa-arrow-left"></i> Paper Reading
+            </a>
+        </div>
+
+        <article class="bg-white rounded-xl p-4 p-md-5 mb-4 wiki-note-card" data-pagefind-body>
+            <div class="blog-content wiki-note">
+                <h1 id="llm-as-a-verifier把评测从离散打分变成可扩展的连续验证信号">LLM-as-a-Verifier：把“评测”从离散打分变成可扩展的连续验证信号</h1>
+
+<ul>
+  <li><strong>Paper</strong>: <a href="https://arxiv.org/abs/2607.05391">LLM-as-a-Verifier: A General-Purpose Verification Framework</a></li>
+  <li><strong>Authors</strong>: Jacky Kwok, Shulu Li, Pranav Atreya, Yuejiang Liu, Yixing Jiang, Chelsea Finn, Marco Pavone, Ion Stoica, Azalia Mirhoseini</li>
+  <li><strong>Affiliations</strong>: Stanford University, UC Berkeley, NVIDIA Research</li>
+  <li><strong>Version</strong>: arXiv v2, 2026-07-07</li>
+  <li><strong>Code / project</strong>: <a href="https://llm-as-a-verifier.com">project page</a>, <a href="https://github.com/llm-as-a-verifier/llm-as-a-verifier">GitHub</a></li>
+  <li><strong>原文体量</strong>: 31 页，PDF 文本约 <strong>13,941 words</strong></li>
+  <li><strong>关键词</strong>: verification scaling, scoring token logits, continuous reward, Probabilistic Pivot Tournament, trajectory reward model, progress tracking, dense RL reward</li>
+</ul>
+
+<h2 id="读法给人和-agent-的路标">读法：给人和 agent 的路标</h2>
+
+<p>这篇论文的中心不是“又做了一个 LLM-as-judge”，而是提出一个更细的判断：<strong>verification 本身可以像 pre-training、post-training、test-time compute 一样被 scale</strong>。作者认为普通 judge 最大的问题是把模型对分数 token 的分布压成一个离散 token，比如 1 到 5 分里的某个整数，于是大量复杂 trajectory 被打成同分，比较时出现 ties。LLM-as-a-Verifier 则读取 scoring token logits 的完整分布，计算期望分数，得到连续 reward。</p>
+
+<p>最自然的阅读顺序是：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>先看 Fig.2: 这套 verifier 到底接什么输入、输出什么信号
+  -&gt; 再看 Eq.3.1: 离散 judge 如何变成连续 reward
+  -&gt; 看 Fig.4 和 Fig.7: granularity、repetition、decomposition 为什么有效
+  -&gt; 看 Fig.6: 怎么在 best-of-N 里省掉 O(N^2) pairwise 比较
+  -&gt; 看 Table 3 / Fig.1: 四个 domain 上到底涨了多少
+  -&gt; 最后看 Fig.8 / Fig.9: verifier signal 能不能当 progress 和 RL reward
+</code></pre></div></div>
+
+<p>给以后检索，关键词是：<code class="language-plaintext highlighter-rouge">LLM-as-a-Verifier</code>、<code class="language-plaintext highlighter-rouge">verification scaling</code>、<code class="language-plaintext highlighter-rouge">score-token logits</code>、<code class="language-plaintext highlighter-rouge">continuous verifier score</code>、<code class="language-plaintext highlighter-rouge">Probabilistic Pivot Tournament</code>、<code class="language-plaintext highlighter-rouge">PPT</code>、<code class="language-plaintext highlighter-rouge">trajectory reward model</code>、<code class="language-plaintext highlighter-rouge">Value-Order Correlation</code>、<code class="language-plaintext highlighter-rouge">dense verifier reward</code>。</p>
+
+<p><img src="../assets/paper-reading/llm-as-a-verifier/official-framework.png" alt="LLM-as-a-Verifier official framework" /></p>
+
+<details>
+  <summary>图 2 说明：这张图给出全文总框架，先看它可以避免把论文误读成单纯的 judge prompt trick。</summary>
+
+  <ul>
+    <li><strong>输入不是只有文本答案</strong>：框架把 coding trajectory、robot video rollout、medical tool-use trace 都抽象成待验证的 <code class="language-plaintext highlighter-rouge">trajectory</code>，所以它关心的是“过程是否可靠”，不只是最终一句 answer。</li>
+    <li><strong>核心信号来自 scoring-token logits</strong>：verifier 在打分 token 位置读取完整概率分布，再把它转成连续 reward。这个步骤是整篇论文区别于普通 LLM-as-judge 的关键。</li>
+    <li><strong>三个 scaling 旋钮在图中是并列的</strong>：score granularity 提高分辨率，repeated evaluation 降低方差，criteria decomposition 降低复合判断的 prompt bias。</li>
+    <li><strong>输出有三种用途</strong>：test-time candidate selection、progress tracking、RL dense reward。后两者说明 verifier 不只是“评测结束时打个分”，而是可以进入 agent 运行过程。</li>
+    <li><strong>一句话总结</strong>：这张图把本文的野心说清楚了，作者想把 verification 做成 agent 系统的一层通用基础设施。</li>
+  </ul>
+</details>
+
+<h2 id="一句话判断">一句话判断</h2>
+
+<p>这篇的贡献是把 agent 评测里的“judge 给一个分数”改成“verifier 输出一个可校准、可重复、可分解、可用于排序和训练的连续信号”。如果这个方向成立，agent 系统里最贵的东西不只是更强 generator，而是一个能在候选轨迹之间稳定分辨“哪个真的更接近完成任务”的 verifier。</p>
+
+<p>My read is, 这篇很值得精读，因为它和我们最近看的 Anthropic agent evals、AutomationBench、AutoBench Agentic-1 都在说同一件事：<strong>agent scaling 的下一块短板是 verification</strong>。但是它也有明显边界：主方法依赖 scoring-token logits，很多 frontier API 不开放；benchmark 提升来自 best-of-N candidate selection，背后有额外推理和验证成本；医疗和机器人结果还远不是生产安全证明。</p>
+
+<h2 id="图表优先读法">图表优先读法</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>先看</th>
+      <th>图 / 表</th>
+      <th>读完应该抓住什么</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Fig.2 framework</td>
+      <td>论文把 text/image/video trajectory 都放进同一个 verifier 框架，输出 test-time scaling、progress tracking 和 RL reward</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>自制 score pipeline</td>
+      <td>核心机制是从 score-token distribution 算连续 reward，再转成 pairwise preference</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Fig.4 verification scaling</td>
+      <td>三个旋钮分别是 granularity、repetition、criteria decomposition，确实在 Terminal-Bench pairwise verification 上带来增益</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Fig.6 Probabilistic Pivot Tournament</td>
+      <td>best-of-N 不能全量 O(N^2) 比较，PPT 用 ring pass + pivot 把成本压到 O(Nk)</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Fig.1 / Table 3</td>
+      <td>四个 benchmark 的 headline 数字不错，但要看它相对 Pass@1 和 oracle Pass@N 的位置</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Fig.8 / Fig.9</td>
+      <td>verifier score 不只是 ranker，还被用作 progress signal 和 RL dense reward</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="1-它到底想解决什么问题">1. 它到底想解决什么问题</h2>
+
+<p>这篇要解决的问题是：<strong>agent 生成能力越来越强，但我们选择、监控、训练这些生成结果的 verifier 还太粗</strong>。</p>
+
+<p>在 agent 场景里，模型经常会一次任务生成多条 trajectory。比如 coding agent 可以多跑几次 patch，机器人可以多条 rollout，医疗 agent 可以多条检索和决策路径。理论上，只要其中一条对了，best-of-N 就有很大 headroom；但实际系统需要一个 verifier 把正确 trajectory 挑出来。</p>
+
+<p>作者在 Terminal-Bench V2 上展示了这个 headroom：如果有 oracle verifier，从 leaderboard 里 pooling trajectories 后，coverage 可以到 <strong>98.9%</strong>。这说明很多任务不是完全没人能做出来，而是“做出来了但系统不知道哪条是对的”。</p>
+
+<p><img src="../assets/paper-reading/llm-as-a-verifier/official-oracle-passk.png" alt="Oracle Pass@K on Terminal-Bench V2" /></p>
+
+<details>
+  <summary>图 5 说明：这张图说明 best-of-N 的潜力很大，但前提是有足够强的 verifier。</summary>
+
+  <ul>
+    <li><strong>横轴是采样或候选池规模</strong>：随着每个任务采更多 trajectory，oracle 可以从里面挑出正确结果，成功率持续上升。</li>
+    <li><strong>98.9% 是 oracle 上限，不是实际系统分数</strong>：它告诉我们候选池里经常已经有正确 trajectory，但普通系统没有可靠办法选出来。</li>
+    <li><strong>这也是本文的动机</strong>：如果 generator 已经偶尔能做对，下一步提升来自 verifier，而不是盲目继续增大 sampling。</li>
+    <li><strong>注意成本含义</strong>：oracle Pass@K 越高，越说明 search space 里有答案；但真实系统还要付出生成 K 条和验证 K 条的成本。</li>
+  </ul>
+</details>
+
+<p>这里的关键区分是：</p>
+
+<ul>
+  <li><strong>Generator scaling</strong>：让模型更可能生成一个好答案。</li>
+  <li><strong>Verifier scaling</strong>：当候选答案已经存在时，更可靠地找出好答案。</li>
+</ul>
+
+<p>My analysis is that, 这篇的价值正在第二点。很多 agent 论文容易只盯 generator，但真实系统会越来越像 search / sampling / agent harness / verifier 的组合。Verifier 不够细，best-of-N 就只是浪费 token。</p>
+
+<h2 id="2-核心方法从离散-judge-到连续-verifier">2. 核心方法：从离散 judge 到连续 verifier</h2>
+
+<p>普通 LLM-as-judge 往往让模型输出一个离散分数，比如 1 到 5。问题是模型内部也许知道 A 比 B 略好，但最终吐出来都可能是 5，于是比较时同分。论文在 <code class="language-plaintext highlighter-rouge">query-optimize</code> case 里展示得很清楚：离散 1 到 5 judge 在 100 次重复评估里 <strong>88/100</strong> 都打成 tie；连续 expectation 后，tie 变成 0。</p>
+
+<p>论文的核心技术 move 是：不要取 <code class="language-plaintext highlighter-rouge">argmax</code> score token，而是读取所有 scoring token 的概率分布，并对分数 token 的数值映射取期望。</p>
+
+<p>给定任务 <code class="language-plaintext highlighter-rouge">x</code>、trajectory <code class="language-plaintext highlighter-rouge">τ</code>、评价标准 <code class="language-plaintext highlighter-rouge">c</code>、重复次数 <code class="language-plaintext highlighter-rouge">K</code> 和分数 token 集合 <code class="language-plaintext highlighter-rouge">V_score = {v_1, ..., v_G}</code>，作者定义：</p>
+
+\[R\left(x,\tau\right)
+=
+\frac{1}{CK}
+\sum_{c=1}^{C}
+\sum_{k=1}^{K}
+\sum_{g=1}^{G}
+p_{\theta}\left(v_g \mid x,c,\tau\right)\phi\left(v_g\right)\]
+
+<p>其中：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">C</code> 是 criteria 数量，例如 specification、output、error。</li>
+  <li><code class="language-plaintext highlighter-rouge">K</code> 是 repeated verification 次数，用来平均噪声。</li>
+  <li><code class="language-plaintext highlighter-rouge">G</code> 是 score token granularity，例如 1、2、4、8、16、20 个 scoring tokens。</li>
+  <li><code class="language-plaintext highlighter-rouge">p_theta(v_g | x,c,tau)</code> 是 verifier model 给 score token <code class="language-plaintext highlighter-rouge">v_g</code> 的概率。</li>
+  <li><code class="language-plaintext highlighter-rouge">phi(v_g)</code> 把 score token 映射成标量分数。</li>
+</ul>
+
+<p>之后把 reward 归一化到 <code class="language-plaintext highlighter-rouge">\left[0,1\right]</code>，再用 Bradley-Terry 形式变成 pairwise preference：</p>
+
+\[P\left(\tau_i \succ \tau_j \mid x\right)
+=
+\frac{1}{1+\exp\left(-\left(R\left(x,\tau_i\right)-R\left(x,\tau_j\right)\right)\right)}\]
+
+<p>这个公式的意义很直接：如果 <code class="language-plaintext highlighter-rouge">τ_i</code> 的 continuous reward 比 <code class="language-plaintext highlighter-rouge">τ_j</code> 高，它赢的概率就更高；差距越大，偏好越强。</p>
+
+<p>论文里的 verifier prompt 骨架大致是：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>You are an expert [domain] reviewer.
+You will see a task description and two trajectories.
+Evaluation Criteria: [domain specific criteria]
+Task: {task prompt}
+Trajectory A: {A}
+Trajectory B: {B}
+
+Carefully analyze each trajectory, then provide your final scores:
+&lt;score_A&gt; INTEGER_1_TO_20 &lt;/score_A&gt;
+&lt;score_B&gt; INTEGER_1_TO_20 &lt;/score_B&gt;
+
+Rating Rules: Rate correctness on a 1-20 scale based on evaluation criteria
+(1 = incorrect, 10 = borderline, 20 = correct).
+</code></pre></div></div>
+
+<p>这个 prompt 本身并不神奇，真正重要的是<strong>不直接相信最终输出的整数</strong>。作者读取 <code class="language-plaintext highlighter-rouge">&lt;score_A&gt;</code> 和 <code class="language-plaintext highlighter-rouge">&lt;score_B&gt;</code> 位置的 token logprobs，把多个可能分数的概率质量都保留下来。论文还提到实际实现会用 letter-based scale 来方便 logprob extraction，避免数字 tokenization 造成额外麻烦。</p>
+
+<p><img src="../assets/paper-reading/llm-as-a-verifier/verifier-score-pipeline.svg" alt="Self-made verifier score pipeline" /></p>
+
+<p>这张自制图是我对方法的压缩：</p>
+
+<ol>
+  <li><strong>输入</strong> 是一个 task <code class="language-plaintext highlighter-rouge">x</code> 和 <code class="language-plaintext highlighter-rouge">N</code> 条候选 trajectory。</li>
+  <li><strong>Verifier prompt</strong> 成对比较 A/B，并在 <code class="language-plaintext highlighter-rouge">&lt;score_A&gt;</code>、<code class="language-plaintext highlighter-rouge">&lt;score_B&gt;</code> 位置读取 scoring token logits。</li>
+  <li><strong>Continuous reward</strong> 对 score token distribution 取期望，而不是取最高概率 token。</li>
+  <li><strong>Pairwise preference</strong> 用 Bradley-Terry 把 reward 差转成软胜率。</li>
+  <li><strong>PPT selection</strong> 用预算友好的 tournament 选出最终 trajectory。</li>
+</ol>
+
+<h2 id="3-三个-verification-scaling-旋钮">3. 三个 verification scaling 旋钮</h2>
+
+<p>论文把 verifier scaling 拆成三个维度：<strong>score granularity</strong>、<strong>repeated evaluation</strong>、<strong>criteria decomposition</strong>。这不是泛泛而谈，Fig.4 在 Terminal-Bench V2 上做了 controlled analysis。</p>
+
+<p><img src="../assets/paper-reading/llm-as-a-verifier/official-verification-scaling.png" alt="Verification scaling axes" /></p>
+
+<details>
+  <summary>图 4 说明：这张图把 verifier scaling 拆成三个可调预算旋钮，而不是只说“多问几遍模型”。</summary>
+
+  <ul>
+    <li><strong>Granularity</strong>：从 <code class="language-plaintext highlighter-rouge">G=1</code> 到 <code class="language-plaintext highlighter-rouge">G=20</code>，pairwise verification accuracy 从 <strong>73.1%</strong> 到 <strong>77.5%</strong>，说明更细的 score token 空间能让模型表达“略好/明显好”的区别。</li>
+    <li><strong>Repetition</strong>：从 <code class="language-plaintext highlighter-rouge">K=1</code> 到 <code class="language-plaintext highlighter-rouge">K=16</code>，accuracy 从 <strong>74.7%</strong> 到 <strong>77.5%</strong>，主要是在平均单次 verifier pass 的噪声。</li>
+    <li><strong>Criteria decomposition</strong>：单独看 specification/output/errors 都只有 <strong>75.2% 到 76.4%</strong>，合并后到 <strong>78.3%</strong>，说明拆 rubric 的价值来自互补信息。</li>
+    <li><strong>一句话总结</strong>：这三件事分别解决分辨率、方差、复合判断偏差，应该按 latency/cost budget 一起调。</li>
+  </ul>
+</details>
+
+<h3 id="31-score-token-granularity">3.1 Score token granularity</h3>
+
+<p>把 scoring token 从粗粒度扩大到更细粒度，pairwise verification accuracy 从 <strong>73.1%</strong> 到 <strong>77.5%</strong>。作者的解释是，更多 score tokens 不给模型新信息，但给模型一个更细的投影空间，让内部 belief 不必都被四舍五入成同一个整数。</p>
+
+<p>论文还用 signal-to-noise ratio 解释这个现象：<code class="language-plaintext highlighter-rouge">G=1</code> 到 <code class="language-plaintext highlighter-rouge">G=20</code> 时，SNR 从 <strong>0.775</strong> 到 <strong>0.799</strong>，对应更稳定地区分 correct 和 incorrect trajectories。</p>
+
+<h3 id="32-repeated-evaluation">3.2 Repeated evaluation</h3>
+
+<p>重复评估解决的是单次 verifier pass 的方差。<code class="language-plaintext highlighter-rouge">K=1</code> 到 <code class="language-plaintext highlighter-rouge">K=16</code> 时，accuracy 从 <strong>74.7%</strong> 到 <strong>77.5%</strong>。作者也承认边际收益递减，因为 harder examples 上存在 correlated bias，重复同一个偏见不会神奇消失。</p>
+
+<h3 id="33-criteria-decomposition">3.3 Criteria decomposition</h3>
+
+<p>单个 rubric 容易太混，比如“这个 trajectory 是否正确”同时混了任务要求、输出格式、日志错误等。论文把 code-agent correctness 拆成三个 criterion：</p>
+
+<ul>
+  <li><strong>Specification</strong>：是否满足任务要求。</li>
+  <li><strong>Output</strong>：最终输出格式是否符合预期。</li>
+  <li><strong>Errors</strong>：日志和工具输出里是否没有失败信号。</li>
+</ul>
+
+<p>单项 criterion 是 <strong>75.2% 到 76.4%</strong>，ensemble 后到 <strong>78.3%</strong>。这很符合直觉：分解不是为了更复杂，而是为了减少 prompt bias 和 compound judgment 的噪声。</p>
+
+<h2 id="4-为什么它比普通-judge-更能分辨-trajectory">4. 为什么它比普通 judge 更能分辨 trajectory</h2>
+
+<p>Fig.7 是这篇最直观的证据之一：连续 verifier 和离散 judge 用同样的 repeated evaluation budget 对比，verifier 的 accuracy 更高，tie rate 直接为 0。</p>
+
+<p><img src="../assets/paper-reading/llm-as-a-verifier/official-judge-vs-verifier.png" alt="Continuous verifier versus discrete judge" /></p>
+
+<details>
+  <summary>图 7 说明：这张图直接回答“连续分数真的比离散 judge 好吗”。</summary>
+
+  <ul>
+    <li><strong>左图是准确率</strong>：<code class="language-plaintext highlighter-rouge">K=1/4/16</code> 下 verifier 分别是 <strong>74.7% / 77.1% / 77.5%</strong>，离散 judge 是 <strong>71.8% / 74.4% / 74.7%</strong>。</li>
+    <li><strong>右图是 tie rate</strong>：离散 judge 的 tie rate 从 <strong>26.7%</strong> 降到 <strong>5.5%</strong>，但 verifier 一直是 <strong>0.0%</strong>。</li>
+    <li><strong>关键不是“问更多次”</strong>：<code class="language-plaintext highlighter-rouge">K=1</code> 的 verifier 已经接近甚至超过 <code class="language-plaintext highlighter-rouge">K=16</code> 的 judge，说明连续 logprob expectation 本身提供了更强信号。</li>
+    <li><strong>一句话总结</strong>：普通 judge 把模型内部的不确定性压扁成整数，verifier 把不确定性变成可排序的连续量。</li>
+  </ul>
+</details>
+
+<p>具体数字：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right">K</th>
+      <th style="text-align: right">Judge accuracy</th>
+      <th style="text-align: right">Verifier accuracy</th>
+      <th style="text-align: right">Judge tie rate</th>
+      <th style="text-align: right">Verifier tie rate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right">1</td>
+      <td style="text-align: right">71.8%</td>
+      <td style="text-align: right">74.7%</td>
+      <td style="text-align: right">26.7%</td>
+      <td style="text-align: right">0.0%</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">4</td>
+      <td style="text-align: right">74.4%</td>
+      <td style="text-align: right">77.1%</td>
+      <td style="text-align: right">11.7%</td>
+      <td style="text-align: right">0.0%</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">16</td>
+      <td style="text-align: right">74.7%</td>
+      <td style="text-align: right">77.5%</td>
+      <td style="text-align: right">5.5%</td>
+      <td style="text-align: right">0.0%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>论文还给了 <code class="language-plaintext highlighter-rouge">query-optimize</code> case。两个 trajectory 都生成了更快的 SQL query，但正确 trajectory 等原始 query 在 canonical database 上完整跑完，并直接 diff 验证输出；错误 trajectory 没有在 canonical database 上验证等价性，而是创建了一个新数据库。Gemini 2.5 Flash 能在 reasoning 里识别这个失败，但离散 judge 常常给同分。连续 verifier 把这种“看起来都差不多，但一个有关键验证缺口”的差别拉开。</p>
+
+<p>My read is, 这个 case 很重要，因为它说明本文不是只在抽象分数上玩技巧。Agent 失败常常就长这样：产物看起来 plausible，但关键验证步骤缺失。连续 verifier 的优势来自保留模型对“不太放心”的概率质量。</p>
+
+<h2 id="5-probabilistic-pivot-tournamentbest-of-n-怎么不把成本炸掉">5. Probabilistic Pivot Tournament：best-of-N 怎么不把成本炸掉</h2>
+
+<p>如果有 <code class="language-plaintext highlighter-rouge">N</code> 条候选 trajectory，最直接的方式是全量 pairwise round-robin，需要 <code class="language-plaintext highlighter-rouge">O(N^2)</code> 次比较。candidate pool 一大，verifier 成本会压过生成成本。论文因此提出 <strong>Probabilistic Pivot Tournament, PPT</strong>。</p>
+
+<p><img src="../assets/paper-reading/llm-as-a-verifier/official-pivot-tournament.png" alt="Probabilistic Pivot Tournament" /></p>
+
+<details>
+  <summary>图 6 说明：PPT 是为 best-of-N 控成本的 ranking 算法，不是 verifier 分数本身。</summary>
+
+  <ul>
+    <li><strong>Ring pass</strong>：先用随机 Hamiltonian cycle 比一圈，让每个 candidate 各在 A/B 位置出现一次，降低 position bias。</li>
+    <li><strong>Pivot selection</strong>：用 ring-pass 的平均偏好挑 top-k candidate 作为 pivots，把后续预算集中到可能正确的候选。</li>
+    <li><strong>Pivot tournament</strong>：非 pivot 只和 pivots 比，pivots 之间也互比，避免全量 <code class="language-plaintext highlighter-rouge">O(N^2)</code> round-robin。</li>
+    <li><strong>Selection</strong>：聚合 win mass <code class="language-plaintext highlighter-rouge">w_i</code> 和 comparison count <code class="language-plaintext highlighter-rouge">c_i</code>，返回 <code class="language-plaintext highlighter-rouge">w_i / c_i</code> 最大的 trajectory。</li>
+    <li><strong>一句话总结</strong>：PPT 的工程价值是把 verifier budget 花在“有希望赢”的候选上，而不是平均浪费在明显弱的候选上。</li>
+  </ul>
+</details>
+
+<p>PPT 的流程是：</p>
+
+<ol>
+  <li><strong>Ring pass</strong>：随机 Hamiltonian cycle，每个 candidate 正好出现在 A 位置一次、B 位置一次，抵消 position bias。</li>
+  <li><strong>Pivot selection</strong>：按 ring-pass 平均偏好选出 top-k pivots。</li>
+  <li><strong>Pivot rounds</strong>：非 pivot 只和 pivots 比，pivots 之间也比。</li>
+  <li><strong>Selection</strong>：聚合 win mass <code class="language-plaintext highlighter-rouge">w_i</code> 和 comparison count <code class="language-plaintext highlighter-rouge">c_i</code>，选 <code class="language-plaintext highlighter-rouge">w_i / c_i</code> 最高的 candidate。</li>
+</ol>
+
+<p>成本从 <code class="language-plaintext highlighter-rouge">O(N^2)</code> 降到 <code class="language-plaintext highlighter-rouge">O(Nk)</code>，其中 <code class="language-plaintext highlighter-rouge">k &lt;&lt; N</code>。</p>
+
+<p>附录 Table 9 给了预算和准确率：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th style="text-align: right">Pairs queried</th>
+      <th style="text-align: right">Accuracy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>pass@1</td>
+      <td style="text-align: right">0</td>
+      <td style="text-align: right">52.64%</td>
+    </tr>
+    <tr>
+      <td>V1, 1N budget</td>
+      <td style="text-align: right">1,400</td>
+      <td style="text-align: right">64.64%</td>
+    </tr>
+    <tr>
+      <td>V1, 3N budget</td>
+      <td style="text-align: right">4,200</td>
+      <td style="text-align: right">65.62%</td>
+    </tr>
+    <tr>
+      <td>V1, 5N budget</td>
+      <td style="text-align: right">7,000</td>
+      <td style="text-align: right">65.85%</td>
+    </tr>
+    <tr>
+      <td>V1, 7N budget</td>
+      <td style="text-align: right">9,800</td>
+      <td style="text-align: right">65.53%</td>
+    </tr>
+    <tr>
+      <td>PPT k=1</td>
+      <td style="text-align: right">2,570</td>
+      <td style="text-align: right">65.83%</td>
+    </tr>
+    <tr>
+      <td>PPT k=3</td>
+      <td style="text-align: right">4,723</td>
+      <td style="text-align: right">66.17%</td>
+    </tr>
+    <tr>
+      <td>PPT k=5</td>
+      <td style="text-align: right">6,609</td>
+      <td style="text-align: right">66.27%</td>
+    </tr>
+    <tr>
+      <td>PPT k=7</td>
+      <td style="text-align: right">8,242</td>
+      <td style="text-align: right">66.67%</td>
+    </tr>
+    <tr>
+      <td>PPT k=9</td>
+      <td style="text-align: right">9,630</td>
+      <td style="text-align: right">67.13%</td>
+    </tr>
+    <tr>
+      <td>Full round-robin</td>
+      <td style="text-align: right">13,111</td>
+      <td style="text-align: right">67.42%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>My analysis is that, PPT 的贡献比 headline SOTA 更工程。真实 agent 系统里 best-of-N 能不能用，往往取决于“多采样 + 多验证”的成本是否可控。PPT 至少给了一个把 verifier budget 放在强候选上的策略。</p>
+
+<h2 id="6-实验结果四个-domain-的-headline-数字">6. 实验结果：四个 domain 的 headline 数字</h2>
+
+<p>论文把 LLM-as-a-Verifier 当作 trajectory reward model，用在 test-time scaling 上。通用 protocol 是：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>生成策略 pi_theta 产出 N 条 candidate trajectories
+  -&gt; verifier 用 G=20, K=8, C=3 评分
+  -&gt; PPT 选最高 normalized score 的 trajectory
+  -&gt; 提交最终轨迹 / patch / reward preference
+</code></pre></div></div>
+
+<p><img src="../assets/paper-reading/llm-as-a-verifier/official-sota-results.png" alt="Overall performance results" /></p>
+
+<details>
+  <summary>图 1 / Table 3 说明：headline SOTA 要和 Pass@1、oracle Pass@N 一起读。</summary>
+
+  <ul>
+    <li><strong>Terminal-Bench V2</strong>：candidate pool Pass@1 是 <strong>83.1%</strong>，oracle Pass@5 是 <strong>92.1%</strong>，LLM-as-a-Verifier 选到 <strong>86.5%</strong>，说明它兑现了一部分 best-of-N headroom。</li>
+    <li><strong>SWE-Bench Verified</strong>：heterogeneous pool 的平均 Pass@1 是 <strong>76.1%</strong>，oracle Pass@3 是 <strong>84.4%</strong>，verifier 到 <strong>78.2%</strong>，收益更小但仍超过论文列出的单模型 baseline。</li>
+    <li><strong>MedAgentBench</strong>：从 Claude Opus 4.8 pool 的 <strong>70.2%</strong> 到 <strong>73.3%</strong>，但这是模拟 EHR 环境，不能直接等同医疗安全。</li>
+    <li><strong>RoboRewardBench</strong>：任务是视频 rollout preference，不是最终任务成功率；LLM-as-a-Verifier 报告 <strong>87.4%</strong> preference accuracy。</li>
+    <li><strong>一句话总结</strong>：结果说明 verifier 有用，但还没有吃掉 oracle headroom；真正要看的是收益/成本比。</li>
+  </ul>
+</details>
+
+<p>Table 3 的核心数字如下：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Benchmark</th>
+      <th style="text-align: right">Candidate pool Pass@1</th>
+      <th style="text-align: right">Oracle Pass@N</th>
+      <th style="text-align: right">LLM-as-a-Verifier</th>
+      <th>论文声称超过的 baseline</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Terminal-Bench V2</td>
+      <td style="text-align: right">83.1%</td>
+      <td style="text-align: right">92.1%</td>
+      <td style="text-align: right"><strong>86.5%</strong></td>
+      <td>GPT-5.5 84.7%, Opus 4.7 80.2%, Gemini 3.1 Pro 80.2%</td>
+    </tr>
+    <tr>
+      <td>SWE-Bench Verified</td>
+      <td style="text-align: right">76.1%</td>
+      <td style="text-align: right">84.4%</td>
+      <td style="text-align: right"><strong>78.2%</strong></td>
+      <td>Opus 4.5 76.8%, Gemini 3 Flash 75.8%, MiniMax M2.5 75.8%</td>
+    </tr>
+    <tr>
+      <td>MedAgentBench</td>
+      <td style="text-align: right">70.2%</td>
+      <td style="text-align: right">75.0%</td>
+      <td style="text-align: right"><strong>73.3%</strong></td>
+      <td>Opus 4.8 70.2%, Gemini 3.5 Flash 66.3%, GPT-5.5 65.1%</td>
+    </tr>
+    <tr>
+      <td>RoboRewardBench</td>
+      <td style="text-align: right">70.8% discrete judge</td>
+      <td style="text-align: right">N/A</td>
+      <td style="text-align: right"><strong>87.4% preference accuracy</strong></td>
+      <td>RoboReward-8B 81.4%, Robometer-4B 78.8%, TOPReward 74.7%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>几个设置细节很重要：</p>
+
+<ul>
+  <li><strong>Terminal-Bench V2</strong>：用 Capy scaffold，从 GPT-5.5 采样 <code class="language-plaintext highlighter-rouge">N=5</code> 条轨迹，Gemini 2.5 Flash 做 verifier。</li>
+  <li><strong>SWE-Bench Verified</strong>：用 mini-swe-agent，候选池是 heterogeneous pool，来自 Claude Opus 4.5、Gemini 3 Flash、MiniMax M2.5，每题 <code class="language-plaintext highlighter-rouge">N=3</code>。</li>
+  <li><strong>RoboRewardBench</strong>：用 Qwen 3.6 35B VLM verifier，输入多帧视频 rollout，<code class="language-plaintext highlighter-rouge">G=20</code>、<code class="language-plaintext highlighter-rouge">K=8</code>。</li>
+  <li><strong>MedAgentBench</strong>：在模拟 EHR 环境里做 patient information retrieval、guideline lookup 和多步工具使用，用 Claude Opus 4.8 采样 <code class="language-plaintext highlighter-rouge">N=5</code>。</li>
+</ul>
+
+<p>My read is, 这些数字值得重视但不能只看红柱子。真正的问题是：它从 Pass@1 到 oracle Pass@N 之间恢复了多少 headroom。Terminal-Bench 从 83.1 到 86.5，距离 oracle 92.1 还有空间；SWE-Bench 从 76.1 到 78.2，也只是取回一部分。换句话说，verifier 有用，但还没有“把 best-of-N headroom 全部兑现”。</p>
+
+<h2 id="7-progress-trackingverifier-score-能不能当任务进度条">7. Progress tracking：verifier score 能不能当任务进度条</h2>
+
+<p>论文进一步把 verifier score 用作 progress proxy。作者定义 Value-Order Correlation, VOC，衡量 trajectory prefix 的 verifier score 排序是否和真实时间步顺序一致。如果成功轨迹越走越接近目标，score 应该单调上升。</p>
+
+<p><img src="../assets/paper-reading/llm-as-a-verifier/official-progress-signal.png" alt="Progress tracking with verifier scores" /></p>
+
+<details>
+  <summary>图 8 说明：这张图展示 verifier score 可以变成 agent 运行中的进度信号。</summary>
+
+  <ul>
+    <li><strong>成功轨迹</strong>：读取 <code class="language-plaintext highlighter-rouge">model.py</code>、安装 <code class="language-plaintext highlighter-rouge">g++</code>、安装 CPU-only torch、更新 <code class="language-plaintext highlighter-rouge">hidden_dim</code>，最后 <code class="language-plaintext highlighter-rouge">DONE</code>，score 随步骤上升。</li>
+    <li><strong>失败轨迹</strong>：安装了不必要的大包 <code class="language-plaintext highlighter-rouge">torchvision</code>，导致 disk space 不足并出现 compilation error，score 长期低位。</li>
+    <li><strong>为什么重要</strong>：这说明 verifier 不只能在任务结束后选答案，还能在任务中发现 agent 是否进入坏状态。</li>
+    <li><strong>产品含义</strong>：长任务 agent 可以根据 score plateau 或 score drop 触发暂停、回滚、换策略或请求人工确认。</li>
+  </ul>
+</details>
+
+<p>Fig.8 的例子是 Terminal-Bench 的 <code class="language-plaintext highlighter-rouge">pytorch-model-cli</code> 任务：</p>
+
+<ul>
+  <li>成功轨迹：<code class="language-plaintext highlighter-rouge">Read model.py -&gt; Install g++ compiler -&gt; Install CPU-only torch -&gt; Update hidden_dim -&gt; DONE</code>，score 持续上升。</li>
+  <li>失败轨迹：装了大而不必要的 <code class="language-plaintext highlighter-rouge">torchvision</code>，耗尽 disk space，最后 compilation error，score 长期低位。</li>
+</ul>
+
+<p>Table 6 报告 Terminal-Bench V2 上 500 对轨迹：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Trajectory outcome</th>
+      <th style="text-align: right">Spearman VOC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Successful</td>
+      <td style="text-align: right">0.848 ± 0.012</td>
+    </tr>
+    <tr>
+      <td>Failed</td>
+      <td style="text-align: right">0.769 ± 0.016</td>
+    </tr>
+    <tr>
+      <td>Gap</td>
+      <td style="text-align: right">+0.079</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>机器人上更强，Table 7：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th style="text-align: right">Spearman VOC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>LLM-as-a-Verifier, Qwen 3.6 35B, K=5, G=20</td>
+      <td style="text-align: right"><strong>0.966</strong></td>
+    </tr>
+    <tr>
+      <td>RoboReward-8B</td>
+      <td style="text-align: right">0.877</td>
+    </tr>
+    <tr>
+      <td>Robometer-4B</td>
+      <td style="text-align: right">0.780</td>
+    </tr>
+    <tr>
+      <td>TOPReward</td>
+      <td style="text-align: right">0.565</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>My analysis is that, progress tracking 是这篇对 agent 产品最有启发的部分。它把 verifier 从“任务结束后打分”变成“任务过程中预警”。这和 Anthropic 那篇 evals 文章里的 transcript review / production monitoring 是一条线：长任务 agent 不能等它把坏状态写进磁盘或数据库之后才知道失败。</p>
+
+<h2 id="8-dense-reward-for-rl它能不能变成训练信号">8. Dense reward for RL：它能不能变成训练信号</h2>
+
+<p>作者最后展示 verifier score 可以作为 RL 的 dense reward。这里不是主贡献，但说明 continuous score 不只是 test-time selector。</p>
+
+<p><img src="../assets/paper-reading/llm-as-a-verifier/official-rl-reward.png" alt="LLM-as-a-Verifier as dense RL reward" /></p>
+
+<details>
+  <summary>图 9 说明：dense verifier reward 主要改善 sample efficiency，尤其是在 sparse reward 太粗的时候。</summary>
+
+  <ul>
+    <li><strong>LIBERO / DSRL-SAC</strong>：用 <code class="language-plaintext highlighter-rouge">π0</code> policy 做 ketchup task，verifier progress reward 让达到同样成功率所需环境步数约减少到 baseline 的 <code class="language-plaintext highlighter-rouge">1/1.8</code>，最终 success rate 是 <strong>0.76 vs. 0.69</strong>。</li>
+    <li><strong>MATH / GRPO</strong>：当一个 group 的答案全错时，纯 correctness reward 没梯度；verifier 给 reasoning trace 额外偏好信号，带来约 <strong>1.1x</strong> sample efficiency。</li>
+    <li><strong>注意边界</strong>：机器人只展示单个 LIBERO ketchup task，MATH 提升也不大，所以这部分更像 proof of concept。</li>
+    <li><strong>一句话总结</strong>：continuous verifier score 最自然的训练用途是缓解 sparse reward 和 credit assignment，而不是替代所有 reward design。</li>
+  </ul>
+</details>
+
+<h3 id="robotics-libero--dsrl-sac">Robotics: LIBERO + DSRL-SAC</h3>
+
+<p>在 LIBERO ketchup task 上，作者 fine-tune <code class="language-plaintext highlighter-rouge">π0</code> policy，用 DSRL-SAC。每次 rollout 结束后，VLM verifier 根据任务指令和抽样 video frames 生成 progress curve：</p>
+
+\[\rho_t = R\left(x,\tau_{1:t}\right) \in \left[0,1\right]\]
+
+<p>然后做 reward shaping：</p>
+
+\[r_t = r_t^{env} + \lambda \rho_t\]
+
+<p>结果是相对 sparse baseline 达到约 <strong>1.8x</strong> sample efficiency，并且 final success rate 更高，<strong>0.76 vs. 0.69</strong>。</p>
+
+<h3 id="math-qwen3-8b--grpo">Math: Qwen3-8B + GRPO</h3>
+
+<p>在 MATH 上，作者用 GRPO fine-tune Qwen3-8B。早期训练中常见问题是一个 group 里所有答案都错，correctness reward 全是 0，advantage 没有梯度。Verifier 对 reasoning trace 进行 preference scoring，作为额外 reasoning reward：</p>
+
+\[r_i = r_{correct,i} + r_{format,i} + \beta r_{reasoning,i}\]
+
+<p>结果是约 <strong>1.1x</strong> sample efficiency，论文说相当于达到 matched accuracy 所需 optimizer steps 减少约 <strong>10%</strong>。</p>
+
+<p>My read is, RL 结果更像 proof of concept。机器人实验只有 LIBERO ketchup task，MATH 的提升也比较小。但它说明连续 verifier score 的形态很适合 dense feedback，比最终 0/1 reward 更能缓解 credit assignment。</p>
+
+<h2 id="9-附录里别漏的两个点">9. 附录里别漏的两个点</h2>
+
+<h3 id="91-prm--orm它不只选完整-trajectory">9.1 PRM / ORM：它不只选完整 trajectory</h3>
+
+<p>附录 B.3 把 LLM-as-a-Verifier 分别当 <strong>process reward model, PRM</strong> 和 <strong>outcome reward model, ORM</strong> 来试。这个部分不是主线，但对 agent 设计很有参考价值，因为它说明 verifier 可以插在“每一步动作选择”和“最终候选选择”两个位置。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>用法</th>
+      <th>Benchmark</th>
+      <th>设置</th>
+      <th>结果</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>PRM</td>
+      <td>TauBench</td>
+      <td>每步 sampled actions <code class="language-plaintext highlighter-rouge">k=1 -&gt; 9</code></td>
+      <td>Pass@1 从 <strong>48.7%</strong> 到 <strong>55.7%</strong></td>
+    </tr>
+    <tr>
+      <td>PRM</td>
+      <td>Terminal-Bench</td>
+      <td>每步 sampled actions <code class="language-plaintext highlighter-rouge">k=1 -&gt; 9</code></td>
+      <td>Pass@1 从 <strong>49.8%</strong> 到 <strong>54.3%</strong></td>
+    </tr>
+    <tr>
+      <td>ORM</td>
+      <td>SWE-Bench Lite</td>
+      <td>Best-of-N + verifier</td>
+      <td>Base <strong>23.5%</strong> 到 <strong>33.0%</strong></td>
+    </tr>
+    <tr>
+      <td>ORM</td>
+      <td>AIME</td>
+      <td>Best-of-N + verifier</td>
+      <td>Base <strong>71.5%</strong> 到 <strong>90.0%</strong></td>
+    </tr>
+    <tr>
+      <td>ORM</td>
+      <td>HMMT</td>
+      <td>Best-of-N + verifier</td>
+      <td>Base <strong>52.0%</strong> 到 <strong>73.3%</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>My read is, PRM/ORM 这部分给我们的启发比数字本身更重要：在 agent pipeline 里，verifier 不一定只在最后一刻做裁判，也可以在每一步 action branching 时做轻量筛选。对于 paper-reading 自动化，这对应“每段生成后检查 source fidelity / 数字 / 图像覆盖”，而不是等整篇写完再总评。</p>
+
+<h3 id="92-没有-logprobs-的-frontier-model-怎么办">9.2 没有 logprobs 的 frontier model 怎么办</h3>
+
+<p>作者承认方法依赖 scoring-token logits，而很多 closed frontier APIs 不开放 logprobs。附录 B.6 的 workaround 是两阶段：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Stage 1: GPT-5.5 这类 closed model 先输出 reasoning + 离散 1-10 分
+Stage 2: 把 task、两条 trajectory、closed-model reasoning 转给 Gemini 2.5 Flash
+Stage 3: 在 Gemini 的 &lt;score_A&gt;/&lt;score_B&gt; 位置读取 logprobs，计算 continuous reward
+</code></pre></div></div>
+
+<p>Table 12 的结果如下：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right">K</th>
+      <th style="text-align: right">GPT-5.5 discrete accuracy</th>
+      <th style="text-align: right">GPT-5.5 discrete tie</th>
+      <th style="text-align: right">GPT-5.5 -&gt; Gemini continuous accuracy</th>
+      <th style="text-align: right">Continuous tie</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right">1</td>
+      <td style="text-align: right">74.9%</td>
+      <td style="text-align: right">10.9%</td>
+      <td style="text-align: right"><strong>80.1%</strong></td>
+      <td style="text-align: right">0.0%</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">2</td>
+      <td style="text-align: right">76.3%</td>
+      <td style="text-align: right">9.1%</td>
+      <td style="text-align: right"><strong>80.5%</strong></td>
+      <td style="text-align: right">0.0%</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">4</td>
+      <td style="text-align: right">77.6%</td>
+      <td style="text-align: right">7.0%</td>
+      <td style="text-align: right"><strong>81.0%</strong></td>
+      <td style="text-align: right">0.0%</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">8</td>
+      <td style="text-align: right">78.4%</td>
+      <td style="text-align: right">5.8%</td>
+      <td style="text-align: right"><strong>80.9%</strong></td>
+      <td style="text-align: right">0.0%</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">16</td>
+      <td style="text-align: right">79.1%</td>
+      <td style="text-align: right">5.0%</td>
+      <td style="text-align: right"><strong>81.2%</strong></td>
+      <td style="text-align: right">0.0%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>My analysis is that, 这个 workaround 很实用，但也暴露了本文的系统依赖：如果最强 verifier 不开放 logprobs，你需要一个开放 logprob 的 scoring backend 来“读分布”。这会让部署复杂度、延迟和模型间一致性都变成工程问题。</p>
+
+<h2 id="10-限制和风险">10. 限制和风险</h2>
+
+<p>论文自己在 Appendix A 里承认了三类限制：</p>
+
+<ul>
+  <li><strong>需要 scoring-token logits</strong>：很多 frontier API 不开放 token-level logprobs。作者给了两阶段 workaround，让 closed model 先产 reasoning，再交给 open verifier 读 logits，但这不是同一件事。</li>
+  <li><strong>三个 scaling axes 不穷尽</strong>：criteria decomposition 目前是手写的，未来可以学习或动态生成；repeated evaluation 也可以改成 uncertainty-guided adaptive compute allocation。</li>
+  <li><strong>RL 实验仍偏单步 / 简化</strong>：他们还没有证明多轮长 horizon RL 中按 step 给 verifier reward 能稳定解决 credit assignment。</li>
+</ul>
+
+<p>我自己的风险判断：</p>
+
+<ul>
+  <li>My analysis is that, <strong>cost 是最现实的风险</strong>。<code class="language-plaintext highlighter-rouge">N</code> 条 candidate、<code class="language-plaintext highlighter-rouge">K</code> 次 repeated evaluation、<code class="language-plaintext highlighter-rouge">C</code> 个 criteria、pairwise comparisons，加起来很容易比普通 agent 贵很多。PPT 降低了成本，但没有让成本消失。</li>
+  <li>My read is, <strong>verifier 可能继承模型偏见和 blind spots</strong>。如果 generator 和 verifier 都来自相近模型家族，可能共同误判某类 failure。</li>
+  <li>My analysis is that, <strong>benchmark SOTA 不等于真实安全</strong>。MedAgentBench 是模拟 EHR，机器人是 benchmark rollout preference，和生产医疗或真实机器人部署还有很大距离。</li>
+  <li>My read is, <strong>criteria decomposition 仍需要人工 taste</strong>。拆成 specification / output / errors 很合理，但不同 domain 怎么拆，哪些 criterion 权重更高，论文还没有自动解决。</li>
+  <li>My analysis is that, <strong>oracle headroom 也可能是高成本幻觉</strong>。Pass@N 高说明候选池里有好答案，但如果生成 N 条和验证 N 条的成本过大，产品上不一定值得。</li>
+</ul>
+
+<h2 id="11-复现成本和工程依赖">11. 复现成本和工程依赖</h2>
+
+<p>这里的“成本”我按工程复现来理解，而不是预训练成本。论文方法本身不需要额外训练，但要复现主结果需要不少资源。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>模块</th>
+      <th>需要什么</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Verifier model</td>
+      <td>主实验多处使用 Gemini 2.5 Flash；机器人用 Qwen 3.6 35B VLM；logprob access 很关键</td>
+    </tr>
+    <tr>
+      <td>Candidate trajectories</td>
+      <td>Terminal-Bench 每题 <code class="language-plaintext highlighter-rouge">N=5</code>，SWE-Bench 每题 <code class="language-plaintext highlighter-rouge">N=3</code> heterogeneous candidates，MedAgentBench 每题 <code class="language-plaintext highlighter-rouge">N=5</code></td>
+    </tr>
+    <tr>
+      <td>Verification budget</td>
+      <td>默认 <code class="language-plaintext highlighter-rouge">G=20</code>、<code class="language-plaintext highlighter-rouge">K=8</code>、<code class="language-plaintext highlighter-rouge">C=3</code>，PPT 降低 pairwise comparison 数</td>
+    </tr>
+    <tr>
+      <td>Benchmarks</td>
+      <td>Terminal-Bench V2、SWE-Bench Verified、RoboRewardBench、MedAgentBench、LIBERO、MATH</td>
+    </tr>
+    <tr>
+      <td>RL setup</td>
+      <td>LIBERO: <code class="language-plaintext highlighter-rouge">π0 + DSRL-SAC</code>，5 seeds 到 1.5M environment steps；MATH: Qwen3-8B + GRPO，group size 16，64 groups per batch，LR <code class="language-plaintext highlighter-rouge">2e-5</code></td>
+    </tr>
+    <tr>
+      <td>Implementation</td>
+      <td>官方 repo 提供 package、benchmark scripts、TurboAgent proxy 思路</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>My read is, 轻量复现可以先不碰四个 domain 全量 benchmark，而是做一个小型 coding-agent verifier：</p>
+
+<ol>
+  <li>对同一任务采样 <code class="language-plaintext highlighter-rouge">N=3</code> 到 <code class="language-plaintext highlighter-rouge">N=5</code> 个 candidate patches。</li>
+  <li>用 logprob-accessible model 做 <code class="language-plaintext highlighter-rouge">G=20</code> continuous scoring。</li>
+  <li>对比离散 judge、continuous verifier、unit test oracle 三者的一致性。</li>
+  <li>统计 tie rate、pairwise accuracy、cost per selected trajectory。</li>
+</ol>
+
+<p>如果只是想把它用进我们的 wiki/paper-reading pipeline，最实用的是 progress / verification 思路：对一篇 note 的候选版本做 pairwise verifier，检查 source fidelity、figure coverage、关键数字、逻辑脉络，而不是让 judge 给一个“好不好”的总分。</p>
+
+<h2 id="12-heilmeier-七问版">12. Heilmeier 七问版</h2>
+
+<h3 id="1-what-are-you-trying-to-do">1. What are you trying to do?</h3>
+
+<p>这篇论文想让 AI 更会判断自己或其他 AI 做出来的答案到底对不对。更技术地说，作者提出一个无需训练的通用 verifier，把模型对分数 token 的概率分布变成连续 reward，用来选择更好的 agent trajectory、监控任务进度，并作为强化学习的 dense reward。</p>
+
+<h3 id="2-what-is-the-problem-how-is-it-done-today-and-what-are-the-limits">2. What is the problem, how is it done today, and what are the limits?</h3>
+
+<p>当前 agent 系统常用 LLM-as-judge、unit tests、trained reward models 或人工评审来做 verification。unit tests 很准但只适合可判定任务；trained reward model 需要数据且跨域泛化有限；LLM-as-judge 易扩展但输出离散分数，复杂 trajectory 很容易同分。</p>
+
+<p>My read is, 这篇抓住了一个真实瓶颈：agent 不是缺“再生成一条”的能力，而是缺“从多条看起来都合理的轨迹里挑出真正正确那条”的能力。</p>
+
+<h3 id="3-what-is-new-in-the-approach">3. What is new in the approach?</h3>
+
+<p>新东西有三层：</p>
+
+<ol>
+  <li><strong>连续 reward formulation</strong>：读取 scoring-token logits 的完整分布，对 score token 映射取期望。</li>
+  <li><strong>verification scaling axes</strong>：系统研究 <code class="language-plaintext highlighter-rouge">G</code> 评分粒度、<code class="language-plaintext highlighter-rouge">K</code> 重复评估、<code class="language-plaintext highlighter-rouge">C</code> criteria decomposition。</li>
+  <li><strong>PPT ranking algorithm</strong>：把 best-of-N candidate ranking 的 pairwise verification 从 <code class="language-plaintext highlighter-rouge">O(N^2)</code> 降到 <code class="language-plaintext highlighter-rouge">O(Nk)</code>。</li>
+</ol>
+
+<p>数学核心就是：</p>
+
+\[R\left(x,\tau\right)
+=
+\frac{1}{CK}
+\sum_{c=1}^{C}
+\sum_{k=1}^{K}
+\sum_{g=1}^{G}
+p_{\theta}\left(v_g \mid x,c,\tau\right)\phi\left(v_g\right)\]
+
+<p>这个 reward 再通过 pairwise preference 进入 tournament selection。</p>
+
+<h3 id="4-who-cares">4. Who cares?</h3>
+
+<p>My analysis is that, 做 agent benchmark、coding agent、browser/computer-use agent、robotics reward、medical agent safety 的人都会关心。因为一旦 agent 变成长任务系统，最终产物经常不可一眼判断，verification 就会成为产品质量、成本和安全的共同瓶颈。</p>
+
+<p>My read is, 对我们自己的 paper-reading pipeline 也很直接：不要只让模型写一篇 note，然后 judge “整体不错”；更好的做法是把 verifier 拆成 source fidelity、图像证据、关键数字、公式渲染、build、可读性几个 criteria，并保留每一项分数。</p>
+
+<h3 id="5-what-are-the-risks">5. What are the risks?</h3>
+
+<p>My analysis is that, 最大风险是成本、logprob access 和 verifier bias。方法需要读取 score-token logits，这限制了可用模型；best-of-N 加 repeated verification 会显著增加推理成本；如果 verifier 的盲点和 generator 相似，它可能自信地选择错误 trajectory。</p>
+
+<p>My read is, 医疗和机器人结果应当被视为 benchmark evidence，而不是部署安全保证。尤其 MedAgentBench 是模拟 EHR 环境，验证错误在真实医疗场景里的代价远高于 benchmark 分数能表达的风险。</p>
+
+<h3 id="6-how-much-will-it-cost">6. How much will it cost?</h3>
+
+<p>论文方法本身不需要训练 verifier，但主实验需要生成多条候选轨迹并多次评估。默认设置是 <code class="language-plaintext highlighter-rouge">G=20</code>、<code class="language-plaintext highlighter-rouge">K=8</code>、<code class="language-plaintext highlighter-rouge">C=3</code>，再加 PPT pairwise comparisons；Terminal-Bench 和 MedAgentBench 每题 <code class="language-plaintext highlighter-rouge">N=5</code>，SWE-Bench 每题 <code class="language-plaintext highlighter-rouge">N=3</code>。</p>
+
+<p>My read is, 单机轻量复现可控，但完整复现四域 SOTA 很重。尤其 RL 部分要跑 LIBERO 机器人训练到 1.5M environment steps、5 seeds，还要跑 Qwen3-8B + GRPO。更合理的第一步是复现 Table 2 / Fig.7 这种 verifier vs judge tie-rate 实验。</p>
+
+<h3 id="7-what-are-the-experiments-and-results">7. What are the experiments and results?</h3>
+
+<p>论文在四个主要 benchmark 上报告 SOTA 或强于 baseline 的结果：Terminal-Bench V2 <strong>86.5%</strong>、SWE-Bench Verified <strong>78.2%</strong>、RoboRewardBench <strong>87.4%</strong>、MedAgentBench <strong>73.3%</strong>。它还显示 progress tracking 的 VOC 很高，Terminal-Bench successful trajectories 是 <strong>0.848 ± 0.012</strong>，robotics 是 <strong>0.966</strong>。</p>
+
+<p>My analysis is that, 证据最强的是 verifier scaling 和 tie-rate 分析，因为它直接验证了连续 scoring 的机制。主 benchmark 数字也有意义，但属于 best-of-N selection 设置，需要始终和 Pass@1、oracle Pass@N、verification cost 一起读。</p>
+
+<h2 id="13-对我的-wiki--agent-pipeline-的启发">13. 对我的 wiki / agent pipeline 的启发</h2>
+
+<p>这篇可以直接变成一个工程 checklist：</p>
+
+<ul>
+  <li><strong>不要只存最终答案</strong>：要存 trajectory、tool calls、intermediate evidence、final artifact。</li>
+  <li><strong>不要只让 judge 给总分</strong>：把 criteria 拆成 source fidelity、coverage、figures、math/build、readability。</li>
+  <li><strong>要监控 tie rate</strong>：如果大量候选 note 都被打成同分，说明 rubric 或 scoring 太粗。</li>
+  <li><strong>多候选要有 budget 策略</strong>：全 pairwise comparison 太贵，可以先快速筛，再对强候选精排。</li>
+  <li><strong>把 progress signal 可视化</strong>：长任务 agent 如果连续几步 score 不涨，应当暂停、回滚或换策略。</li>
+  <li><strong>把失败变成 regression task</strong>：你指出“不够细”“图少”“公式没渲染”“页面不好看”，这些都应该进入 verifier criteria。</li>
+</ul>
+
+<h2 id="14-结论">14. 结论</h2>
+
+<p>这篇最该记住的是一句话：<strong>verification 是一条新的 scaling axis</strong>。当模型越来越能生成多个看似可行的解时，系统价值不只来自“多生成”，还来自“更细地判断哪个解真的对”。LLM-as-a-Verifier 的连续 score formulation 很适合 agent 时代，因为它同时能做 candidate selection、progress tracking 和 dense reward。</p>
+
+<p>My read is, 这篇可以作为我们后续设计 paper-reading 自动化评估器的理论参考。我们不一定需要完整复现 PPT，但应该学习它的三个动作：保留分布而不是压成单分、拆 criteria 而不是问一个大而空的问题、把 verifier signal 接入迭代过程而不是只做最后评分。</p>
+
+            </div>
+        </article>
+    </div>
+
+    <aside class="blog-toc-sidebar">
+        <nav id="blog-toc" class="blog-toc-nav" aria-label="Table of contents">
+            <div class="blog-toc-header">
+                <div class="blog-toc-title">On This Page</div>
+                <button
+                    id="blog-toc-toggle"
+                    class="blog-toc-toggle"
+                    type="button"
+                    aria-controls="blog-toc-list"
+                    aria-expanded="true"
+                    aria-label="收起目录"
+                    title="收起目录"
+                >
+                    <svg class="blog-toc-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="blog-toc-list" class="blog-toc-list"></div>
+        </nav>
+    </aside>
+</div>
+
+    </div>
+    <footer class="footer border-top py-2 mt-5 bg-white small">
+    <div class="container-lg">
+        <div class="row my-3">
+            <div class="col-6">
+                <div class="text-muted">
+                    <i>Last updated: Jul 2026</i>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="text-right text-muted">
+                    Built with <a href="https://github.com/luost26/academic-homepage" target="_blank"><i class="fas fa-pencil-ruler"></i> academic-homepage</a>.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <pagefind-config
+        bundle-path="/Ryanhu2001/pagefind/"
+        base-url="/Ryanhu2001/"
+        excerpt-length="30"
+        lang="zh-CN"></pagefind-config>
+    <div class="modal fade site-search-modal" id="siteSearchModal" tabindex="-1" role="dialog" aria-labelledby="siteSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 mb-0" id="siteSearchModalLabel">Search</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <pagefind-searchbox placeholder="搜索 wiki、论文笔记、关键词..." show-sub-results="true" hide-shortcut="true"></pagefind-searchbox>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/github-buttons/2.14.2/buttons.min.js" integrity="sha512-OYwZx04hKFeFNYrWxIyo3atgGpb+cxU0ENWBZs72X7T9U+NoHPM1ftUn/Mfw7dRDXrqWA6M1wBg6z6fGE32aeA==" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+    <script type="module" src="/Ryanhu2001/pagefind/pagefind-component-ui.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tocbot@4.36.8/dist/tocbot.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+              delimiters: [
+                  {left: '$$', right: '$$', display: true},
+                  {left: '\\[', right: '\\]', display: true},
+                  {left: '$', right: '$', display: false},
+                  {left: '\\(', right: '\\)', display: false}
+              ],
+              throwOnError : false
+            });
+            
+            Prism.highlightAll();
+            
+
+            var siteSearchModal = document.getElementById("siteSearchModal");
+            var siteSearchBox = siteSearchModal ? siteSearchModal.querySelector("pagefind-searchbox") : null;
+            function focusSiteSearch() {
+                window.setTimeout(function() {
+                    if (siteSearchBox && typeof siteSearchBox.focus === "function") {
+                        siteSearchBox.focus();
+                    }
+                }, 80);
+            }
+            if (siteSearchModal && window.jQuery) {
+                window.jQuery(siteSearchModal).on("shown.bs.modal", focusSiteSearch);
+            }
+            document.addEventListener("keydown", function(event) {
+                var key = String(event.key || "").toLowerCase();
+                var isSearchShortcut = key === "k" && (event.metaKey || event.ctrlKey);
+                var isModalOpen = siteSearchModal && siteSearchModal.classList.contains("show");
+                var target = event.target;
+                var isTyping = target && (
+                    target.tagName === "INPUT" ||
+                    target.tagName === "TEXTAREA" ||
+                    target.isContentEditable
+                );
+                if (!isSearchShortcut || (isTyping && isModalOpen) || !siteSearchModal || !window.jQuery) return;
+                event.preventDefault();
+                window.jQuery(siteSearchModal).modal("show");
+            });
+        });
+    </script>
+    
+    <script src="/Ryanhu2001/assets/js/blog.js"></script>
+    
+    <script src="/Ryanhu2001/assets/js/common.js"></script>
+    <script src="/Ryanhu2001/assets/js/bubble_visual_hash.js"></script>
+</body>
+</html>

@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<!-- Template: https://github.com/luost26/academic-homepage -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Natively Unlearnable Large Language Models - Ryan</title>
+    <link rel="icon" href="/Ryanhu2001/assets/ryan/avator.jpg" type="image/jpeg">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/pagefind/pagefind-component-ui.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/blog.css">
+    
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/global.css">
+</head>
+<body class="bg-light" >
+    <nav class="navbar navbar-expand-sm navbar-light fixed-top mb-5 shadow-sm">
+    <div class="container-lg">
+        <a class="navbar-brand" href="/Ryanhu2001/"><strong>Ryan</strong></a>
+        <button class="navbar-toggler" style="font-size: 1em; padding: 0.5em;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-map"></i> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/">Home</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/wiki/">Wiki</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/paper-reading/">Paper Reading</a>
+                </li>
+                
+                <li class="nav-item nav-search-item">
+                    <button class="nav-link nav-search-button" type="button" data-toggle="modal" data-target="#siteSearchModal" aria-label="Search site">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <span>Search</span>
+                        <kbd>⌘K</kbd>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <div class="container-lg">
+        
+
+
+
+
+<div class="reading-progress" aria-hidden="true">
+    <span></span>
+</div>
+
+<div class="blog-layout-wrapper">
+    <div class="blog-main">
+        <div class="mb-3">
+            <a class="small" href="/Ryanhu2001/paper-reading/">
+                <i class="fas fa-arrow-left"></i> Paper Reading
+            </a>
+        </div>
+
+        <article class="bg-white rounded-xl p-4 p-md-5 mb-4 wiki-note-card" data-pagefind-body>
+            <div class="blog-content wiki-note">
+                <h1 id="nulls把可遗忘性做进模型而不是训练完再补救">NULLs：把“可遗忘性”做进模型，而不是训练完再补救</h1>
+
+<ul>
+  <li><strong>Paper</strong>: <a href="https://arxiv.org/abs/2606.13873">Natively Unlearnable Large Language Models</a></li>
+  <li><strong>Version</strong>: arXiv v1, 2026-06-11</li>
+  <li><strong>类型</strong>: native unlearning architecture / source-level data control / model safety</li>
+  <li><strong>关键词</strong>: NULLs, memorization sinks, source masks, sink-off, retraining baseline, Harry Potter unlearning, source provenance</li>
+</ul>
+
+<h2 id="读法给人和-agent-的路标">读法：给人和 agent 的路标</h2>
+
+<p>这篇的关键不是提出一个新的 post-hoc unlearning loss，而是换了问题设定：<strong>如果以后一定会有人要求你删除某些训练来源，为什么不在预训练时就把来源贡献隔离出来？</strong></p>
+
+<p>给 agent 之后检索，关键词是：<code class="language-plaintext highlighter-rouge">NULLs</code>、<code class="language-plaintext highlighter-rouge">Natively Unlearnable LLMs</code>、<code class="language-plaintext highlighter-rouge">source-specific sinks</code>、<code class="language-plaintext highlighter-rouge">sink-off</code>、<code class="language-plaintext highlighter-rouge">truth ratio</code>、<code class="language-plaintext highlighter-rouge">Wikipedia 6M articles</code>、<code class="language-plaintext highlighter-rouge">Harry Potter relearning attack</code>、<code class="language-plaintext highlighter-rouge">N_gen 500 N_pool 8000 N_source 100</code>。</p>
+
+<h2 id="一句话判断">一句话判断</h2>
+
+<p>NULLs 的核心思路是让模型同时拥有两套记忆通道：共享 backbone 学跨来源的通用知识，source-specific sink neurons 存每个来源独有的信息；部署时只要不激活某个 source 的 sink，就能近似“像没训练过这个来源一样”，不需要梯度更新，也不需要 retained data。</p>
+
+<h2 id="图表优先读法">图表优先读法</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>先看</th>
+      <th>图/表</th>
+      <th>读完应该抓住什么</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Figure 1：NULLs overview</td>
+      <td>source-specific 信息被引导到 sink neurons，共享知识留在 backbone</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Wikipedia retraining match</td>
+      <td>Sink-Off 是否真的接近 gold retraining，是主证据</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Harry Potter / adversarial extraction</td>
+      <td>topic-level unlearning 和攻击鲁棒性是边界测试</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>General capability 表</td>
+      <td>原生可遗忘不能以牺牲通用能力为代价</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>sink overlap / activation</td>
+      <td>机制是否真分离来源信息，要看 sink 选择性</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><img src="../assets/paper-reading/nulls/source-sink-routing.svg" alt="NULLs source sink routing" /></p>
+
+<p>这张自制图把 NULLs 的机制压成一句话：共享事实留在 backbone，来源独有事实被 source mask 路由到 sink neurons；unlearning 时不是重新训练或梯度清除，而是不再激活目标 source 的 sink。这样后面读 Wikipedia 和 Harry Potter 实验时，能更清楚它为什么强调 source-level routing。</p>
+
+<h2 id="先看架构图">先看架构图</h2>
+
+<p><img src="../assets/paper-reading/nulls/overview.png" alt="NULLs overview" /></p>
+
+<p>Figure 1 的读法：</p>
+
+<ul>
+  <li><strong>标准 transformer</strong>：所有来源都更新同一组参数，来源贡献混在一起。</li>
+  <li><strong>NULLs</strong>：每个 source 有一个 deterministic sparse mask，激活共享 backbone 加上 sink pool 的一小部分。</li>
+  <li><strong>Unlearning</strong>：目标 source 的 mask 不再激活，或者永久清零对应 sink neurons。</li>
+</ul>
+
+<p>这不是 MoE 那种“每个来源一个专家”。NULLs 的 source mask 来自共享 sink pool 的组合子集，所以可以支持非常多来源，而不是参数量随 source 数线性增长。</p>
+
+<h2 id="方法机制">方法机制</h2>
+
+<p>NULLs 只改 transformer 的 MLP hidden activations。标准 LLaMA MLP 类似：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="n">silu</span><span class="p">(</span><span class="n">fc_1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">*</span> <span class="n">fc_2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="k">return</span> <span class="n">proj</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>NULLs 变成：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="n">silu</span><span class="p">(</span><span class="n">fc_1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">*</span> <span class="n">fc_2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">mask</span><span class="p">(</span><span class="n">source_id</span><span class="p">)</span>
+<span class="k">return</span> <span class="n">proj</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>其中 mask 做两件事：</p>
+
+<ul>
+  <li>永远激活 <code class="language-plaintext highlighter-rouge">N_gen</code> 个 shared backbone neurons；</li>
+  <li>只激活 sink pool 中由 <code class="language-plaintext highlighter-rouge">source_id</code> 决定的一小部分 <code class="language-plaintext highlighter-rouge">N_source</code> neurons。</li>
+</ul>
+
+<p>Wikipedia 实验的关键超参：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>参数</th>
+      <th style="text-align: right">值</th>
+      <th>含义</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>model size</td>
+      <td style="text-align: right">1B</td>
+      <td>SmolLM-style transformer</td>
+    </tr>
+    <tr>
+      <td>training</td>
+      <td style="text-align: right">7 epochs, about 32B tokens</td>
+      <td>Wikipedia article-level setting</td>
+    </tr>
+    <tr>
+      <td>sources</td>
+      <td style="text-align: right">about 6M</td>
+      <td>每篇 Wikipedia article 一个 source</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">N_gen</code></td>
+      <td style="text-align: right">500</td>
+      <td>shared backbone neurons</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">N_pool</code></td>
+      <td style="text-align: right">8000</td>
+      <td>sink pool size</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">N_source</code></td>
+      <td style="text-align: right">100</td>
+      <td>每个 source 激活的 sink neurons</td>
+    </tr>
+    <tr>
+      <td>overlap ratio</td>
+      <td style="text-align: right">0.013</td>
+      <td>source masks 的期望重叠比例</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>作者还做了 cross-document attention masking，避免一个训练 context 里多个文档之间泄漏 sink activation。</p>
+
+<h2 id="为什么-source-specific-信息会进-sink">为什么 source-specific 信息会进 sink</h2>
+
+<p>论文的解释很漂亮：</p>
+
+<ul>
+  <li>某个 source 独有事实只在这个 source 出现；</li>
+  <li>shared backbone 虽然也收到这个事实的梯度，但它同时被所有其他 source 的更新干扰；</li>
+  <li>该 source 的 sink neurons 收到同样信号，但被其他 source 干扰少得多；</li>
+  <li>因此独有事实更快被 sink fit 掉，随后 backbone 上的梯度压力消失；</li>
+  <li>最终 backbone 更倾向存共享知识，sink 更倾向存 source-specific 知识。</li>
+</ul>
+
+<p>这个机制不需要人工标注“哪些事实属于哪个来源”。source label 只用于 mask 路由。</p>
+
+<h2 id="实验-1wikipedia-文章级遗忘">实验 1：Wikipedia 文章级遗忘</h2>
+
+<p>作者把约 <strong>6M Wikipedia articles</strong> 当作独立来源，测“关掉一篇文章的 sink”是否能删除独有事实，同时保留相邻文章里的共享事实。</p>
+
+<p>事实分三类：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Fact type</th>
+      <th>含义</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Shared facts</td>
+      <td>多个来源都支持的事实</td>
+    </tr>
+    <tr>
+      <td>Article-specific facts</td>
+      <td>只在目标文章里出现的事实</td>
+    </tr>
+    <tr>
+      <td>Unique facts</td>
+      <td>retrained-without-target 后也预测不出的 article-specific facts</td>
+    </tr>
+    <tr>
+      <td>Inferred facts</td>
+      <td>retrained-without-target 仍能通过其他知识推出来的 article-specific facts</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><img src="../assets/paper-reading/nulls/retraining-match.png" alt="NULLs matches retraining" /></p>
+
+<p>Figure 4 的结论是：Sink-Off 和 gold-standard retraining 很接近。Unique facts 的 truth ratio 降下去，Inferred / Shared facts 保留。这正是 unlearning 想要的行为：删掉来源独有贡献，不做主题级误伤。</p>
+
+<p>对比 post-hoc gradient unlearning，Figure 3(c) 显示 NPO 和 gradient ascent 会让 shared facts 和 article-specific facts 一起下降，说明它们很难把“这篇文章独有的信息”和“相邻文章也支持的信息”分开。</p>
+
+<h2 id="实验-2harry-potter-topic-level-遗忘">实验 2：Harry Potter topic-level 遗忘</h2>
+
+<p>第二个实验把来源定义得更粗：训练 1B 模型在 <strong>3.8B tokens</strong> 的 C4 + 7 本 Harry Potter books 上，C4 被语义聚成 5000 个 clusters，Harry Potter 作为一个额外 cluster。</p>
+
+<p>结果：</p>
+
+<ul>
+  <li>Sink-On 时，模型在 Harry Potter book text 上 loss 更低，说明相关知识可访问；</li>
+  <li>Sink-Off 时，loss 和 cloze QA truth ratio 匹配 retrained-without-Harry-Potter 模型；</li>
+  <li>生成样例中，Sink-On 会继续进入相关实体和设定，Sink-Off 会保持语言连贯但转到无关主题；</li>
+  <li>adversarial prompting 下，Sink-Off 的 ACR 接近 retrained；</li>
+  <li>relearning attack 下，post-hoc NPO 在少于 <strong>10 fine-tuning steps</strong> 内被反转，而 NULLs Sink-Off 的 relearning dynamics 接近从未见过该数据的 retrained model。</li>
+</ul>
+
+<p><img src="../assets/paper-reading/nulls/attack-robustness.png" alt="NULLs attack robustness" /></p>
+
+<p>这部分最重要的不是“它能删 Harry Potter”，而是它说明 native isolation 对 adversarial extraction 和 relearning attack 更稳。post-hoc 方法常常只是把知识压到不容易问出来的位置，NULLs 是从路由上不激活对应来源。</p>
+
+<h2 id="general-capability-是否掉了">General capability 是否掉了</h2>
+
+<p>Table 1 比较 NULLs 和同规模 standard transformer：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Benchmark</th>
+      <th style="text-align: right">NULLs</th>
+      <th style="text-align: right">Standard</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ARC-E</td>
+      <td style="text-align: right">0.428 ± 0.009</td>
+      <td style="text-align: right">0.434 ± 0.010</td>
+    </tr>
+    <tr>
+      <td>Winogrande</td>
+      <td style="text-align: right">0.530 ± 0.014</td>
+      <td style="text-align: right">0.510 ± 0.015</td>
+    </tr>
+    <tr>
+      <td>PIQA</td>
+      <td style="text-align: right">0.643 ± 0.011</td>
+      <td style="text-align: right">0.645 ± 0.010</td>
+    </tr>
+    <tr>
+      <td>SciQ</td>
+      <td style="text-align: right">0.639 ± 0.016</td>
+      <td style="text-align: right">0.631 ± 0.015</td>
+    </tr>
+    <tr>
+      <td>Average</td>
+      <td style="text-align: right">0.560 ± 0.013</td>
+      <td style="text-align: right">0.555 ± 0.013</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>至少在 1B 规模和这四个 benchmark 上，NULLs 没有明显牺牲通用能力。</p>
+
+<h2 id="我怎么判断">我怎么判断</h2>
+
+<h3 id="可信之处">可信之处</h3>
+
+<ul>
+  <li><strong>问题设定非常清楚</strong>：source-level unlearning 不再靠事后“擦除”，而是预训练阶段就设计可控参数通道。</li>
+  <li><strong>有 retraining baseline</strong>：NULLs 和 gold-standard retraining 对齐，这是 unlearning 论文里很重要的证据。</li>
+  <li><strong>有 adversarial/relearning 测试</strong>：不只看普通 QA prompt。</li>
+  <li><strong>参数量没有随 6M sources 线性爆炸</strong>：mask 的组合性是关键。</li>
+</ul>
+
+<h3 id="需要警惕">需要警惕</h3>
+
+<ul>
+  <li><strong>只验证到 1B 模型</strong>：大模型规模、MoE、长上下文、多模态上是否成立还不知道。</li>
+  <li><strong>source 必须预先定义</strong>：如果删除请求和训练时 source boundary 不一致，NULLs 不能自动解决。</li>
+  <li><strong>post-training 是开放问题</strong>：SFT/RL 会不会把 source-specific 信息重新写进 backbone 或新 head，论文没有解决。</li>
+  <li><strong>路由本身是系统问题</strong>：推理时要知道或估计该激活哪个 source sink，多 source prompt 可能不适合单一 nearest-sink routing。</li>
+</ul>
+
+<h2 id="对我的价值">对我的价值</h2>
+
+<p>这篇对个人知识库/数据治理有一个很强的启发：<strong>可删除性是数据结构问题，不只是删除命令问题。</strong></p>
+
+<p>对应到 wiki/paper-reading：</p>
+
+<ul>
+  <li>每篇 note、每张图、每个引用都应该有 provenance；</li>
+  <li>知识合成时要能追溯到 source；</li>
+  <li>如果以后要删除某个来源，最好别让它早就被无结构地揉进所有总结里。</li>
+</ul>
+
+<p>对模型训练也是一样：如果法律、隐私、版权要求 source-level control，那就不能指望训练完再用一个 loss 修干净。</p>
+
+<h2 id="一句话收束">一句话收束</h2>
+
+<p>NULLs 这篇最有意思的是提出了一种“训练时即治理”的视角：让模型从一开始就带着来源边界学习，而不是等模型变成一锅粥后再试图把某个成分捞出来。</p>
+
+            </div>
+        </article>
+    </div>
+
+    <aside class="blog-toc-sidebar">
+        <nav id="blog-toc" class="blog-toc-nav" aria-label="Table of contents">
+            <div class="blog-toc-header">
+                <div class="blog-toc-title">On This Page</div>
+                <button
+                    id="blog-toc-toggle"
+                    class="blog-toc-toggle"
+                    type="button"
+                    aria-controls="blog-toc-list"
+                    aria-expanded="true"
+                    aria-label="收起目录"
+                    title="收起目录"
+                >
+                    <svg class="blog-toc-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="blog-toc-list" class="blog-toc-list"></div>
+        </nav>
+    </aside>
+</div>
+
+    </div>
+    <footer class="footer border-top py-2 mt-5 bg-white small">
+    <div class="container-lg">
+        <div class="row my-3">
+            <div class="col-6">
+                <div class="text-muted">
+                    <i>Last updated: Jul 2026</i>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="text-right text-muted">
+                    Built with <a href="https://github.com/luost26/academic-homepage" target="_blank"><i class="fas fa-pencil-ruler"></i> academic-homepage</a>.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <pagefind-config
+        bundle-path="/Ryanhu2001/pagefind/"
+        base-url="/Ryanhu2001/"
+        excerpt-length="30"
+        lang="zh-CN"></pagefind-config>
+    <div class="modal fade site-search-modal" id="siteSearchModal" tabindex="-1" role="dialog" aria-labelledby="siteSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 mb-0" id="siteSearchModalLabel">Search</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <pagefind-searchbox placeholder="搜索 wiki、论文笔记、关键词..." show-sub-results="true" hide-shortcut="true"></pagefind-searchbox>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/github-buttons/2.14.2/buttons.min.js" integrity="sha512-OYwZx04hKFeFNYrWxIyo3atgGpb+cxU0ENWBZs72X7T9U+NoHPM1ftUn/Mfw7dRDXrqWA6M1wBg6z6fGE32aeA==" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+    <script type="module" src="/Ryanhu2001/pagefind/pagefind-component-ui.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tocbot@4.36.8/dist/tocbot.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+              delimiters: [
+                  {left: '$$', right: '$$', display: true},
+                  {left: '\\[', right: '\\]', display: true},
+                  {left: '$', right: '$', display: false},
+                  {left: '\\(', right: '\\)', display: false}
+              ],
+              throwOnError : false
+            });
+            
+            Prism.highlightAll();
+            
+
+            var siteSearchModal = document.getElementById("siteSearchModal");
+            var siteSearchBox = siteSearchModal ? siteSearchModal.querySelector("pagefind-searchbox") : null;
+            function focusSiteSearch() {
+                window.setTimeout(function() {
+                    if (siteSearchBox && typeof siteSearchBox.focus === "function") {
+                        siteSearchBox.focus();
+                    }
+                }, 80);
+            }
+            if (siteSearchModal && window.jQuery) {
+                window.jQuery(siteSearchModal).on("shown.bs.modal", focusSiteSearch);
+            }
+            document.addEventListener("keydown", function(event) {
+                var key = String(event.key || "").toLowerCase();
+                var isSearchShortcut = key === "k" && (event.metaKey || event.ctrlKey);
+                var isModalOpen = siteSearchModal && siteSearchModal.classList.contains("show");
+                var target = event.target;
+                var isTyping = target && (
+                    target.tagName === "INPUT" ||
+                    target.tagName === "TEXTAREA" ||
+                    target.isContentEditable
+                );
+                if (!isSearchShortcut || (isTyping && isModalOpen) || !siteSearchModal || !window.jQuery) return;
+                event.preventDefault();
+                window.jQuery(siteSearchModal).modal("show");
+            });
+        });
+    </script>
+    
+    <script src="/Ryanhu2001/assets/js/blog.js"></script>
+    
+    <script src="/Ryanhu2001/assets/js/common.js"></script>
+    <script src="/Ryanhu2001/assets/js/bubble_visual_hash.js"></script>
+</body>
+</html>

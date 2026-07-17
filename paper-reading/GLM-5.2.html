@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<!-- Template: https://github.com/luost26/academic-homepage -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>GLM-5.2 - Ryan</title>
+    <link rel="icon" href="/Ryanhu2001/assets/ryan/avator.jpg" type="image/jpeg">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/pagefind/pagefind-component-ui.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/blog.css">
+    
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/global.css">
+</head>
+<body class="bg-light" >
+    <nav class="navbar navbar-expand-sm navbar-light fixed-top mb-5 shadow-sm">
+    <div class="container-lg">
+        <a class="navbar-brand" href="/Ryanhu2001/"><strong>Ryan</strong></a>
+        <button class="navbar-toggler" style="font-size: 1em; padding: 0.5em;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-map"></i> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/">Home</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/wiki/">Wiki</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/paper-reading/">Paper Reading</a>
+                </li>
+                
+                <li class="nav-item nav-search-item">
+                    <button class="nav-link nav-search-button" type="button" data-toggle="modal" data-target="#siteSearchModal" aria-label="Search site">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <span>Search</span>
+                        <kbd>⌘K</kbd>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <div class="container-lg">
+        
+
+
+
+
+<div class="reading-progress" aria-hidden="true">
+    <span></span>
+</div>
+
+<div class="blog-layout-wrapper">
+    <div class="blog-main">
+        <div class="mb-3">
+            <a class="small" href="/Ryanhu2001/paper-reading/">
+                <i class="fas fa-arrow-left"></i> Paper Reading
+            </a>
+        </div>
+
+        <article class="bg-white rounded-xl p-4 p-md-5 mb-4 wiki-note-card" data-pagefind-body>
+            <div class="blog-content wiki-note">
+                <h1 id="glm-521m-context-不是卖点长链工程任务才是卖点">GLM-5.2：1M context 不是卖点，长链工程任务才是卖点</h1>
+
+<ul>
+  <li><strong>Source</strong>: <a href="https://docs.z.ai/guides/llm/glm-5.2">Z.AI GLM-5.2 官方文档</a></li>
+  <li><strong>类型</strong>: 官方模型文档 / coding-agent 使用说明 / benchmark release</li>
+  <li><strong>关键词</strong>: 1M context, 128K output, long-horizon coding, MCP, project-scale engineering</li>
+</ul>
+
+<h2 id="读法给人和-agent-的路标">读法：给人和 agent 的路标</h2>
+
+<p>这篇不是 paper，所以不要用“方法、消融、方差”那套标准硬套。更合理的读法是：把 GLM-5.2 当成一个 <strong>长链工程 agent 的官方能力说明和任务样例库</strong>。快速路线是：先记 1M context / 128K output / MCP / function call，再看官方给的完整 task prompt，最后把 benchmark 数字按“官方 claim，需要更多协议细节”处理。</p>
+
+<p>给 agent 以后检索时，关键词是：<code class="language-plaintext highlighter-rouge">1M context</code>、<code class="language-plaintext highlighter-rouge">128K output</code>、<code class="language-plaintext highlighter-rouge">thinking mode</code>、<code class="language-plaintext highlighter-rouge">MCP</code>、<code class="language-plaintext highlighter-rouge">project-scale engineering</code>、<code class="language-plaintext highlighter-rouge">Terminal-Bench 2.1 81.0</code>、<code class="language-plaintext highlighter-rouge">SWE-bench Pro 62.1</code>、<code class="language-plaintext highlighter-rouge">task seed</code>。这篇更适合用来设计自己的长链 coding-agent 测试，而不是作为严肃模型报告的唯一证据。</p>
+
+<h2 id="一句话判断">一句话判断</h2>
+
+<p>GLM-5.2 的官方叙事不是“上下文更长”这么简单，而是把 1M context、128K output、thinking mode、function calling、MCP 和工程任务示例组合成一个长链 coding agent；但它的公开材料更像产品技术文档，很多 benchmark protocol 还需要等更完整报告才能严格复查。</p>
+
+<h2 id="图表优先读法">图表优先读法</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>先看</th>
+      <th>图/表/例子</th>
+      <th>读完应该抓住什么</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>long-horizon agent map</td>
+      <td>GLM-5.2 的卖点是长上下文 + 工具 + MCP + 长输出的组合</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>coding bench / long-context 图</td>
+      <td>官方数字要看清 benchmark protocol 和是否可复查</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>task examples</td>
+      <td>这类 model release 文档的价值在具体任务形态和 API 约束</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>机制理解</td>
+      <td>它更像产品能力说明，不是完整 peer-reviewed technical report</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="先抓住四个点">先抓住四个点</h2>
+
+<ol>
+  <li><strong>核心规格很明确。</strong> GLM-5.2 是 text-in/text-out 的 flagship foundation model，context length 1M，maximum output tokens 128K。</li>
+  <li><strong>目标任务是 project-scale engineering。</strong> 文档反复强调 large-scale implementation、automated research、performance optimization、requirements-to-deployable-products，而不是单轮代码补全。</li>
+  <li><strong>官方给了很多完整 task prompt。</strong> 包括整项目技术审计、长链重构、生产标准约束、Android 真机调试、微信小程序迁移、小游戏、论文复现、Remotion code-to-video。</li>
+  <li><strong>benchmark 数字强，但评测细节不够 paper 级。</strong> Terminal-Bench 2.1 81.0 vs GLM-5.1 62.0，SWE-bench Pro 62.1 vs 58.4，这些很有信息量；但 FrontierSWE/PostTrainBench/SWE-Marathon 的完整协议、样本和方差在文档页里没有展开。</li>
+</ol>
+
+<h2 id="先看我整理的结构图">先看我整理的结构图</h2>
+
+<p><img src="../assets/paper-reading/glm-52/long-horizon-agent-map.svg" alt="GLM-5.2 long-horizon agent map" /></p>
+
+<p>GLM-5.2 的重点不是“能塞 1M token”这个规格本身，而是把 1M context、128K output、thinking、function call、MCP 和工程任务模板连成一个长链 agent。图里右侧这些 task family，比单纯的 long-context 曲线更接近它的真实使用场景。</p>
+
+<p>图里有三个锚点：</p>
+
+<ul>
+  <li><strong>长上下文只是底座</strong>：真正的问题是模型能否在长项目里保持目标、约束、调用链和失败状态。</li>
+  <li><strong>工具协议是能力的一部分</strong>：function call、MCP、structured output、context caching 决定它能不能接到真实工程环境。</li>
+  <li><strong>task family 比榜单更可复用</strong>：官方给的项目审计、重构、Android 调试、论文复现，更适合拿来做个人 benchmark seed。</li>
+</ul>
+
+<h2 id="官方图--数据作为证据">官方图 / 数据作为证据</h2>
+
+<p><img src="../assets/paper-reading/glm-52/long-context.png" alt="GLM-5.2 long-context benchmark" /></p>
+
+<p>这张图承载的是 GLM-5.2 的主 claim：1M context 要能转化成长链工程任务能力。读的时候要注意，它不是单纯 needle retrieval，而是把 long-horizon coding benchmark 放进叙事里。</p>
+
+<p>这张图要谨慎读：它说明官方想证明“1M context 对工程任务有用”，但如果没有完整 protocol，就不能只凭图判断和其他模型的绝对强弱。真正可写进记忆的是方向：Z.AI 把长上下文和长链 coding 放在同一个产品叙事里。</p>
+
+<p><img src="../assets/paper-reading/glm-52/coding-bench.png" alt="GLM-5.2 coding benchmark" /></p>
+
+<p>第二张图对应标准 coding benchmark。文档正文明确给出两个关键数：Terminal-Bench 2.1 上 GLM-5.2 是 81.0，GLM-5.1 是 62.0；SWE-bench Pro 上 GLM-5.2 是 62.1，GLM-5.1 是 58.4。</p>
+
+<p>这张图的读法是：Terminal-Bench 2.1 的提升很大，说明 GLM-5.2 更强调 shell/工具/多步任务；SWE-bench Pro 的提升较小，但仍有进步。两者合起来比只看 SWE-bench 更能说明“长链工程 agent”的定位。</p>
+
+<h2 id="基本规格">基本规格</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>项</th>
+      <th>GLM-5.2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>定位</td>
+      <td>Flagship Foundation Model</td>
+    </tr>
+    <tr>
+      <td>输入/输出</td>
+      <td>Text / Text</td>
+    </tr>
+    <tr>
+      <td>Context length</td>
+      <td>1M</td>
+    </tr>
+    <tr>
+      <td>Maximum output tokens</td>
+      <td>128K</td>
+    </tr>
+    <tr>
+      <td>能力开关</td>
+      <td>Thinking mode、streaming、function call、context caching、structured output、MCP</td>
+    </tr>
+    <tr>
+      <td>Quickstart 典型设置</td>
+      <td><code class="language-plaintext highlighter-rouge">thinking: enabled</code>、<code class="language-plaintext highlighter-rouge">reasoning_effort: max</code>、<code class="language-plaintext highlighter-rouge">max_tokens: 4096</code>、<code class="language-plaintext highlighter-rouge">temperature: 1.0</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这里要注意：1M context 和 128K output 只是规格。真正有价值的是模型能不能在几十轮工具调用、跨文件修改、测试失败、重构回滚这些任务里持续保持约束。</p>
+
+<h2 id="关键-benchmark-数字">关键 benchmark 数字</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Benchmark</th>
+      <th style="text-align: right">GLM-5.2</th>
+      <th style="text-align: right">对比项</th>
+      <th>备注</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Terminal-Bench 2.1</td>
+      <td style="text-align: right">81.0</td>
+      <td style="text-align: right">GLM-5.1: 62.0</td>
+      <td>文档称 GLM-5.2 接近 Claude Opus 4.8 的 85.0，并领先 Gemini 3.1 Pro</td>
+    </tr>
+    <tr>
+      <td>SWE-bench Pro</td>
+      <td style="text-align: right">62.1</td>
+      <td style="text-align: right">GLM-5.1: 58.4</td>
+      <td>标准 coding benchmark</td>
+    </tr>
+    <tr>
+      <td>FrontierSWE</td>
+      <td style="text-align: right">未给表格原始数</td>
+      <td style="text-align: right">文档称只落后 Opus 4.8 约 1%</td>
+      <td>需要完整 protocol 才能严格复核</td>
+    </tr>
+    <tr>
+      <td>PostTrainBench / SWE-Marathon</td>
+      <td style="text-align: right">未给表格原始数</td>
+      <td style="text-align: right">文档称多项超过 GPT-5.5 与 Opus 4.7</td>
+      <td>适合作为官方 claim 记录，不适合作为独立结论</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>我的读法是：Terminal-Bench 2.1 和 SWE-bench Pro 两个数字最可写进记忆；其他 long-horizon benchmark 更像方向性证据，应该等完整报告或 leaderboard 细节再下强结论。</p>
+
+<h2 id="官方给的-task-例子">官方给的 task 例子</h2>
+
+<p>GLM-5.2 文档最有用的部分不是宣传语，而是这些完整任务模板。它们很适合拿来当自己评测 coding agent 的 seed。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>场景</th>
+      <th>官方任务的核心要求</th>
+      <th>它在测什么</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Project-level codebase takeover</td>
+      <td>读完整项目，输出架构图、模块职责、API contract、数据流、调用链、技术债、工程约束</td>
+      <td>长上下文理解、项目抽象、约束保持</td>
+    </tr>
+    <tr>
+      <td>Long-horizon refactoring</td>
+      <td>不改业务逻辑/API/runtime behavior，先给 plan、影响范围、风险边界、验证方法，再实现并测试</td>
+      <td>多步执行、风险控制、测试闭环</td>
+    </tr>
+    <tr>
+      <td>Production-grade standards stress test</td>
+      <td>遵守 lint/build/test/commit 规范，不加依赖、不改 API contract、不主动提交</td>
+      <td>约束遵守、工程卫生、边界感</td>
+    </tr>
+    <tr>
+      <td>Android 真机调试</td>
+      <td>Kotlin 客户端实现，多会话、流式消息、语音、通知、断线重连，安装到真机，用 ADB/logcat/screenshot 调试</td>
+      <td>代码生成 + 设备反馈闭环</td>
+    </tr>
+    <tr>
+      <td>微信小程序迁移</td>
+      <td>分析 Web 项目页面结构、用户路径、API contract、平台约束，再迁移到小程序</td>
+      <td>跨平台工程迁移</td>
+    </tr>
+    <tr>
+      <td>Mini game</td>
+      <td>先设计规则、状态机、关卡、计分、失败/结算，再实现可玩循环</td>
+      <td>状态机和产品完整性</td>
+    </tr>
+    <tr>
+      <td>Research reproduction</td>
+      <td>根据 paper/dataset 补实现细节，写 PyTorch 模型、loss、data pipeline、训练/推理脚本，跑通并对齐指标</td>
+      <td>论文到工程复现</td>
+    </tr>
+    <tr>
+      <td>Remotion code-to-video</td>
+      <td>用 React/Remotion 写视频 composition，渲染 MP4</td>
+      <td>代码驱动多媒体生成</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这些例子比单个 benchmark 更贴近真实使用，因为它们把“理解需求、组织计划、改代码、跑工具、验证、解释剩余 gap”放在同一个任务里。</p>
+
+<p>我会把这些例子直接当成自己的测试种子。它们比“写一个 todo app”更好，因为每个任务都有明确的工程约束：</p>
+
+<ul>
+  <li><strong>不能只产出代码</strong>：还要先理解项目、给风险边界、说明验证方法。</li>
+  <li><strong>不能只靠长上下文</strong>：还要会调用工具、读日志、处理平台限制。</li>
+  <li><strong>不能只追一次通过</strong>：长链任务更看重计划、回滚、解释 gap 和最终交付。</li>
+</ul>
+
+<h2 id="机制上怎么理解">机制上怎么理解</h2>
+
+<p>GLM-5.2 的文档没有公开完整训练 pipeline，所以这里不能把未知内容补成事实。但从文档可以明确看出它的运行机制目标：</p>
+
+<ol>
+  <li><strong>把项目上下文一次性放进工作记忆。</strong> 1M context 用来减少长任务中的上下文断裂。</li>
+  <li><strong>用 thinking mode 支撑长链计划。</strong> Quickstart 推荐 <code class="language-plaintext highlighter-rouge">reasoning_effort=max</code>，说明官方建议复杂工程任务启用更强推理预算。</li>
+  <li><strong>用工具能力闭环。</strong> Function call、MCP、context caching、structured output 都是 agent 系统里的关键部件。</li>
+  <li><strong>把输出预算拉长。</strong> 128K output 让模型能生成更长的 patch、plan、test report、复现说明。</li>
+</ol>
+
+<p>换句话说，它的核心不是“模型能读 1M tokens”，而是“模型在读完之后还能持续执行工程判断”。</p>
+
+<p>这也是我对 GLM-5.2 的判断边界：如果它只是在长上下文问答里强，那只是模型规格；如果它能在这些 task seed 里持续保持约束、运行工具并修正失败，那才是官方文档想表达的能力。</p>
+
+<h2 id="需要警惕的地方">需要警惕的地方</h2>
+
+<ul>
+  <li>文档说“Solid 1M lossless context”，但没有在页面里展开完整评测协议、误差、样本分布和失败案例。</li>
+  <li>Long-horizon benchmark 的图很有价值，但如果要做严格比较，还需要知道 agent harness、工具、时间限制、是否允许上下文压缩、失败如何计分。</li>
+  <li>官方给的案例 prompt 很完整，但它们是推荐试法，不等于每个真实项目都能稳定一次通过。</li>
+  <li>1M context 会放大输入治理问题：无关文件、过期文档、生成文件、日志噪声都可能进入模型视野，context 越长越需要 repo hygiene。</li>
+</ul>
+
+<h2 id="对我的价值">对我的价值</h2>
+
+<p>如果拿 GLM-5.2 做个人 wiki / paper-reading / coding agent，我会先测这三个任务：</p>
+
+<ol>
+  <li><strong>整 repo 审计。</strong> 让它读 <code class="language-plaintext highlighter-rouge">personal-wiki</code>，输出页面生成流程、Obsidian 到 Jekyll 的同步方式、哪些文件不该提交。</li>
+  <li><strong>长链 paper note 发布。</strong> 给 paper PDF，让它生成 md、保存图片、跑 Jekyll build、修链接、提交。</li>
+  <li><strong>受约束重构。</strong> 明确“不改变 URL、不改变 front matter、不提交 Obsidian 状态”，看它能不能完成小改动并报告验证。</li>
+</ol>
+
+<p>这三类任务比单轮问答更能测出 GLM-5.2 官方 claim 里的长链工程能力。</p>
+
+<p>这些测试可以直接变成我的个人 benchmark：每次换模型，都用同一套 repo、同一套任务、同一套验收标准比较。GLM-5.2 的价值不只是“可用模型候选”，也在于它官方文档给了一组很像真实工程工作的 prompt 形态。</p>
+
+<h2 id="一句话收束">一句话收束</h2>
+
+<p>GLM-5.2 最值得记住的是：它把 1M context 包装成一个面向长链工程任务的 agent 能力，而不是把长上下文本身当终点；可信数字可以先记 Terminal-Bench 2.1 81.0 和 SWE-bench Pro 62.1，其他 long-horizon claim 暂时按官方方向性证据处理。</p>
+
+            </div>
+        </article>
+    </div>
+
+    <aside class="blog-toc-sidebar">
+        <nav id="blog-toc" class="blog-toc-nav" aria-label="Table of contents">
+            <div class="blog-toc-header">
+                <div class="blog-toc-title">On This Page</div>
+                <button
+                    id="blog-toc-toggle"
+                    class="blog-toc-toggle"
+                    type="button"
+                    aria-controls="blog-toc-list"
+                    aria-expanded="true"
+                    aria-label="收起目录"
+                    title="收起目录"
+                >
+                    <svg class="blog-toc-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="blog-toc-list" class="blog-toc-list"></div>
+        </nav>
+    </aside>
+</div>
+
+    </div>
+    <footer class="footer border-top py-2 mt-5 bg-white small">
+    <div class="container-lg">
+        <div class="row my-3">
+            <div class="col-6">
+                <div class="text-muted">
+                    <i>Last updated: Jul 2026</i>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="text-right text-muted">
+                    Built with <a href="https://github.com/luost26/academic-homepage" target="_blank"><i class="fas fa-pencil-ruler"></i> academic-homepage</a>.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <pagefind-config
+        bundle-path="/Ryanhu2001/pagefind/"
+        base-url="/Ryanhu2001/"
+        excerpt-length="30"
+        lang="zh-CN"></pagefind-config>
+    <div class="modal fade site-search-modal" id="siteSearchModal" tabindex="-1" role="dialog" aria-labelledby="siteSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 mb-0" id="siteSearchModalLabel">Search</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <pagefind-searchbox placeholder="搜索 wiki、论文笔记、关键词..." show-sub-results="true" hide-shortcut="true"></pagefind-searchbox>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/github-buttons/2.14.2/buttons.min.js" integrity="sha512-OYwZx04hKFeFNYrWxIyo3atgGpb+cxU0ENWBZs72X7T9U+NoHPM1ftUn/Mfw7dRDXrqWA6M1wBg6z6fGE32aeA==" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+    <script type="module" src="/Ryanhu2001/pagefind/pagefind-component-ui.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tocbot@4.36.8/dist/tocbot.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+              delimiters: [
+                  {left: '$$', right: '$$', display: true},
+                  {left: '\\[', right: '\\]', display: true},
+                  {left: '$', right: '$', display: false},
+                  {left: '\\(', right: '\\)', display: false}
+              ],
+              throwOnError : false
+            });
+            
+            Prism.highlightAll();
+            
+
+            var siteSearchModal = document.getElementById("siteSearchModal");
+            var siteSearchBox = siteSearchModal ? siteSearchModal.querySelector("pagefind-searchbox") : null;
+            function focusSiteSearch() {
+                window.setTimeout(function() {
+                    if (siteSearchBox && typeof siteSearchBox.focus === "function") {
+                        siteSearchBox.focus();
+                    }
+                }, 80);
+            }
+            if (siteSearchModal && window.jQuery) {
+                window.jQuery(siteSearchModal).on("shown.bs.modal", focusSiteSearch);
+            }
+            document.addEventListener("keydown", function(event) {
+                var key = String(event.key || "").toLowerCase();
+                var isSearchShortcut = key === "k" && (event.metaKey || event.ctrlKey);
+                var isModalOpen = siteSearchModal && siteSearchModal.classList.contains("show");
+                var target = event.target;
+                var isTyping = target && (
+                    target.tagName === "INPUT" ||
+                    target.tagName === "TEXTAREA" ||
+                    target.isContentEditable
+                );
+                if (!isSearchShortcut || (isTyping && isModalOpen) || !siteSearchModal || !window.jQuery) return;
+                event.preventDefault();
+                window.jQuery(siteSearchModal).modal("show");
+            });
+        });
+    </script>
+    
+    <script src="/Ryanhu2001/assets/js/blog.js"></script>
+    
+    <script src="/Ryanhu2001/assets/js/common.js"></script>
+    <script src="/Ryanhu2001/assets/js/bubble_visual_hash.js"></script>
+</body>
+</html>
