@@ -52,6 +52,10 @@ SVM process rewards 的核心思路非常简单：把以前的轨迹按 sparse o
 | 4 | 理论保证 | discriminator logit 和 visitation matching 之间是什么关系 |
 | 5 | 负例小节 | 失败轨迹不是废料，它定义了“不要访问”的区域 |
 
+![SVM reward learning loop](assets/paper-reading/svm-process-rewards/svm-reward-learning-loop.svg)
+
+这张自制图把 SVM process reward 的核心循环画成四步：把历史 episode 分成成功和失败访问分布，训练 discriminator，取 logit 作为 dense process reward，再用 RL 把 policy 推向更像成功轨迹的 state-action。重点是失败轨迹也有价值，它定义了应该避开的访问模式。
+
 ## 先看机制图
 
 ![SVM process reward overview](assets/paper-reading/svm-process-rewards/overview.png)

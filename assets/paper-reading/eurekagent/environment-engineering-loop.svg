@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="520" viewBox="0 0 1080 520" role="img" aria-labelledby="title desc">
+  <title id="title">EurekAgent environment engineering loop</title>
+  <desc id="desc">A self-made diagram showing EurekAgent as a loop where environment engineering controls evaluator access, artifacts, budget, and human oversight around autonomous research agents.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#4f5f66"/></marker>
+    <style>
+      .bg { fill: #fbf6ea; }
+      .core { fill: #fffaf0; stroke: #b89a62; stroke-width: 2; rx: 20; }
+      .guard { fill: #f6f8fb; stroke: #7893b0; stroke-width: 2; rx: 16; }
+      .text { fill: #1f2428; font-family: Inter, Arial, sans-serif; font-size: 24px; font-weight: 700; }
+      .small { fill: #4f5459; font-family: Inter, Arial, sans-serif; font-size: 16px; font-weight: 500; }
+      .line { stroke: #4f5f66; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+      .dash { stroke-dasharray: 8 8; }
+    </style>
+  </defs>
+  <rect class="bg" width="1080" height="520"/>
+  <text class="text" x="56" y="62">EurekAgent: autonomy inside engineered boundaries</text>
+  <text class="small" x="56" y="94">The research loop is powerful because the environment owns evaluation, memory, budget, and oversight.</text>
+
+  <rect class="core" x="360" y="160" width="360" height="190"/>
+  <text class="text" x="420" y="210">Research loop</text>
+  <text class="small" x="420" y="243">Prepare once</text>
+  <text class="small" x="420" y="269">Propose hypotheses</text>
+  <text class="small" x="420" y="295">Implement in isolated workspaces</text>
+  <text class="small" x="420" y="321">Rank valid submissions</text>
+
+  <rect class="guard" x="72" y="155" width="220" height="90"/>
+  <text class="text" x="103" y="193">Permissions</text>
+  <text class="small" x="103" y="222">hidden evaluator</text>
+
+  <rect class="guard" x="72" y="305" width="220" height="90"/>
+  <text class="text" x="103" y="343">Artifacts</text>
+  <text class="small" x="103" y="372">files + Git memory</text>
+
+  <rect class="guard" x="788" y="155" width="220" height="90"/>
+  <text class="text" x="819" y="193">Budget</text>
+  <text class="small" x="819" y="222">time + API cost</text>
+
+  <rect class="guard" x="788" y="305" width="220" height="90"/>
+  <text class="text" x="819" y="343">Human monitor</text>
+  <text class="small" x="819" y="372">TUI / web oversight</text>
+
+  <path class="line dash" d="M292 200 H352"/>
+  <path class="line dash" d="M292 350 H352"/>
+  <path class="line dash" d="M720 200 H780"/>
+  <path class="line dash" d="M720 350 H780"/>
+  <path class="line" d="M455 160 C455 120 625 120 625 160"/>
+  <path class="line" d="M625 350 C625 390 455 390 455 350"/>
+</svg>

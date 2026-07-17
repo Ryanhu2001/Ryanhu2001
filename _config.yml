@@ -10,8 +10,10 @@ kramdown:
 timezone: Asia/Shanghai
 
 exclude:
+  - .skills
   - .bundle
   - .obsidian
+  - AGENTS.md
   - docs
   - Gemfile
   - Gemfile.lock

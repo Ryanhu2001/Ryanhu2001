@@ -47,6 +47,10 @@ AutoData 的核心贡献是把 open web data collection 做成一个多智能体
 | 4 | Figure 3 | 去掉 squad / OHCache / formatter / local cache 后到底损失什么 |
 | 5 | Table 5 | 从 survey 抽 BibTeX 这个 case 对 paper-reading pipeline 最有迁移价值 |
 
+![AutoData data collection loop](assets/paper-reading/autodata/autodata-data-collection-loop.svg)
+
+这张自制图把 AutoData 的主线压成一条工程闭环：自然语言需求先进入 Research squad 形成 blueprint，再由 Develop squad 写程序和验证数据；OHCache 在底层托住跨 agent 消息和大 artifact。这样看官方 Figure 1 时，不会只看到“多 agent 很热闹”，而能抓住它把数据工程拆成研究阶段和开发阶段的设计。
+
 ## 先看系统框架
 
 ![AutoData official framework](assets/paper-reading/autodata/official-framework.png)

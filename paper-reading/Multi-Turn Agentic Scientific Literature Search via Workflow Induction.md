@@ -53,6 +53,10 @@ PaperPilot 的核心贡献是把科学文献搜索从“语言模型自己想一
 | 4 | Search session demo | 一个完整文献搜索 session 应该保存策略、结果和证据 |
 | 5 | Figure 8：search scale | 候选池不是越大越好，噪声会伤害 rerank/filter |
 
+![PaperPilot workflow as artifact](assets/paper-reading/paperpilot-workflow-induction/workflow-as-artifact.svg)
+
+这张自制图把 PaperPilot 的 taste 画得更直白：搜索策略不是一段隐藏 prompt，而是一个可编辑、可复现、可审计的 typed DAG。用户反馈应该落到 operator、edge 和参数上，而不是变成下一轮自然语言补丁。这也是它对个人知识库最有迁移价值的地方。
+
 ## 先看核心流程图
 
 ![PaperPilot workflow overview](assets/paper-reading/paperpilot-workflow-induction/fig2-workflow-overview.png)

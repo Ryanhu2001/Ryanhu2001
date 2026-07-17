@@ -1,0 +1,4 @@
+interface:
+  display_name: "Maintain Personal Wiki"
+  short_description: "Maintain Ryan's Jekyll wiki and publishing workflow"
+  default_prompt: "Use $maintain-personal-wiki to safely update and verify this wiki/blog repository."

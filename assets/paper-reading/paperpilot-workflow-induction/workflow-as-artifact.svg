@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="520" viewBox="0 0 1080 520" role="img" aria-labelledby="title desc">
+  <title id="title">PaperPilot workflow as artifact</title>
+  <desc id="desc">A self-made diagram showing PaperPilot treating the literature search workflow as an editable DAG artifact rather than an implicit prompt.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#4f5f66"/></marker>
+    <style>
+      .bg { fill: #fbf6ea; }
+      .node { fill: #fffaf0; stroke: #b89a62; stroke-width: 2; rx: 16; }
+      .op { fill: #f6f8fb; stroke: #7893b0; stroke-width: 2; rx: 16; }
+      .text { fill: #1f2428; font-family: Inter, Arial, sans-serif; font-size: 24px; font-weight: 700; }
+      .small { fill: #4f5459; font-family: Inter, Arial, sans-serif; font-size: 16px; font-weight: 500; }
+      .line { stroke: #4f5f66; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+      .dash { stroke-dasharray: 8 8; }
+    </style>
+  </defs>
+  <rect class="bg" width="1080" height="520"/>
+  <text class="text" x="56" y="62">PaperPilot: search strategy becomes an editable artifact</text>
+  <text class="small" x="56" y="94">User feedback edits operators and edges instead of disappearing into a prompt.</text>
+
+  <rect class="node" x="65" y="185" width="190" height="105"/>
+  <text class="text" x="97" y="226">Anchor paper</text>
+  <text class="small" x="97" y="255">query + direction</text>
+
+  <rect class="op" x="330" y="125" width="160" height="85"/>
+  <text class="text" x="368" y="174">Search</text>
+  <rect class="op" x="330" y="300" width="160" height="85"/>
+  <text class="text" x="366" y="349">Citation</text>
+  <rect class="op" x="555" y="210" width="160" height="85"/>
+  <text class="text" x="604" y="260">Filter</text>
+  <rect class="op" x="780" y="210" width="160" height="85"/>
+  <text class="text" x="824" y="260">Rerank</text>
+
+  <rect class="node" x="760" y="370" width="210" height="88"/>
+  <text class="text" x="794" y="410">Paper list</text>
+  <text class="small" x="794" y="437">scores + evidence</text>
+
+  <path class="line" d="M255 238 C285 220 300 178 322 168"/>
+  <path class="line" d="M255 238 C285 258 300 330 322 342"/>
+  <path class="line" d="M490 168 C535 168 528 240 547 252"/>
+  <path class="line" d="M490 342 C535 342 528 265 547 252"/>
+  <path class="line" d="M715 252 H772"/>
+  <path class="line" d="M860 295 V362"/>
+
+  <path class="line dash" d="M855 175 C740 105 480 85 410 116"/>
+  <text class="small" x="664" y="120">feedback edits the DAG</text>
+</svg>

@@ -49,6 +49,10 @@ EurekAgent 的贡献不是发明新的 reasoning 算法，而是把强 CLI agent
 | 4 | 实验总表 | 数学、kernel engineering、MLE-Bench 的证据强弱不同，要分开读 |
 | 5 | 成本和超参 | 这类系统的收益必须和预算、parallelism、hidden evaluator 一起看 |
 
+![EurekAgent environment engineering loop](assets/paper-reading/eurekagent/environment-engineering-loop.svg)
+
+这张自制图强调 EurekAgent 的核心不是把 agent workflow 写得更花，而是把 evaluator、权限、artifact、预算和人类监督放在 agent loop 外层。后面看 Figure 2 时，可以把 Prepare/Propose/Implement 读成内部研究循环，把 environment engineering 读成真正控制系统行为边界的外壳。
+
 ## 它到底想改变什么
 
 很多 autonomous research 系统会把创新放在 workflow 上，例如固定的 propose、mutate、select、reflect、debate、self-review。EurekAgent 的判断是：随着 Claude Code、Codex 这类通用 CLI agent 变强，瓶颈会从“给 agent 写更细的流程”转向“给 agent 一个更好的环境”。

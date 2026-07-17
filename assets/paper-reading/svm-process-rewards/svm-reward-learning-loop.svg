@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="520" viewBox="0 0 1080 520" role="img" aria-labelledby="title desc">
+  <title id="title">SVM process reward learning loop</title>
+  <desc id="desc">A self-made diagram showing how success visitation matching converts successful and failed trajectories into a dense process reward through discriminator logits.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#4f5f66"/></marker>
+    <style>
+      .bg { fill: #fbf6ea; }
+      .pos { fill: #f7fbf7; stroke: #6f9b7b; stroke-width: 2; rx: 16; }
+      .neg { fill: #fff4ef; stroke: #c58f74; stroke-width: 2; rx: 16; }
+      .box { fill: #fffaf0; stroke: #b89a62; stroke-width: 2; rx: 16; }
+      .box2 { fill: #f6f8fb; stroke: #7893b0; stroke-width: 2; rx: 16; }
+      .text { fill: #1f2428; font-family: Inter, Arial, sans-serif; font-size: 24px; font-weight: 700; }
+      .small { fill: #4f5459; font-family: Inter, Arial, sans-serif; font-size: 16px; font-weight: 500; }
+      .line { stroke: #4f5f66; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect class="bg" width="1080" height="520"/>
+  <text class="text" x="56" y="62">SVM: turn success/failure visits into process rewards</text>
+  <text class="small" x="56" y="94">Failed trajectories are not waste; they define where the policy should stop visiting.</text>
+
+  <rect class="pos" x="70" y="135" width="210" height="100"/>
+  <text class="text" x="108" y="177">D+ success</text>
+  <text class="small" x="108" y="206">state-action visits</text>
+  <rect class="neg" x="70" y="285" width="210" height="100"/>
+  <text class="text" x="108" y="327">D- failure</text>
+  <text class="small" x="108" y="356">state-action visits</text>
+
+  <rect class="box" x="380" y="195" width="250" height="135"/>
+  <text class="text" x="420" y="240">Discriminator</text>
+  <text class="small" x="420" y="271">classify success-like</text>
+  <text class="small" x="420" y="296">vs failure-like visits</text>
+
+  <rect class="box2" x="730" y="160" width="240" height="115"/>
+  <text class="text" x="770" y="205">Dense reward</text>
+  <text class="small" x="770" y="235">logit as progress signal</text>
+  <rect class="box2" x="730" y="330" width="240" height="95"/>
+  <text class="text" x="770" y="370">RL update</text>
+  <text class="small" x="770" y="399">move visits toward D+</text>
+
+  <path class="line" d="M280 185 C335 185 335 238 372 252"/>
+  <path class="line" d="M280 335 C335 335 335 288 372 274"/>
+  <path class="line" d="M630 262 H722"/>
+  <path class="line" d="M850 275 V322"/>
+  <path class="line" d="M730 378 C575 455 325 425 180 392"/>
+</svg>

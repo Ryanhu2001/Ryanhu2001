@@ -28,6 +28,13 @@ MAX_CHARS_PER_FIGURE = 2200
 MIN_EXPLAINED_RATIO = 0.7
 
 
+def display_path(path: Path) -> str:
+    try:
+        return path.relative_to(ROOT).as_posix()
+    except ValueError:
+        return str(path)
+
+
 @dataclass(frozen=True)
 class LocatedImage:
     ref: ImageRef
@@ -257,7 +264,7 @@ def main() -> int:
         if not output.is_absolute():
             output = ROOT / output
         write_markdown_report(audits, output)
-        print(f"Wrote {output.relative_to(ROOT)}")
+        print(f"Wrote {display_path(output)}")
 
     return 0
 

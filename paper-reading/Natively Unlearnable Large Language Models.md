@@ -47,6 +47,10 @@ NULLs 的核心思路是让模型同时拥有两套记忆通道：共享 backbon
 | 4 | General capability 表 | 原生可遗忘不能以牺牲通用能力为代价 |
 | 5 | sink overlap / activation | 机制是否真分离来源信息，要看 sink 选择性 |
 
+![NULLs source sink routing](assets/paper-reading/nulls/source-sink-routing.svg)
+
+这张自制图把 NULLs 的机制压成一句话：共享事实留在 backbone，来源独有事实被 source mask 路由到 sink neurons；unlearning 时不是重新训练或梯度清除，而是不再激活目标 source 的 sink。这样后面读 Wikipedia 和 Harry Potter 实验时，能更清楚它为什么强调 source-level routing。
+
 ## 先看架构图
 
 ![NULLs overview](assets/paper-reading/nulls/overview.png)

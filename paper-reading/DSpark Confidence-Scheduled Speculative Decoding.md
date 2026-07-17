@@ -53,6 +53,10 @@ DSpark 的核心贡献不是单纯把 draft block 做长，而是把 speculative
 | 4 | Figure 7 / 8 | 真正的上线收益要看 throughput-interactivity frontier 和 load-adaptive budget |
 | 5 | 实验表 | 离线 accepted length、线上吞吐、延迟约束要一起读 |
 
+![DSpark serving loop](assets/paper-reading/dspark/dspark-serving-loop.svg)
+
+这张自制图用 serving loop 的视角重画 DSpark：semi-autoregressive drafter 先解决后缀质量，confidence gate 再估计 prefix survival probability，scheduler 根据系统负载决定值得验证多长。这样后面的 Figure 1/5/6/7/8 可以连成一条线：不是“多猜 token”，而是“在硬件和流量约束下更聪明地验证”。
+
 ## 1. 它想做什么
 
 LLM 自回归生成时每个 token 都要跑一次 target model，所以用户感知延迟随输出长度增长。Speculative decoding 的基本思路是：用轻量 draft model 先猜一段 token，再让 target model 一次并行验证这段 prefix；只要接受规则保持 target distribution 不变，就能在不损质量的前提下加速。

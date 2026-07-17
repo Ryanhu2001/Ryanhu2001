@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="520" viewBox="0 0 1080 520" role="img" aria-labelledby="title desc">
+  <title id="title">DSpark serving loop</title>
+  <desc id="desc">A self-made diagram showing the DSpark speculative decoding loop with semi-autoregressive drafting, confidence calibration, hardware-aware scheduling, and target verification.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#4f5f66"/></marker>
+    <style>
+      .bg { fill: #fbf6ea; }
+      .node { fill: #fffaf0; stroke: #b89a62; stroke-width: 2; rx: 18; }
+      .node2 { fill: #f6f8fb; stroke: #7893b0; stroke-width: 2; rx: 18; }
+      .node3 { fill: #f7fbf7; stroke: #6f9b7b; stroke-width: 2; rx: 18; }
+      .text { fill: #1f2428; font-family: Inter, Arial, sans-serif; font-size: 24px; font-weight: 700; }
+      .small { fill: #4f5459; font-family: Inter, Arial, sans-serif; font-size: 16px; font-weight: 500; }
+      .line { stroke: #4f5f66; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+      .thin { stroke-width: 2; }
+    </style>
+  </defs>
+  <rect class="bg" width="1080" height="520"/>
+  <text class="text" x="56" y="62">DSpark: verify smarter, not just longer</text>
+  <text class="small" x="56" y="94">The serving gain comes from coupling draft quality with load-aware verification budget.</text>
+
+  <rect class="node" x="65" y="170" width="210" height="118"/>
+  <text class="text" x="96" y="215">Prefix context</text>
+  <text class="small" x="96" y="244">target history</text>
+  <text class="small" x="96" y="268">plus accepted tokens</text>
+
+  <rect class="node2" x="340" y="130" width="240" height="155"/>
+  <text class="text" x="372" y="176">Semi-AR drafter</text>
+  <text class="small" x="372" y="207">Markov / RNN heads</text>
+  <text class="small" x="372" y="231">reduce suffix decay</text>
+  <text class="small" x="372" y="255">produce candidate block</text>
+
+  <rect class="node3" x="640" y="130" width="235" height="155"/>
+  <text class="text" x="674" y="176">Confidence gate</text>
+  <text class="small" x="674" y="207">prefix survival prob.</text>
+  <text class="small" x="674" y="231">STS calibration</text>
+  <text class="small" x="674" y="255">choose verify length</text>
+
+  <rect class="node" x="640" y="345" width="235" height="105"/>
+  <text class="text" x="674" y="387">Target verify</text>
+  <text class="small" x="674" y="418">accept safe prefix</text>
+
+  <rect class="node2" x="340" y="345" width="240" height="105"/>
+  <text class="text" x="372" y="387">Serving state</text>
+  <text class="small" x="372" y="418">batch load and CUDA graph</text>
+
+  <path class="line" d="M275 229 H332"/>
+  <path class="line" d="M580 207 H632"/>
+  <path class="line" d="M758 285 V337"/>
+  <path class="line" d="M640 398 H588"/>
+  <path class="line thin" d="M460 345 V297"/>
+  <path class="line" d="M340 398 C205 398 170 350 170 296"/>
+</svg>
