@@ -1,5 +1,5 @@
 .reading-progress {
-    background: rgba(64, 52, 35, 0.08);
+    background: rgba(0, 117, 106, 0.1);
     border-radius: 999px;
     height: 2px;
     left: 50%;
@@ -13,7 +13,7 @@
 }
 
 .reading-progress span {
-    background: linear-gradient(90deg, rgba(112, 86, 49, 0.36), rgba(112, 86, 49, 0.82));
+    background: linear-gradient(90deg, rgba(0, 117, 106, 0.35), rgba(0, 117, 106, 0.85));
     border-radius: inherit;
     display: block;
     height: 100%;
@@ -50,7 +50,7 @@
 }
 
 .blog-toc-nav {
-    border-left: 1px solid rgba(112, 86, 49, 0.18);
+    border-left: 1px solid rgba(0, 117, 106, 0.16);
     max-height: calc(100vh - 8rem);
     overflow-y: auto;
     padding-left: 0.9rem;
@@ -72,7 +72,7 @@
 }
 
 .blog-toc-title {
-    color: #8a8f94;
+    color: var(--muted);
     font-size: 0.78rem;
     font-weight: 700;
     letter-spacing: 0.08em;
@@ -82,10 +82,10 @@
 
 .blog-toc-toggle {
     align-items: center;
-    background: rgba(112, 86, 49, 0.06);
-    border: 1px solid rgba(112, 86, 49, 0.16);
+    background: var(--teal-tint);
+    border: 1px solid rgba(0, 117, 106, 0.18);
     border-radius: 0.4rem;
-    color: #6f5630;
+    color: var(--teal);
     cursor: pointer;
     display: inline-flex;
     flex: 0 0 auto;
@@ -98,8 +98,8 @@
 
 .blog-toc-toggle:hover,
 .blog-toc-toggle:focus-visible {
-    background: rgba(112, 86, 49, 0.12);
-    border-color: rgba(112, 86, 49, 0.3);
+    background: rgba(0, 117, 106, 0.1);
+    border-color: rgba(0, 117, 106, 0.3);
     outline: none;
 }
 
@@ -159,7 +159,7 @@
 }
 
 .blog-toc-list .toc-link {
-    color: #8a8f94;
+    color: var(--muted);
     display: block;
     font-size: 0.82rem;
     line-height: 1.35;
@@ -170,7 +170,7 @@
 
 .blog-toc-list .toc-link:hover,
 .blog-toc-list .toc-link.toc-active {
-    color: #6f5630;
+    color: var(--teal);
     text-decoration: none;
 }
 
@@ -185,17 +185,17 @@
 }
 
 .reading-surface-layout {
-    --reading-bg: #f3f6f5;
-    --reading-paper: #ffffff;
-    --reading-ink: #17202a;
-    --reading-muted: #64717f;
-    --reading-line: #d7e0e3;
-    --reading-teal: #00756a;
-    --reading-blue: #315f91;
-    --reading-orange: #9a571c;
+    --reading-bg: var(--bg);
+    --reading-paper: var(--paper);
+    --reading-ink: var(--ink);
+    --reading-muted: var(--muted);
+    --reading-line: var(--line);
+    --reading-teal: var(--teal);
+    --reading-blue: var(--blue);
+    --reading-orange: var(--orange);
     align-items: flex-start;
     background: var(--reading-bg);
-    border: 1px solid rgba(215, 224, 227, 0.9);
+    border: 1px solid var(--reading-line);
     border-radius: 1rem;
     margin: 0 auto 2rem;
     max-width: 1480px;
@@ -303,7 +303,7 @@
 }
 
 .reading-surface-layout .reading-surface-doc > h1 {
-    border-bottom: 1px solid #edf0f2;
+    border-bottom: 1px solid var(--line-soft);
     padding-bottom: 1rem;
 }
 
@@ -319,7 +319,7 @@
 }
 
 .reading-surface-layout .blog-content h2 {
-    border-top: 1px solid #edf0f2;
+    border-top: 1px solid var(--line-soft);
     border-bottom: 0;
     font-size: 1.42rem;
     margin-top: 2rem;
@@ -440,9 +440,14 @@
 }
 
 .blog-content {
-    color: #24292f;
+    color: var(--ink);
     font-size: 1rem;
     line-height: 1.76;
+}
+
+.blog-content pre,
+.blog-content code {
+    font-family: var(--font-mono);
 }
 
 .blog-content h1,
@@ -451,7 +456,7 @@
 .blog-content h4,
 .blog-content h5,
 .blog-content h6 {
-    color: #15171a;
+    color: var(--ink);
     font-weight: 700;
     line-height: 1.28;
     margin-bottom: 0.9rem;
@@ -498,17 +503,17 @@
 }
 
 .blog-content strong {
-    color: #17191c;
+    color: var(--ink);
 }
 
 .blog-content a {
-    color: #245a7a;
+    color: var(--teal);
     text-decoration-thickness: 0.08em;
     text-underline-offset: 0.18em;
 }
 
 .blog-content a:hover {
-    color: #15394f;
+    color: var(--teal-dark);
 }
 
 .heading-anchor {
@@ -522,16 +527,16 @@
 }
 
 .blog-content blockquote {
-    background: #fbfaf7;
-    border-left: 3px solid #d7c7ad;
-    color: #4f5459;
+    background: var(--teal-tint);
+    border-left: 3px solid var(--teal);
+    color: #34414f;
     font-style: normal;
     margin: 1.5rem 0;
     padding: 0.85rem 1rem;
 }
 
 .blog-content img {
-    background: #fbfaf7;
+    background: var(--bg);
     border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 0.45rem;
     height: auto;
@@ -540,8 +545,8 @@
 }
 
 .blog-content .image-source-frame {
-    background: #fbfaf7;
-    border: 1px solid rgba(36, 90, 122, 0.18);
+    background: var(--paper);
+    border: 1px solid rgba(0, 117, 106, 0.22);
     border-radius: 0.6rem;
     box-sizing: border-box;
     display: block;
@@ -559,17 +564,17 @@
 }
 
 .blog-content .image-source-generated {
-    background: #fffaf0;
-    border-color: rgba(112, 86, 49, 0.42);
+    background: #fdf8f1;
+    border-color: rgba(154, 87, 28, 0.42);
     border-style: dashed;
 }
 
 .blog-content .image-source-badge {
     align-items: center;
-    background: rgba(36, 90, 122, 0.08);
-    border: 1px solid rgba(36, 90, 122, 0.14);
+    background: rgba(0, 117, 106, 0.08);
+    border: 1px solid rgba(0, 117, 106, 0.14);
     border-radius: 999px;
-    color: #245a7a;
+    color: var(--teal);
     display: inline-flex;
     font-size: 0.72rem;
     font-weight: 700;
@@ -590,9 +595,9 @@
 }
 
 .blog-content .image-source-generated .image-source-badge {
-    background: rgba(112, 86, 49, 0.1);
-    border-color: rgba(112, 86, 49, 0.18);
-    color: #6f5630;
+    background: rgba(154, 87, 28, 0.1);
+    border-color: rgba(154, 87, 28, 0.2);
+    color: var(--orange);
 }
 
 .blog-content figure {
@@ -615,7 +620,7 @@
 }
 
 .blog-content details {
-    background: #fbfaf7;
+    background: var(--bg);
     border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 0.5rem;
     margin: 1rem 0;
@@ -636,7 +641,7 @@
 }
 
 .blog-content pre {
-    background: #fbfaf7;
+    background: var(--bg);
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 0.45rem;
     margin: 1rem 0;
@@ -645,10 +650,11 @@
 }
 
 .blog-content :not(pre) > code {
-    background: #f4f1ea;
+    background: var(--code-bg);
     border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 0.25rem;
-    color: #8b2d36;
+    color: var(--code-ink);
+    font-family: var(--font-mono);
     font-size: 0.92em;
     padding: 0.1rem 0.25rem;
 }
@@ -675,8 +681,8 @@
 }
 
 .blog-content table th {
-    background: #fbfaf7;
-    color: #2d3436;
+    background: var(--bg);
+    color: var(--ink-soft);
     font-weight: 700;
 }
 

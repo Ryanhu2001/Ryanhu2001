@@ -4,6 +4,3 @@ title: Home
 navbar_title: Home
 ---
 
-## About
-
-Nothing

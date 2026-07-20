@@ -186,7 +186,7 @@
         if (!window.mediumZoom) return;
 
         window.mediumZoom(".blog-content img:not(.no-zoom)", {
-            background: "rgba(251, 250, 247, 0.96)",
+            background: "rgba(243, 246, 245, 0.96)",
             margin: 32,
             scrollOffset: 0
         });

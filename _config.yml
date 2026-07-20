@@ -25,7 +25,6 @@ exclude:
   - site
   - vendor
   - assets/ryan/3194f61b0f7f765d1f954a939560855c.jpg
-  - assets/ryan/3194f61b0f7f765d1f954a939560855c_副本.jpg
 
 collections:
   - news

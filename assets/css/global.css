@@ -1,27 +1,89 @@
 @charset "utf-8";
 :root {
+    /* Site-wide design tokens (single source of truth for the palette) */
+    --bg: #f3f6f5;
+    --paper: #ffffff;
+    --ink: #17202a;
+    --ink-soft: #2d3436;
+    --muted: #64717f;
+    --line: #d7e0e3;
+    --line-soft: #edf0f2;
+    --teal: #00756a;
+    --teal-dark: #005b53;
+    --teal-tint: #f1faf8;
+    --blue: #315f91;
+    --orange: #9a571c;
+    --code-bg: #edf2f5;
+    --code-ink: #7a3040;
+    --font-text: "Fira Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC",
+        sans-serif;
+    --font-mono: "SF Mono", "Source Code Pro", ui-monospace, SFMono-Regular,
+        Menlo, Consolas, monospace;
+
     --pf-background: #ffffff;
     --pf-border: rgba(0, 0, 0, 0.12);
-    --pf-border-focus: #868e96;
+    --pf-border-focus: var(--muted);
     --pf-border-radius: 8px;
-    --pf-font: "Lato", sans-serif;
-    --pf-hover: #f8f9fa;
+    --pf-font: var(--font-text);
+    --pf-hover: var(--bg);
     --pf-input-height: 40px;
-    --pf-mark: #212529;
-    --pf-outline-focus: #245a7a;
+    --pf-mark: var(--ink);
+    --pf-outline-focus: var(--teal);
     --pf-result-excerpt-font-size: 0.92rem;
     --pf-result-title-font-size: 1rem;
     --pf-results-gap: 0.7rem;
     --pf-shadow-md: 0 0.35rem 1rem rgba(0, 0, 0, 0.08);
-    --pf-text: #24292f;
-    --pf-text-muted: #868e96;
+    --pf-text: var(--ink);
+    --pf-text-muted: var(--muted);
     --pf-text-secondary: #495057;
 }
 
 body {
-    font-family: "Lato", sans-serif;
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-text);
     font-weight: 400;
     padding-top: 5.0rem;
+}
+
+::selection {
+    background: rgba(0, 117, 106, 0.18);
+}
+
+a {
+    color: var(--teal);
+}
+
+a:hover {
+    color: var(--teal-dark);
+}
+
+.text-muted {
+    color: var(--muted) !important;
+}
+
+.btn-outline-primary {
+    border-color: var(--teal);
+    color: var(--teal);
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+    background-color: var(--teal);
+    border-color: var(--teal);
+    color: #fff;
+}
+
+.btn-primary {
+    background-color: var(--teal);
+    border-color: var(--teal);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--teal-dark);
+    border-color: var(--teal-dark);
 }
 
 h1, h2, h3, h4, h5, h6,
@@ -62,9 +124,10 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .navbar {
-    background-color: rgba(255, 255, 255, 0.6) !important;
+    background-color: rgba(255, 255, 255, 0.72) !important;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(215, 224, 227, 0.8);
 }
 
 .nav-search-item {
@@ -161,7 +224,7 @@ div.lazy {
 }
 
 .email-text {
-    font-family: Source Code Pro, monospace;
+    font-family: var(--font-mono);
 }
 
 .wiki-list {
@@ -172,6 +235,15 @@ div.lazy {
 .wiki-list-item {
     padding-bottom: 1.25rem;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.wiki-list-item h2 a {
+    color: var(--ink);
+}
+
+.wiki-list-item h2 a:hover {
+    color: var(--teal);
+    text-decoration: none;
 }
 
 .wiki-list-item:last-child {
@@ -464,6 +536,72 @@ div.lazy {
         line-height: 1.4;
         margin-bottom: 0.45rem;
     }
+}
+
+.home-card-header {
+    align-items: baseline;
+    border-bottom: 1px solid var(--line-soft);
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.75rem;
+}
+
+.home-card-more {
+    font-size: 0.86rem;
+    white-space: nowrap;
+}
+
+.home-note-list {
+    display: grid;
+}
+
+.home-note-item {
+    align-items: baseline;
+    border-radius: 0.5rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    margin: 0 -0.75rem;
+    padding: 0.65rem 0.75rem;
+    transition: background 0.15s ease;
+}
+
+.home-note-item:hover {
+    background: var(--bg);
+    text-decoration: none;
+}
+
+.home-note-main {
+    min-width: 0;
+}
+
+.home-note-title {
+    color: var(--ink);
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.home-note-item:hover .home-note-title {
+    color: var(--teal);
+}
+
+.home-note-desc {
+    -webkit-box-orient: vertical;
+    color: var(--muted);
+    display: -webkit-box;
+    font-size: 0.88rem;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    margin-top: 0.15rem;
+    overflow: hidden;
+}
+
+.home-note-date {
+    color: var(--muted);
+    flex: 0 0 auto;
+    font-size: 0.8rem;
+    font-variant-numeric: tabular-nums;
 }
 
 .wiki-note {
