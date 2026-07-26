@@ -19,12 +19,12 @@ exclude:
   - Gemfile.lock
   - LICENSE-academic-homepage
   - node_modules
+  - package.json
+  - package-lock.json
   - preview-*.png
   - README.md
   - scripts
-  - site
   - vendor
-  - assets/ryan/3194f61b0f7f765d1f954a939560855c.jpg
 
 collections:
   - news

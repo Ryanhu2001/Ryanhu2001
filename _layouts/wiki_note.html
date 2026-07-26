@@ -22,11 +22,39 @@ layout: default
             </a>
         </div>
 
-        <article class="bg-white rounded-xl p-4 p-md-5 mb-4 wiki-note-card{% if page.reading_surface %} reading-surface-card{% endif %}" data-pagefind-body{% if page.reading_surface %} data-reading-surface{% endif %}>
+        <details class="mobile-toc d-lg-none">
+            <summary>目录</summary>
+            <div id="blog-toc-list-mobile" class="mobile-toc-list"></div>
+        </details>
+
+        <article class="bg-white rounded-xl p-4 p-md-5 mb-4 wiki-note-card{% if page.reading_surface %} reading-surface-card{% endif %}" data-pagefind-body{% if page.reading_surface %} data-reading-surface{% endif %}{% if page.kicker %} data-kicker="{{ page.kicker }}"{% endif %}>
             <div class="blog-content wiki-note">
                 {{ fixed_content }}
             </div>
         </article>
+
+        {% assign needle = page.url | split: '/' | last %}
+        {% assign backlinks = "" | split: "" %}
+        {% for p in site.pages %}
+            {% if p.public and p.url != page.url and p.url contains '.html' %}
+                {% if p.content contains needle %}
+                    {% assign backlinks = backlinks | push: p %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        {% if backlinks.size > 0 %}
+        <aside class="note-backlinks" aria-label="Backlinks">
+            <div class="note-backlinks-title">引用了本文的笔记</div>
+            <ul class="note-backlinks-list">
+                {% for p in backlinks %}
+                <li>
+                    <a href="{{ p.url | relative_url }}">{{ p.title }}</a>
+                    {% if p.description %}<span class="note-backlinks-desc">{{ p.description }}</span>{% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </aside>
+        {% endif %}
     </div>
 
     <aside class="blog-toc-sidebar">

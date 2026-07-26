@@ -96,3 +96,7 @@ The homepage shows news only when `_data/display.yml` has `homepage.show_news: t
 - Keep inline math on one line.
 - Prefer `\lbrace` and `\rbrace` over escaped curly delimiters that GitHub Markdown may damage.
 - Inspect rendered tables, code blocks, headings, and math after substantial edits; the note layout adds wrappers and heading IDs in JavaScript.
+
+## Cross-Linking and Backlinks
+
+- To cross-link another note, use `[label]({{ '/<dir>/<fully-percent-encoded-filename>.html' | relative_url }})`. Encode spaces as `%20` and CJK characters as their UTF-8 percent-encoding so the link text matches the target's `page.url` exactly — `_layouts/wiki_note.html` builds the automatic "引用了本文的笔记" backlinks section by searching other pages' source for the encoded filename.

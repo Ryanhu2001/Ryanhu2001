@@ -1,6 +1,6 @@
 ---
 name: maintain-personal-wiki
-description: Maintain and evolve Ryan's repository-scoped Jekyll and Obsidian personal wiki/blog. Use when working in /Users/ryan/personal-wiki to add or revise wiki notes and news, publish paper-reading notes, update profile or navigation data, change Liquid layouts/includes, CSS, JavaScript, Pagefind search, assets, build checks, GitHub Pages deployment, or general repository health.
+description: Maintain and evolve Ryan's repository-scoped Jekyll and Obsidian personal wiki/blog. Use when working in /Users/ryan/workspace/personal-wiki to add or revise wiki notes and news, publish paper-reading notes, update profile or navigation data, change Liquid layouts/includes, CSS, JavaScript, Pagefind search, assets, build checks, GitHub Pages deployment, or general repository health.
 ---
 
 # Maintain Personal Wiki
@@ -24,7 +24,7 @@ Maintain this repository as the source of truth for Ryan's public site. Preserve
 
 ### 1. Establish Scope
 
-- Work from `/Users/ryan/personal-wiki`.
+- Work from `/Users/ryan/workspace/personal-wiki`.
 - Run `git status --short --branch` before editing.
 - Treat all pre-existing changes as user-owned. Do not revert, reformat, stage, or include unrelated files.
 - Inspect the target content, its index page, and the rendering path before changing behavior.

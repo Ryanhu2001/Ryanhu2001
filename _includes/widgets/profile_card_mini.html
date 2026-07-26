@@ -7,12 +7,15 @@
                         {% if site.data.profile.portrait_url %}
                         <!-- When the screen is wider than md, float the portrait on the right -->
                         <div class="figure d-none d-md-block">
-                            <img 
-                                src="{{ site.data.profile.portrait_url | relative_url }}" 
-                                class="figure-img img-fluid" 
-                                data-toggle="tooltip" 
-                                data-placement="top" 
-                                title="{{ site.data.profile.portrait_caption }}">
+                            <img
+                                src="{{ site.data.profile.portrait_url | relative_url }}"
+                                class="figure-img img-fluid"
+                                alt="{{ site.data.profile.primary_name }} portrait"
+                                {%- if site.data.profile.portrait_caption %}
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title="{{ site.data.profile.portrait_caption }}"
+                                {%- endif %}>
                         </div>
                         <div class="mb-3 d-md-none text-center">
                             <img src="{{ site.data.profile.portrait_url | relative_url }}" class="rounded-circle" style="max-width: 50%;" alt="Portrait">
@@ -26,6 +29,7 @@
                     </div>
                 </div>
 
+                {% if site.data.profile.positions and site.data.profile.positions.size > 0 %}
                 <div class="row small">
                     <div class="col text-center">
                         {% for position in site.data.profile.positions %}
@@ -33,6 +37,7 @@
                         {% endfor %}
                     </div>
                 </div>
+                {% endif %}
 
                 {% if site.data.profile.short_bio %}
                 <div class="row small pt-2">

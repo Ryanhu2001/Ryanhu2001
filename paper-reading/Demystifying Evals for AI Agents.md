@@ -28,6 +28,7 @@ source_url: "https://www.anthropic.com/engineering/demystifying-evals-for-ai-age
 - **Published**: 2026-01-09, Anthropic Engineering
 - **原文体量**: 约 **6074 words**
 - **关键词**: agent eval, evaluation harness, task / trial / grader / trajectory / outcome, code-based grader, LLM-as-judge, human calibration, pass@k, pass^k, eval-driven development, transcript review
+- **相关分享**: [Paper-sharing-3：Anthropic 的 Agent Eval 工程]({{ '/wiki/Paper-sharing-3%20Anthropic%20%E7%9A%84%20Agent%20Eval%20%E5%B7%A5%E7%A8%8B.html' | relative_url }})——本文与其余四篇 Anthropic Eval 文章的按时间线串讲
 
 ## 读法：给人和 agent 的路标
 
@@ -270,7 +271,7 @@ grader 设计有几个坑：
 - **一个维度一个 judge 或一个清晰 rubric**，不要让单个 judge 一口气判断所有复杂维度。
 - **grader 要抗作弊**，通过 eval 应该真的需要完成任务，而不是 exploit 测试漏洞。
 
-文章里最有警示感的例子是 CORE-Bench：Opus 4.5 初始分数是 42%，后来发现存在刚性数值匹配、任务歧义、随机任务不可复现、scaffold 约束等问题；修复后分数到 95%。METR 的 time horizon benchmark 也出现过阈值配置问题：任务文字要求达到某分数，但 grader 要求超过这个分数，导致遵守指令的模型反而吃亏。
+文章里最有警示感的例子是 CORE-Bench：Opus 4.5 用原 CORE-Agent scaffold 只拿到 42%；换成 Claude Code（模型不变）就升到 78%，说明 scaffold 本身在限制模型发挥；再修复刚性数值匹配、任务歧义、随机任务不可复现等 grader/task 问题后，分数才到约 95%。METR 的 time horizon benchmark 也出现过阈值配置问题：任务文字要求达到某分数，但 grader 要求超过这个分数，导致遵守指令的模型反而吃亏。
 
 这说明一个很重要的原则：**低分不一定代表 agent 差，高分也不一定代表 agent 好；先读 transcript，再信数字。**
 
@@ -278,7 +279,7 @@ grader 设计有几个坑：
 
 文章反复强调 read transcripts。原因很简单：只有看过多条失败轨迹，才知道 grader 有没有公平地拒绝 agent，task 是否有歧义，agent 是否在用危险捷径。
 
-eval 还会饱和。一个 100% 的 capability eval 已经不再提供进步信号，只能变成 regression suite。SWE-bench Verified 从今年约 30% 到 frontier models 接近超过 80%，就说明 benchmark 会逐渐失去分辨率。Qodo 起初觉得 Opus 4.5 提升不明显，后来发现自己的 one-shot coding eval 没覆盖更长、更复杂任务，于是改做 agentic eval framework，才看到真实进步。
+eval 还会饱和。一个 100% 的 capability eval 已经不再提供进步信号，只能变成 regression suite。SWE-bench Verified 一年内从约 40% 到 frontier models 超过 80%，就说明 benchmark 会逐渐失去分辨率。Qodo 起初觉得 Opus 4.5 提升不明显，后来发现自己的 one-shot coding eval 没覆盖更长、更复杂任务，于是改做 agentic eval framework，才看到真实进步。
 
 长期维护上，Anthropic 的经验是：核心 eval infrastructure 可以由专门 eval team 负责，但 task 最好由领域专家、产品、客户成功、销售等最接近用户需求的人贡献。现在的模型已经能帮这些非工程角色用 Claude Code 提 PR，团队应该主动让他们把“什么叫成功”写进 eval。
 

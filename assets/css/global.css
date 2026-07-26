@@ -44,7 +44,20 @@ body {
     color: var(--ink);
     font-family: var(--font-text);
     font-weight: 400;
+    line-height: 1.65;
     padding-top: 5.0rem;
+}
+
+.skip-link:focus {
+    background: var(--paper);
+    border-radius: 0.3rem;
+    box-shadow: 0 0.35rem 1rem rgba(0, 0, 0, 0.12);
+    color: var(--teal);
+    left: 0.75rem;
+    padding: 0.5rem 0.9rem;
+    position: fixed;
+    top: 0.75rem;
+    z-index: 2000;
 }
 
 ::selection {
@@ -130,6 +143,16 @@ h1, h2, h3, h4, h5, h6,
     border-bottom: 1px solid rgba(215, 224, 227, 0.8);
 }
 
+.navbar-light .navbar-nav .nav-link {
+    color: rgba(0, 0, 0, 0.65);
+}
+
+.navbar-light .navbar-nav .nav-link:hover,
+.navbar-light .navbar-nav .nav-link:focus,
+.navbar-light .navbar-nav .active > .nav-link {
+    color: rgba(0, 0, 0, 0.85);
+}
+
 .nav-search-item {
     align-items: center;
     display: flex;
@@ -140,7 +163,7 @@ h1, h2, h3, h4, h5, h6,
     align-items: center;
     background: transparent;
     border: 0;
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0.65);
     display: inline-flex;
     gap: 0.35rem;
     padding: 0.5rem 0.55rem;
@@ -148,9 +171,28 @@ h1, h2, h3, h4, h5, h6,
 
 .nav-search-button:hover,
 .nav-search-button:focus {
-    color: rgba(0, 0, 0, 0.7);
-    outline: 0;
+    color: rgba(0, 0, 0, 0.85);
     text-decoration: none;
+}
+
+.nav-search-button-compact {
+    border-radius: 0.4rem;
+    font-size: 1rem;
+    padding: 0.4rem 0.6rem;
+}
+
+.nav-search-button:focus-visible,
+.paper-filter-btn:focus-visible,
+.paper-page-btn:focus-visible,
+.paper-sort-wrap select:focus-visible,
+.navbar-toggler:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 2px;
+}
+
+.paper-search-wrap:focus-within {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(0, 117, 106, 0.15);
 }
 
 .nav-search-button kbd {
@@ -201,22 +243,6 @@ h1, h2, h3, h4, h5, h6,
 
 .abstract-body {
     min-height: 100px;
-}
-
-img.lazy {
-    background-image: url('images/loading.gif');
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-    background-size: 50px 50px;
-    min-height: 80px;
-}
-
-div.lazy {
-    background-image: url('images/loading.gif');
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-    background-size: 50px 50px;
-    min-height: 80px;
 }
 
 .badge-publication {
@@ -322,7 +348,6 @@ div.lazy {
     border: 0;
     color: #212529;
     font: inherit;
-    outline: 0;
 }
 
 .paper-filter-block {
@@ -373,11 +398,18 @@ div.lazy {
     transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
-.paper-filter-btn:hover,
 .paper-filter-btn[aria-pressed="true"] {
     background: #212529;
     border-color: #212529;
     color: #fff;
+}
+
+@media (hover: hover) {
+    .paper-filter-btn:hover:not([aria-pressed="true"]) {
+        background: #e9ecef;
+        border-color: rgba(0, 0, 0, 0.16);
+        color: #212529;
+    }
 }
 
 .paper-filter-count {
@@ -432,7 +464,7 @@ div.lazy {
 }
 
 .paper-note-time {
-    color: #868e96;
+    color: #6c757d;
 }
 
 .paper-note-tags {
@@ -495,7 +527,7 @@ div.lazy {
 }
 
 .paper-page-gap {
-    color: #868e96;
+    color: #6c757d;
     padding: 0 0.1rem;
 }
 
@@ -606,13 +638,6 @@ div.lazy {
 
 .wiki-note {
     line-height: 1.75;
-}
-
-.wiki-note h1,
-.wiki-note h2,
-.wiki-note h3 {
-    margin-top: 1.8rem;
-    margin-bottom: 1rem;
 }
 
 .wiki-note h1:first-child {

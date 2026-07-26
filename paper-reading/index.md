@@ -49,8 +49,8 @@ permalink: /paper-reading/
                 </div>
             </div>
 
-            <div class="paper-list-toolbar" aria-live="polite">
-                <div class="paper-page-summary" data-page-summary></div>
+            <div class="paper-list-toolbar">
+                <div class="paper-page-summary" data-page-summary aria-live="polite"></div>
                 <label class="paper-sort-wrap paper-page-size-wrap">
                     <span>Per Page</span>
                     <select data-page-size aria-label="Notes per page">
@@ -77,7 +77,7 @@ permalink: /paper-reading/
                     class="wiki-list-item paper-note-item"
                     data-category="{{ note.category | default: 'Uncategorized' | escape }}"
                     data-tags="{{ note.tags | join: '|' | escape }}"
-                    data-created="{{ note.created_at | default: note.date | escape }}"
+                    data-created="{{ note.created_at | default: note.date | date_to_xmlschema }}"
                     data-title="{{ note.title | escape }}"
                     data-search="{{ search_text | strip_html | downcase | normalize_whitespace | escape }}">
                     <div class="paper-note-topline">
@@ -85,11 +85,11 @@ permalink: /paper-reading/
                         <span class="paper-note-category">{{ note.category }}</span>
                         {% endif %}
                         {% if note.created_at %}
-                        <time class="paper-note-time" datetime="{{ note.created_at }}">
+                        <time class="paper-note-time" datetime="{{ note.created_at | date_to_xmlschema }}">
                             {{ note.created_at | date: "%Y-%m-%d %H:%M" }}
                         </time>
                         {% elsif note.date %}
-                        <time class="paper-note-time" datetime="{{ note.date }}">
+                        <time class="paper-note-time" datetime="{{ note.date | date_to_xmlschema }}">
                             {{ note.date | date: "%Y-%m-%d" }}
                         </time>
                         {% endif %}
@@ -177,24 +177,57 @@ document.addEventListener("DOMContentLoaded", function() {
         return button;
     }
 
-    function renderButtons(container, map, activeValue, onSelect) {
+    function renderButtons(container, map, activeValue, onSelect, options) {
+        var opts = options || {};
         container.innerHTML = "";
         container.appendChild(makeButton("All", "all", items.length, activeValue, function() {
             onSelect("all");
         }));
-        Array.from(map.entries())
-            .sort(function(a, b) {
-                return a[0].localeCompare(b[0]);
-            })
-            .forEach(function(entry) {
-                container.appendChild(makeButton(entry[0], entry[0], entry[1], activeValue, function() {
-                    onSelect(entry[0]);
-                }));
+        var entries = Array.from(map.entries());
+        if (opts.collapseAfter) {
+            entries.sort(function(a, b) {
+                return b[1] - a[1] || a[0].localeCompare(b[0]);
             });
+        } else {
+            entries.sort(function(a, b) {
+                return a[0].localeCompare(b[0]);
+            });
+        }
+        var visibleLimit = opts.collapseAfter && entries.length > opts.collapseAfter + 3
+            ? opts.collapseAfter
+            : entries.length;
+        entries.forEach(function(entry, index) {
+            var button = makeButton(entry[0], entry[0], entry[1], activeValue, function() {
+                onSelect(entry[0]);
+            });
+            if (index >= visibleLimit && entry[0] !== activeValue) {
+                button.hidden = true;
+                button.dataset.overflow = "true";
+            }
+            container.appendChild(button);
+        });
+        if (visibleLimit < entries.length) {
+            var hiddenCount = entries.length - visibleLimit;
+            var moreButton = document.createElement("button");
+            moreButton.type = "button";
+            moreButton.className = "paper-filter-btn paper-filter-more";
+            moreButton.setAttribute("aria-expanded", "false");
+            moreButton.textContent = "+" + hiddenCount + " more";
+            moreButton.addEventListener("click", function() {
+                var expand = moreButton.getAttribute("aria-expanded") !== "true";
+                Array.prototype.slice.call(container.querySelectorAll("[data-overflow]")).forEach(function(hiddenBtn) {
+                    hiddenBtn.hidden = !expand;
+                });
+                moreButton.setAttribute("aria-expanded", String(expand));
+                moreButton.textContent = expand ? "Show fewer" : "+" + hiddenCount + " more";
+            });
+            container.appendChild(moreButton);
+        }
     }
 
     function updatePressed(container, activeValue) {
         Array.prototype.slice.call(container.querySelectorAll("button")).forEach(function(button) {
+            if (!button.dataset.value) return;
             button.setAttribute("aria-pressed", button.dataset.value === activeValue ? "true" : "false");
         });
     }
@@ -248,6 +281,8 @@ document.addEventListener("DOMContentLoaded", function() {
             if (button.disabled || currentPage === page) return;
             currentPage = page;
             renderPage();
+            var currentButton = pagination.querySelector('[aria-current="page"]');
+            if (currentButton) currentButton.focus();
         });
         return button;
     }
@@ -358,7 +393,7 @@ document.addEventListener("DOMContentLoaded", function() {
     renderButtons(tagWrap, maps.tags, activeTag, function(value) {
         activeTag = value;
         applyFilters(true);
-    });
+    }, { collapseAfter: 15 });
 
     searchInput.addEventListener("input", function() {
         applyFilters(true);

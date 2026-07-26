@@ -31,6 +31,16 @@
         });
 
         content.appendChild(fragment);
+
+        var kicker = article.getAttribute("data-kicker");
+        if (kicker) {
+            Array.prototype.slice.call(content.querySelectorAll(".reading-surface-doc > h1")).forEach(function (h1) {
+                var label = document.createElement("p");
+                label.className = "doc-kicker";
+                label.textContent = kicker;
+                h1.parentNode.insertBefore(label, h1);
+            });
+        }
     }
 
     initReadingSurface();
@@ -149,6 +159,21 @@
         manualToc(tocList);
     }
 
+    function initMobileToc() {
+        var details = document.querySelector(".mobile-toc");
+        var container = document.getElementById("blog-toc-list-mobile");
+        var source = document.getElementById("blog-toc-list");
+        if (!details || !container) return;
+        if (tocHeadings.length === 0 || !source || !source.innerHTML.trim()) {
+            details.hidden = true;
+            return;
+        }
+        container.innerHTML = source.innerHTML;
+        container.addEventListener("click", function (event) {
+            if (event.target.closest("a")) details.removeAttribute("open");
+        });
+    }
+
     function initTocToggle() {
         var wrapper = document.querySelector(".blog-layout-wrapper");
         var toggle = document.getElementById("blog-toc-toggle");
@@ -202,6 +227,11 @@
         }
         if (manualSource === "original" || /\bfigure-original\b/.test(className)) {
             return "original";
+        }
+
+        var markedAncestor = img.closest(".figure-generated, .figure-original");
+        if (markedAncestor) {
+            return markedAncestor.classList.contains("figure-generated") ? "generated" : "original";
         }
 
         return /\.svg(?:$|[?#])/.test(src) ? "generated" : "original";
@@ -268,6 +298,7 @@
 
     ensureHeadingIds();
     initToc();
+    initMobileToc();
     initTocToggle();
     initAnchors();
     labelImagesBySource();

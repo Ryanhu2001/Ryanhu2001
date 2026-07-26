@@ -45,6 +45,10 @@ permalink: /wiki/
                 {% endunless %}
                 {% endfor %}
             </div>
+
+            {% if wiki_count == 0 %}
+            <div class="paper-empty-state">No public notes yet.</div>
+            {% endif %}
         </div>
     </div>
 </div>

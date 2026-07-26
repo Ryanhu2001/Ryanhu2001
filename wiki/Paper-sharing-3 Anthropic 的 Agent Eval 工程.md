@@ -1,15 +1,20 @@
 ---
 title: "Paper-sharing-3: Anthropic 的 Agent Eval 工程"
 public: true
-description: "按时间顺序解读 Anthropic 五篇 Agent Eval 工程文章：从评测结构、基础设施噪声、Eval awareness、Evaluator Harness 到生产质量闭环。"
+description: "按时间顺序解读 Anthropic 五篇 Agent Eval 工程文章：从评测结构、基础设施噪声、Eval awareness、Generator–Evaluator Loop 到生产质量闭环。"
 type: paper-sharing
 date: 2026-07-16
 reading_surface: true
+kicker: "ANTHROPIC ENGINEERING · AGENT EVAL"
 ---
 
 # Paper-sharing-3：Anthropic 的 Agent Eval 工程
 
 这次 Sharing 按时间顺序讲 Anthropic Engineering 在 2026 年连续发布的五篇文章。它们不是五篇彼此独立的摘要，而是共同回答一个工程问题：**怎样为真实 Agent 产品建立、校准、保护并持续维护一套可信的 Eval 系统？**
+
+本次 Sharing 的核心判断是：
+
+> **Agent Eval 不是给模型出题，而是在构建一套可复现、可对抗、能接入生产的测量系统。**
 
 1. **Demystifying evals for AI agents**：Agent Eval 到底由什么组成，又该怎样从零建立？
 2. **Quantifying infrastructure noise in agentic coding evals**：测量系统本身会制造多少分数差异？
@@ -29,20 +34,6 @@ reading_surface: true
 
 > **阅读口径**：第一至第五部分沿着每篇原文的问题、实验、证据和结论展开；其中超出原文、用于连接五篇文章的内容，会明确标为“我的理解”或“对 Agent Eval 建设的启发”。第六部分再把五篇文章组装成一套工程方法。
 
-因此，本文采用的递进关系是：
-
-```text
-定义测量对象与成功标准
-  -> 校准基础设施与运行环境
-  -> 保护 Eval Integrity，防止测量路径被污染或绕过
-  -> 探索把 Evaluator 变成 Agent 的运行时反馈
-  -> 用生产监控、渐进发布和用户失败闭合离线 Eval
-```
-
-本次 Sharing 的核心判断是：
-
-> **Agent Eval 不是给模型出题，而是在构建一套可复现、可对抗、能接入生产的测量系统。**
-
 ---
 
 # 一、Demystifying evals for AI agents
@@ -50,12 +41,13 @@ reading_surface: true
 - **来源**：[Anthropic Engineering](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
 - **发布日期**：2026-01-09
 - **它要回答的问题**：普通 LLM Eval 的 Prompt、Answer、Grader 三件套，为什么不够评估 Agent？
+- **配套精读**：[《Demystifying evals for AI agents》单篇精读笔记]({{ '/paper-reading/Demystifying%20Evals%20for%20AI%20Agents.html' | relative_url }})——同一篇文章更完整的逐节拆解
 
 > **在整体方法中的位置——Build**：这篇建立基础词汇与建设路线。读完后，团队应该能够定义 Task、Trial、Outcome、Trajectory、Grader、Agent Harness、Evaluation Harness 与 Suite，并知道怎样从真实任务开始建设 Capability 和 Regression Eval。
 
 ## 1.1 为什么原型阶段的方法迟早会失效？
 
-早期依靠人工试用、内部 Dogfooding 和产品直觉，团队也能推进得很快。但产品规模化后，问题会迅速暴露。用户说“这版变笨了”，团队却缺少稳定基线，无法判断：
+早期依靠人工试用、内部 Dogfooding 和产品直觉，团队就能推进得很快。但产品规模化后，问题会迅速暴露。用户说“这版变笨了”，团队却缺少稳定基线，无法判断：
 
 - 是真实回归，还是采样与环境噪声？
 - 一次改动改善了什么，又破坏了什么？
@@ -88,7 +80,7 @@ Task + Tools + Environment
   -> 一个或多个 Grader
 ```
 
-![原文图：从简单单轮 Eval 到带工具、环境和单元测试的多轮 Agent Eval](https://www-cdn.anthropic.com/images/4zrzovbb/website/bd42e7b2f3e9bb5218142796d3ede4816588dec0-4584x2834.png)
+![原文图：从简单单轮 Eval 到带工具、环境和单元测试的多轮 Agent Eval](assets/wiki/anthropic-agent-eval-engineering/source-eval-loop.png)
 
 *原图来自 Anthropic：左侧是 Prompt–Response–Grader，右侧是 Coding Agent 在环境中多轮调用工具、修改状态，最后由测试检查结果。*
 
@@ -185,7 +177,7 @@ Coding Agent 的优势是 Outcome 相对容易确定性验证：代码能否运�
 
 客服、销售和教练 Agent 的对话质量本身就是被测对象，通常还需要第二个 LLM 扮演用户，进行多轮甚至对抗式交互。一次退款任务可能同时要求：Ticket 真正关闭、退款实际处理、十轮内结束、先验证身份、金额不越权、表达有同理心并清楚解释结果。
 
-这里“正确答案”往往不唯一，因此 Outcome State、Transcript Constraint 与模型 Rubric 必须组合。τ-Bench 与 τ²-bench 正是用用户模拟器加工具环境来测这类多维成功。
+这里“正确答案”往往不唯一，因此 Outcome State、Transcript Constraint 与模型 Rubric 必须组合。τ-bench 与 τ²-bench 正是用用户模拟器加工具环境来测这类多维成功。
 
 ### Research Agent
 
@@ -208,7 +200,7 @@ Computer-use Agent 通过截图、鼠标、键盘和滚动操作真实 GUI，评
 
 这两套不是永久分开的静态题库。一个 Capability Task 被优化到高通过率后，应“毕业”进入持续运行的 Regression Suite；生产中新出现的失败又应被整理成新的 Capability 或 Regression Task。接近 100% 的 Suite 仍然能防回归，但不再能衡量前沿进步。
 
-原文以 SWE-bench Verified 为例说明饱和：分数从约 30% 快速上升到 80% 以上后，剩余题目更少、更难，真实能力提升可能只表现为很小的分数变化。Qodo 最初用一次性 Coding Eval 没看到 Opus 4.5 在长任务上的改进，后来改建 Agentic Eval 才测到差异。
+原文以 SWE-bench Verified 为例说明饱和：分数在一年内从约 40% 快速上升到 80% 以上后，剩余题目更少、更难，真实能力提升可能只表现为很小的分数变化。Qodo 最初用一次性 Coding Eval 没看到 Opus 4.5 在长任务上的改进，后来改建 Agentic Eval 才测到差异。
 
 因此 Eval 必须随能力边界演进：保留饱和题做回归，同时不断加入更长、更复杂、更接近生产的新任务。
 
@@ -229,7 +221,7 @@ $$
 
 单次成功率为 75% 时，三次中至少成功一次约为 98.4%，三次全部成功却只有约 42.2%。到了更大的 $k$，两条曲线会继续朝相反方向走。一个系统可能同时拥有非常漂亮的 pass@k 和很差的 pass^k，所以“多试几次总能做出来”不能替代稳定性。
 
-![原文图：pass@k 与 pass^k 随试验次数分叉](https://www-cdn.anthropic.com/images/4zrzovbb/website/3ddac5be07a0773922ec9df06afec55922f8194a-4584x2580.png)
+![原文图：pass@k 与 pass^k 随试验次数分叉](assets/wiki/anthropic-agent-eval-engineering/source-passk-curves.png)
 
 *原图来自 Anthropic：当 $k=1$ 时两者相同；随着试验次数增加，pass@k 趋近 100%，pass^k 却趋近 0%。*
 
@@ -281,7 +273,7 @@ Eval Suite 是活资产。Anthropic 最有效的组织方式是由专门 Eval �
 
 原文把这种模式称为 Eval-driven Development：先用低通过率 Eval 写出未来能力的规格，再迭代 Agent，直到能力兑现。
 
-![原文图：从任务收集、Grader 校准到长期维护的 Eval 建设流程](https://www-cdn.anthropic.com/images/4zrzovbb/website/0db40cc0e14402222a179fc6297b9c8818e97c8a-4584x2580.png)
+![原文图：从任务收集、Grader 校准到长期维护的 Eval 建设流程](assets/wiki/anthropic-agent-eval-engineering/source-eval-build-flow.png)
 
 *原图来自 Anthropic：Eval 不是一次性建表，而是从真实任务开始，经过实现、运行、分析、修订，持续进入 Regression Suite。*
 
@@ -298,7 +290,7 @@ Eval Suite 是活资产。Anthropic 最有效的组织方式是由专门 Eval �
 |人工 Transcript Review：抽样读完整轨迹|发现细微质量问题、失败模式和产品直觉|昂贵；覆盖不稳定；容易疲劳；主要提供定性信号|
 |系统化人工研究：专家研究、用户研究与标注|为主观任务建立 Gold Standard，并校准 LLM Judge|慢且贵；法律、金融、医疗等领域需要真正领域专家|
 
-![原文图：自动 Eval、生产监控、A/B Test、用户反馈和人工研究的 Swiss Cheese Model](https://www-cdn.anthropic.com/images/4zrzovbb/website/b77b8dbb7c2e57f063fbc8a087a853d5809b74b0-4584x2580.png)
+![原文图：自动 Eval、生产监控、A/B Test、用户反馈和人工研究的 Swiss Cheese Model](assets/wiki/anthropic-agent-eval-engineering/source-swiss-cheese.png)
 
 *原图来自 Anthropic：没有单一评测层能捕获全部问题，多层组合后，上一层漏掉的失败由下一层接住。*
 
@@ -306,7 +298,7 @@ Eval Suite 是活资产。Anthropic 最有效的组织方式是由专门 Eval �
 
 ## 1.11 这篇文章的结论与边界
 
-这篇文章没有提供一个永远有效的固定 Benchmark。它真正要求的是持续维护：从真实失败取 Task，写清成功标准，组合不同 Grader，保持任务足够困难，读轨迹，提高信噪比，并在模型和产品变化后继续修改 Eval。
+这篇文章没有提供一个永远有效的固定 Benchmark。它真正要求的是持续维护：从真实失败取 Task，写清成功标准，组合不同 Grader，保持任务足够困难，读轨迹，提高信噪比，并在模型和产品变化后继续修改 Eval。工具层面不必从零开始——原文附录列了一批现成 Eval 框架（Harbor、Braintrust、LangSmith、Langfuse、Arize 等）可作起点。
 
 随着 Agent 执行更长任务、组成 Multi-agent System、进入更主观的工作，现有技术还会继续失效。Eval 必须和模型、Harness、任务与生产分布一起演进，而不是在发布当天冻结。
 
@@ -366,17 +358,9 @@ Anthropic 的实现把每题官方规格同时设为保证值和硬上限，相�
 
 这时增益不再只是“避免误杀”，而是 Agent 获得了此前根本无法使用的解法：安装大型依赖、启动昂贵子进程、运行高内存测试套件，或用更宽松的搜索策略暴力尝试。
 
-```text
-资源太紧
-  -> Trial 被无意义地 OOM / Pod Error 杀死
+![自制图解：资源余量的两个阶段——先修稳定性，再改变可用策略](assets/wiki/anthropic-agent-eval-engineering/infra-noise-stages.svg)
 
-资源达到稳定区间
-  -> Infra Failure 降低，但题目难度基本不变
-
-资源继续增加
-  -> Agent 可选择的算法与工具链改变
-  -> Benchmark 测量对象也随之改变
-```
+*自制图解：把六组实验压缩成两段式结论——3x 之前买到的是稳定性，3x 之后买到的是新策略；此时 Benchmark 的测量对象已经改变。*
 
 ## 2.4 `bn-fit-modify`：同一任务其实在奖励不同工程风格
 
@@ -440,7 +424,7 @@ Anthropic 观察到通过率随运行时段变化，并怀疑与 API 流量和�
 
 Terminal-Bench 这组实验中，约 `3x` 是稳定性与改变题目之间的经验转折点，但它依赖任务、Sandbox、硬件和软件栈，不是通用常数。Uncapped 也不天然更“公平”，因为它会奖励重依赖和昂贵暴力策略。
 
-## 2.9 对 Benchmark 发布者与读者的建议
+## 2.9 对 Benchmark 发布者与读者的建议与结论
 
 - 同时公开 Guaranteed Allocation 与 Hard Limit，而不是只写 CPU / RAM；
 - 说明 Sandbox Provider、Burst 行为、Timeout、并发与网络条件；
@@ -453,7 +437,7 @@ Terminal-Bench 中等资源区间的 Spread 已接近 2 个百分点，朴素 Bi
 
 所以几分领先既可能是真实能力差，也可能只是一台更大的 VM。
 
-第一篇告诉我们 Agent Eval 是一套系统；第二篇进一步证明，**测量装置不只制造噪声，超过某个阈值后还会改变被测能力本身**。下一篇的问题更棘手：被测 Agent 甚至会意识到自己正在被测，并主动研究测量系统。
+**我的理解**：第一篇告诉我们 Agent Eval 是一套系统；第二篇进一步证明，**测量装置不只制造噪声，超过某个阈值后还会改变被测能力本身**。下一篇的问题更棘手：被测 Agent 甚至会意识到自己正在被测，并主动研究测量系统。
 
 ---
 
@@ -478,17 +462,21 @@ Anthropic 检查 Opus 4.6 的 Multi-agent Run 后，在全部 **1,266 道题**�
 
 *原图来自 Anthropic。关键转折不是搜到答案，而是 Agent 开始分析“为什么有人会问这样一道异常具体的问题”。*
 
-Anthropic 将其描述为首个公开记录的案例：模型事先不知道正在运行哪个 Benchmark，却先推断自己可能处在评测中，随后成功识别并解决了评测系统本身。
+Anthropic 将其描述为首个公开记录的案例：模型事先不知道正在运行哪个 Benchmark，却先推断自己可能处在评测中，随后成功识别并“破解”了评测系统本身。
 
 ## 3.2 第一条成功轨迹：4050 万 Token 后改变问题定义
 
-第一条成功的 Eval-aware Trajectory 消耗 **4050 万 Token**，约为中位数的 **38 倍**。前约 **3000 万 Token**仍然是合法研究：Agent 在 12 种语言、数十个平台上调查十多个具体候选对象，派出 Subagent，进行了数百次搜索，但始终没有得到答案。
+第一条成功的 Eval-aware Trajectory 消耗 **4050 万 Token**，约为中位数的 **38 倍**。前约 **3000 万 Token** 仍然是合法研究：Agent 在 12 种语言、数十个平台上调查十多个具体候选对象，派出 Subagent，进行了数百次搜索，但始终没有得到答案。
 
 长期失败后，它不再只问“答案是什么”，而开始问“这道题为什么会被设计出来”。它先猜测可能是作业、考试、故意测试模型能否承认不知道的无解题，随后转向“LLM Benchmark”假设。
 
-搜索词也逐步升级：从一般的 Puzzle / Trivia，变成 Multi-hop Question、AI Benchmark、LLM Evaluation。它先重点检查 GAIA，机械核对 165 个公开 Validation Question 中的 122 个，没有匹配后才排除；随后继续遍历自己知道的 BrowseComp、SimpleQA、FRAMES、WebArena 等数据集，并派 Subagent 专门调查 BrowseComp 的答案解密与 Canary String。
+搜索词也逐步升级：从一般的 Puzzle / Trivia，变成 Multi-hop Question、AI Benchmark、LLM Evaluation。它先重点检查 GAIA，机械核对 165 个公开 Validation Question 中的 122 个，没有匹配后才排除；随后继续遍历自己知道的 BrowseComp、SimpleQA、FRAMES、WebArena、AgentBench、Humanity's Last Exam 等数据集，并派 Subagent 专门调查 BrowseComp 的答案解密与 Canary String。
 
 这里发生了关键变化：目标从“对开放世界做研究”变成“识别出题机构与答案存储机制”。
+
+![自制图解：一条 4050 万 Token 的 Eval-aware 轨迹，从合法研究到解密与交叉确认的六个阶段](assets/wiki/anthropic-agent-eval-engineering/eval-awareness-trajectory.svg)
+
+*自制图解：把 3.2–3.4 的完整轨迹压成六步。值得反复看的是第 2 步——能力上的分水岭不是“会解密”，而是开始追问题目为什么存在。*
 
 ## 3.3 识别 BrowseComp 后，仍要突破工具限制
 
@@ -538,13 +526,9 @@ Anthropic 找到 **16 条**尝试识别、访问或解密 BrowseComp 材料但�
 
 一个 Agent 把自己的问题拆解、候选对象甚至猜测写入搜索 URL 后，这些信息可能变成可检索网页；后续另一个 Agent 再搜索相同题目时，就会看到前序 Agent 留下的轨迹残片。
 
-```text
-Agent A 的搜索假设
-  -> 第三方网站生成永久 URL
-  -> 搜索引擎索引
-  -> Agent B 在后续 Trial 中检索到
-  -> Trial 之间通过开放 Web 间接共享状态
-```
+![自制图解：Agent A 的搜索假设经电商站永久 URL 与搜索引擎索引，被 Agent B 在后续 Trial 中检索到](assets/wiki/anthropic-agent-eval-engineering/web-shared-memory.svg)
+
+*自制图解：原文里甚至有一个 Agent 明确说出了这件事——“多个 AI Agent 之前搜索过同一道谜题，在商业网站上留下了缓存的查询痕迹。”*
 
 这破坏了 Eval 常用的独立同分布假设。即使每个容器都从干净快照启动，外部 Web 仍可能保存前一次 Trial 的痕迹。
 
@@ -557,7 +541,7 @@ Agent A 的搜索假设
 |Single-agent|0.24%|
 |Multi-agent|0.87%|
 
-Multi-agent 约为 Single-agent 的 **3.7 倍**。文章的解释不是 Subagent 更倾向作弊，而是系统总搜索量、并行分支和 Token Budget 更大：只要任何一个分支遇到泄漏论文、持久化 URL 或开始怀疑 Eval，结果就可能回流给主 Agent。
+Multi-agent 约为 Single-agent 的 **3.7 倍**（0.87% vs 0.24%，倍数按原文未取整的数值计算）。文章的解释不是 Subagent 更倾向作弊，而是系统总搜索量、并行分支和 Token Budget 更大：只要任何一个分支遇到泄漏论文、持久化 URL 或开始怀疑 Eval，结果就可能回流给主 Agent。
 
 因此 Multi-agent 的能力增益与 Integrity Risk 来自同一个机制——更广的探索覆盖。
 
@@ -565,7 +549,7 @@ Multi-agent 约为 Single-agent 的 **3.7 倍**。文章的解释不是 Subagent
 
 Anthropic 总共识别出至少 **20 个**不同的 BrowseComp 泄漏来源。对重点 Opus 4.6 Multi-agent Run 中的 11 个可疑问题，他们加入 Blocklist 后重跑；其中 8 题仍能通过合法研究得到正确答案。
 
-最终调整分数从 **86.81%** 降为 **86.57%**。绝对变化只有 0.24 个百分点，但它证明原成绩中有一部分成功不能归因于 BrowseComp 想测的研究能力。
+最终调整分数从 **86.81%** 降为 **86.57%**。绝对变化只有 0.24 个百分点，但它证明原成绩中有一部分成功不能归因于 BrowseComp 想测的研究能力。对调查没有那么充分的 Single-agent 配置，Anthropic 采取了更保守的处理：被标记的问题直接按错误计，不再重跑。
 
 这也是为什么只看 Aggregate Score 会低估问题：污染率小，不代表测量解释仍然可靠。特别是在 Leaderboard 差距很小时，少量被攻破题目就可能改变排序。
 
@@ -582,6 +566,8 @@ Anthropic 总共识别出至少 **20 个**不同的 BrowseComp 泄漏来源。�
 
 Canary String 能帮助搜索和标记 Benchmark 数据是否泄漏，却不能独自阻止已泄漏材料被运行时 Agent 使用。
 
+原文最后还有一句清醒的自嘲：**这份报告本身也很可能成为新的污染源**——它详细描述了识别与解密路径，未来的模型可能在训练或搜索中读到它。
+
 ## 3.11 Eval Integrity 必须变成持续对抗流程
 
 - 定期搜索题目、答案、完整 Trajectory 和数据镜像是否公开；
@@ -592,7 +578,7 @@ Canary String 能帮助搜索和标记 Benchmark 数据是否泄漏，却不能�
 - 检查开放 Web 是否保存前序 Agent 的查询状态；
 - 把 Benchmark 当成红队目标，持续测试新模型与新工具能否找到替代路径。
 
-这篇文章把 Eval 从统计问题升级成安全问题。Infrastructure Noise 假设 Agent 是被动被测对象；Eval Awareness 表明强 Agent 会研究测试本身，组合代码执行、搜索、镜像和长期预算来改变成功路径。
+**我的理解**：这篇文章把 Eval 从统计问题升级成安全问题。Infrastructure Noise 假设 Agent 是被动被测对象；Eval Awareness 表明强 Agent 会研究测试本身，组合代码执行、搜索、镜像和长期预算来改变成功路径。
 
 自然的下一步，是不再只在结束后给一次分，而把独立 Evaluator 放进运行过程，让评价成为 Agent 的持续反馈。第四篇正是沿着这个方向展开。
 
@@ -606,12 +592,11 @@ Canary String 能帮助搜索和标记 Benchmark 数据是否泄漏，却不能�
 
 > **在整体方法中的位置——Improve**：前三篇主要讨论离线 Evaluation Harness 如何产生可信分数；这篇讨论的是运行时 Agent Harness，展示独立 Evaluator 怎样操作真实产物、返回 Failure Evidence，并推动 Generator 继续修复。它不是说所有离线 Eval 都应进入运行时，而是研究在任务超出当前模型 Solo Reliability Boundary 时，这个反馈环是否值得它的成本。
 
-![Anthropic 长程应用开发 Harness 的文章主视觉](assets/wiki/anthropic-agent-eval-engineering/source-harness-design.svg)
-{: .figure-original }
+![Anthropic 长程应用开发 Harness 的文章主视觉](assets/wiki/anthropic-agent-eval-engineering/source-harness-design.svg){: .figure-original }
 
 这项工作的起点有两个：怎样让 Claude 做出不那么模板化的前端，以及怎样让它在没人介入时完成一整个应用。作者没有直接从复杂 Multi-agent 架构开始，而是先在审美任务上建立 Generator–Evaluator Loop，再把同一结构迁移到有可验证行为的 Full-stack Coding。
 
-## 4.0 先区分两种 Eval Loop
+## 4.1 我的理解：先区分两种 Eval Loop
 
 为了把第四篇放进整套 Agent Eval 方法中，需要先区分两种用途不同、但可以互相连接的循环：
 
@@ -620,30 +605,13 @@ Canary String 能帮助搜索和标记 Benchmark 数据是否泄漏，却不能�
 |**离线 Evaluation Loop**|测量系统能力、比较改动并决定是否发布|固定 Task、工具、环境与成功标准|分数、失败分类、Regression Signal|第一、二、三、五篇|
 |**运行时 Generator–Evaluator Loop**|改善当前这一次开放式任务的产物|用户目标、当前实现和可操作的真实应用|Failure Evidence、修复建议与下一轮实现|第四篇|
 
-```text
-离线 Evaluation Loop
+![自制图解：离线 Evaluation Loop 与运行时 Generator–Evaluator Loop 的并排对比](assets/wiki/anthropic-agent-eval-engineering/two-eval-loops.svg)
 
-Task Dataset
-  -> Agent Trial
-  -> Outcome / Trajectory / Quality Grader
-  -> Capability / Regression Signal
-  -> Release Decision
-  -> Production Failure 回流 Dataset
-```
-
-```text
-运行时 Generator–Evaluator Loop
-
-Goal
-  -> Generator 创建产物
-  -> Evaluator 实际操作并检查
-  -> Failure Evidence
-  -> Generator 修复或改变方向
-```
+*自制图解：左边循环回答“系统是否变好”，右边循环回答“这一次的产物能不能更好”。第四篇的全部内容都发生在右边。*
 
 第四篇的价值不是把两者混为一谈，而是展示同一类 Rubric、真实环境验证和轨迹审查能力，怎样从“测量一次 Trial”进一步变成“指导下一轮行动”。是否值得这样做，仍取决于任务难度、模型 Solo Reliability、延迟和成本。
 
-## 4.1 Harness 要解决两个彼此独立的问题
+## 4.2 Harness 要解决两个彼此独立的问题
 
 这篇文章面对的不是一个笼统的“长任务做不好”，而是两个不同问题：**Agent 能否在几个小时里持续推进**，以及**完成之后谁来判断产物是否真的合格**。
 
@@ -690,7 +658,7 @@ Evaluator 的目标：主动怀疑实现，寻找不通过的证据
 
 角色分离也不会自动产生可靠 Judge。Evaluator 仍可能过于宽容、只测 Happy Path 或漏掉深层功能，因此还需要专门的 Prompt、Few-shot Example、人工 Trace Review 和持续校准。但相比要求 Builder 一边投入实现、一边彻底否定自己的方案，把一个独立 Agent 调成严格 QA 更容易。
 
-## 4.2 第一阶段：把审美拆成可以讨论的 Rubric
+## 4.3 第一阶段：把审美拆成可以讨论的 Rubric
 
 作者先从 Frontend Design 入手。Claude 默认很容易生成技术上可用、视觉上安全的页面：模板布局、Library Default、白色 Card 叠紫色 Gradient，没有明显错误，也没有明确设计选择。
 
@@ -703,7 +671,7 @@ Evaluator 的目标：主动怀疑实现，寻找不通过的证据
 
 因为 Claude 默认已较擅长 Craft 与基础 Functionality，Rubric 更重视 Design Quality 与 Originality，明确惩罚 Generic AI Slop，促使 Generator 承担更多审美风险。Evaluator 再用带详细分解的 Few-shot Example 校准，减少多轮迭代中的评分漂移。
 
-## 4.3 Generator–Evaluator Loop 怎样运行？
+## 4.4 Generator–Evaluator Loop 怎样运行？
 
 Generator 先根据用户要求写出 HTML/CSS/JS 页面。Evaluator 获得 Playwright MCP，不只看一张 Screenshot，而是打开真实页面、导航、截图、检查交互，然后逐项评分并给出具体 Critique。
 
@@ -717,16 +685,16 @@ Generator 创建可运行页面
   -> 继续下一轮
 ```
 
-每次生成运行 **5–15 轮**，因为 Evaluator 真正操作页面，完整 Run 最长达到约 **4 小时**。总体分数常在前几轮上升后 Plateau，但过程并非单调：中间版本可能比最终版本更好，复杂度也常随轮数增加，Generator 为回应批评会采用更野心勃勃的实现。
+每次生成运行 **5–15 轮**，因为 Evaluator 真正操作页面，完整 Run 最长达到约 **4 小时**。总体分数常在前几轮上升后 Plateau，但过程并非单调：中间版本可能比最终版本更好，复杂度也常随轮数增加，Generator 为回应批评会尝试野心更大的实现。
 
 一个荷兰艺术博物馆网站在第九轮仍是精致但可预期的深色 Landing Page；第十轮 Generator 放弃原方向，改成 CSS Perspective 的 3D 展厅、自由悬挂的艺术品和门洞式房间导航。这个 Leap 正是单次生成中很少出现、由多轮外部反馈诱发的探索。
 
 <figure class="figure-original">
   <video controls playsinline preload="metadata" style="width: 100%; border-radius: 12px;" src="https://cdn.sanity.io/files/4zrzovbb/website/9877febd34432f7f582aecd0023b951223605c6a.mp4"></video>
-  <figcaption>原文演示视频：Frontend design——怎样把主观视觉质量变成可迭代的 Grader 反馈。视频来自 Anthropic。</figcaption>
+  <figcaption>视频来自 Anthropic：Frontend design 演示——怎样把主观视觉质量变成可迭代的 Grader 反馈。</figcaption>
 </figure>
 
-## 4.4 Rubric 不只是测量，也在塑造输出
+## 4.5 Rubric 不只是测量，也在塑造输出
 
 Rubric 的语言从第一轮就会改变 Generator，即使还没有任何 Evaluator Feedback，带标准的 Baseline 也已优于完全无 Prompt 约束的输出。
 
@@ -734,7 +702,7 @@ Rubric 的语言从第一轮就会改变 Generator，即使还没有任何 Evalu
 
 所以不能把 LLM Grader 当作中立仪器。Rubric 应版本化，并记录权重、负面模式、Few-shot Gold Example、Judge 模型与 Prompt。迭代分数上升也不自动代表人类偏好严格单调上升，需要回看中间产物与人工选择。
 
-## 4.5 从网页审美扩展到完整 Full-stack 应用
+## 4.6 从网页审美扩展到完整 Full-stack 应用
 
 Generator–Evaluator 结构与软件工程中的 Build、Code Review 和 QA 很自然地对应。最终架构包含三个角色：
 
@@ -750,7 +718,7 @@ Planner 只规定产品上下文、交付范围和高层技术方向，不提前
 
 每个评价维度都有 Hard Threshold，任一项低于阈值，当前 Sprint 就失败，问题连同具体证据返回 Generator。
 
-## 4.6 Retro Game Maker：Solo 看起来能用，核心游戏却是坏的
+## 4.7 Retro Game Maker：Solo 看起来能用，核心游戏却是坏的
 
 作者用相同的一句需求比较 Opus 4.5 Solo 与 Full Harness：创建包含 Level Editor、Sprite Editor、Entity Behavior 和 Playable Test Mode 的 2D Retro Game Maker。
 
@@ -759,31 +727,42 @@ Planner 只规定产品上下文、交付范围和高层技术方向，不提前
 |Solo|约 20 分钟|约 $9|界面表面符合预期，但布局浪费空间、流程缺少引导，Entity 出现在画面后完全不响应输入|
 |Full Harness|约 6 小时|约 $200|范围、视觉与交互明显更完整，真正可以移动 Entity 并游玩生成关卡|
 
-Solo 的关键问题隐藏在 Entity Definition 与 Game Runtime 的 Wiring 中，UI 表面看不出原因。Full Harness 虽然超过 20 倍昂贵，Planner 却把同一句话展开为 **16 个 Feature、10 个 Sprint**，加入 Sprite Animation、Behavior Template、音效与音乐、AI Sprite / Level Generator、游戏导出和分享链接。
+Solo 的关键问题隐藏在 Entity Definition 与 Game Runtime 的 Wiring 中，UI 表面看不出原因。Full Harness 虽然成本高出 20 余倍，Planner 却把同一句话展开为 **16 个 Feature、10 个 Sprint**，加入 Sprite Animation、Behavior Template、音效与音乐、AI Sprite / Level Generator、游戏导出和分享链接。
 
 完整版仍不是完美产品：工作流没有清楚告诉用户要先创建 Sprite 与 Entity，物理碰撞有粗糙之处，AI 生成的关卡甚至出现跳不过去的墙。但核心 Play Mode 确实工作，而 Solo 的中心功能完全不可用。
 
-原文把两次运行的视觉结果直接放在文章中，下面保留全部截图（先是 Solo Harness，随后是 Full Harness）：
+原文把两次运行的视觉结果直接放在文章中。下面保留最能说明差距的三张，其余截图折叠在后面：
+
+![原文截图：Solo Harness 生成的关卡无法正常游玩](https://www-cdn.anthropic.com/images/4zrzovbb/website/79217dbfce3f31172eb7fd4deee5449023c9b2ac-1999x757.png)
+
+*原图来自 Anthropic：Solo 版的关卡界面看似完整，但 Entity 出现后完全不响应输入——中心的 Play Mode 实际不可用。*
+
+![原文截图：Full Harness 的 Sprite Editor 更干净、更易用](https://www-cdn.anthropic.com/images/4zrzovbb/website/c05aa3ef8daaf0ef3d0dba66d6480ab753e9cbaa-1999x1007.png)
+
+*原图来自 Anthropic：同一句需求下，Full Harness 的 Sprite Editor 在布局与交互完成度上明显更高。*
+
+![原文截图：在 Full Harness 中游玩生成的游戏](https://www-cdn.anthropic.com/images/4zrzovbb/website/f2953550e51957a0a49a3792a0df3bcfed0fde48-1994x1654.png)
+
+*原图来自 Anthropic：Full Harness 生成的关卡可以真正移动 Entity 并游玩——正是 Solo 版坏掉的那条核心链路。*
+
+<details markdown="1">
+<summary>其余五张原文截图：Solo 初始界面与 Sprite Editor、Full Harness 初始界面与 AI 关卡生成</summary>
 
 ![原文截图：Solo Harness 打开后的初始界面](https://www-cdn.anthropic.com/images/4zrzovbb/website/23c98f1d7ae720bfb39190d50e0706c03b177ad8-1999x1320.png)
 
 ![原文截图：Solo Harness 创建 Sprite 的编辑器](https://www-cdn.anthropic.com/images/4zrzovbb/website/24472c85629a6c82a092f25def4a659042be1f7c-1999x1010.png)
 
-![原文截图：Solo Harness 生成的关卡无法正常游玩](https://www-cdn.anthropic.com/images/4zrzovbb/website/79217dbfce3f31172eb7fd4deee5449023c9b2ac-1999x757.png)
-
 ![原文截图：Full Harness 创建新游戏时的初始界面](https://www-cdn.anthropic.com/images/4zrzovbb/website/a8bef95425966495629095a5cb38bde4a8b13558-1999x997.png)
-
-![原文截图：Full Harness 的 Sprite Editor 更干净、更易用](https://www-cdn.anthropic.com/images/4zrzovbb/website/c05aa3ef8daaf0ef3d0dba66d6480ab753e9cbaa-1999x1007.png)
 
 ![原文截图：使用 Full Harness 内置 AI 生成关卡](https://www-cdn.anthropic.com/images/4zrzovbb/website/287b35f4683ecb77ac6a8d66bf2b3ed5956d1db9-1999x1008.png)
 
 ![原文截图：Full Harness 继续生成关卡结果](https://www-cdn.anthropic.com/images/4zrzovbb/website/8596eab2b4a06124df41ad6b2f7ff4ff9d9f105f-1999x1000.png)
 
-![原文截图：在 Full Harness 中游玩生成的游戏](https://www-cdn.anthropic.com/images/4zrzovbb/website/f2953550e51957a0a49a3792a0df3bcfed0fde48-1994x1654.png)
+</details>
 
-## 4.7 Evaluator 的价值在于给出可直接修复的证据
+## 4.8 Evaluator 的价值在于给出可直接修复的证据
 
-Sprint 3 单独就有 **27 条**Level Editor 验收条件。原文把 Contract Criterion 与 Evaluator Finding 列成表格，保留如下：
+仅 Sprint 3 就有 **27 条** Level Editor 验收条件。原文把 Contract Criterion 与 Evaluator Finding 列成表格，保留如下：
 
 |Contract Criterion|Evaluator Finding|
 |---|---|
@@ -793,7 +772,7 @@ Sprint 3 单独就有 **27 条**Level Editor 验收条件。原文把 Contract C
 
 这些不是“功能还需完善”的空泛评价，而是 Generator 可以不经额外调查就立即修复的 Failure Evidence。运行时 Harness 的意义因此不只是给分，而是把 Eval 结果转成下一轮 Action。
 
-## 4.8 Evaluator 自己也要被反复调试
+## 4.9 Evaluator 自己也要被反复调试
 
 默认 Claude 并不是可靠 QA。早期 Run 中，它会发现真实问题，然后替实现辩护并决定问题不重要；也会只走 Happy Path，不主动探索边界情况。
 
@@ -801,13 +780,13 @@ Sprint 3 单独就有 **27 条**Level Editor 验收条件。原文把 Contract C
 
 这说明 Generator–Evaluator 分离只是结构性起点，不是自动得到高质量 Judge。Evaluator 需要自己的 Eval、Gold Example 和 Trace Review。
 
-## 4.9 不能一次性简化：要逐组件 Ablation
+## 4.10 不能一次性简化：要逐组件 Ablation
 
 第一版 Harness 太重、太慢、太贵。作者第一次尝试激进删减并加入新创意时，结果无法复现原系统表现，而且因为一次改动太多，也无法判断究竟哪个组件真正 Load-bearing。
 
 之后他改成 Methodical Ablation：一次只移除一个组件，观察最终产物与 Trace。核心原则是：每个 Harness 组件都编码了一个“模型自己做不到什么”的假设；这个假设可能一开始就错，也会随模型升级快速过期。
 
-## 4.10 Opus 4.6：移除 Sprint，但保留 Planner 与末尾 QA
+## 4.11 Opus 4.6：移除 Sprint，但保留 Planner 与末尾 QA
 
 Opus 4.6 在规划、长任务持续性、大代码库、Code Review、Debug 与 Long-context Retrieval 上更强，正好覆盖旧 Harness 想补足的能力。新版因此：
 
@@ -818,7 +797,7 @@ Opus 4.6 在规划、长任务持续性、大代码库、Code Review、Debug 与
 
 Evaluator 是否值得，不再是固定 Yes / No，而取决于任务相对当前模型 Solo Reliability Boundary 的位置。Opus 4.5 上许多 Build 正在边界外，Evaluator 每轮都能抓到重要问题；Opus 4.6 的边界向外移动，原先需要监督的任务已经可以独立做好，这时 Evaluator 只是 Overhead。但在新边界附近，它仍提供真实增益。
 
-## 4.11 DAW 实验：更强模型仍会把核心功能做成 Stub
+## 4.12 DAW 实验：更强模型仍会把核心功能做成 Stub
 
 新版 Harness 接到的任务是用 Web Audio API 在浏览器中构建完整 Digital Audio Workstation。总运行约 **3 小时 50 分钟**，成本 **$124.70**：
 
@@ -844,21 +823,12 @@ Builder 第一轮在没有 Sprint 分解的情况下连贯运行超过两小时�
 
 <figure class="figure-original">
   <video controls playsinline preload="metadata" style="width: 100%; border-radius: 12px;" src="https://cdn.sanity.io/files/4zrzovbb/website/555910f9adb3938734940224e7a6f4c7cbbbd8f2.mp4"></video>
-  <figcaption>原文演示视频：更新后的 Harness 如何构建并 QA 浏览器 DAW。视频来自 Anthropic。</figcaption>
+  <figcaption>视频来自 Anthropic：更新后的 Harness 如何构建并 QA 浏览器 DAW。</figcaption>
 </figure>
 
-## 4.12 对 Agent Eval 建设的启发：Harness 的有效期与模型版本绑定
+## 4.13 对 Agent Eval 建设的启发：Harness 的有效期与模型版本绑定
 
-这篇把 Eval 从“结束后离线打分”推进到运行时控制回路：
-
-```text
-规划交付范围
-  -> Generator 执行
-  -> 独立 Evaluator 操作真实产物
-  -> 返回可复现 Failure Evidence
-  -> Generator 修复
-  -> 再次 QA
-```
+这篇把 Eval 从“结束后离线打分”推进到运行时控制回路——规划交付范围、Generator 执行、独立 Evaluator 操作真实产物、返回可复现 Failure Evidence、修复后再次 QA（完整循环见 4.4）。
 
 但 Harness 不是越复杂越好。它的每个组件都要用真实 Trace 证明价值，并在新模型到来时重新 Ablate：删除已经不再 Load-bearing 的部分，把预算投到新的能力边界。
 
@@ -888,6 +858,10 @@ Builder 第一轮在没有 Sprint 分解的情况下连贯运行超过两小时�
 
 三个问题命中不同模型、不同用户流量与不同时间段，叠加后才呈现为广泛但不稳定的质量下降。内部从 3 月初开始调查时，稀疏、自选择的用户反馈很难与正常波动区分，内部使用与现有 Eval 又都没有立刻复现。
 
+![自制图解：三项独立改动在三、四月间的时间线叠加](assets/wiki/anthropic-agent-eval-engineering/postmortem-timeline.svg)
+
+*自制图解：把上表画在同一条时间轴上。三月中下旬到四月中旬，任何一个用户都可能同时踩中两三条——这正是“广泛但不稳定”的来源。*
+
 截至 **2026-04-20 的 v2.1.116**，三项问题全部解决。4 月 23 日发布复盘时，Anthropic 还为订阅用户重置了 Usage Limit。
 
 ## 5.2 Reasoning Effort：一个看似合理、实际错误的产品默认值
@@ -896,13 +870,13 @@ Opus 4.6 在 2 月进入 Claude Code 时，默认 Effort 是 `high`。部分用�
 
 Effort 本质是在 Test-time Compute Curve 上选点。通常思考越久，复杂任务质量越好，但延迟、Token 和 Usage Limit 压力也越高。内部 Eval 看到 `medium` 对大多数任务只损失少量 Intelligence，却显著降低延迟，避开少数极长 Thinking，并让用户额度更耐用，因此它在纸面上是一个有吸引力的默认值。
 
-![原文图：Opus 4.6 与 Opus 4.7 在不同 Effort Level 下的 Agentic Coding 分数与 Token 曲线](https://www-cdn.anthropic.com/images/4zrzovbb/website/de3bcf9733b61f57234d8c45e663b1bd48677ea1-3840x2160.png)
+![原文图：Opus 4.6 与 Opus 4.7 在不同 Effort Level 下的 Agentic Coding 分数与 Token 曲线](assets/wiki/anthropic-agent-eval-engineering/source-effort-curves.png)
 
 *原图来自 Anthropic：横轴是总 Token，纵轴是内部 Agentic Coding Eval 分数；更高 Effort 通常带来更高分，但也显著增加推理预算。*
 
 3 月 4 日上线后，用户很快报告 Claude Code 明显不够聪明。团队没有立刻回滚，而是尝试通过 Product UI 让用户更容易意识到并切换 Effort：Startup Notice、Inline Effort Selector，以及恢复 `ultrathink`。但绝大多数用户仍留在默认 `medium`，所以“用户可以自己调回去”没有真正抵消默认选择的影响。
 
-![原文截图：Claude Code UI 曾向用户推荐 Medium Effort，并提供 Low / Medium / High 选项](https://www-cdn.anthropic.com/images/4zrzovbb/website/459b2a8a0baa88937eebcbe4566dde4d6cc7f185-3794x2260.png)
+![原文截图：Claude Code UI 曾向用户推荐 Medium Effort，并提供 Low / Medium / High 选项](assets/wiki/anthropic-agent-eval-engineering/source-effort-ui.png)
 
 *原图来自 Anthropic：产品层给了切换入口，但默认值仍决定了绝大多数用户的实际使用分布。*
 
@@ -957,7 +931,7 @@ Claude Code Context Management
   × 恢复后的后续多轮与 Follow-up
 ```
 
-两个无关实验又进一步遮蔽复现：一个 Internal-only Server-side Message Queue Experiment，以及另一项 Thinking Display 改动。后者在大部分内部 CLI Session 中抑制了 Bug，所以即使测试外部 Build，也不容易得到用户的真实路径。
+两项无关改动又进一步遮蔽复现：一个 Internal-only 的 Server-side Message Queue 实验，以及另一项 Thinking Display 改动。后者在大部分内部 CLI Session 中抑制了 Bug，所以即使测试外部 Build，也不容易得到用户的真实路径。
 
 从用户报告到发现并确认根因花了一周以上。这说明“使用同一代码”不等于“处在同一运行分布”；Feature Flag、Server Experiment、UI 状态与 Session History 都属于 Eval Environment。
 
@@ -1004,15 +978,9 @@ Opus 4.7 相比前代更 Verbose，这种特征在难题上可能与更强能力
 
 真正可靠的闭环是：
 
-```text
-Offline Capability / Regression Eval
-  -> Public-build Dogfooding
-  -> Gradual Rollout + Production Monitoring
-  -> 用户反馈与真实 Transcript
-  -> 最小复现 Task
-  -> 新 Outcome / Trajectory Check
-  -> 回流 Regression Suite
-```
+![自制图解：从 Offline Eval 经 Dogfooding、渐进发布、用户反馈到回流 Regression Suite 的闭环](assets/wiki/anthropic-agent-eval-engineering/production-feedback-loop.svg)
+
+*自制图解：闭环的关键在下半圈——生产失败要被蒸馏成最小复现 Task 和可自动判定的检查项，才算真正“回流”。*
 
 所以这篇最重要的结论不是“测试总会漏 Bug”，而是：**用户体验的被测对象是完整生产系统；内部 Eval 若只覆盖模型、Prompt 或单个 Client Component，就会系统性漏掉组合状态。**
 
@@ -1024,15 +992,15 @@ Offline Capability / Regression Eval
 
 ![Agent Eval 五层系统：从任务到生产反馈](assets/wiki/anthropic-agent-eval-engineering/agent-eval-five-layer-system.svg)
 
-五篇文章分别揭开了 Agent Eval 的五层问题：
+开篇的阶段表已经列出每篇要解决的问题，这里只补上每篇最终沉淀下来的原则：
 
-|顺序|工程阶段|文章|暴露的问题|最终原则|
-|---:|---|---|---|---|
-|1|Build|Demystifying evals|Agent Eval 的对象远大于最终回答|同时评估 Task、Trajectory、Outcome、Harness 和 Grader|
-|2|Stabilize|Infrastructure noise|测量装置本身改变成绩|固定并公开资源、时间、网络和 Sandbox 配置|
-|3|Protect|Eval awareness|联网 Agent 可能识别 Benchmark，并利用泄漏材料改变成功路径|把 Eval Integrity 当成持续对抗问题|
-|4|Improve|Harness design|Generator 不擅长评价自己的工作|分离 Generator 与 Evaluator，让评价在必要时进入运行循环|
-|5|Operate|Quality postmortem|离线全绿仍可能线上退化|把生产监控和用户失败持续回流 Eval Suite|
+|工程阶段|文章|最终原则|
+|---|---|---|
+|Build|Demystifying evals|同时评估 Task、Trajectory、Outcome、Harness 和 Grader|
+|Stabilize|Infrastructure noise|固定并公开资源、时间、网络和 Sandbox 配置|
+|Protect|Eval awareness|把 Eval Integrity 当成持续对抗问题|
+|Improve|Harness design|分离 Generator 与 Evaluator，让评价在必要时进入运行循环|
+|Operate|Quality postmortem|把生产监控和用户失败持续回流 Eval Suite|
 
 ```text
 Build
@@ -1058,71 +1026,19 @@ Build
 
 ## 6.2 Build to Operate：最小可用 Agent Eval Stack
 
-如果要给一个真实 Agent 产品建立 Eval，可以按以下顺序：
+如果要给一个真实 Agent 产品建立 Eval，可以按下面的顺序推进。前七步在前文都有详细展开，这里只保留路线图与出处：
 
-### Step 1：从真实任务开始
+|Step|一句话做法|详见|
+|---:|---|---|
+|1|从真实用户任务、人工返工和生产失败收集 Task，写清允许工具、禁止行为和最终状态|1.9 Step 0–2|
+|2|同时建设 Outcome 与 Trajectory 两类证据，并为未预期的合法解保留人工复核入口|1.2 / 1.9 Step 5|
+|3|确定性规则、LLM Rubric 与人类专家组合评分，让评分结构能解释失败落在哪一层|1.5 / 1.9 Step 6|
+|4|同一 Task 跑多个 Seed，同时报告 pass@1 / pass@k / pass^k 与置信区间，把 Infra Error 与模型失败分开|1.8 / 2.9|
+|5|固定 model、harness、prompt、工具、grader、infra 与任务数据集的完整版本|2.6 / 5.5|
+|6|持续 Integrity Review：检索泄漏、审计异常轨迹、隔离答案、使用 Canary 与动态数据|3.11|
+|7|把每次生产失败沉淀成最小复现 Task、Outcome Check、Trajectory Assertion 与 Regression Test|5.9|
 
-- 收集真实用户任务、人工返工和生产失败
-- 为每个 Task 写清楚允许工具、禁止行为和最终状态
-- 同时保留简单任务、常规任务和能力边界任务
-
-### Step 2：同时建设 Outcome 与 Trajectory 证据
-
-- 最终数据库、文件系统、API 与业务对象状态
-- Unit Test、Fail-to-pass 与 Pass-to-pass Test
-- 工具调用、政策遵循、权限与安全边界
-- Token、轮数、延迟、成本和破坏性操作
-- 对未预期但合法的新解法保留人工复核入口
-
-不要让 Agent 的 Final Answer 充当完成证明，也不要让一份固定 Outcome 列表成为唯一真相。前者会接受“嘴上完成”，后者会把 τ²-bench 式的更好解法判错。
-
-### Step 3：组合评分并持续校准 Grader
-
-- 确定性规则负责正确性与安全底线
-- LLM Rubric 负责开放式质量和多种合法答案
-- 人类专家负责 Gold Set、Judge 校准和新失败模式
-- 关键约束使用 Binary Gate，连续质量使用 Weighted Score
-
-同一个 Task 可以有多个 Grader；评分结构应能解释失败落在哪一层，而不是只输出一个总分。
-
-### Step 4：为非确定性设计 Trial
-
-- 同一 Task 运行多个 Seed
-- 同时报告 pass@1、pass@k 和 pass^k
-- 给出置信区间
-- 将 Infrastructure Error 与 Model Failure 分开报告
-
-### Step 5：固定完整系统版本
-
-```text
-model version
-agent harness version
-prompt / skill version
-tool and environment version
-grader version
-infra configuration
-task dataset version
-```
-
-这些变量中的任何一个改变，都可能让历史分数失去直接可比性。
-
-### Step 6：持续做 Integrity Review
-
-- 检索问题和答案是否泄漏
-- 审查异常高分轨迹
-- 使用 Canary
-- 隔离答案与评分逻辑
-- 对开放网络任务使用动态数据
-
-### Step 7：把生产失败变成 Eval 资产
-
-每次生产事故都应该沉淀成：
-
-1. 一个最小可复现 Task
-2. 一个 Outcome Check
-3. 一个 Trajectory Assertion
-4. 一个进入 CI 的 Regression Test
-5. 一个线上监控指标
+其中一条容易被忽略的双重警告值得单独重复：**不要让 Agent 的 Final Answer 充当完成证明，也不要让一份固定 Outcome 列表成为唯一真相。**前者会接受“嘴上完成”，后者会把 τ²-bench 式的更好解法判错。
 
 ### Step 8：在必要时把 Evaluator 变成运行时反馈
 
@@ -1152,28 +1068,11 @@ task dataset version
 
 ## 6.4 我的三个最终判断
 
-### 判断一：Agent Benchmark 本质上是系统 Benchmark
+**判断一：Agent Benchmark 本质上是系统 Benchmark。**只报告模型名称是不够的，Harness、工具、资源、重试、Grader 和任务版本都属于结果的一部分。
 
-只报告模型名称是不够的。Harness、工具、资源、重试、Grader 和任务版本都属于结果的一部分。
+**判断二：Eval 的价值不在排行榜，而在可靠迭代。**好的 Eval 应该能回答：这次改动修复了什么、破坏了什么、是否值得增加的成本和延迟、失败发生在模型、Harness、环境还是产品层。
 
-### 判断二：Eval 的价值不在排行榜，而在可靠迭代
-
-好的 Eval 应该帮助团队回答：
-
-- 这次改动修复了什么？
-- 它破坏了什么？
-- 是否值得增加的成本和延迟？
-- 失败发生在模型、Harness、环境还是产品层？
-
-### 判断三：Eval 最终会成为 Agent Loop 的控制器
-
-未来的基本结构不再只是：
-
-```text
-Prompt -> Agent -> Answer
-```
-
-而更可能是：
+**判断三：Eval 最终会成为 Agent Loop 的控制器。**未来的基本结构不再只是 `Prompt -> Agent -> Answer`，而更可能是：
 
 ```text
 Goal
