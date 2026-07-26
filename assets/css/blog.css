@@ -329,7 +329,7 @@
     border-bottom: 0;
     font-size: 1.42rem;
     margin-top: 2rem;
-    padding-bottom: 0;
+    padding-bottom: 0.45rem;
     padding-top: 1.25rem;
 }
 
@@ -520,13 +520,25 @@
 }
 
 .blog-content h2 {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+    background: linear-gradient(var(--teal), var(--teal)) left bottom / 2.75rem 3px no-repeat;
+    border-bottom: 1px solid var(--line-soft);
     font-size: 1.52rem;
-    padding-bottom: 0.32rem;
+    padding-bottom: 0.45rem;
 }
 
 .blog-content h3 {
     font-size: 1.25rem;
+}
+
+.blog-content h3::before {
+    background: var(--teal);
+    border-radius: 2px;
+    content: "";
+    display: inline-block;
+    height: 0.95em;
+    margin-right: 0.5rem;
+    vertical-align: -0.12em;
+    width: 4px;
 }
 
 .blog-content h4 {
@@ -539,6 +551,13 @@
     margin-bottom: 1rem;
 }
 
+.blog-content p,
+.blog-content li {
+    letter-spacing: 0.008em;
+    overflow-wrap: break-word;
+    text-align: justify;
+}
+
 .blog-content ul,
 .blog-content ol {
     padding-left: 1.45rem;
@@ -546,6 +565,11 @@
 
 .blog-content li {
     margin-bottom: 0.42rem;
+}
+
+.blog-content li::marker {
+    color: var(--teal);
+    font-weight: 600;
 }
 
 .blog-content strong {
@@ -655,6 +679,23 @@
     color: #6c757d;
     font-size: 0.9rem;
     margin-top: 0.35rem;
+}
+
+/* Figure captions written as *italic* paragraphs right after an image:
+   render upright, smaller, centered — CJK oblique italics look broken. */
+.blog-content p:has(.image-source-frame) + p:has(> em:only-child),
+.blog-content .image-source-frame + p:has(> em:only-child) {
+    color: var(--muted);
+    font-size: 0.875em;
+    line-height: 1.7;
+    margin: -0.35rem auto 1.6rem;
+    max-width: 92%;
+    text-align: center;
+}
+
+.blog-content p:has(.image-source-frame) + p > em:only-child,
+.blog-content .image-source-frame + p > em:only-child {
+    font-style: normal;
 }
 
 .medium-zoom-image {
@@ -802,6 +843,7 @@
 .blog-content table th,
 .blog-content table td {
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    font-variant-numeric: tabular-nums;
     padding: 0.68rem 0.78rem;
     vertical-align: top;
 }
@@ -809,7 +851,18 @@
 .blog-content table th {
     background: var(--bg);
     color: var(--ink-soft);
+    font-size: 0.94em;
     font-weight: 700;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+
+.blog-content table tbody tr:nth-child(even) {
+    background: rgba(0, 117, 106, 0.025);
+}
+
+.blog-content table tbody tr:hover {
+    background: rgba(0, 117, 106, 0.055);
 }
 
 .blog-content table tr:last-child td {

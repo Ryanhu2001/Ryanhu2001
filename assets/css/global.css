@@ -663,8 +663,10 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .wiki-note hr {
-    border-top: 1px solid rgba(0, 0, 0, 0.12);
-    margin: 2rem 0;
+    background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.16), transparent);
+    border: 0;
+    height: 1px;
+    margin: 2.25rem 0;
 }
 
 @media (max-width: 575.98px) {
