@@ -203,7 +203,6 @@
     border: 1px solid var(--reading-line);
     border-radius: 1rem;
     margin: 0 auto 2rem;
-    max-width: 1480px;
     padding: 1.25rem;
 }
 
@@ -466,6 +465,29 @@
 @media (min-width: 1400px) {
     .blog-content {
         font-size: 1.125rem;
+    }
+}
+
+@media (min-width: 1800px) {
+    .blog-main {
+        flex-basis: 1200px;
+    }
+
+    .blog-layout-wrapper.toc-collapsed .blog-main,
+    .reading-surface-layout .blog-main {
+        flex-basis: 1380px;
+    }
+
+    .reading-surface-layout.toc-collapsed .blog-main {
+        flex-basis: 1460px;
+    }
+
+    .blog-content {
+        font-size: 1.1875rem;
+    }
+
+    .reading-progress {
+        width: min(1570px, calc(100vw - 30px));
     }
 }
 

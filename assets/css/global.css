@@ -54,6 +54,12 @@ body {
     }
 }
 
+@media (min-width: 1800px) {
+    .container-lg {
+        max-width: 1600px;
+    }
+}
+
 .skip-link:focus {
     background: var(--paper);
     border-radius: 0.3rem;
