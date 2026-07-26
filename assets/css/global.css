@@ -48,6 +48,12 @@ body {
     padding-top: 5.0rem;
 }
 
+@media (min-width: 1400px) {
+    .container-lg {
+        max-width: 1320px;
+    }
+}
+
 .skip-link:focus {
     background: var(--paper);
     border-radius: 0.3rem;
