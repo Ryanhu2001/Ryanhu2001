@@ -1,14 +1,15 @@
 ---
 title: "Dockerless: Environment-Free Program Verifier for Coding Agents"
 public: true
-description: "把 patch verifier 做成会读仓库、会收集证据的 agentic workflow，用来替代 per-repository test execution 的 SFT 筛选和 RL reward。"
+description: "把 patch verifier 做成会读仓库、会收集证据的 agentic workflow：verifier AUC 81.0、SFT 筛选追平 env-based、RL reward 逼近 test execution 的三层证据链。"
 type: paper-reading
-date: 2026-07-06
-created_at: 2026-07-06T23:32:12+08:00
+date: 2026-07-26
+created_at: 2026-07-26T21:36:00+08:00
 paper_title: "Dockerless: Environment-Free Program Verifier for Coding Agents"
+authors: "Wenhao Zeng, Yuling Shi, Xiaodong Gu, Chao Hu, et al."
 venue: "arXiv"
 year: "2026"
-status: "reading"
+status: "digested"
 category: "Coding Agents"
 tags:
   - verifier
@@ -19,320 +20,199 @@ tags:
 source_url: "https://arxiv.org/abs/2606.28436"
 ---
 
-# Dockerless: 无需执行环境的编码智能体验证器
+# Dockerless：把验证 patch 变成一次仓库调查，训练环节就可以不搭 Docker
 
-- **Paper**: Dockerless: Environment-Free Program Verifier for Coding Agents
-- **arXiv**: [2606.28436](https://arxiv.org/abs/2606.28436)
-- **机构**: Shanghai Jiao Tong University, Douyin Group
+- **Paper**: [Dockerless: Environment-Free Program Verifier for Coding Agents](https://arxiv.org/abs/2606.28436)
+- **Version**: arXiv v1, 2026-06-26
+- **Authors**: Wenhao Zeng, Yuling Shi, Xiaodong Gu, Chao Hu, et al.（共 13 人）
 - **类型**: SWE agent verifier / post-training pipeline / system + method paper
 - **关键词**: coding agent, patch verifier, environment-free training, SFT filtering, RL reward
 
 ## 读法：给人和 agent 的路标
 
-这篇先抓一句话：**Dockerless 不是取消执行测试，而是把训练后筛选和 RL reward 里最麻烦的 per-repository Docker 执行，换成一个会读仓库、会收集证据的 verifier。** 如果只想快速理解，读“一句话判断”、下面这张流程图、Table 2/3/1 的三层证据，再看“需要警惕的地方”。
+这篇先抓一句话：**Dockerless 不是取消执行测试，而是把后训练里最麻烦的 per-repository Docker 执行，换成一个会读仓库、会收集证据的 agentic verifier。** 它的论证结构是一条三层证据链：verifier 自身 AUC → SFT 筛选质量 → RL reward 质量，每一层都拿 execution-based 结果做对照。快速读法：先看"一句话判断"、自制流程图、Table 2 / Table 3 / Table 1 三张表，再看"需要警惕"里的边界条件。
 
-给 agent 以后检索时，关键词是：`repo-grounded verifier`、`verification questions`、`read-only explorer`、`dense reward`、`SFT filtering`、`GRPO reward`、`execution labels remain external`。这篇最适合放在“coding agent 后训练 / verifier / 环境替代”这条线里，而不是放在普通 LLM judge 里。
+给 agent 以后检索时，关键词是：`repo-grounded verifier`、`verification questions`、`read-only sub-agent`、`dense reward from verdict logits`、`rejection-sampled trajectory training`、`SFT filtering`、`GRPO reward`、`execution labels remain external`、`compiler diagnostics boundary`。这篇应放在"coding agent 后训练 / verifier / 环境替代"这条线里，不要归入普通 LLM-as-judge。
 
 ## 一句话判断
 
-Dockerless 的核心贡献不是简单地说“不要 Docker”，而是把程序验证器从一个静态 LLM judge 变成一个会主动读仓库、分解验证问题、并行收集证据、再给 patch 打分的 agentic verifier；它让 SWE agent 的 SFT 筛选和 RL reward 可以少依赖 per-repository test execution，但并没有完全摆脱执行信号，因为 verifier 的训练和评测标签仍来自执行测试。
+Dockerless 把程序验证器从静态 LLM judge 变成一个会主动读仓库的 agentic workflow——生成 2-4 个 verification questions、派只读 sub-agent 并行收集证据、再聚合判分；它作为 verifier 比最强开源 verifier 高 **+14.3 AUC**，用它筛 SFT 数据和发 RL reward 能把 Qwen3.5-9B 训到 **62.0 / 50.0 / 35.2**（SWE-bench Verified / Multilingual / Pro），几乎追平 test-execution 后训练——但 verifier 自己的训练和评测标签仍来自执行测试，"environment-free"只覆盖后训练环节。
 
 ## 图表优先读法
 
 | 先看 | 图/表 | 读完应该抓住什么 |
 |---|---|---|
-| 1 | Figure 1 / Figure 2 | Dockerless 的位置：比 LLM judge 更 repo-grounded，比 Docker execution 更便宜 |
-| 2 | Table 2 | 它作为 verifier 本身是否比 frontier LLM judge 强 |
-| 3 | Figure 5 | verification questions 有用，但 2-4 个是 sweet spot |
-| 4 | Table 3 / Table 1 | verifier 分数能不能变成 SFT filtering 和 RL reward 的真实收益 |
-| 5 | Figure 6 | 省 Docker 之后是不是把成本转移到 verifier 上 |
-
-## 先抓住四个点
-
-1. **它解决的是训练瓶颈，不是部署时写代码本身。** 编码智能体后训练需要知道哪些 rollout 真修好了 issue。传统做法是每个仓库搭 Docker、装依赖、跑测试，工程成本很高。
-2. **真正创新点是 repo-grounded verification。** Dockerless 不只看 issue、reference patch、candidate patch 的文本相似度，而是生成 2-4 个 verification questions，让子智能体用只读工具去仓库里找证据。
-3. **证据链比口号硬。** verifier AUC、SFT filtering、RL reward 三层实验都做了；Dockerless-RL-9B 在 SWE-bench Verified / Multilingual / Pro 上达到 62.0 / 50.0 / 35.2，接近 Test-Execution RL 的 62.4 / 51.3 / 35.7。
-4. **边界也很清楚。** 对 Rust/C 这类依赖编译诊断的语言，env-based SFT 仍明显占优；Dockerless 更像强 verifier/filter，不是完整 execution oracle。
-
-## 问题背景
-
-训练 coding agent 时，verifier 至少出现在两个关键位置：
-
-- **SFT / RFT 数据筛选**：从大量 rollouts 里挑出真正解决 issue 的轨迹。
-- **RL reward**：给每个 rollout 的 final patch 打分，作为 GRPO 等算法的奖励。
-
-传统 gold signal 是 execution-based verification：把 candidate patch 放进仓库专属 Docker 环境，跑 held-out tests，然后得到 pass/fail。它的优势是信号强，问题是成本也很硬：
-
-- 每个仓库需要定制 Docker image、依赖、测试选择、runner 和结果解析。
-- 很多私有、企业、遗留仓库没有可复现环境或完整测试。
-- 即使 rollout 可以在 minimal base image 里收集，verifier 仍然会卡在 per-repo execution 上。
-
-这篇论文的切口就是：如果 rollout 已经可以 env-free 地收集，能不能把 verifier 也做成 env-free？更准确地说，是让 **训练时的过滤和 RL reward** env-free，而不是把所有执行信号从世界上抹掉。
-
-![Dockerless verifier comparison](assets/paper-reading/dockerless/verifier-comparison.png)
-
-这张官方 Figure 1 把定位讲得很清楚：Docker-based tests 准但需要每个仓库的执行环境；LLM scorer 便宜但只看表面文本；Dockerless 的中间路线是让 verifier 主动读仓库，从 evidence 而不是 surface similarity 下判断。
+| 1 | Figure 1 | Dockerless 的定位：比 LLM scorer 多 repo grounding，比 Docker tests 少环境成本 |
+| 2 | Table 2 | 证据链第一层：verifier 自身 AUC **81.0 / 72.1**，压过全部 8 个 baseline |
+| 3 | Figure 5 | verification questions 有边际价值，2-4 个是 sweet spot |
+| 4 | Table 3 | 证据链第二层：SFT 筛选，Dockerless 4K 追平 Env-based 4K |
+| 5 | Table 1 | 证据链第三层：RL reward，62.0 vs test-execution 的 62.4 |
+| 6 | Figure 6 | 成本没有被藏起来：reward +180s，只占 per-rollout 时间 7.2% |
 
 ## 先看我整理的流程图
 
 ![Dockerless verifier workflow](assets/paper-reading/dockerless/dockerless-verifier-loop.svg)
 
-这张图的读法是：Dockerless 先拿到 issue、reference patch、candidate patch；再把“这个 patch 对不对”拆成 2 到 4 个可查证的问题；每个问题交给只读 repo explorer 去仓库里找证据；最后 judge 聚合 Q/A evidence，输出可以用于 SFT filtering 或 RL reward 的 dense score。
+*自制图解：Dockerless 拿到 issue、reference patch、candidate patch 后，先拆出 2-4 个可查证的 verification questions，每个问题派一个只读 repo explorer 去仓库里找证据，最后 judge 聚合 Q/A evidence，输出可用于 SFT filtering 或 RL reward 的 dense score。注意执行测试仍在外层：verifier 的训练标签和评测标签都来自 per-repo Docker，省掉的是每条训练 rollout 都要跑 Docker 的成本。*
 
 图里有三个锚点：
 
-- **reference patch 不是拿来做相似度匹配**：它更像“答案解析”，帮助 verifier 知道应该检查哪些语义条件。
+- **reference patch 不是拿来做相似度匹配的**：它更像"答案解析"，帮 verifier 决定应该检查哪些语义条件。
 - **repo explorer 是信息增量**：普通 LLM judge 只看文本，Dockerless 会主动查调用链、测试、配置和相关文件。
-- **执行测试仍在外层**：训练 verifier 和评估 verifier 仍需要 execution labels；Dockerless 省的是每个训练 rollout 都跑 per-repo Docker 的成本。
+- **执行信号没有消失，只是被移到了训练 verifier 的那一次**：训练好之后，rollout 收集、SFT 筛选、RL reward 全程只需要一个 minimal base image。
 
-## 方法 Pipeline
+## 问题背景：verifier 卡在哪
 
-Dockerless 的输入是三样东西：
+训练 coding agent 时，verifier 出现在两个关键位置：**SFT/RFT 数据筛选**（从大量 rollouts 里挑出真正解决 issue 的轨迹）和 **RL reward**（给每个 rollout 的 final patch 打分）。传统 gold signal 是 execution-based verification：把 patch 放进仓库专属 Docker 环境跑 held-out tests。信号强，但成本硬——每个仓库要定制 image、依赖、test runner 和结果解析，而很多私有、企业、遗留仓库根本没有可复现环境。
+
+论文在 Appendix A 里先补了一个动机实验：四个 frontier model（DeepSeek-V3.2、Kimi-K2.5、GLM-5、GPT-5.4）在 OpenHands 下做 env-free rollout，相比 env-based 平均只掉 **7.1 分**（最多 13.9，GPT-5.4 只差 3.0-4.0）。也就是说 **agent 侧早就可以 env-free 跑了，真正卡住整条 pipeline 的是 verifier 侧**——这正是本文的切口。
+
+![Dockerless verifier comparison](assets/paper-reading/dockerless/verifier-comparison.png)
+
+*原图来自论文 Figure 1：Docker-based tests 准但 hard to scale；LLM scorer env-free 但 surface-level（例子里把功能等价的 patch 打 0.35）；Dockerless 走中间路线——env-free 且 repo-grounded，同一个 patch 因为有仓库证据被打 0.92。*
+
+## 方法：三段式 agentic verifier
 
 ![Dockerless official architecture](assets/paper-reading/dockerless/official-architecture.png)
 
-- issue description `x`
-- reference patch `y_ref`
-- candidate patch `y`
+*原图来自论文 Figure 2：输入 issue `x`、reference patch `y_ref`、candidate patch `y`；Question Generation 做 multi-dimensional evidence probing；并行 sub-agents 用只读工具查静态 codebase 产出 evidence-backed answers；Judge 聚合全部 Q/A 输出 `r_phi ∈ [0,1]`。三个阶段共享同一个 backbone。*
 
-输出是一个连续分数 `r_phi(x, y) in [0, 1]`，表示 candidate patch 是否解决 issue。
+**Stage 1 — 生成验证问题。** 从 issue 和 reference patch 派生 `K=2-4` 个 verification questions，把"这个 patch 对不对"拆成可查证的维度：修复应落在哪条调用链、修改后的行为应该是什么、哪些测试/断言/配置能证明、会不会破坏其他路径。
 
-### Stage 1: 生成验证问题
+**Stage 2 — 并行仓库探索。** 每个问题派一个 sub-agent，只用 read-only shell tools（`find`、`grep`、`rg`）在仓库里找证据，返回 evidence-backed answer；多个 sub-agent 并行跑以控制延迟。
 
-模型先根据 issue 和 reference patch 生成若干 verification questions。论文里 inference 时通常生成 **2-4 个问题**。这些问题不是泛泛地问“这个 patch 对不对”，而是把正确性拆成可查证的维度：
+**Stage 3 — 证据聚合与打分。** judge 看到完整上下文 `(x, y_ref, y, {(Q_k, A_k)})`，输出二分类 verdict token。推理时不取 hard label，而是读 token `0` 和 `1` 的 logits 做 softmax，得到 dense score：`r_phi(x, y) = exp(l_1) / (exp(l_0) + exp(l_1))`。连续分数让同一个 verifier 既能做 top-K filtering 又能当 RL reward。
 
-- 修复应该作用在仓库的哪个模块或调用链上？
-- 修改后的行为应该是什么？
-- 哪些测试、断言、配置或调用点能证明它是对的？
-- 这个修改会不会破坏其他路径？
+## Verifier 怎么训练：rejection sampling 蒸馏完整轨迹
 
-这一步的意义是把“判断 patch 是否正确”变成几个可探索的 repo-grounded 子问题。
+![Dockerless verifier training](assets/paper-reading/dockerless/verifier-training-rejection-sampling.png)
 
-### Stage 2: 并行仓库探索
+*原图来自论文 Figure 3：teacher model 对每个 execution-labeled 样本生成 question-answer-judge trajectory，rejection sampling 只保留 verdict `r_hat` 与执行标签 `r_star` 一致的轨迹，再用来微调 base model。学的是完整推理过程，不是孤立的 0/1 分类器。*
 
-每个问题交给一个 sub-agent。sub-agent 只使用 read-only shell tools，例如 `find`、`grep`、`rg`，在仓库中找相关文件、调用关系、测试、配置和文档，最后返回一个 evidence-backed answer。
+训练不是自监督，它仍依赖 execution-labeled candidate patches：
 
-这里和普通 LLM-as-judge 的差别很关键：
+1. 每个样本是 `(x, y_ref, y, r*)`，`r*` 来自 held-out unit tests。
+2. teacher model（**GLM-5**）生成完整 question-answer-judge trajectory。
+3. 只保留 verdict 与 `r*` 一致的轨迹；另外丢弃 **少于 4 轮或多于 30 轮** 的轨迹和 malformed exchanges。
+4. negative:positive 比例 cap 在 **4:1** 缓解类别不平衡。
+5. 在共享 backbone（**Qwen3.5-9B**）上做 next-token cross-entropy，question generation / exploration / judgment 三个子任务联合训练。
 
-| Verifier | 看仓库吗 | 怎么判断 | 主要风险 |
-|---|---:|---|---|
-| 文本相似度 / 普通 LLM judge | 否 | 看 issue、golden patch、generated patch 的表层匹配 | 功能等价但写法不同会被低估 |
-| Docker-based tests | 是 | 在 per-repo Docker 里跑 held-out tests | 准但环境成本高 |
-| Dockerless | 是 | 子智能体读仓库、收集证据，再聚合判断 | 静态/半静态证据可能漏掉运行时问题 |
+实现细节：语料来自 SWE-Gym 和 Multi-SWE-RL 的 **3.7K unique issues**（与评测 benchmark 不相交）；candidate patch 文本和 rendered Q+A context 各截断到 **10,000 characters**；batch size 256，max sequence length 32,768；推理用 vLLM serving。
 
-### Stage 3: 证据聚合与打分
+所以"environment-free"要精确理解：**rollout 收集、SFT 筛选、RL reward 不跑 per-repo Docker；但 verifier 的训练数据和评测标签仍来自执行测试。**
 
-最后的 judge 看到完整上下文：`x`、`y_ref`、`y`，以及所有 `(Q_k, A_k)` 证据对。它输出二分类 verdict token：`0` 表示没解决，`1` 表示解决。
+## 后训练 Pipeline：filter 和 reward 两个插口
 
-推理时并不只拿 hard label，而是读取 token `0` 和 `1` 的 logits，用 softmax 得到 dense score：
+![Dockerless post-training pipeline](assets/paper-reading/dockerless/posttraining-pipeline.png)
 
-`r_phi(x, y) = exp(l_1) / (exp(l_0) + exp(l_1))`
+*原图来自论文 Figure 4：(A) Environment-free RFT——candidate rollouts 经 Dockerless 打分后 top-K 筛选进 SFT；(B) Environment-free RL——从 SFT model 出发，GRPO 用 Dockerless 作为 per-rollout reward source。两个环节都只需要 minimal base image。*
 
-这个连续分数就可以用于：
+**Env-free RFT/SFT**：在 minimal Ubuntu 22.04 LTS image（`ubuntu:jammy`，无 per-repo Docker）里用 OpenHands agent 在 SWE-Rebench-v2 上收集 **16K rollouts**（temperature 1.0）；每个 final patch 用 **M=2** 次独立 Dockerless pass 打分取平均（失败 pass 丢弃）；全局选 **top 4K** 做 SFT（Qwen3.5-9B 初始化，3 epochs）。一个容易漏掉的细节：env-free 不等于零执行——OpenHands 的工具仍可用，agent 可以跑通用 developer utilities 拿到一些执行反馈，只是没有仓库专属的依赖和 test runner。
 
-- SFT/RFT 阶段按分数筛 top-K rollouts
-- RL 阶段作为 reward
+**Env-free RL**：从 Dockerless-SFT-9B 出发跑 GRPO，每个 issue 采 **G=8** rollouts，reward 同样是 M=2 次 Dockerless pass 的均值；actor LR 2e-6，clipping range [0.2, 0.27]，无 KL loss，每 rollout 最多 150 turns，共 **50 RL steps**，全程零 test execution。
 
-## Verifier 怎么训练
+## 三层证据链
 
-Dockerless 的训练不是纯自监督，也不是凭空学会验证。它仍然依赖 execution-labeled candidate patches：
+### 第一层：verifier 自身 AUC
 
-1. 每个训练样本是 `(x, y_ref, y, r*)`，其中 `r*` 是通过 held-out unit tests 得到的执行标签。
-2. 使用 teacher model 生成完整的 question-answer-judge trajectory。
-3. 如果 teacher 最后的 verdict `r_hat` 和执行标签 `r*` 一致，就保留这条轨迹；否则丢弃。
-4. 对负正样本比例做 4:1 cap，缓解类别不平衡。
-5. 用保留下来的 trajectories 对一个共享 backbone 做 next-token cross-entropy 训练。
+论文构造了一个 balanced trajectory-level verifier benchmark，共 **776 samples**（500 来自 SWE-bench Verified，276 来自 Multi-SWE-bench Flash），轨迹由多个模型在 SWE-agent 和 OpenHands 两种 scaffold 下按 1:1 收集，label 来自 per-repo Docker + held-out tests，正负样本 1:1 平衡。
 
-几个实现细节值得记：
+| Verifier | 类型 | Verified AUC | Multi-SWE AUC |
+|---|---|---:|---:|
+| DeepSeek-V3.2 | zero-shot judge | 69.4 | 58.5 |
+| Kimi-K2.5 | zero-shot judge | 70.7 | 63.9 |
+| GLM-5 | zero-shot judge | 73.2 | 62.5 |
+| GPT-5.4 | zero-shot judge | 75.9 | 59.5 |
+| SWE-Gym Verifier | trained | 61.0 | 53.7 |
+| R2E-Gym Verifier | trained | 64.3 | 55.1 |
+| OpenHands Critic | trained | 48.6 | 52.2 |
+| DeepSWE Verifier | trained | 66.7 | 62.9 |
+| **Dockerless** | **agentic** | **81.0** | **72.1** |
 
-- 训练语料来自 SWE-Gym 和 Multi-SWE-RL，覆盖 **3.7K unique issues**。
-- teacher model 是 **GLM-5**。
-- verifier backbone 使用 **Qwen3.5-9B**。
-- question generation、sub-agent exploration、final judgment 共享同一个 backbone。
-- candidate patch 和 Q&A context 输入会被截断到 10,000 characters。
-- 训练最大 sequence length 是 32,768。
+两组对照各有含义：比最强 trained open-source verifier（DeepSWE）高 **+14.3 / +9.2**；比最强 frontier judge 也高 **+5.1 / +8.2**。后一组更关键——如果收益只是"模型更强"，zero-shot frontier judge 应该已接近上限；结果说明增量来自 **repo exploration + rejection-sampled trajectory training** 这个 workflow，9B backbone 也能压过 GPT-5.4 judge。
 
-所以这篇的“environment-free”要精确理解：**post-training rollout、SFT filtering、RL reward 可以不跑 per-repo Docker；但 verifier 的训练数据仍然来自执行标签。**
-
-## 后训练 Pipeline
-
-有了 Dockerless，论文把它接到两个后训练环节。
-
-### Env-free RFT / SFT filtering
-
-流程是：
-
-1. 在 minimal Linux image 中收集 env-free rollouts，不启动 per-repository Docker。
-2. 得到 16K candidate rollouts。
-3. 用 Dockerless 对每个 final patch 打分。
-4. 选全局 top 4K rollouts 作为 SFT 数据。
-5. 从 Qwen3.5-9B 初始化，做标准 SFT。
-
-这里的核心 claim 是：raw env-free rollout 不一定好，关键是要有强 verifier 做过滤。
-
-### Env-free RL reward
-
-RL 阶段从 Dockerless-SFT-9B 出发：
-
-1. 每个 issue 采样一组 `G=8` rollouts。
-2. 每个 rollout 的 final patch 用 Dockerless 打分。
-3. 每个 reward 用 `M=2` 次 independent Dockerless passes 的平均值，失败 pass 会被丢弃。
-4. 用 group-normalized advantages 跑 GRPO。
-5. RL 训练共 50 steps，过程中不跑 per-repository test execution。
-
-这里值得注意：Dockerless 不只是一个 offline data filter，也被当作 online-ish reward model 用进 RL。
-
-## 实验结果
-
-### 1. Verifier 本身强不强
-
-论文构造了一个 balanced trajectory-level verifier benchmark，共 **776 samples**：
-
-- 500 from SWE-bench Verified
-- 276 from Multi-SWE-bench Flash
-- 每个 split 内正负样本平衡
-- label 来自 per-repository Docker + held-out tests
-
-Table 2 的核心结果：
-
-| Verifier | SWE-bench Verified AUC | Multi-SWE AUC |
-|---|---:|---:|
-| DeepSeek-V3.2 judge | 69.4 | 58.5 |
-| Kimi-K2.5 judge | 70.7 | 63.9 |
-| GLM-5 judge | 73.2 | 62.5 |
-| GPT-5.4 judge | 75.9 | 59.5 |
-| DeepSWE Verifier | 66.7 | 62.9 |
-| **Dockerless** | **81.0** | **72.1** |
-
-这个表是整篇最重要的证据之一。Dockerless 相比最强 open-source verifier 提升 **+14.3 / +9.2 AUC points**；相比最强 frontier LLM judge 也提升 **+5.1 / +8.2**。这说明收益不是简单来自“模型更强”，而是来自 **repo exploration + rejection-sampled trajectory training** 这个 workflow。
-
-这张表也解释了为什么 Dockerless 不是“prompt 一个更强 judge”。如果只换更强模型，zero-shot frontier judge 应该已经接近上限；但结果显示，能进仓库查证据的 verifier 明显更稳。
-
-### 2. 问题数量 K 是否真的有用
-
-Figure 5 做了一个很好的 ablation：
+### 第一层的 ablation：问题数量 K
 
 ![Dockerless verification question ablation](assets/paper-reading/dockerless/question-count-ablation.png)
 
-| # Verification Questions | AUC on SWE-bench Verified |
-|---:|---:|
-| 0 | 78.3 |
-| 1 | 80.1 |
-| 2 | 80.8 |
-| 4 | 81.0 |
-| 6 | 79.6 |
-| 8 | 80.3 |
+*原图来自论文 Figure 5：SWE-bench Verified 上 AUC 随 verification question 数量的变化，K=0 时 78.3，K=4 达到峰值 81.0，再往上反而回落。*
 
-读法很直接：问问题和收集证据确实有帮助，但不是越多越好。**2-4 个问题是 sweet spot**；更多问题可能带来冗余或噪声。
+| # Questions | 0 | 1 | 2 | 4 | 6 | 8 |
+|---|---:|---:|---:|---:|---:|---:|
+| AUC (Verified) | 78.3 | 80.1 | 80.8 | **81.0** | 79.6 | 80.3 |
 
-### 3. SFT filtering 是否有效
+读法：问问题和收集证据确实有帮助（K=0 → K=4 涨 2.7），但不是越多越好，**2-4 个是 sweet spot**——这也是论文在 accuracy 和 per-call exploration cost 之间选定的推理配置。注意 K=0 仍有 78.3，说明相当一部分收益来自 rejection-sampled 训练本身，questions 是在此之上的边际增量。
 
-Table 3 固定 Qwen3.5-9B backbone 和 SFT recipe，只改变训练数据来源：
+### 第二层：SFT 筛选质量
+
+Table 3 固定 Qwen3.5-9B backbone 和 SFT recipe，只换训练数据来源：
 
 | SFT Data | Verified | Multilingual | Pro |
 |---|---:|---:|---:|
-| None / base | 59.6 | 41.3 | 32.3 |
+| None (base) | 59.6 | 41.3 | 32.3 |
 | All 16K env-free | 58.8 | 41.3 | 31.9 |
 | Random 4K | 58.2 | 44.3 | 32.0 |
-| Env-based 4K | 60.0 | 48.3 | 33.9 |
-| **Dockerless 4K** | **60.6** | **47.7** | **35.3** |
+| Env-based 4K | 60.0 | **48.3** | 33.9 |
+| **Dockerless 4K** | **60.6** | 47.7 | **35.3** |
 
-这个结果比“最终分数高”更有信息量：
+这张表比"最终分数高"更有信息量：All 16K **低于 base**，说明 env-free rollouts 噪声不小、裸堆数据是负收益；Random 4K 也不行，说明不是少训一点就好；Dockerless 4K 追平甚至部分超过 Env-based 4K（Multilingual 上略低 0.6），说明 **verifier 的筛选信号质量接近真实执行筛选**。
 
-- All 16K 不如 base，说明 env-free rollouts 里噪声不小。
-- Random 4K 不稳，说明不是少训一点就好。
-- Dockerless 4K 接近 Env-based 4K，说明 verifier 提供了有效选择信号。
+### 第三层：RL reward 质量
 
-### 4. RL reward 是否接近 test execution
+Table 1 从同一个 Dockerless-SFT-9B 出发，只换 RL reward source：
 
-Table 1 对比了不同 RL reward source：
-
-| Model / Training | Env-free training stage | Verified | Multilingual | Pro |
-|---|---:|---:|---:|---:|
-| Qwen3.5-9B base | - | 59.6 | 41.3 | 32.3 |
+| Model / Reward | Env-free? | Verified | Multilingual | Pro |
+|---|---|---:|---:|---:|
+| Qwen3.5-9B base | – | 59.6 | 41.3 | 32.3 |
 | Dockerless-SFT-9B | Yes | 60.6 | 47.7 | 35.3 |
 | + DeepSWE-Verifier RL | Yes | 60.6 | 47.3 | 34.1 |
-| + Test-Execution RL | No | 62.4 | 51.3 | 35.7 |
-| **Dockerless-RL-9B** | **Yes** | **62.0** | **50.0** | **35.2** |
+| + Test-Execution RL | No | **62.4** | **51.3** | **35.7** |
+| **Dockerless-RL-9B** | **Yes** | 62.0 | 50.0 | 35.2 |
 
-Dockerless-RL-9B 几乎追上 Test-Execution RL，同时明显超过 DeepSWE-Verifier RL。论文想证明的不是 Dockerless 比真实测试更准，而是：**在训练阶段，用 Dockerless 做 reward 已经足够接近 test-execution reward，且省掉了 per-repo Docker setup。**
+三个读点：DeepSWE-Verifier 当 reward **基本不涨甚至倒退**（弱 verifier 会把 RL 带偏）；Dockerless reward 距 test-execution reward 只差 **0.4 / 1.3 / 0.5**；相对 base 的总提升是 **+2.4 / +8.7 / +2.9**。论文要证明的不是 Dockerless 比真实测试更准，而是：**在训练阶段，它作为 reward 已经足够接近 test execution，且全程零 per-repo Docker。**
 
-### 5. 成本是否真的可接受
+三层连起来看逻辑就闭合了：第一层证明分数可信（AUC 领先），第二层证明分数能变成筛选收益（追平 env-based 筛选），第三层证明分数能变成 reward 收益（逼近 test-execution RL）。任何一层单独拿出来都可以被质疑，三层互相咬合才是这篇的说服力所在。
 
-Dockerless 会派 sub-agents 探索仓库，所以 reward computation 比普通 verifier 更慢。Figure 6 给的 per-rollout wall-clock breakdown 是：
+## 成本：省掉的和新增的
 
 ![Dockerless reward time breakdown](assets/paper-reading/dockerless/reward-time-breakdown.png)
 
-| Reward source | 额外 reward time | 占总 per-rollout time |
-|---|---:|---:|
-| DeepSWE Verifier | +41s | 1.7% |
-| Test Execution | +83s | 3.5% |
-| Dockerless | +180s | 7.2% |
+*原图来自论文 Figure 6：RL 中 per-rollout wall-clock 分解（基于 7680 条 rollouts）。共享的 agent rollout 平均 2308s；reward 侧 DeepSWE Verifier +41s（1.7%）、Test Execution +83s（3.5%）、Dockerless +180s（7.2%）。*
 
-论文的解释是：RL 里 agent rollout 本身平均 **2308s**，reward evaluation 不是主要瓶颈。这个结论只在它们的 RL setting 下成立；如果你的 rollout 很短，Dockerless reward 的相对成本会更明显。
+Dockerless 要做多步仓库探索，所以 reward 计算确实最慢（+180s，是 test execution 的两倍多），但在这个 RL setting 里 **rollout 生成才是瓶颈（2308s）**，reward 只占总时长 7.2%；Appendix F 进一步显示三种 reward source 的端到端延迟分布几乎重合，因为吞吐由逼近 timeout 的慢 rollout 主导。边界条件要记住：**这个"成本可忽略"的结论依赖 rollout 很长这个前提**——如果你的任务 rollout 只要几十秒，Dockerless reward 的相对开销会立刻显眼。
 
-## 真正值得借鉴的创新点
+## Case study：为什么 repo grounding 有用
 
-### 1. Verifier 变成一个 agentic workflow
+Figure 7 给了一个 matplotlib offsetText color issue 的典型案例：candidate patch 通过执行测试（`r_env = 1.0`），但用 inline conditional 而不是 reference patch 的 helper-variable 重构。文本相似度只给 **0.468**，DeepSWE Verifier 给 **0.035**（严重误判）；Dockerless 的 sub-agents 查证了修改覆盖 XAxis/YAxis 两条初始化路径、语义保持一致，最终打 **0.996**，与执行结果一致。这正是"surface-form invariance"——功能等价但写法不同的 patch，只有拿到仓库证据才能判对。
 
-很多 verifier 还是“一次 prompt，一次判断”。Dockerless 把 verifier 拆成 question generation、parallel evidence probing、judgment 三段。这让 verifier 不再只依赖模型内部知识，而是把仓库上下文作为外部证据引入判断。
-
-### 2. Reference patch 用来生成验证问题，而不是做相似度匹配
-
-reference patch 很容易诱导模型做 diff similarity。Dockerless 更好的用法是：用 reference patch 帮模型知道“应该验证什么”，然后让 candidate patch 在仓库上下文里接受验证。
-
-### 3. 训练的是完整推理轨迹，不只是最终 label
-
-拒绝采样保留的是 question-answer-judge trajectory。模型学到的不是一个孤立的 0/1 分类器，而是“提出问题 -> 查证据 -> 下判决”的过程。这可能是它超过 zero-shot frontier judge 的关键。
-
-### 4. Dense score 让它能接 SFT 和 RL
-
-verdict token 的 logits 被转成连续分数，这一点很实用。它让同一个 verifier 同时服务于 top-K filtering 和 reward modeling，而不是只输出 hard pass/fail。
-
-### 5. 它把“环境”拆成了两层
-
-这篇最值得借鉴的抽象是：环境不一定只有“完整执行”一种形态。对 coding agent 来说，环境信号至少有两层：
-
-- **强执行信号**：Docker、测试、编译器、真实服务状态，准但贵。
-- **证据调查信号**：仓库搜索、调用链、测试意图、配置和文档，便宜些但不完备。
-
-Dockerless 的位置正好在中间：它不假装自己是 compiler/test oracle，但它比静态 judge 多了仓库证据。这个定位清楚，整篇 paper 才成立。
-
-## 我怎么看这篇
+## 我怎么判断
 
 ### 可信之处
 
-- 证据链完整：standalone verifier AUC、SFT filtering、RL reward 都有实验。
-- Table 3 是很强的控制实验，说明 Dockerless 的价值在筛选质量，而不是训练数据量。
-- Figure 5 证明了 verification questions 的 marginal value，并指出 2-4 个问题的 sweet spot。
-- Table 2 里 zero-shot frontier judges 不如 Dockerless，说明 repo-grounded agentic workflow 的确带来额外信息。
+- **三层证据链完整且互相咬合**：standalone AUC、SFT filtering、RL reward 都有 execution-based 对照，不是单点 cherry-pick。
+- **Table 3 是干净的控制实验**：backbone 和 recipe 全固定，只动数据来源，还包含 All 16K 和 Random 4K 两个必要的阴性对照。
+- **对手选得不弱**：frontier judge 里有 GPT-5.4，trained verifier 里有 DeepSWE，且训练集与评测 benchmark 声明不相交。
+- **成本没有被藏起来**：Figure 6 + Appendix F 主动报了 reward 延迟，并给出成立前提。
+- **Appendix B 有额外惊喜**：env-free 部署时，Dockerless 系模型的 env-based→env-free 掉分（-7.1 / -6.8）小于 env-based 训练的 baseline（-9.4），训练分布和部署分布一致带来了鲁棒性。
 
-### 需要警惕的地方
+### 需要警惕
 
-- **不是完全无执行。** Verifier 的训练和评测仍依赖 execution-labeled patches。
-- **依赖 reference patch。** 这在 benchmark / training data 里通常可用，但真实新 issue 未必有 reference patch。
-- **静态证据有上限。** 编译错误、并发 bug、性能退化、外部服务交互等问题，还是可能只能通过运行暴露。
-- **Rust/C 是明显边界。** Appendix E 里 env-based SFT 在 Rust / C 上分别有 +7.0 / +13.3 优势，作者也归因于 compiler diagnostics。
-- **成本被换形了。** 它省掉 Docker/test setup，但引入 sub-agent exploration、vLLM serving、多次 verifier passes 和 timeout 管理。
-- **reference patch 是训练/benchmark 假设。** 真实线上新 issue 通常没有 reference patch，所以 Dockerless 更自然的落点是训练数据筛选、benchmark verifier、或有 golden fix 的离线数据，而不是直接替代线上代码审查。
+- **不是完全无执行。** verifier 的训练标签（3.7K issues）和评测标签都来自 per-repo Docker 测试；"env-free"只是把执行成本从每条 rollout 摊薄到一次性的 verifier 训练。
+- **依赖 reference patch。** question generation 以 `y_ref` 为输入，这在 benchmark/训练数据里可得，但真实新 issue 没有 golden fix——所以它的自然落点是训练数据筛选和离线 reward，不是线上 code review。
+- **compiler-heavy 语言是明确边界。** Appendix E：env-based SFT 在 **Rust +7.0、C +13.3** 上明显占优，作者归因于 compiler diagnostics 只存在于执行环境里；Python/Go/JS/Java/PHP 则在 ±2.5 之内（TypeScript -13.3、C++ -8.3 来自仅 30/12 个样本的 split，论文自己也不当证据）。
+- **静态证据有上限。** 并发 bug、性能退化、外部服务交互这类只能在运行时暴露的问题，read-only 探索原则上看不到。
+- **成本被换形而非消失。** 省掉 Docker/test setup，换来 sub-agent exploration、vLLM serving、M=2 重复打分和 timeout 管理；且"7.2% 可忽略"依赖 2308s 的长 rollout。
+- **没有专门的 Limitations 章节**，上面这些边界大多是从 appendix 和实现细节里读出来的，作者的正文叙事偏乐观。
 
-## 对我的启发
+## 对我的价值
 
-如果把它放进“智能体环境合成 / verifier / RL for coding agents”这条线，我会这样定位：
+放进"环境合成 / verifier / RL for coding agents"这条线：CLI-Universe、SWE-World 在构造或复用可执行环境；world-model 路线在学环境动力学；Dockerless 是第三条中间路线——**不模拟完整环境，也不搭 per-repo Docker，而是训练一个会查证据的 verifier**。它给我的可操作 checklist：
 
-- CLI-Universe / SWE-World 这类方向是在构造或复用可执行环境。
-- Qwen-AgentWorld 这类方向是在学一个环境动力学模型。
-- Dockerless 走的是第三条中间路线：**不模拟完整环境，也不搭 per-repo Docker，而是训练一个会查证据的 verifier。**
-
-对个人复现或项目落地，最合理的顺序不是直接复现 RL，而是先做一个小 verifier benchmark：
-
-1. 准备 issue、reference patch、candidate patch、execution label。
-2. 实现 question generation，先固定生成 2-4 个问题。
-3. 每个问题开只读 repo explorer，用 `rg` / `sed` / `find` 找证据。
-4. judge 聚合 Q&A evidence 输出 0/1 和 score。
-5. 对比普通 LLM judge、文本相似度、agentic judge 的 AUC。
-6. 如果 AUC 有明显收益，再把它接入 SFT filtering；最后再考虑 RL reward。
+1. **复现顺序应该沿着证据链走**：先建小型 verifier benchmark（issue + reference patch + candidate patch + execution label），对比文本相似度 / LLM judge / agentic judge 的 AUC；AUC 有明显收益再接 SFT filtering；最后才是 RL reward。
+2. **verifier 值得训练完整轨迹而不是分类头**：rejection sampling 保留 question→evidence→verdict 全过程，是它压过 zero-shot frontier judge 的关键。
+3. **verdict logits → dense score 的技巧可以直接搬**：一个 verifier 同时服务 top-K filtering 和 reward modeling。
+4. **判断"env-free 是否适用"的两个测试**：任务语言是否 compiler-heavy（Rust/C 就别省环境）；rollout 是否足够长（否则 agentic reward 的相对成本不可忽略）。
 
 ## 一句话收束
 
-Dockerless 最值得记住的不是“没有 Docker”，而是“把验证变成一次有证据链的仓库调查”。它不能完全取代执行测试，但非常适合成为大规模 coding-agent post-training 里的高质量 filter / reward model。
+Dockerless 最值得记住的不是"没有 Docker"，而是"把验证变成一次有证据链的仓库调查"——执行信号没有被抹掉，只是被压缩进一次性的 verifier 训练里，然后以 dense score 的形式摊薄到整条 post-training pipeline 上。

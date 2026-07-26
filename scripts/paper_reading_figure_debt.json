@@ -2,12 +2,5 @@
   "description": "Temporary baseline for legacy paper-reading notes that predate the 3 original figures + 1 generated diagram requirement. New notes or regressions must not be added here; remove entries as notes are backfilled.",
   "min_original": 3,
   "min_generated": 1,
-  "allowed_debt": {
-    "paper-reading/Harness Engineering for Self-Improvement.md": {
-      "original": 0,
-      "generated": 2,
-      "unknown": 0,
-      "total": 2
-    }
-  }
+  "allowed_debt": {}
 }
