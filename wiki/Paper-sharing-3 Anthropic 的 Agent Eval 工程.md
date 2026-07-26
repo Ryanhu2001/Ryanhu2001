@@ -592,8 +592,6 @@ Canary String 能帮助搜索和标记 Benchmark 数据是否泄漏，却不能�
 
 > **在整体方法中的位置——Improve**：前三篇主要讨论离线 Evaluation Harness 如何产生可信分数；这篇讨论的是运行时 Agent Harness，展示独立 Evaluator 怎样操作真实产物、返回 Failure Evidence，并推动 Generator 继续修复。它不是说所有离线 Eval 都应进入运行时，而是研究在任务超出当前模型 Solo Reliability Boundary 时，这个反馈环是否值得它的成本。
 
-![Anthropic 长程应用开发 Harness 的文章主视觉](assets/wiki/anthropic-agent-eval-engineering/source-harness-design.svg){: .figure-original }
-
 这项工作的起点有两个：怎样让 Claude 做出不那么模板化的前端，以及怎样让它在没人介入时完成一整个应用。作者没有直接从复杂 Multi-agent 架构开始，而是先在审美任务上建立 Generator–Evaluator Loop，再把同一结构迁移到有可验证行为的 Full-stack Coding。
 
 ## 4.1 我的理解：先区分两种 Eval Loop
