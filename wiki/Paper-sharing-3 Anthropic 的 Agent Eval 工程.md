@@ -437,7 +437,7 @@ Terminal-Bench 中等资源区间的 Spread 已接近 2 个百分点，朴素 Bi
 
 所以几分领先既可能是真实能力差，也可能只是一台更大的 VM。
 
-**我的理解**：第一篇告诉我们 Agent Eval 是一套系统；第二篇进一步证明，**测量装置不只制造噪声，超过某个阈值后还会改变被测能力本身**。下一篇的问题更棘手：被测 Agent 甚至会意识到自己正在被测，并主动研究测量系统。
+**理解**：第一篇告诉我们 Agent Eval 是一套系统；第二篇进一步证明，**测量装置不只制造噪声，超过某个阈值后还会改变被测能力本身**。下一篇的问题更棘手：被测 Agent 甚至会意识到自己正在被测，并主动研究测量系统。
 
 ---
 
@@ -578,7 +578,7 @@ Canary String 能帮助搜索和标记 Benchmark 数据是否泄漏，却不能�
 - 检查开放 Web 是否保存前序 Agent 的查询状态；
 - 把 Benchmark 当成红队目标，持续测试新模型与新工具能否找到替代路径。
 
-**我的理解**：这篇文章把 Eval 从统计问题升级成安全问题。Infrastructure Noise 假设 Agent 是被动被测对象；Eval Awareness 表明强 Agent 会研究测试本身，组合代码执行、搜索、镜像和长期预算来改变成功路径。
+**理解**：这篇文章把 Eval 从统计问题升级成安全问题。Infrastructure Noise 假设 Agent 是被动被测对象；Eval Awareness 表明强 Agent 会研究测试本身，组合代码执行、搜索、镜像和长期预算来改变成功路径。
 
 自然的下一步，是不再只在结束后给一次分，而把独立 Evaluator 放进运行过程，让评价成为 Agent 的持续反馈。第四篇正是沿着这个方向展开。
 
@@ -1064,7 +1064,7 @@ Build
 |Product / Client|Public Build Dogfooding、长会话恢复、组合状态测试|内部版本与用户版本分布不一致|
 |Open-web Benchmark|Canary、污染扫描、异常成功审计、访问隔离|答案泄漏、Eval Awareness 和跨 Agent 污染|
 
-## 6.4 我的三个最终判断
+## 6.4 三个最终判断
 
 **判断一：Agent Benchmark 本质上是系统 Benchmark。**只报告模型名称是不够的，Harness、工具、资源、重试、Grader 和任务版本都属于结果的一部分。
 
