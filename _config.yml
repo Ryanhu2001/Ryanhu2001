@@ -23,6 +23,7 @@ exclude:
   - package-lock.json
   - preview-*.png
   - README.md
+  - TODO.md
   - scripts
   - vendor
 
