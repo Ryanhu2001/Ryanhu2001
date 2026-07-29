@@ -208,12 +208,310 @@
     }
 
     function initImageZoom() {
-        if (!window.mediumZoom) return;
+        var images = Array.prototype.slice.call(content.querySelectorAll("img:not(.no-zoom)"));
+        if (images.length === 0) return;
 
-        window.mediumZoom(".blog-content img:not(.no-zoom)", {
-            background: "rgba(243, 246, 245, 0.96)",
-            margin: 32,
-            scrollOffset: 0
+        var viewer = document.createElement("div");
+        viewer.className = "image-zoom-viewer";
+        viewer.hidden = true;
+        viewer.setAttribute("role", "dialog");
+        viewer.setAttribute("aria-modal", "true");
+        viewer.setAttribute("aria-label", "图片查看器");
+        viewer.setAttribute("aria-hidden", "true");
+        viewer.innerHTML = [
+            '<div class="image-zoom-stage">',
+            '  <div class="image-zoom-canvas">',
+            '    <img class="image-zoom-preview" alt="">',
+            "  </div>",
+            "</div>",
+            '<div class="image-zoom-toolbar" role="toolbar" aria-label="图片缩放工具">',
+            '  <button type="button" data-zoom-action="out" aria-label="缩小图片">−</button>',
+            '  <output class="image-zoom-level" aria-live="polite">100%</output>',
+            '  <button type="button" data-zoom-action="in" aria-label="放大图片">+</button>',
+            '  <button type="button" class="image-zoom-text-button" data-zoom-action="actual" aria-label="按原始像素尺寸显示">1:1</button>',
+            '  <button type="button" class="image-zoom-text-button" data-zoom-action="fit">适应</button>',
+            '  <button type="button" class="image-zoom-close" data-zoom-action="close" aria-label="关闭图片查看器">×</button>',
+            "</div>",
+            '<div class="image-zoom-hint">滚轮或双指连续缩放 · 拖动查看 · 双击放大 · Esc 关闭</div>'
+        ].join("");
+        document.body.appendChild(viewer);
+
+        var stage = viewer.querySelector(".image-zoom-stage");
+        var canvas = viewer.querySelector(".image-zoom-canvas");
+        var preview = viewer.querySelector(".image-zoom-preview");
+        var toolbar = viewer.querySelector(".image-zoom-toolbar");
+        var zoomLevel = viewer.querySelector(".image-zoom-level");
+        var closeButton = viewer.querySelector(".image-zoom-close");
+        var activeImage = null;
+        var scale = 1;
+        var fitScale = 1;
+        var offsetX = 0;
+        var offsetY = 0;
+        var pointers = new Map();
+        var dragStart = null;
+        var pinchStart = null;
+        var maximumScale = 8192;
+
+        function renderZoom() {
+            canvas.style.transform = "translate3d(" + offsetX + "px, " + offsetY + "px, 0)";
+            preview.style.width = preview.naturalWidth
+                ? preview.naturalWidth * scale + "px"
+                : "auto";
+            zoomLevel.textContent = Math.round(scale * 100) + "%";
+        }
+
+        function calculateFitScale() {
+            if (!preview.naturalWidth || !preview.naturalHeight) return 1;
+            var horizontalPadding = stage.clientWidth < 576 ? 24 : 72;
+            var verticalPadding = stage.clientWidth < 576 ? 170 : 96;
+            var availableWidth = Math.max(1, stage.clientWidth - horizontalPadding);
+            var availableHeight = Math.max(1, stage.clientHeight - verticalPadding);
+            return Math.min(
+                availableWidth / preview.naturalWidth,
+                availableHeight / preview.naturalHeight,
+                1
+            );
+        }
+
+        function clampScale(nextScale) {
+            var minimumScale = Math.max(fitScale * 0.2, 0.01);
+            return Math.max(minimumScale, Math.min(nextScale, maximumScale));
+        }
+
+        function zoomAt(nextScale, clientX, clientY) {
+            nextScale = clampScale(nextScale);
+            if (!Number.isFinite(nextScale) || nextScale === scale) return;
+
+            var rect = stage.getBoundingClientRect();
+            var anchorX = (typeof clientX === "number" ? clientX : rect.left + rect.width / 2)
+                - rect.left - rect.width / 2;
+            var anchorY = (typeof clientY === "number" ? clientY : rect.top + rect.height / 2)
+                - rect.top - rect.height / 2;
+            var ratio = nextScale / scale;
+
+            offsetX = anchorX - (anchorX - offsetX) * ratio;
+            offsetY = anchorY - (anchorY - offsetY) * ratio;
+            scale = nextScale;
+            renderZoom();
+        }
+
+        function fitImage() {
+            fitScale = calculateFitScale();
+            scale = fitScale;
+            offsetX = 0;
+            offsetY = 0;
+            renderZoom();
+        }
+
+        function showActualSize() {
+            zoomAt(1);
+        }
+
+        function closeViewer() {
+            if (viewer.hidden) return;
+            viewer.hidden = true;
+            viewer.setAttribute("aria-hidden", "true");
+            document.body.classList.remove("image-zoom-open");
+            pointers.clear();
+            dragStart = null;
+            pinchStart = null;
+            stage.classList.remove("is-dragging");
+            preview.removeAttribute("src");
+
+            if (activeImage) {
+                activeImage.focus({ preventScroll: true });
+            }
+            activeImage = null;
+        }
+
+        function openViewer(image) {
+            activeImage = image;
+            viewer.hidden = false;
+            viewer.setAttribute("aria-hidden", "false");
+            document.body.classList.add("image-zoom-open");
+            preview.alt = image.alt || "放大的图片";
+            preview.onload = fitImage;
+            preview.src = image.currentSrc || image.src;
+
+            if (preview.complete && preview.naturalWidth) {
+                window.requestAnimationFrame(fitImage);
+            }
+
+            closeButton.focus({ preventScroll: true });
+        }
+
+        function pointerValues() {
+            return Array.from(pointers.values());
+        }
+
+        function startDrag(point) {
+            dragStart = {
+                pointerId: point.pointerId,
+                x: point.x,
+                y: point.y,
+                offsetX: offsetX,
+                offsetY: offsetY
+            };
+            pinchStart = null;
+        }
+
+        function startPinch() {
+            var points = pointerValues();
+            if (points.length < 2) return;
+
+            var first = points[0];
+            var second = points[1];
+            var midpointX = (first.x + second.x) / 2;
+            var midpointY = (first.y + second.y) / 2;
+            var rect = stage.getBoundingClientRect();
+
+            pinchStart = {
+                distance: Math.hypot(second.x - first.x, second.y - first.y),
+                scale: scale,
+                contentX: (midpointX - rect.left - rect.width / 2 - offsetX) / scale,
+                contentY: (midpointY - rect.top - rect.height / 2 - offsetY) / scale
+            };
+            dragStart = null;
+        }
+
+        function updatePinch() {
+            var points = pointerValues();
+            if (points.length < 2 || !pinchStart) return;
+
+            var first = points[0];
+            var second = points[1];
+            var distance = Math.hypot(second.x - first.x, second.y - first.y);
+            var midpointX = (first.x + second.x) / 2;
+            var midpointY = (first.y + second.y) / 2;
+            var rect = stage.getBoundingClientRect();
+            var nextScale = clampScale(pinchStart.scale * distance / Math.max(1, pinchStart.distance));
+
+            scale = nextScale;
+            offsetX = midpointX - rect.left - rect.width / 2 - pinchStart.contentX * scale;
+            offsetY = midpointY - rect.top - rect.height / 2 - pinchStart.contentY * scale;
+            renderZoom();
+        }
+
+        function finishPointer(event) {
+            pointers.delete(event.pointerId);
+            if (stage.hasPointerCapture(event.pointerId)) {
+                stage.releasePointerCapture(event.pointerId);
+            }
+
+            var remaining = pointerValues();
+            if (remaining.length >= 2) {
+                startPinch();
+            } else if (remaining.length === 1) {
+                startDrag(remaining[0]);
+            } else {
+                dragStart = null;
+                pinchStart = null;
+                stage.classList.remove("is-dragging");
+            }
+        }
+
+        images.forEach(function (image) {
+            image.classList.add("image-zoom-trigger");
+            image.setAttribute("role", "button");
+            image.setAttribute("tabindex", "0");
+            image.setAttribute("aria-label", "查看大图：" + (image.alt || "图片"));
+            image.addEventListener("click", function (event) {
+                event.preventDefault();
+                openViewer(image);
+            });
+            image.addEventListener("keydown", function (event) {
+                if (event.key !== "Enter" && event.key !== " ") return;
+                event.preventDefault();
+                openViewer(image);
+            });
+        });
+
+        toolbar.addEventListener("click", function (event) {
+            var button = event.target.closest("[data-zoom-action]");
+            if (!button) return;
+
+            var action = button.getAttribute("data-zoom-action");
+            if (action === "in") zoomAt(scale * 1.5);
+            if (action === "out") zoomAt(scale / 1.5);
+            if (action === "actual") showActualSize();
+            if (action === "fit") fitImage();
+            if (action === "close") closeViewer();
+        });
+
+        stage.addEventListener("wheel", function (event) {
+            event.preventDefault();
+            var multiplier = Math.exp(-event.deltaY * 0.002);
+            multiplier = Math.max(0.5, Math.min(2, multiplier));
+            zoomAt(scale * multiplier, event.clientX, event.clientY);
+        }, { passive: false });
+
+        stage.addEventListener("dblclick", function (event) {
+            event.preventDefault();
+            zoomAt(scale * 2, event.clientX, event.clientY);
+        });
+
+        stage.addEventListener("pointerdown", function (event) {
+            if (event.pointerType === "mouse" && event.button !== 0) return;
+            event.preventDefault();
+            pointers.set(event.pointerId, {
+                pointerId: event.pointerId,
+                x: event.clientX,
+                y: event.clientY
+            });
+            stage.setPointerCapture(event.pointerId);
+            stage.classList.add("is-dragging");
+
+            if (pointers.size >= 2) {
+                startPinch();
+            } else {
+                startDrag(pointerValues()[0]);
+            }
+        });
+
+        stage.addEventListener("pointermove", function (event) {
+            if (!pointers.has(event.pointerId)) return;
+            event.preventDefault();
+            pointers.set(event.pointerId, {
+                pointerId: event.pointerId,
+                x: event.clientX,
+                y: event.clientY
+            });
+
+            if (pointers.size >= 2) {
+                updatePinch();
+                return;
+            }
+
+            if (dragStart && dragStart.pointerId === event.pointerId) {
+                offsetX = dragStart.offsetX + event.clientX - dragStart.x;
+                offsetY = dragStart.offsetY + event.clientY - dragStart.y;
+                renderZoom();
+            }
+        });
+
+        stage.addEventListener("pointerup", finishPointer);
+        stage.addEventListener("pointercancel", finishPointer);
+
+        document.addEventListener("keydown", function (event) {
+            if (viewer.hidden) return;
+
+            if (event.key === "Escape") closeViewer();
+            if (event.key === "+" || event.key === "=") zoomAt(scale * 1.5);
+            if (event.key === "-") zoomAt(scale / 1.5);
+            if (event.key === "0") fitImage();
+            if (event.key === "1") showActualSize();
+        });
+
+        window.addEventListener("resize", function () {
+            if (viewer.hidden) return;
+            var wasFitted = Math.abs(scale - fitScale) < 0.001;
+            fitScale = calculateFitScale();
+            if (wasFitted) {
+                scale = fitScale;
+                offsetX = 0;
+                offsetY = 0;
+            }
+            renderZoom();
         });
     }
 
