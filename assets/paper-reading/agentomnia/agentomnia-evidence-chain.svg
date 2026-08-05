@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="760" viewBox="0 0 1240 760" role="img" aria-labelledby="title desc">
+  <title id="title">AgentOmnia evidence chain</title>
+  <desc id="desc">Self-made diagram connecting the full-scenario taxonomy, executable environment and task synthesis, verification gates, post-training, and PRD-guided diagnosis. The diagram marks where the paper has direct measurements and where claims remain preliminary.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0 0 L12 6 L0 12 z" fill="#365b73"/>
+    </marker>
+    <marker id="arrow-soft" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0 0 L12 6 L0 12 z" fill="#8b6aa9"/>
+    </marker>
+    <style>
+      .bg { fill: #f8f5ef; }
+      .title { fill: #20303b; font: 700 29px "PingFang SC", "Noto Sans CJK SC", Arial, sans-serif; }
+      .subtitle { fill: #59656d; font: 500 16px "PingFang SC", "Noto Sans CJK SC", Arial, sans-serif; }
+      .head { fill: #20303b; font: 700 20px "PingFang SC", "Noto Sans CJK SC", Arial, sans-serif; }
+      .body { fill: #33434d; font: 500 15px "PingFang SC", "Noto Sans CJK SC", Arial, sans-serif; }
+      .metric { fill: #20303b; font: 700 16px "PingFang SC", "Noto Sans CJK SC", Arial, sans-serif; }
+      .tiny { fill: #65727b; font: 500 13px "PingFang SC", "Noto Sans CJK SC", Arial, sans-serif; }
+      .claim { fill: #184d45; font: 700 15px "PingFang SC", "Noto Sans CJK SC", Arial, sans-serif; }
+      .risk { fill: #7c3f43; font: 700 15px "PingFang SC", "Noto Sans CJK SC", Arial, sans-serif; }
+      .box { stroke-width: 2; rx: 16; }
+      .arrow { stroke: #365b73; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+      .loop { stroke: #8b6aa9; stroke-width: 3; stroke-dasharray: 9 7; fill: none; marker-end: url(#arrow-soft); }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1240" height="760"/>
+  <text class="title" x="52" y="56">AgentOmnia 的证据链：覆盖 → 可执行 → 可训练 → 可诊断</text>
+  <text class="subtitle" x="52" y="86">自制图解：把论文的系统叙事拆成可检查的中间产物；实线是论文直接测量过的接口，虚线是作者只做了初步验证的闭环。</text>
+
+  <rect class="box" x="48" y="124" width="250" height="210" fill="#e8f2f5" stroke="#5f9aaa"/>
+  <text class="head" x="72" y="161">1 任务空间</text>
+  <text class="body" x="72" y="190">Domain x Capability x Difficulty</text>
+  <text class="metric" x="72" y="224">90 L1 / 354 L2 domains</text>
+  <text class="body" x="72" y="250">10 capabilities + 8 atomic factors</text>
+  <text class="tiny" x="72" y="286">坐标同时索引数据、训练、评测、诊断</text>
+  <text class="tiny" x="72" y="309">但覆盖分布仍由作者筛选和生成器决定</text>
+
+  <rect class="box" x="334" y="124" width="286" height="210" fill="#eaf5eb" stroke="#62a47f"/>
+  <text class="head" x="358" y="161">2 可执行数据工厂</text>
+  <text class="body" x="358" y="190">环境 ↔ 任务双向合成</text>
+  <text class="metric" x="358" y="224">5,018 envs · 255,375 tools</text>
+  <text class="metric" x="358" y="249">52,361 tasks</text>
+  <text class="body" x="358" y="279">DAG 45,855 · Program 2,204</text>
+  <text class="body" x="358" y="301">Solver 4,302</text>
+
+  <rect class="box" x="656" y="124" width="250" height="210" fill="#f1ecf7" stroke="#8b6aa9"/>
+  <text class="head" x="680" y="161">3 证据闸门</text>
+  <text class="body" x="680" y="190">state transition + rubric</text>
+  <text class="body" x="680" y="215">reasoning continuity</text>
+  <text class="body" x="680" y="240">logical consistency</text>
+  <text class="body" x="680" y="265">evidence grounding</text>
+  <text class="tiny" x="680" y="300">privileged guidance 只给 teacher，</text>
+  <text class="tiny" x="680" y="319">保留轨迹必须去泄漏</text>
+
+  <rect class="box" x="942" y="124" width="250" height="210" fill="#fff1e2" stroke="#c68b54"/>
+  <text class="head" x="966" y="161">4 后训练</text>
+  <text class="body" x="966" y="190">53K SFT + 5K RL tasks</text>
+  <text class="body" x="966" y="216">rule / rubric rewards</text>
+  <text class="body" x="966" y="242">GRPO + rollback curriculum</text>
+  <text class="tiny" x="966" y="280">RCRL 用 golden prefix 把 all-fail</text>
+  <text class="tiny" x="966" y="300">样本拉回有梯度的难度区间</text>
+
+  <path class="arrow" d="M298 229 H326"/>
+  <path class="arrow" d="M620 229 H648"/>
+  <path class="arrow" d="M906 229 H934"/>
+
+  <rect class="box" x="180" y="414" width="880" height="174" fill="#f6f8fb" stroke="#71899b"/>
+  <text class="head" x="208" y="452">5 评测 → 诊断 → PRD</text>
+  <text class="body" x="208" y="481">OmniaBench 644-task challenging subset：将失败按坐标聚合，再写成可消费的 Product Requirement Document</text>
+  <text class="body" x="208" y="511">PRD 再约束 domain、tool schema、state space、dependency depth、distractors 与 success rubric，进入下一轮合成</text>
+  <text class="claim" x="208" y="550">测到的对齐：D_KL(PRD, failure)=0.196；原始训练分布=0.603</text>
+  <text class="risk" x="698" y="550">尚未证明的因果：一轮、121 envs / 804 tasks，外部平均只 +0.92 pp</text>
+
+  <path class="arrow" d="M1066 334 C1110 363 1110 402 1038 435"/>
+  <path class="loop" d="M180 500 C92 500 92 360 164 310"/>
+  <text class="tiny" x="54" y="390">覆盖坐标回到合成器</text>
+
+  <rect class="box" x="48" y="640" width="1144" height="76" fill="#fffaf2" stroke="#b89a62"/>
+  <text class="claim" x="72" y="671">论文最强证据：同一底座在四个 benchmark 都涨，且 76 / 90 L1 domains 改善。</text>
+  <text class="risk" x="72" y="697">最大保留意见：没有 SFT-only / RL-only / guidance-only 的完整消融，跨模型与跨生成器的可归因性仍开放。</text>
+</svg>
