@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 620" font-family="-apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif">
+  <defs>
+    <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect width="1080" height="620" fill="#ffffff"/>
+  <text x="540" y="40" text-anchor="middle" font-size="21" font-weight="700" fill="#0f172a">RLM 的论证链：让每次 LM 调用都落在训练分布内（LID）</text>
+
+  <!-- Lane 1: append harness -->
+  <rect x="20" y="70" width="1040" height="210" rx="12" fill="#fef2f2" stroke="#fecaca"/>
+  <text x="540" y="98" text-anchor="middle" font-size="15" font-weight="700" fill="#b91c1c">传统 append 式 harness（Claude Code / Codex 的默认形态）</text>
+
+  <rect x="50" y="120" width="200" height="64" rx="8" fill="#ffffff" stroke="#fca5a5"/>
+  <text x="150" y="146" text-anchor="middle" font-size="13" fill="#0f172a">任务状态 s</text>
+  <text x="150" y="164" text-anchor="middle" font-size="12" fill="#475569">任意长 · 任意领域</text>
+  <line x1="250" y1="152" x2="280" y2="152" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+  <rect x="284" y="112" width="250" height="80" rx="8" fill="#ffffff" stroke="#fca5a5"/>
+  <text x="409" y="138" text-anchor="middle" font-size="13" fill="#0f172a">不断追加的主上下文</text>
+  <text x="409" y="156" text-anchor="middle" font-size="12" fill="#475569">任务 token + 工具输出 + 推理</text>
+  <text x="409" y="174" text-anchor="middle" font-size="12" fill="#475569">越滚越长</text>
+  <line x1="534" y1="152" x2="564" y2="152" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+  <rect x="568" y="112" width="220" height="80" rx="8" fill="#ffffff" stroke="#fca5a5"/>
+  <text x="678" y="138" text-anchor="middle" font-size="13" fill="#0f172a">整条轨迹 OOD</text>
+  <text x="678" y="156" text-anchor="middle" font-size="12" fill="#475569">单次调用看到的序列</text>
+  <text x="678" y="174" text-anchor="middle" font-size="12" fill="#475569">训练时从未见过 → context rot</text>
+  <line x1="788" y1="152" x2="818" y2="152" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+  <rect x="822" y="112" width="208" height="80" rx="8" fill="#fee2e2" stroke="#fca5a5"/>
+  <text x="926" y="138" text-anchor="middle" font-size="13" font-weight="600" fill="#7f1d1d">RL 学到的策略</text>
+  <text x="926" y="156" text-anchor="middle" font-size="13" font-weight="600" fill="#7f1d1d">锁死在训练长度/领域</text>
+  <text x="926" y="174" text-anchor="middle" font-size="12" fill="#b91c1c">train 涨，eval 平</text>
+
+  <!-- Lane 2: RLM -->
+  <rect x="20" y="320" width="1040" height="240" rx="12" fill="#f0fdf4" stroke="#bbf7d0"/>
+  <text x="540" y="348" text-anchor="middle" font-size="15" font-weight="700" fill="#166534">RLM（Recursive Language Model）</text>
+
+  <rect x="40" y="372" width="150" height="64" rx="8" fill="#ffffff" stroke="#86efac"/>
+  <text x="115" y="398" text-anchor="middle" font-size="13" fill="#0f172a">任务状态 s</text>
+  <text x="115" y="416" text-anchor="middle" font-size="12" fill="#475569">任意长 · 任意领域</text>
+  <line x1="190" y1="404" x2="214" y2="404" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+  <rect x="218" y="364" width="250" height="88" rx="8" fill="#ffffff" stroke="#86efac"/>
+  <text x="343" y="388" text-anchor="middle" font-size="13" fill="#0f172a">两个机制</text>
+  <text x="343" y="406" text-anchor="middle" font-size="12" fill="#475569">① context offloading：输入符号变量化</text>
+  <text x="343" y="424" text-anchor="middle" font-size="12" fill="#475569">② 程序化子调用：中间结果留 REPL</text>
+  <line x1="468" y1="404" x2="492" y2="404" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+  <rect x="496" y="364" width="190" height="88" rx="8" fill="#ffffff" stroke="#86efac"/>
+  <text x="591" y="388" text-anchor="middle" font-size="13" fill="#0f172a">每次调用 oᵢ 都 LID</text>
+  <text x="591" y="406" text-anchor="middle" font-size="12" fill="#475569">root LM 只看短的、</text>
+  <text x="591" y="424" text-anchor="middle" font-size="12" fill="#475569">任务无关的片段</text>
+  <line x1="686" y1="404" x2="710" y2="404" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+  <rect x="714" y="364" width="180" height="88" rx="8" fill="#ffffff" stroke="#86efac"/>
+  <text x="804" y="388" text-anchor="middle" font-size="13" fill="#0f172a">等价类 T / ~H</text>
+  <text x="804" y="406" text-anchor="middle" font-size="12" fill="#475569">结构相似的任务</text>
+  <text x="804" y="424" text-anchor="middle" font-size="12" fill="#475569">≡ 同一条 token 轨迹</text>
+  <line x1="894" y1="404" x2="918" y2="404" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+  <rect x="922" y="364" width="128" height="88" rx="8" fill="#dcfce7" stroke="#86efac"/>
+  <text x="986" y="388" text-anchor="middle" font-size="13" font-weight="600" fill="#14532d">RL 泛化</text>
+  <text x="986" y="406" text-anchor="middle" font-size="12" fill="#166534">8–32× 长度</text>
+  <text x="986" y="424" text-anchor="middle" font-size="12" fill="#166534">跨领域迁移</text>
+
+  <text x="540" y="506" text-anchor="middle" font-size="13" fill="#166534">泛化的单位是单次 LM 调用，不是整条轨迹：轨迹可以 OOD，调用必须 LID</text>
+  <text x="540" y="530" text-anchor="middle" font-size="13" fill="#166534">等价类由 harness 诱导——"相似"的主动权在 harness 设计，不在模型；两个机制缺一不可</text>
+</svg>
