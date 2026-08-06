@@ -1,18 +1,18 @@
 ---
-title: "11 个 Agent Benchmark 深度研究：General Task 进展与瓶颈分析"
+title: "9 个 Agent Benchmark 深度研究：General Task 进展与瓶颈分析"
 public: true
-description: "系统拆解 11 个 Agent Benchmark 的数据、任务、环境、评分与 SOTA，理解 General Task Agent 的进展与瓶颈。"
+description: "系统拆解 9 个 Agent Benchmark 的数据、任务、环境、评分与 SOTA，理解 General Task Agent 的进展与瓶颈。"
 type: agent-evaluation
 date: 2026-08-05
 reading_surface: true
 kicker: "AGENT BENCHMARK · GENERAL TASK FRONTIER"
 ---
 
-# 11 个 Agent Benchmark 深度研究：General Task 进展与瓶颈分析
+# 9 个 Agent Benchmark 深度研究：General Task 进展与瓶颈分析
 
 ## 研究概述
 
-本文依据[Feishu 原始整理][feishu-doc]，对当前主流的 11 个 Agent Benchmark 进行系统性深度拆解，覆盖数据规模、任务类型、环境设计、评分机制与 SOTA 表现等维度，旨在建立对 General Task Agent 领域当前进展与核心瓶颈的整体认知。
+本文依据[Feishu 原始整理][feishu-doc]，对 Feishu 主线保留的 9 个 Agent Benchmark 进行系统性深度拆解，覆盖数据规模、任务类型、环境设计、评分机制与 SOTA 表现等维度，旨在建立对 General Task Agent 领域当前进展与核心瓶颈的整体认知。
 
 这里的核心判断是：
 
@@ -34,7 +34,7 @@ kicker: "AGENT BENCHMARK · GENERAL TASK FRONTIER"
 
 本文保留 Feishu 文档中的 SOTA 口径，并在表格标题中标明版本、Harness 或评测设置。不同 Benchmark 的任务、环境和评分方式不同，分数不可直接横向比较；`—` 表示当前没有公开数据，而不是模型一定失败。
 
-## 11 个 Benchmark 总览
+## 9 个 Benchmark 总览
 
 |Benchmark|任务数|工具/环境数|状态权威|评分主路径|SOTA 分数|
 |---|---|---|---|---|---|
@@ -50,7 +50,7 @@ kicker: "AGENT BENCHMARK · GENERAL TASK FRONTIER"
 
 ## 分类视角
 
-从“结果状态在哪里”看，这 11 个 benchmark 大致分成三类：
+从“结果状态在哪里”看，这 9 个 benchmark 大致分成三类：
 
 ### 1. 交付物中心
 
@@ -388,7 +388,7 @@ DeepSeek-V4-Flash 在 Toolathlon-Verified 上达到 70.3%，也验证了开源�
 
 ### 一、四种评分机制对比
 
-这 11 个 benchmark 的评分机制可以归纳为四类，每类测量的其实是不同东西：
+这 9 个 benchmark 的评分机制可以归纳为四类，每类测量的其实是不同东西：
 
 |评分类型|代表 Benchmark|优点|缺点|
 |---|---|---|---|
@@ -441,7 +441,7 @@ cleanup_verification
 
 ### 四、已发现的根因级风险
 
-基于对 11 个 benchmark 的静态源码审计，以下问题会改变实验语义：
+基于对 9 个 benchmark 的静态源码审计，以下问题会改变实验语义：
 
 |严重度|Benchmark|问题|影响|
 |---:|---|---|---|
@@ -578,7 +578,7 @@ Claw-Eval 的发现很关键：轨迹不透明评测遗漏了 44% 的安全违�
 
 ### 三、各维度难度梯度
 
-综合 11 个 benchmark，可以大致画出 General Task Agent 的难度梯度：
+综合 9 个 benchmark，可以大致画出 General Task Agent 的难度梯度：
 
 |难度层级|任务特征|代表 Benchmark|SOTA 水平|
 |---|---|---|---:|
