@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<!-- Template: https://github.com/luost26/academic-homepage -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="description" content="系统拆解 9 个 Agent Benchmark 的数据、任务、环境、评分与 SOTA，理解 General Task Agent 的进展与瓶颈。">
+    <meta property="og:title" content="9 个 Agent Benchmark 深度研究：General Task 进展与瓶颈分析 - Ryan">
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="系统拆解 9 个 Agent Benchmark 的数据、任务、环境、评分与 SOTA，理解 General Task Agent 的进展与瓶颈。">
+    <meta property="og:url" content="https://ryanhu2001.github.io/Ryanhu2001/wiki/9%20%E4%B8%AA%20Agent%20Benchmark%20%E6%B7%B1%E5%BA%A6%E6%8B%86%E8%A7%A3%EF%BC%9A%E4%BB%BB%E5%8A%A1%E3%80%81%E7%8E%AF%E5%A2%83%E3%80%81%E8%AF%84%E5%88%86%E4%B8%8E%E9%9A%94%E7%A6%BB.html">
+    <title>9 个 Agent Benchmark 深度研究：General Task 进展与瓶颈分析 - Ryan</title>
+    <link rel="icon" href="/Ryanhu2001/assets/ryan/avatar.jpg" type="image/jpeg">
+
+    <!-- Stylesheets -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/Ryanhu2001/pagefind/pagefind-component-ui.css">
+    
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/blog.css">
+    
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/global.css">
+</head>
+<body >
+    <a class="sr-only sr-only-focusable skip-link" href="#main-content">Skip to content</a>
+    <nav class="navbar navbar-expand-sm navbar-light fixed-top mb-5 shadow-sm">
+    <div class="container-lg">
+        <a class="navbar-brand" href="/Ryanhu2001/"><strong>Ryan</strong></a>
+        <button class="nav-search-button nav-search-button-compact d-sm-none ml-auto mr-2" type="button" data-toggle="modal" data-target="#siteSearchModal" aria-label="Search site">
+            <i class="fas fa-search" aria-hidden="true"></i>
+        </button>
+        <button class="navbar-toggler" style="font-size: 1em; padding: 0.5em;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-map" aria-hidden="true"></i> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/">Home</a>
+                </li>
+                
+                <li class="nav-item active">
+                    <a class="nav-link" href="/Ryanhu2001/wiki/">Wiki</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/paper-reading/">Paper Reading</a>
+                </li>
+                
+                <li class="nav-item nav-search-item">
+                    <button class="nav-link nav-search-button" type="button" data-toggle="modal" data-target="#siteSearchModal" aria-label="Search site">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <span>Search</span>
+                        <kbd class="d-none d-md-inline">⌘K</kbd>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <main id="main-content" class="container-lg">
+        
+
+
+
+
+<div class="reading-progress" aria-hidden="true">
+    <span></span>
+</div>
+
+<div class="blog-layout-wrapper reading-surface-layout">
+    <div class="blog-main">
+        <div class="mb-3">
+            <a class="small" href="/Ryanhu2001/wiki/">
+                <i class="fas fa-arrow-left"></i> Wiki
+            </a>
+        </div>
+
+        <details class="mobile-toc d-lg-none">
+            <summary>目录</summary>
+            <div id="blog-toc-list-mobile" class="mobile-toc-list"></div>
+        </details>
+
+        <article class="bg-white rounded-xl p-4 p-md-5 mb-4 wiki-note-card reading-surface-card" data-pagefind-body data-reading-surface data-kicker="AGENT BENCHMARK · GENERAL TASK FRONTIER">
+            <div class="blog-content wiki-note">
+                <h1 id="9-个-agent-benchmark-深度研究general-task-进展与瓶颈分析">9 个 Agent Benchmark 深度研究：General Task 进展与瓶颈分析</h1>
+
+<h2 id="研究概述">研究概述</h2>
+
+<p>本文依据<a href="https://feishu.doubao.com/docx/RpYXddP8To2VYixbxhxcAUn3ncf?enter_from=public_link">Feishu 原始整理</a>，对 Feishu 主线保留的 9 个 Agent Benchmark 进行系统性深度拆解，覆盖数据规模、任务类型、环境设计、评分机制与 SOTA 表现等维度，旨在建立对 General Task Agent 领域当前进展与核心瓶颈的整体认知。</p>
+
+<p>这里的核心判断是：</p>
+
+<blockquote>
+  <p><strong>Agent benchmark 本质上是系统 benchmark。</strong></p>
+</blockquote>
+
+<p>它测到的从来不只是模型，而是下面这些因素的乘积：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>模型 × Harness × 工具协议 × 环境镜像
+    × 任务数据 × 评分器 × 运行策略
+</code></pre></div></div>
+
+<p>因此，在比较 leaderboard 分数之前，至少要先回答四个问题：</p>
+
+<ol>
+  <li>初始状态一样吗？</li>
+  <li>Agent 看见的东西一样吗？</li>
+  <li>grader 是同一个版本吗？</li>
+  <li>失败与恢复被记成同一种状态吗？</li>
+</ol>
+
+<p>本文保留 Feishu 文档中的 SOTA 口径，并在表格标题中标明版本、Harness 或评测设置。不同 Benchmark 的任务、环境和评分方式不同，分数不可直接横向比较；<code class="language-plaintext highlighter-rouge">—</code> 表示当前没有公开数据，而不是模型一定失败。</p>
+
+<h2 id="9-个-benchmark-总览">9 个 Benchmark 总览</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Benchmark</th>
+      <th>任务数</th>
+      <th>工具/环境数</th>
+      <th>状态权威</th>
+      <th>评分主路径</th>
+      <th>SOTA 分数</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://github.com/rdi-berkeley/agents-last-exam/blob/2d4d2205c255/ale_run/orchestration/lifecycle.py">Agents Last Exam（ALE）</a></td>
+      <td>147 public / 1500+ total</td>
+      <td>55 个子行业</td>
+      <td>VM 文件与应用状态</td>
+      <td>任务级 evaluator</td>
+      <td>GPT-5.6：29.6% / Kimi K3：28.3% / Claude Fable 5：25.7%</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/zapier/AutomationBench/blob/4a8e10612540/automationbench/schema/world.py">AutomationBench</a></td>
+      <td>606 scored + 200 simple</td>
+      <td>47 SaaS tools</td>
+      <td>内存 <code class="language-plaintext highlighter-rouge">WorldState</code></td>
+      <td>最终状态 assertions</td>
+      <td>Kimi K3：30.8% / GPT-5.6：29.7% / Claude Fable 5：29.1%</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/claw-eval/claw-eval/blob/5680b8b11ff2/src/claw_eval/models/scoring.py">Claw-Eval</a></td>
+      <td>300</td>
+      <td>9 类别</td>
+      <td>Docker mock services</td>
+      <td>Completion × Safety × Robustness</td>
+      <td>暂无三大模型公开数据</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/Job-Bench/job-bench-eval/blob/bbeae9de5d2f/eval/run_benchmark_claude_code_cli.sh">JobBench</a></td>
+      <td>65 main + 63 easy</td>
+      <td>35 个职业</td>
+      <td>最终交付物</td>
+      <td>LLM rubric judge</td>
+      <td>Claude Fable 5：57.4% / Kimi K3：54.3% / GPT-5.6：45.4%</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/scaleapi/mcp-atlas/blob/f24ba3fb0bfa/services/agent-harness/src/mcp-agent/agent-evals/agent-eval.ts">MCP-Atlas</a></td>
+      <td>1000，公开 500</td>
+      <td>36 MCP servers / 307 tools</td>
+      <td>共享 MCP sandbox</td>
+      <td>Claim coverage LLM judge</td>
+      <td>Claude Fable 5：84.7% / Kimi K3：84.2% / GPT-5.6：83.6%</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/eval-sys/mcpmark/blob/cd45b7f57923/src/evaluator.py">MCPMark</a></td>
+      <td>177，含 127 standard + 50 easy</td>
+      <td>5+ 服务类型</td>
+      <td>服务终态</td>
+      <td><code class="language-plaintext highlighter-rouge">verify.py</code> 程序化检查</td>
+      <td>Kimi K3：94.5%（Verified） / GPT-5.6：92.9% / Claude Fable 5：87.4%</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/databricks/officeqa/blob/e155e210fcb5/reward.py">OfficeQA</a></td>
+      <td>133 Pro / 246 Full</td>
+      <td>89k 页文档</td>
+      <td>最终文本答案</td>
+      <td>数值容差 / 文本匹配</td>
+      <td>Claude Fable 5：69.9%（Pro） / Kimi K3：63.3% / GPT-5.6：63.2%</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/RUCKBReasoning/SpreadsheetBench-2/blob/599b24aa4792/evaluation/evaluation.py">SpreadsheetBench 2</a></td>
+      <td>321</td>
+      <td>4 大类任务</td>
+      <td>最终 <code class="language-plaintext highlighter-rouge">.xlsx</code> 文件</td>
+      <td>Cell diff + VLM checklist</td>
+      <td>Kimi K3：34.8% / Claude Fable 5：34.7% / GPT-5.6：32.4%</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/hkust-nlp/Toolathlon/blob/2aed2468858f/scripts/containerized/task_artifact_guard.py">Toolathlon</a></td>
+      <td>108</td>
+      <td>32 apps / 604 tools</td>
+      <td>本地 workspace + 远程状态</td>
+      <td>任务私有 evaluator</td>
+      <td>Claude Fable 5：77.9%（Verified） / Kimi K3：76.5% / GPT-5.6：74.9%</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="分类视角">分类视角</h2>
+
+<p>从“结果状态在哪里”看，这 9 个 benchmark 大致分成三类：</p>
+
+<h3 id="1-交付物中心">1. 交付物中心</h3>
+
+<p>代表项目是 JobBench、OfficeQA 和 SpreadsheetBench 2。它们以最终产出文件或文本作为评分对象，关键问题是：参考答案是否可见、等价输出能否通过、解析器是否真的读到了文件。</p>
+
+<h3 id="2-轨迹中心">2. 轨迹中心</h3>
+
+<p>代表项目是 MCP-Atlas，以及 Claw-Eval 的部分维度。它们关注工具调用序列和中间过程，需要判断工具调用是否是任务所需，最终 claim 能否追溯到证据。</p>
+
+<h3 id="3-环境状态中心">3. 环境状态中心</h3>
+
+<p>代表项目是 ALE、AutomationBench、MCPMark 和 Toolathlon。它们以环境终态作为真相源，核心问题是：谁拥有状态、怎样 reset、并发是否串扰、cleanup 失败后会发生什么。</p>
+
+<p>这三类不是互斥的实现标签，而是阅读分数时的第一层视角。一个看起来很高的 claim coverage，和一个严格的服务终态通过率，回答的不是同一个问题。</p>
+
+<h2 id="逐-benchmark-深度拆解">逐 Benchmark 深度拆解</h2>
+
+<h3 id="1-agents-last-examale职业任务系统">1. Agents Last Exam（ALE）——职业任务系统</h3>
+
+<h4 id="数据规模与类型">数据规模与类型</h4>
+
+<p>ALE 是目前覆盖范围最广的 Agent 评测基准之一，目标是构建 5000 个任务的完整语料库。ALE-V1 当前公开发布 147 个参考任务，覆盖 55 个子行业，参考美国 O*NET / SOC 2018 联邦职业分类体系定义非物理行业。许多任务需要私有数据或许可软件，因此保留在私有池中。</p>
+
+<p>ALE 采用滚动评测机制：大约每 6 个月发布一批新的公开任务实例，同时让私有任务轮换进出，已退役的公开任务也会轮换出去，以限制基准泄露。</p>
+
+<h4 id="任务设计">任务设计</h4>
+
+<p>ALE 的核心设计理念不是统一任务格式，而是统一生命周期。每个职业任务都被做成一个小型系统，包含完整的输入、处理和输出流程。任务类型覆盖临床数据映射（如 <code class="language-plaintext highlighter-rouge">CRF → SDTM</code>）以及各类专业工作流，强调长周期、经济价值高的专业任务。</p>
+
+<p>每个任务有独立 evaluator，既可以使用确定性评分，也可以使用混合评分。统一的是任务生命周期，不是每个职业任务的输出格式。</p>
+
+<h4 id="环境设计">环境设计</h4>
+
+<p>ALE 的环境以 VM 文件和应用状态为核心，Agent 通过桌面、Shell 以及 task-specific 软件进行交互。每个任务有独立的 provider VM，reference 在 Agent 执行结束后才注入环境，实现强时间隔离；实验级和任务级持久化支持 resume 身份验证。</p>
+
+<h4 id="sota-表现">SOTA 表现</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right">排名</th>
+      <th>Harness</th>
+      <th>模型</th>
+      <th style="text-align: right">Pass Rate</th>
+      <th style="text-align: right">Score</th>
+      <th style="text-align: right">估算成本</th>
+      <th style="text-align: right">运行时间</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right">1</td>
+      <td>Codex</td>
+      <td>GPT-5.6 Sol</td>
+      <td style="text-align: right">30.6%</td>
+      <td style="text-align: right">53.6%</td>
+      <td style="text-align: right">$762</td>
+      <td style="text-align: right">94h 39m</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">2</td>
+      <td>Codex</td>
+      <td>GPT-5.6 Luna</td>
+      <td style="text-align: right">29.6%</td>
+      <td style="text-align: right">48.3%</td>
+      <td style="text-align: right">$235</td>
+      <td style="text-align: right">66h 7m</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>即使是最强模型，在 ALE 上的通过率也只有约 30%，同时需要近百小时运行时间和数百美元成本。这说明长周期专业任务仍是 Agent 面临的巨大挑战。</p>
+
+<h3 id="2-automationbenchworldstate-为唯一真相">2. AutomationBench——WorldState 为唯一真相</h3>
+
+<h4 id="数据规模与类型-1">数据规模与类型</h4>
+
+<p>AutomationBench 包含 606 个 scored task 和 200 个 simple task，README 的口径是 600 + 200。它模拟 47 个 SaaS 工具，覆盖 Gmail、Salesforce、Google Calendar、Slack 等主流办公场景，任务分布在多个业务领域，每个领域约 100 个任务。</p>
+
+<h4 id="任务设计-1">任务设计</h4>
+
+<p>AutomationBench 看起来像 Agent 在操作各种 SaaS，实际上没有外部 SaaS。每个任务把完整业务世界反序列化成 Pydantic <code class="language-plaintext highlighter-rouge">WorldState</code> 对象，所有工具都查询或修改这个对象，grader 也读取同一个对象。</p>
+
+<p>核心流程是：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>task prompt + initial_state
+→ construct WorldState
+→ model/tool loop
+→ evaluate assertions against final WorldState
+→ task_completed_correctly = all assertions pass
+</code></pre></div></div>
+
+<p>这种结构的优势非常直接：没有网络抖动、OAuth、页面改版和 eventual consistency；同一个初始状态加同一串 tool calls，应得到同一个终态。它还把 task prompt、initial state、tools 和 assertions 规范化后计算 task contract SHA-256，确保任务身份可验证。</p>
+
+<h4 id="环境设计-1">环境设计</h4>
+
+<p>AutomationBench 的环境是纯内存的 <code class="language-plaintext highlighter-rouge">WorldState</code> 对象，每个 task 新建状态对象，实现强进程内隔离。assertions 留在 host task object 中，Agent 无法看到。</p>
+
+<h4 id="sota-表现-1">SOTA 表现</h4>
+
+<p>三大前沿模型在 max effort 设置下的统一评测数据：</p>
+
+<ul>
+  <li>Kimi K3：30.8%</li>
+  <li>GPT-5.6 Sol：29.7%</li>
+  <li>Claude Fable 5：29.1%</li>
+</ul>
+
+<p>注：Claude Fable 5 与 Claude Mythos 5 是同一底层模型的不同配置。Fable 5 内置安全分类器，会将高风险请求 reroute 到 Opus；Mythos 5 是没有安全过滤的原始模型。</p>
+
+<h3 id="3-claw-eval三维可信评测">3. Claw-Eval——三维可信评测</h3>
+
+<h4 id="数据规模与类型-2">数据规模与类型</h4>
+
+<p>Claw-Eval 包含 300 个人工验证任务，跨越 9 个细粒度类别，组织成三大组：</p>
+
+<ul>
+  <li><strong>通用服务编排（General）</strong>：从单服务查询到跨服务协调和多系统工作流，反映部署相关的操作场景。</li>
+  <li><strong>多模态感知与交互（Multimodal）</strong>：视频、文档、图像、代码生成视觉产物等丰富媒体的主动感知和生成。</li>
+  <li><strong>多轮专业对话（Multi-turn Dialogue）</strong>：STEM、社会科学、商业等领域的专业咨询，包含隐藏意图用户场景，需要主动澄清和信息收集。</li>
+</ul>
+
+<h4 id="任务设计-2">任务设计</h4>
+
+<p>Claw-Eval 的核心创新是轨迹感知评分。每次运行通过三个独立证据通道记录执行轨迹、审计日志和环境快照，产生 2159 个细粒度 rubric 项。</p>
+
+<p>评分协议评估三个维度：</p>
+
+<ul>
+  <li><strong>Completion（完成度）</strong>：任务目标是否达成。</li>
+  <li><strong>Safety（安全性）</strong>：是否违反安全约束、是否调用了禁止工具。</li>
+  <li><strong>Robustness（鲁棒性）</strong>：在错误注入和扰动下是否稳定。</li>
+</ul>
+
+<p>它使用 Average Score、<code class="language-plaintext highlighter-rouge">Pass@k</code> 和 <code class="language-plaintext highlighter-rouge">Pass^k</code> 三种指标，通过三次试验区分真实能力和幸运结果。</p>
+
+<h4 id="环境设计-2">环境设计</h4>
+
+<p>Claw-Eval 的 Agent loop 在 host，任务服务和文件 sandbox 在 Docker 中。Agent 通过 HTTP tools 与 sandbox 交互，grader 在 host 侧读取 trace 并注入 grader-only 文件。grader-only 文件在 loop 结束后才注入，实现强时间隔离。</p>
+
+<h4 id="关键发现">关键发现</h4>
+
+<p>对 14 个前沿模型的实验显示：</p>
+
+<ol>
+  <li>轨迹不透明的评测系统性不可靠，遗漏了 44% 的安全违规和 13% 的鲁棒性失败。</li>
+  <li>能力不等于一致性：错误注入下，<code class="language-plaintext highlighter-rouge">Pass@3</code> 可以保持稳定，而 <code class="language-plaintext highlighter-rouge">Pass^3</code> 最多下降 24 个百分点。</li>
+  <li>Agent 能力是强多维的，模型排名会在不同任务组和指标之间发生很大变化。</li>
+</ol>
+
+<h3 id="4-jobbench专业交付物-llm-评审">4. JobBench——专业交付物 LLM 评审</h3>
+
+<h4 id="数据规模与类型-3">数据规模与类型</h4>
+
+<p>JobBench 面向 35 个白领职业的多源预处理工作，main split 有 65 个完整任务，easy split 有 63 个简化任务。正式数据由 setup 脚本从 Hugging Face 拉取，覆盖商业金融、行政管理、计算数学、建筑工程、管理、艺术等多个领域。</p>
+
+<h4 id="任务设计-3">任务设计</h4>
+
+<p>JobBench 的任务通常同时要求：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">reconcile conflicting records</code>：调和冲突记录；</li>
+  <li><code class="language-plaintext highlighter-rouge">cross-reference</code>：交叉引用；</li>
+  <li><code class="language-plaintext highlighter-rouge">trace citations</code>：追踪引用；</li>
+  <li>制作专业交付物。</li>
+</ul>
+
+<p>runner 的主路径是：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TASK_INSTRUCTIONS + reference files
+→ CLI agent 写入临时输出
+→ 移回 model_output
+→ 从多种文件类型提取文本 / 图像
+→ 每个加权 rubric 调用一次 LLM
+→ 聚合通过的权重
+</code></pre></div></div>
+
+<p>这种设计比让一个 agent-as-judge 自己打开所有文件便宜得多，但也把“文件解析器看见了什么”变成评分的一部分。</p>
+
+<h4 id="环境设计-3">环境设计</h4>
+
+<p>JobBench 使用 CLI agent 和临时工作目录，每个 task 复制到独立 <code class="language-plaintext highlighter-rouge">/tmp</code> 目录。<code class="language-plaintext highlighter-rouge">RUBRICS.json</code> 留在原数据树，临时 Agent workspace 不含它，实现目录隔离；但隔离强度仍取决于 CLI 实际文件权限。</p>
+
+<h4 id="sota-表现-2">SOTA 表现</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>模型</th>
+      <th style="text-align: right">Overall</th>
+      <th style="text-align: right">Bus. Fin.</th>
+      <th style="text-align: right">Admin</th>
+      <th style="text-align: right">Comp. Math.</th>
+      <th style="text-align: right">Arch. Eng.</th>
+      <th style="text-align: right">Mgmt</th>
+      <th style="text-align: right">Arts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Claude Code Opus-4.7</td>
+      <td style="text-align: right">45.9%</td>
+      <td style="text-align: right">46.1%</td>
+      <td style="text-align: right">47.8%</td>
+      <td style="text-align: right">39.2%</td>
+      <td style="text-align: right">46.6%</td>
+      <td style="text-align: right">38.8%</td>
+      <td style="text-align: right">64.2%</td>
+    </tr>
+    <tr>
+      <td>GPT-5.5（Codex CLI）</td>
+      <td style="text-align: right">42.7%</td>
+      <td style="text-align: right">47.7%</td>
+      <td style="text-align: right">42.6%</td>
+      <td style="text-align: right">39.4%</td>
+      <td style="text-align: right">40.9%</td>
+      <td style="text-align: right">30.5%</td>
+      <td style="text-align: right">50.2%</td>
+    </tr>
+    <tr>
+      <td>Claude Code Sonnet-4.6</td>
+      <td style="text-align: right">36.9%</td>
+      <td style="text-align: right">36.7%</td>
+      <td style="text-align: right">38.4%</td>
+      <td style="text-align: right">31.9%</td>
+      <td style="text-align: right">41.1%</td>
+      <td style="text-align: right">30.7%</td>
+      <td style="text-align: right">54.9%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>最强模型在 JobBench 上的整体通过率约 46%。艺术类任务相对容易，达到 64%；管理类和建筑工程类任务难度较大。</p>
+
+<h3 id="5-mcp-atlas大规模工具覆盖评测">5. MCP-Atlas——大规模工具覆盖评测</h3>
+
+<h4 id="数据规模与类型-4">数据规模与类型</h4>
+
+<p>MCP-Atlas 是目前规模最大的 MCP 工具评测基准之一，包含 36 个真实 MCP server 和 307 个工具，论文口径为 220 tools；共有 1000 个任务，其中公开发布 500 个任务子集。</p>
+
+<p>任务用于评估真实多步工作流中的工具使用能力，使用自然语言 prompt，不指定具体工具或服务器，要求 Agent 自行识别并编排 3–6 次跨多个服务器的工具调用。</p>
+
+<h4 id="任务设计-4">任务设计</h4>
+
+<p>MCP-Atlas 的任务数据包含 <code class="language-plaintext highlighter-rouge">TASK</code>、<code class="language-plaintext highlighter-rouge">PROMPT</code>、<code class="language-plaintext highlighter-rouge">ENABLED_TOOLS</code> 和 <code class="language-plaintext highlighter-rouge">GTFA_CLAIMS</code>。评分采用基于 claims 的 rubric，根据模型最终答案中满足的事实声明给予部分分数，并报告 0.50 / 0.75 两个 coverage threshold。</p>
+
+<p>它主要测的是“能否用工具找到并表述所需事实”，而不是应用终态。</p>
+
+<p>架构分三层：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Python agent-environment sandbox
+    ← HTTP → TypeScript multi-turn harness
+    ← HTTP → Python CSV runner / HF task dataset
+</code></pre></div></div>
+
+<h4 id="环境设计与问题">环境设计与问题</h4>
+
+<p>MCP-Atlas 存在一个根因级风险：默认并发共享 sandbox。TypeScript client 实现了 <code class="language-plaintext highlighter-rouge">resetState()</code>，但实际 agent loop 明确将它禁用，因为 Python image 没有 <code class="language-plaintext highlighter-rouge">/reset-state</code> endpoint。</p>
+
+<p>这意味着 Task B 观察到的可能是 <code class="language-plaintext highlighter-rouge">E₀ + S₁</code>（前一个任务的残留状态），而不是它声明的 <code class="language-plaintext highlighter-rouge">E₀</code>。有状态工具会跨 task 污染，trial 也因此不独立。</p>
+
+<h4 id="sota-表现-3">SOTA 表现</h4>
+
+<p>在 1000 个任务的完整集合上，表现最好的模型 Claude Opus 4.5 达到 62.3% 的成功率。前沿模型的通过率超过 50%，主要失败原因是工具使用不足和任务理解不够。</p>
+
+<h3 id="6-mcpmark服务状态测试">6. MCPMark——服务状态测试</h3>
+
+<h4 id="数据规模与类型-5">数据规模与类型</h4>
+
+<p>MCPMark 包含 177 个任务，其中 127 个 standard、50 个 easy。每个任务由三份文件构成：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">description.md</code>：Agent 可见任务；</li>
+  <li><code class="language-plaintext highlighter-rouge">meta.json</code>：task id、category、difficulty、初始 state locator；</li>
+  <li><code class="language-plaintext highlighter-rouge">verify.py</code>：对服务终态的程序化检查。</li>
+</ul>
+
+<p>它覆盖 Filesystem、GitHub、Notion、Playwright、Postgres 等多种服务类型，每个环境有 20–30 个任务。</p>
+
+<h4 id="任务设计-5">任务设计</h4>
+
+<p>MCPMark 的核心不是比较最终回复，而是验证服务终态：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>setup target service state
+→ run task
+→ verify.py against service
+→ cleanup seeded state
+</code></pre></div></div>
+
+<p>Agent 可以使用任意合理调用序列，只要最终服务状态正确。这种结构特别适合 Notion、GitHub、Postgres、filesystem 和浏览器任务。</p>
+
+<p>MCPMark Verified 版本进一步将每个服务器固定到精确版本，每个验证脚本都经过审查和收紧，确保正确解决方案通过、错误解决方案失败，并尽量跨运行和随时间保持一致。</p>
+
+<h4 id="环境设计-4">环境设计</h4>
+
+<p>MCPMark 采用 <code class="language-plaintext highlighter-rouge">setup → agent → verify → cleanup</code> 的服务状态测试流程。<code class="language-plaintext highlighter-rouge">src/services.py</code> 是服务名称、setup 与连接方式的单一真源。</p>
+
+<p>隔离方式是 setup/cleanup 加服务级状态，但 cleanup 失败、重复对象、全局搜索命中其他 task 等问题仍然存在。</p>
+
+<h4 id="sota-表现-4">SOTA 表现</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>模型</th>
+      <th style="text-align: right"><code class="language-plaintext highlighter-rouge">Pass@1</code></th>
+      <th style="text-align: right"><code class="language-plaintext highlighter-rouge">Pass^4</code></th>
+      <th style="text-align: right">平均轮数</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GPT-5-medium</td>
+      <td style="text-align: right">52.56%</td>
+      <td style="text-align: right">33.86%</td>
+      <td style="text-align: right">约 16.2</td>
+    </tr>
+    <tr>
+      <td>Claude Sonnet 4</td>
+      <td style="text-align: right">&lt; 30%</td>
+      <td style="text-align: right">&lt; 15%</td>
+      <td style="text-align: right">—</td>
+    </tr>
+    <tr>
+      <td>O3</td>
+      <td style="text-align: right">&lt; 30%</td>
+      <td style="text-align: right">&lt; 15%</td>
+      <td style="text-align: right">—</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>平均每个任务需要 16.2 次执行轮和 17.4 次工具调用。MCPMark 的难度显著高于更早的 MCP 基准，如 MCPEval 和 LiveMCPBench。</p>
+
+<h3 id="7-officeqa企业级文档推理">7. OfficeQA——企业级文档推理</h3>
+
+<h4 id="数据规模与类型-6">数据规模与类型</h4>
+
+<p>OfficeQA 是一个基于美国财政部公报（U.S. Treasury Bulletin）的财务问答基准，覆盖 1939–2025 年近 100 年的历史数据。语料库包含 89,000 页、超过 2600 万个数值；OfficeQA Pro 包含 133 个问题，OfficeQA Full 包含 246 个问题。</p>
+
+<p>自 2026 年 5 月起，benchmark CSV、PDF、parsed JSON/TXT 都移到门控 Hugging Face 数据集。</p>
+
+<h4 id="任务设计-6">任务设计</h4>
+
+<p>OfficeQA 评估 AI Agent 在大型异构文档语料上的 grounded multi-document reasoning，即基于事实的多文档推理。问题需要精确的文档解析、检索，以及跨非结构化文本与表格数据的分析推理。</p>
+
+<p>仓库本身不规定 Agent loop、工具、context budget、并发、resume 或 sandbox。这意味着：如果两个论文都说“跑 OfficeQA”，一个给 Agent oracle pages，另一个让 Agent 在 86 年文档中检索，它们测的并不是同一件事。</p>
+
+<h4 id="评分机制">评分机制</h4>
+
+<p>评分使用 <code class="language-plaintext highlighter-rouge">score_answer(ground_truth, prediction, tolerance)</code>，基于数值容差或文本匹配。单位缺失是 wildcard，也就是说“回答是否携带必要单位”不在 reward 保证范围内。</p>
+
+<h4 id="sota-表现-5">SOTA 表现</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>设置</th>
+      <th style="text-align: right">前沿模型表现</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>仅参数知识</td>
+      <td style="text-align: right">&lt; 5% accuracy</td>
+    </tr>
+    <tr>
+      <td>加网络访问</td>
+      <td style="text-align: right">&lt; 12% accuracy</td>
+    </tr>
+    <tr>
+      <td>直接提供文档语料</td>
+      <td style="text-align: right">约 34.1% average</td>
+    </tr>
+    <tr>
+      <td>结构化文档表示（<code class="language-plaintext highlighter-rouge">ai_parse_document</code>）</td>
+      <td style="text-align: right">约 39.6% average，提升 16.1% relative</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Agent 的难点是长时间跨度、密集表格、跨页表头、单位和历史口径变化。即使提供完整文档语料，前沿 Agent 也只能答对约三分之一的问题。</p>
+
+<h3 id="10-spreadsheetbench-2端到端电子表格工作流">10. SpreadsheetBench 2——端到端电子表格工作流</h3>
+
+<h4 id="数据规模与类型-7">数据规模与类型</h4>
+
+<p>SpreadsheetBench 2 包含 321 个任务，分为四大类：</p>
+
+<ul>
+  <li><strong>Debugging</strong>：公式调试和错误修正；</li>
+  <li><strong>Financial Model</strong>：财务建模和计算；</li>
+  <li><strong>Template</strong>：模板化电子表格操作；</li>
+  <li><strong>Visualization</strong>：图表生成和数据可视化。</li>
+</ul>
+
+<p>每个实例平均 11.8 个工作表，需要 593.5 个单元格修改，反映具有跨表依赖的复杂多工作表工作簿。数据来源于真实商业数据，包括财务报告和公司文件，由领域专家注释和验证，专家投入超过 1500 小时。</p>
+
+<h4 id="任务设计-7">任务设计</h4>
+
+<p>它评估的是工作流级别的任务，而不是孤立操作。任务要求：</p>
+
+<ol>
+  <li>通过多步协调操作完成工作流目标；</li>
+  <li>在复杂多工作表工作簿中进行跨表推理；</li>
+  <li>产生交付物级别的成果，包括结构化模型、修复的电子表格和准确的可视化。</li>
+</ol>
+
+<h4 id="评分机制-1">评分机制</h4>
+
+<p>Financial Modeling、Template 和 Debugging 使用确定性的单元格比较。先根据 golden 与 input 的差异，把 answer range 中的 cells 分成：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">modification cells</code>：任务要求改变的格子；</li>
+  <li><code class="language-plaintext highlighter-rouge">regression cells</code>：不应改变、需要保留的格子。</li>
+</ul>
+
+<p>最终只有两类 ratio 都为 1，<code class="language-plaintext highlighter-rouge">accuracy</code> 才为 1。为容忍少量电子表格引擎差异，regression ratio 达到 99.8% 会提升为 1；modification 没有同样豁免。</p>
+
+<p>Visualization 任务使用 VLM checklist 评估。每个任务有参考答案和断言清单，VLM（GLM-4.6V）评估生成的图表图像，分数是 <code class="language-plaintext highlighter-rouge">Passed Assertions / Total Assertions</code>，70 分以上视为正确。</p>
+
+<h4 id="环境设计-5">环境设计</h4>
+
+<p>SpreadsheetBench 2 使用 SWE-agent 作为 Agent scaffold，通过 <code class="language-plaintext highlighter-rouge">bash</code>、<code class="language-plaintext highlighter-rouge">view_xlsx</code> 和 <code class="language-plaintext highlighter-rouge">submit</code> 三个工具与电子表格交互。运行在 Docker 容器中，挂载前按名称剔除 golden 文件，防止 Agent 直接打开标准答案。</p>
+
+<h4 id="sota-表现-6">SOTA 表现</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>模型</th>
+      <th style="text-align: right">Overall Acc.</th>
+      <th style="text-align: right">Financial Modif.</th>
+      <th style="text-align: right">Debugging Acc.</th>
+      <th style="text-align: right">Visualization</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Claude Opus 4.6</td>
+      <td style="text-align: right">34.89%</td>
+      <td style="text-align: right">89.69% / 34.0% Acc</td>
+      <td style="text-align: right">50.38% / 12.0% Acc</td>
+      <td style="text-align: right">—</td>
+    </tr>
+    <tr>
+      <td>GPT-5.2</td>
+      <td style="text-align: right">约 25–30%</td>
+      <td style="text-align: right">—</td>
+      <td style="text-align: right">—</td>
+      <td style="text-align: right">—</td>
+    </tr>
+    <tr>
+      <td>GLM-5</td>
+      <td style="text-align: right">约 17%</td>
+      <td style="text-align: right">—</td>
+      <td style="text-align: right">—</td>
+      <td style="text-align: right">—</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>最佳模型整体准确率仅 34.89%，debugging 准确率低至 12%。失败主要原因是电子表格检查不足和目标单元格选择错误。Modification 分数 89.69% 远高于 Accuracy 34%，说明模型能改对大部分目标单元格，但很难做到“所有该改的都改对、所有不该改的都没改坏”。</p>
+
+<h3 id="11-toolathlon长链工具任务">11. Toolathlon——长链工具任务</h3>
+
+<h4 id="数据规模与类型-8">数据规模与类型</h4>
+
+<p>Toolathlon-Verified 包含 108 个任务、604 个工具，跨越 32 个软件应用，从 Google Calendar、Notion 等日常平台到 WooCommerce、Kubernetes、BigQuery 等专业应用。每个任务平均需要约 20 次交互轮次，要求与多个应用交互。</p>
+
+<h4 id="任务设计-8">任务设计</h4>
+
+<p>每个任务目录可以包含可见 task prompt 与 initial workspace、preprocessing 脚本、token/key session、groundtruth workspace、task-specific evaluation command，以及需要的 MCP servers 与 local tools。</p>
+
+<p>Toolathlon 是 11 个项目中对“Agent 会主动找 grader 或改 grader”威胁建模最完整的一类。标准 containerized 模式把每个 task 放进独立容器；decoupled 模式让环境留在容器、Agent loop 跑在 host，便于替换 Agent framework。</p>
+
+<h4 id="环境设计-6">环境设计</h4>
+
+<p>Toolathlon 采用 hardened runner stash/restore grader 与 ground truth，并校验 hash，实现强 artifact 隔离。containerized hardened 和 decoupled 两种模式支持不同测试需求；checkpoint、artifact hash 与宿主状态支持 resume 身份验证。</p>
+
+<h4 id="sota-表现-7">SOTA 表现</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>模型</th>
+      <th style="text-align: right"><code class="language-plaintext highlighter-rouge">Pass@1</code></th>
+      <th style="text-align: right"><code class="language-plaintext highlighter-rouge">Pass@3</code></th>
+      <th style="text-align: right"><code class="language-plaintext highlighter-rouge">Pass^3</code></th>
+      <th style="text-align: right">平均轮数</th>
+      <th style="text-align: right">工具调用数</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Kimi K3（max）</td>
+      <td style="text-align: right">76.5%</td>
+      <td style="text-align: right">83.3%</td>
+      <td style="text-align: right">68.5%</td>
+      <td style="text-align: right">22.8</td>
+      <td style="text-align: right">39.1</td>
+    </tr>
+    <tr>
+      <td>Claude Opus 4.8（max）</td>
+      <td style="text-align: right">76.2%</td>
+      <td style="text-align: right">84.3%</td>
+      <td style="text-align: right">66.7%</td>
+      <td style="text-align: right">19.9</td>
+      <td style="text-align: right">36.3</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Toolathlon 是所有 benchmark 中 SOTA 分数最高的之一，<code class="language-plaintext highlighter-rouge">Pass@1</code> 达到 76% 以上。但 <code class="language-plaintext highlighter-rouge">Pass^3</code> 比 <code class="language-plaintext highlighter-rouge">Pass@3</code> 低约 15–17 个百分点，说明一致性仍然是问题：三次独立试验全部通过的概率显著低于至少通过一次的概率。</p>
+
+<p>DeepSeek-V4-Flash 在 Toolathlon-Verified 上达到 70.3%，也验证了开源模型在工具使用任务上的快速进步。</p>
+
+<h2 id="横向对比与深度分析">横向对比与深度分析</h2>
+
+<h3 id="一四种评分机制对比">一、四种评分机制对比</h3>
+
+<p>这 9 个 benchmark 的评分机制可以归纳为四类，每类测量的其实是不同东西：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>评分类型</th>
+      <th>代表 Benchmark</th>
+      <th>优点</th>
+      <th>缺点</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Exact outcome grader（精确结果比对）</td>
+      <td>AutomationBench、ALE（部分）、OfficeQA、SpreadsheetBench 2</td>
+      <td>便宜、稳定、可调试</td>
+      <td>reference 必须完整，等价解容易被格式误杀</td>
+    </tr>
+    <tr>
+      <td>Programmatic service verifier（程序化服务验证）</td>
+      <td>MCPMark、Toolathlon</td>
+      <td>接近真实 outcome，不要求固定轨迹</td>
+      <td>verifier 自己会遇到 API 权限、pagination、索引延迟和 duplicate object</td>
+    </tr>
+    <tr>
+      <td>LLM / VLM rubric judge（大模型评审）</td>
+      <td>JobBench、MCP-Atlas、Claw-Eval（部分）、SpreadsheetBench 2（可视化）</td>
+      <td>能处理报告质量、claim coverage 和视觉美学</td>
+      <td>引入第二个模型，judge 自身的一致性和校准存疑</td>
+    </tr>
+    <tr>
+      <td>Trajectory / safety grader（轨迹/安全评分）</td>
+      <td>Claw-Eval、Toolathlon</td>
+      <td>适合验证安全边界和 proof-of-work</td>
+      <td>不应代替 outcome，可能奖励形式主义</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>关键洞察：</strong>最稳妥的优先级是：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>outcome → safety → efficiency
+</code></pre></div></div>
+
+<p>效率最好作为诊断维度，不要让少调用一步抵消结果错误。同样，trajectory 评分不能替代终态验证：Agent 可能调用了正确工具却写错值，也可能通过另一条合法路径得到正确结果。</p>
+
+<h3 id="二环境隔离机制对比">二、环境隔离机制对比</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>状态类型</th>
+      <th>代表项目</th>
+      <th>正确 reset 方式</th>
+      <th>主要风险</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>单服务状态</td>
+      <td>MCPMark</td>
+      <td>每 task setup + cleanup 或 namespace</td>
+      <td>cleanup 失败、重复对象、全局搜索命中别的 task</td>
+    </tr>
+    <tr>
+      <td>共享 MCP sandbox</td>
+      <td>MCP-Atlas</td>
+      <td>task namespace 或 ephemeral sandbox</td>
+      <td>并发 task 互相看到 filesystem、memory、git</td>
+    </tr>
+    <tr>
+      <td>远程公共状态</td>
+      <td>Toolathlon（Cloud/Gmail 等）</td>
+      <td>task-specific prefix + 时间窗 + cleanup</td>
+      <td>eventual consistency、旧对象、共享配额</td>
+    </tr>
+    <tr>
+      <td>内存对象</td>
+      <td>AutomationBench</td>
+      <td>每 task 新建状态对象</td>
+      <td>几乎无，确定性最高</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>一个好的 task 定义应明确写出：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>state_owner
+reset_scope
+cleanup_verification
+</code></pre></div></div>
+
+<p>只写“容器化”不够：容器名称如果没有 lease，仍然不是隔离；只写“共享 sandbox 性能足够”也不够，因为容量隔离与状态隔离是两个问题。</p>
+
+<h3 id="三sota-分数全景与难度梯度">三、SOTA 分数全景与难度梯度</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Benchmark</th>
+      <th style="text-align: right">SOTA 分数</th>
+      <th>分数含义</th>
+      <th style="text-align: right">难度等级</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>MCPMark（Verified）</td>
+      <td style="text-align: right">94.5% <code class="language-plaintext highlighter-rouge">pass@1</code></td>
+      <td>服务终态验证通过率</td>
+      <td style="text-align: right">⭐⭐</td>
+    </tr>
+    <tr>
+      <td>MCP-Atlas</td>
+      <td style="text-align: right">84.7% pass rate</td>
+      <td>Claim coverage 通过率</td>
+      <td style="text-align: right">⭐⭐⭐</td>
+    </tr>
+    <tr>
+      <td>Toolathlon（Verified）</td>
+      <td style="text-align: right">77.9% <code class="language-plaintext highlighter-rouge">Pass@1</code></td>
+      <td>端到端任务通过率</td>
+      <td style="text-align: right">⭐⭐⭐</td>
+    </tr>
+    <tr>
+      <td>OfficeQA Pro</td>
+      <td style="text-align: right">69.9%</td>
+      <td>问答准确率</td>
+      <td style="text-align: right">⭐⭐⭐⭐</td>
+    </tr>
+    <tr>
+      <td>JobBench</td>
+      <td style="text-align: right">57.4%</td>
+      <td>加权 rubric 通过率</td>
+      <td style="text-align: right">⭐⭐⭐⭐</td>
+    </tr>
+    <tr>
+      <td>SpreadsheetBench 2</td>
+      <td style="text-align: right">34.8%</td>
+      <td>所有单元格全对率</td>
+      <td style="text-align: right">⭐⭐⭐⭐</td>
+    </tr>
+    <tr>
+      <td>AutomationBench</td>
+      <td style="text-align: right">30.8%</td>
+      <td><code class="language-plaintext highlighter-rouge">WorldState</code> assertion 全过率</td>
+      <td style="text-align: right">⭐⭐⭐⭐</td>
+    </tr>
+    <tr>
+      <td>ALE</td>
+      <td style="text-align: right">29.6% pass rate</td>
+      <td>任务通过率</td>
+      <td style="text-align: right">⭐⭐⭐⭐⭐</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这些分数不可直接横向比较。每个 benchmark 的任务难度、评分严格度和环境复杂度不同，分数不代表难度的线性比例；比较只能在同一个 benchmark、同一个设置和同一个版本下进行。</p>
+
+<h3 id="四已发现的根因级风险">四、已发现的根因级风险</h3>
+
+<p>基于对 9 个 benchmark 的静态源码审计，以下问题会改变实验语义：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right">严重度</th>
+      <th>Benchmark</th>
+      <th>问题</th>
+      <th>影响</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right">P0</td>
+      <td>MCP-Atlas</td>
+      <td>默认并发共享 sandbox，<code class="language-plaintext highlighter-rouge">/reset-state</code> 未实现且调用被禁用</td>
+      <td>有状态工具跨 task 污染，trial 不独立</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">P1</td>
+      <td>JobBench</td>
+      <td>失败后仍回收半成品，目录非空即 resume complete</td>
+      <td>timeout/失败被永久跳过</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">P1</td>
+      <td>MCP-Atlas</td>
+      <td>把 <code class="language-plaintext highlighter-rouge">ERROR:</code> 行的 task_id 也视为 done</td>
+      <td>临时 HTTP/timeout 错误永久固化</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">P1</td>
+      <td>MCPMark</td>
+      <td>itinerary 在核心数据库核验异常时返回 success</td>
+      <td>服务故障可能变成假阳性</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">P1</td>
+      <td>Toolathlon</td>
+      <td>CSV “accuracy” 实际只算 precision</td>
+      <td>可漏掉 25%–45% 的应预警学生</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">P1</td>
+      <td>JobBench</td>
+      <td>信任 <code class="language-plaintext highlighter-rouge">rubric_passed</code>，不重算 criterion invariant</td>
+      <td>judge 自相矛盾时整项误得分</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">P2</td>
+      <td>AutomationBench、ALE</td>
+      <td>README 数量与当前源码目录漂移</td>
+      <td>“跑全量”的集合可能含义不同</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">P2</td>
+      <td>OfficeQA</td>
+      <td>单位缺失是 wildcard</td>
+      <td>无单位答案可能通过</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这些问题不等于所有公开分数都无效；它们说明的是：如果基础设施故障、状态污染和 grader 异常没有从模型失败中分离，结果就无法回答“模型到底做得好不好”。</p>
+
+<h2 id="general-task-agent-当前进展与核心瓶颈">General Task Agent 当前进展与核心瓶颈</h2>
+
+<h3 id="一当前进展我们站在哪里">一、当前进展：我们站在哪里</h3>
+
+<h4 id="1-单工具--单服务任务已相当成熟">1. 单工具 / 单服务任务已相当成熟</h4>
+
+<p>在工具使用的基础层，前沿模型已经表现出相当强的能力：</p>
+
+<ul>
+  <li>Toolathlon-Verified 上 <code class="language-plaintext highlighter-rouge">Pass@1</code> 达到 76.5%（Kimi K3），大部分单应用任务可以稳定完成；</li>
+  <li>MCP-Atlas 上 Claude Opus 4.5 达到 62.3%，在 300+ 工具的大规模工具集中仍能找到并使用正确工具；</li>
+  <li>MCPMark 上 GPT-5-medium 达到 52.6% <code class="language-plaintext highlighter-rouge">pass@1</code>，在真实服务状态验证下仍有过半任务一次通过。</li>
+</ul>
+
+<p>这说明工具发现、基本参数填充、单步操作已经不是主要瓶颈。模型能理解工具描述、找到正确工具、填对参数并处理基本错误。</p>
+
+<h4 id="2-工具编排能力显著提升">2. 工具编排能力显著提升</h4>
+
+<p>多步工具编排也有明显进步：</p>
+
+<ul>
+  <li>MCPMark 平均 16.2 轮执行、17.4 次工具调用，最强模型仍能保持过半通过率；</li>
+  <li>Toolathlon 平均 20+ 轮交互、39 次工具调用，<code class="language-plaintext highlighter-rouge">Pass@1</code> 仍能到 76%；</li>
+  <li>SpreadsheetBench 2 平均 593.5 个单元格修改，Financial Modeling 的 Modification 分数达到 89.69%。</li>
+</ul>
+
+<p>模型已经能规划并执行相当长的工具调用序列，不再是“调用一两次工具就卡住”的阶段。</p>
+
+<h4 id="3-闭源-vs-开源差距在缩小但仍显著">3. 闭源 vs 开源：差距在缩小但仍显著</h4>
+
+<p>从多个 benchmark 看，闭源模型整体优于开源模型，但差距在快速缩小：</p>
+
+<ul>
+  <li>SpreadsheetBench 2：闭源 23.68%–34.89%，开源 7.17%–17.14%；</li>
+  <li>Toolathlon：DeepSeek-V4-Flash 达到 70.3%，与闭源 SOTA 76.5% 的差距已缩小到 6 个百分点；</li>
+  <li>AutomationBench：DeepSeek-V4-Flash 达到 25.1%（公开设置）。</li>
+</ul>
+
+<p>开源模型在工具使用类任务上的进步速度很快，尤其是在工具接口明确、环境确定性的场景中。</p>
+
+<h4 id="4-agent-scaffold-对结果影响巨大">4. Agent scaffold 对结果影响巨大</h4>
+
+<p>SpreadsheetBench 2 的实验清楚地展示了这一点：固定 GLM-5 模型时，SWE-agent-based scaffold 显著优于三个通用 coding agent scaffold（Claude Code、Kilo Code、Cline）。Modification 分数可能相近，但 task-level accuracy 差距很大；通用 coding scaffold 在端到端正确性上弱得多。</p>
+
+<p>这说明 Agent 框架设计本身就是能力的一部分。工具接口设计、观察—推理—行动循环的结构和错误处理机制，都会显著影响最终表现。</p>
+
+<h3 id="二核心瓶颈为什么端到端通过率这么低">二、核心瓶颈：为什么端到端通过率这么低</h3>
+
+<h4 id="瓶颈-1长程任务的错误累积效应">瓶颈 1：长程任务的错误累积效应</h4>
+
+<p>这是最根本的瓶颈。几乎所有 benchmark 都显示同一个模式：任务越长，通过率越低。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Benchmark</th>
+      <th>证据</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SpreadsheetBench 2</td>
+      <td>Financial Modification 89.69% → Accuracy 仅 34%</td>
+    </tr>
+    <tr>
+      <td>Toolathlon</td>
+      <td><code class="language-plaintext highlighter-rouge">Pass@1</code> 76.5% → <code class="language-plaintext highlighter-rouge">Pass^3</code> 68.5%，一致性下降</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>数学上很直观：如果每步有 95% 的成功率，12 步后只剩 54%，20 步后只剩 36%，50 步后只剩 7.7%。长任务的端到端通过率会随着步数增加呈指数级下降。</p>
+
+<p><strong>核心矛盾：</strong>Agent 的每一步都有小概率出错，而任务越长，累积错误的概率越高。当前 Agent 缺乏有效的自我验证和错误恢复机制，做错了往往不知道自己错了，继续往下做，最后越走越偏。</p>
+
+<h4 id="瓶颈-2状态管理与环境隔离的脆弱性">瓶颈 2：状态管理与环境隔离的脆弱性</h4>
+
+<p>从 benchmark 设计本身的问题，可以反推 Agent 在真实环境中会遇到的问题：</p>
+
+<ul>
+  <li><strong>并发串扰</strong>：MCP-Atlas 的共享 sandbox 问题，本质上反映“多任务共享状态时如何保证隔离”的困难；</li>
+  <li><strong>Reset 不彻底</strong>：cleanup 失败、残留对象、索引延迟，在 benchmark 中是评分问题，在生产中就是数据污染；</li>
+  <li><strong>状态漂移</strong>：Toolathlon 的远程公共状态问题，反映环境版本不一致导致结果不可复现的普遍挑战。</li>
+</ul>
+
+<p>Agent 在真实环境中工作时，状态管理是比工具调用更底层的能力。能不能正确理解当前状态、能不能从异常状态恢复、能不能保证操作的原子性，都是当前薄弱环节。</p>
+
+<h4 id="瓶颈-3多应用--跨系统协调能力弱">瓶颈 3：多应用 / 跨系统协调能力弱</h4>
+
+<p>长任务的错误累积效应非常显著：</p>
+
+<ul>
+  <li>单应用任务平均分约 53%；</li>
+  <li>双应用任务平均分约 40%；</li>
+  <li>三应用任务平均分约 30%；</li>
+  <li>四应用任务平均分约 20%。</li>
+</ul>
+
+<p>每多一个应用，分数就掉一截。这不是简单的“步骤更多所以更难”，而是跨系统协调本身就是一个独立难点：</p>
+
+<ul>
+  <li>需要理解不同系统的数据模型和操作语义；</li>
+  <li>需要在系统之间映射数据，包括格式转换和字段对应；</li>
+  <li>需要处理跨系统一致性：A 系统改了，B 系统要不要同步；</li>
+  <li>需要处理部分失败：A 成功了、B 失败了怎么办。</li>
+</ul>
+
+<p>当前 Agent 更多是在“一个系统里做一系列操作”，而不是“在多个系统之间协调完成一个业务流程”。</p>
+
+<h4 id="瓶颈-4鲁棒性与一致性不足">瓶颈 4：鲁棒性与一致性不足</h4>
+
+<p><code class="language-plaintext highlighter-rouge">Pass@k</code> 和 <code class="language-plaintext highlighter-rouge">Pass^k</code> 的差距是衡量一致性的关键指标：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Benchmark</th>
+      <th style="text-align: right"><code class="language-plaintext highlighter-rouge">Pass@k</code></th>
+      <th style="text-align: right"><code class="language-plaintext highlighter-rouge">Pass^k</code></th>
+      <th style="text-align: right">差距</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>MCPMark（<code class="language-plaintext highlighter-rouge">k=4</code>）</td>
+      <td style="text-align: right">52.6%</td>
+      <td style="text-align: right">33.9%</td>
+      <td style="text-align: right">约 18.7 pp</td>
+    </tr>
+    <tr>
+      <td>Toolathlon（<code class="language-plaintext highlighter-rouge">k=3</code>）</td>
+      <td style="text-align: right">83.3%</td>
+      <td style="text-align: right">68.5%</td>
+      <td style="text-align: right">约 14.8 pp</td>
+    </tr>
+    <tr>
+      <td>Claw-Eval（<code class="language-plaintext highlighter-rouge">k=3</code>，错误注入）</td>
+      <td style="text-align: right">—</td>
+      <td style="text-align: right">—</td>
+      <td style="text-align: right">下降最多 24 pp</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>“三次里至少过一次”和“三次全都过”之间有巨大差距。这意味着：</p>
+
+<ul>
+  <li>Agent 的成功有相当大的运气成分；</li>
+  <li>同样的任务，有时候能做对，有时候做不对；</li>
+  <li>在错误注入或环境扰动下，成功率会大幅下降。</li>
+</ul>
+
+<p>对于生产环境，一致性可能比单次成功率更重要。用户需要的是“每次都能可靠完成”，而不是“试三次可能有一次能成”。</p>
+
+<h4 id="瓶颈-5安全与越界行为">瓶颈 5：安全与越界行为</h4>
+
+<p>Claw-Eval 的发现很关键：轨迹不透明评测遗漏了 44% 的安全违规。也就是说，只看最终结果，将近一半的安全问题都发现不了。</p>
+
+<p>当前 Agent 在完成任务过程中经常会“走捷径”：调用不该调用的工具、访问不该访问的数据、修改不该修改的状态。如果只看最终结果对不对，这些问题都会被掩盖。</p>
+
+<p>在真实场景中，安全违规的代价可能远高于任务没完成。但当前 benchmark 设计和 Agent 训练还没有把安全放在与正确性同等重要的位置。</p>
+
+<h4 id="瓶颈-6评分器可靠性本身就是问题">瓶颈 6：评分器可靠性本身就是问题</h4>
+
+<p>这是一个元问题：我们用什么来判断 Agent 做得对不对？</p>
+
+<ul>
+  <li><strong>LLM judge 不一致</strong>：JobBench 信任 <code class="language-plaintext highlighter-rouge">rubric_passed</code> 但不重算 criterion invariant，judge 自相矛盾时整项误得分；</li>
+  <li><strong>Verifier fail-open</strong>：MCPMark itinerary 在核心数据库核验异常时返回 success，服务故障变成假阳性；</li>
+  <li><strong>单位 / 格式误判</strong>：OfficeQA 单位缺失是 wildcard，无单位答案可能通过；</li>
+  <li><strong>等价解被误杀</strong>：精确匹配的 grader 经常把格式不同但语义等价的答案判错。</li>
+</ul>
+
+<p>如果评分器本身不可靠，leaderboard 上的分数就更不可靠。这是整个领域的基础设施问题。</p>
+
+<h3 id="三各维度难度梯度">三、各维度难度梯度</h3>
+
+<p>综合 9 个 benchmark，可以大致画出 General Task Agent 的难度梯度：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>难度层级</th>
+      <th>任务特征</th>
+      <th>代表 Benchmark</th>
+      <th style="text-align: right">SOTA 水平</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>L1：入门</td>
+      <td>单服务 CRUD 操作，步骤少，确定性高</td>
+      <td>MCPMark 简单任务、MCP-Atlas 简单任务</td>
+      <td style="text-align: right">70%+</td>
+    </tr>
+    <tr>
+      <td>L2：基础</td>
+      <td>单应用多步操作，基本工具编排</td>
+      <td>Toolathlon 大部分任务、OfficeQA Pro</td>
+      <td style="text-align: right">60–75%</td>
+    </tr>
+    <tr>
+      <td>L3：中等</td>
+      <td>多工具编排、专业交付物，需要一定领域知识</td>
+      <td>JobBench、SpreadsheetBench 2、MCPMark</td>
+      <td style="text-align: right">35–55%</td>
+    </tr>
+    <tr>
+      <td>L4：困难</td>
+      <td>跨应用工作流、长周期任务、复杂状态管理</td>
+      <td>ALE、AutomationBench</td>
+      <td style="text-align: right">25–35%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>当前前沿 Agent 大致位于 L2–L3；在 L4 上能取得部分进展但很少完全成功，L5 基本还处于“能做但经常做不完”的阶段。</p>
+
+<h3 id="四未来方向瓶颈在哪里突破">四、未来方向：瓶颈在哪里突破</h3>
+
+<h4 id="1-自我验证与错误恢复">1. 自我验证与错误恢复</h4>
+
+<p>如果 Agent 能在每一步之后验证自己做对了没有，发现错了就回退或修正，错误累积效应会大大减弱。这需要：</p>
+
+<ul>
+  <li>更好的状态理解能力，知道“正确的状态应该是什么样”；</li>
+  <li>内置的验证机制，做完一步自动检查结果；</li>
+  <li>回退和重试能力，发现错了能回到上一个正确状态。</li>
+</ul>
+
+<h4 id="2-更可靠的状态管理">2. 更可靠的状态管理</h4>
+
+<p>把状态管理从“隐式假设”变成“显式工程”：</p>
+
+<ul>
+  <li>操作的原子性和事务性；</li>
+  <li>状态快照和回滚；</li>
+  <li>并发安全和隔离。</li>
+</ul>
+
+<h4 id="3-跨系统协调框架">3. 跨系统协调框架</h4>
+
+<p>从“单系统操作”升级到“多系统编排”需要：</p>
+
+<ul>
+  <li>统一的数据模型和映射层；</li>
+  <li>跨系统的事务和一致性保证；</li>
+  <li>部分失败的处理策略，包括补偿事务和重试队列。</li>
+</ul>
+
+<h4 id="4-一致性优先的训练">4. 一致性优先的训练</h4>
+
+<p>从“追求单次最高准确率”转向“追求多次稳定成功率”：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Pass^k</code> 比 <code class="language-plaintext highlighter-rouge">Pass@k</code> 更重要；</li>
+  <li>鲁棒性训练，包括错误注入和环境扰动；</li>
+  <li>不确定性估计，知道自己什么时候不确定。</li>
+</ul>
+
+<h4 id="5-安全与合规内置">5. 安全与合规内置</h4>
+
+<p>安全不是事后检查，而是设计时就内置：</p>
+
+<ul>
+  <li>工具权限的最小化原则；</li>
+  <li>操作的可审计性；</li>
+  <li>安全边界的主动学习。</li>
+</ul>
+
+<h2 id="总结">总结</h2>
+
+<p>General Task Agent 领域正处于一个关键转折点：</p>
+
+<ul>
+  <li>基础能力已经相当成熟，单工具、单服务、短任务的表现已经很好；</li>
+  <li>端到端长任务仍然很弱，一旦任务变长、变复杂、跨系统，成功率就急剧下降；</li>
+  <li>核心瓶颈不是“会不会用工具”，而是错误累积、状态管理、跨系统协调、一致性和安全；</li>
+  <li>Benchmark 本身也在快速进化，从简单的工具调用测试走向更真实、更复杂、更严格的系统级评测。</li>
+</ul>
+
+<p>下一阶段的突破，可能不只在于模型本身变得更聪明，也在于 Agent 系统变得更可靠：更好的自我验证、更好的状态管理、更好的错误恢复和更好的一致性保证。</p>
+
+<p>用户需要的不是“有时候能做对”的 Agent，而是“每次都能可靠完成”的 Agent。</p>
+
+<blockquote>
+  <p><strong>一句话总结：General Task Agent 已经从“会不会用工具”进入“能不能可靠地做完一整件事”的阶段。工具使用不是问题，长程可靠性才是。</strong></p>
+</blockquote>
+
+<h2 id="附录四大前沿模型-sota-对比官方数据">附录：四大前沿模型 SOTA 对比（官方数据）</h2>
+
+<p>本章节对比 Kimi K3、Claude Opus 5、Claude Fable 5、GPT-5.6 Sol 四大前沿模型在纯工具 / 文本类 Agent Benchmark 上的表现。数据截止 2026 年 8 月 5 日。</p>
+
+<p>“—”表示该模型暂无此 Benchmark 的官方公开数据。不同 Benchmark 的评测设置、Harness 和评分机制不同，分数不可直接横向比较；Toolathlon / Toolathlon-Verified、OfficeQA / OfficeQA Pro 也不是同一版本。</p>
+
+<h3 id="一四大模型-sota-分数总览">一、四大模型 SOTA 分数总览</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Benchmark</th>
+      <th style="text-align: right">GPT-5.6 Sol</th>
+      <th style="text-align: right">Claude Opus 5</th>
+      <th style="text-align: right">Kimi K3</th>
+      <th style="text-align: right">Claude Fable 5</th>
+      <th>数据来源</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ALE（Pass Rate / Score）</td>
+      <td style="text-align: right">30.6% / 53.6%</td>
+      <td style="text-align: right">—</td>
+      <td style="text-align: right">28.3% / 51.6%</td>
+      <td style="text-align: right">25.7% / 48.7%</td>
+      <td>Snorkel AI 官方</td>
+    </tr>
+    <tr>
+      <td>AutomationBench</td>
+      <td style="text-align: right">—</td>
+      <td style="text-align: right">—</td>
+      <td style="text-align: right">30.8%</td>
+      <td style="text-align: right">17.4%（private held-out）</td>
+      <td>各厂商官方</td>
+    </tr>
+    <tr>
+      <td>Claw-Eval</td>
+      <td style="text-align: right">—</td>
+      <td style="text-align: right">—</td>
+      <td style="text-align: right">—</td>
+      <td style="text-align: right">—</td>
+      <td>暂无公开数据</td>
+    </tr>
+    <tr>
+      <td>JobBench</td>
+      <td style="text-align: right">—</td>
+      <td style="text-align: right">—</td>
+      <td style="text-align: right">52.9%</td>
+      <td style="text-align: right">—</td>
+      <td>Moonshot 官方</td>
+    </tr>
+    <tr>
+      <td>MCP-Atlas</td>
+      <td style="text-align: right">—</td>
+      <td style="text-align: right">85.8%</td>
+      <td style="text-align: right">84.2%</td>
+      <td style="text-align: right">83.3%</td>
+      <td>各厂商官方</td>
+    </tr>
+    <tr>
+      <td>MCPMark</td>
+      <td style="text-align: right">—</td>
+      <td style="text-align: right">—</td>
+      <td style="text-align: right">—</td>
+      <td style="text-align: right">—</td>
+      <td>暂无公开数据</td>
+    </tr>
+    <tr>
+      <td>OfficeQA Pro</td>
+      <td style="text-align: right">—</td>
+      <td style="text-align: right">—</td>
+      <td style="text-align: right">63.3%</td>
+      <td style="text-align: right">57.9%（Databricks 评测）</td>
+      <td>各厂商官方</td>
+    </tr>
+    <tr>
+      <td>SpreadsheetBench 2</td>
+      <td style="text-align: right">—</td>
+      <td style="text-align: right">—</td>
+      <td style="text-align: right">34.8%</td>
+      <td style="text-align: right">—</td>
+      <td>Moonshot 官方</td>
+    </tr>
+    <tr>
+      <td>Toolathlon（Pass@1）</td>
+      <td style="text-align: right">58%（非 Verified）</td>
+      <td style="text-align: right">—</td>
+      <td style="text-align: right">76.5%（Verified）</td>
+      <td style="text-align: right">61.7%（内部 Harness）</td>
+      <td>各厂商官方</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="二各模型已公开的-agent-benchmark-数据">二、各模型已公开的 Agent Benchmark 数据</h3>
+
+<h4 id="gpt-56-solopenai-官方">GPT-5.6 Sol（OpenAI 官方）</h4>
+
+<ul>
+  <li>ALE：30.6% Pass Rate / 53.6% Score（Codex harness，XHigh）；</li>
+  <li>Toolathlon：58%（非 Verified 版本）；</li>
+  <li>Terminal-Bench 2.0：91.9%；</li>
+  <li>BrowseComp：92.2%。</li>
+</ul>
+
+<h4 id="claude-opus-5anthropic-官方-system-card">Claude Opus 5（Anthropic 官方 System Card）</h4>
+
+<ul>
+  <li>MCP-Atlas：85.8% pass rate / 89.1% mean claim coverage；</li>
+  <li>Toolathlon-Verified：80.6% <code class="language-plaintext highlighter-rouge">Pass@1</code> / 87.0% <code class="language-plaintext highlighter-rouge">Pass@3</code> / 73.1% <code class="language-plaintext highlighter-rouge">Pass^3</code> / 23.5 平均轮次；</li>
+  <li>AutomationBench：26.0%；</li>
+  <li>OfficeQA Pro：66.9%；</li>
+  <li>OfficeQA：78.1%（标准版）；</li>
+  <li>BrowseComp：90.8%；</li>
+  <li>DeepSearchQA：95.0%。</li>
+</ul>
+
+<h4 id="kimi-k3moonshot-ai-官方发布博客">Kimi K3（Moonshot AI 官方发布博客）</h4>
+
+<ul>
+  <li>ALE：28.3% Pass Rate / 51.6% Score（Kimi Code harness，Max）；</li>
+  <li>MCP-Atlas：84.2%；</li>
+  <li>Toolathlon-Verified：73.2%（benchlm.ai）/ 76.5%（Toolathlon 官方）；</li>
+  <li>AutomationBench：30.8%；</li>
+  <li>JobBench：52.9%；</li>
+  <li>SpreadsheetBench 2：34.8%；</li>
+  <li>OfficeQA Pro：63.3%；</li>
+  <li>Terminal-Bench 2.0：88.3%；</li>
+  <li>BrowseComp：91.2%；</li>
+  <li>DeepSearchQA：95.0%。</li>
+</ul>
+
+<h4 id="claude-fable-5anthropic-官方--snorkel-ai">Claude Fable 5（Anthropic 官方 + Snorkel AI）</h4>
+
+<ul>
+  <li>ALE：25.7% Pass Rate / 48.7% Score（Claude Code harness，XHigh）；</li>
+  <li>Toolathlon：61.7% <code class="language-plaintext highlighter-rouge">Pass@1</code> / 68.5% <code class="language-plaintext highlighter-rouge">Pass@3</code> / 55.6% <code class="language-plaintext highlighter-rouge">Pass^3</code>（非 Verified 版本，非官方来源）。</li>
+</ul>
+
+<h3 id="三数据来源">三、数据来源</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>来源</th>
+      <th>类型</th>
+      <th>覆盖模型</th>
+      <th>覆盖 Benchmark</th>
+      <th>更新时间</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Moonshot AI Kimi K3 发布博客</td>
+      <td>官方</td>
+      <td>Kimi K3</td>
+      <td>AutomationBench、MCP-Atlas、JobBench、SpreadsheetBench 2、OfficeQA Pro、Toolathlon-Verified 等 10 项</td>
+      <td>2026 年 7–8 月</td>
+    </tr>
+    <tr>
+      <td>Anthropic Claude Opus 5 System Card</td>
+      <td>官方</td>
+      <td>Claude Opus 5</td>
+      <td>MCP-Atlas、Toolathlon-Verified、AutomationBench、OfficeQA Pro 等 18 项</td>
+      <td>2026 年 7–8 月</td>
+    </tr>
+    <tr>
+      <td>OpenAI GPT-5.6 官方发布</td>
+      <td>官方</td>
+      <td>GPT-5.6 Sol</td>
+      <td>Toolathlon、Terminal-Bench 2.0、BrowseComp 等 6 项</td>
+      <td>2026 年 7–8 月</td>
+    </tr>
+    <tr>
+      <td>Snorkel AI Leaderboard</td>
+      <td>官方</td>
+      <td>全部</td>
+      <td>ALE</td>
+      <td>2026 年 7–8 月</td>
+    </tr>
+    <tr>
+      <td>Toolathlon 官方 Leaderboard</td>
+      <td>官方</td>
+      <td>全部</td>
+      <td>Toolathlon-Verified</td>
+      <td>2026 年 7 月</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>第三方聚合排行榜的数据来源和评测设置可能与官方不一致，分数仅供参考。不同 Benchmark、不同设置下的分数不可直接比较。</p>
+
+<h2 id="附录-b9-大纯工具--文本类-benchmark-速览">附录 B：9 大纯工具 / 文本类 Benchmark 速览</h2>
+
+<p>本附录聚焦 9 个纯工具调用 / 文本推理类 Benchmark，移除 OSWorld V2 和 SaaS-Bench 两个以视觉 / GUI 操作为核心的 benchmark，以便更直观地对比 General Task Agent 在工具使用、任务规划和状态管理上的核心能力。</p>
+
+<h3 id="一速览总表任务--工具--难点">一、速览总表：任务 / 工具 / 难点</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Benchmark</th>
+      <th>典型任务示例</th>
+      <th>核心工具 / 环境</th>
+      <th>核心难点</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ALE</td>
+      <td>为初创公司制作季度财务报表；起草商业租赁合同；分析市场调研数据并撰写报告</td>
+      <td>VM 完整文件系统；办公应用套件；55 个子行业专业工具</td>
+      <td>长周期任务（小时级）；跨领域专业知识；强时间隔离；经济价值导向</td>
+    </tr>
+    <tr>
+      <td>AutomationBench</td>
+      <td>从 CRM 同步新客户到邮件营销列表；根据支持工单创建日历事件并分配工程师；跨系统对账</td>
+      <td>47 个 SaaS 工具 REST API；Sales / Marketing / Ops / Support / Finance / HR 六大领域；内存 <code class="language-plaintext highlighter-rouge">WorldState</code></td>
+      <td>自主 API 发现；跨应用协调；策略文档遵循；无关或误导性记录</td>
+    </tr>
+    <tr>
+      <td>Claw-Eval</td>
+      <td>编排多个微服务完成订单处理；多轮法律 / 医疗专业咨询；错误注入下的鲁棒性测试</td>
+      <td>Docker mock services；Host agent + HTTP tools；9 类别 / 3 大组</td>
+      <td>完成度 × 安全 × 鲁棒性；轨迹透明评分；44% 安全违规被传统评测遗漏；<code class="language-plaintext highlighter-rouge">Pass@k</code> 与 <code class="language-plaintext highlighter-rouge">Pass^k</code> 差距</td>
+    </tr>
+    <tr>
+      <td>JobBench</td>
+      <td>产品经理撰写 PRD；数据分析师构建销售仪表盘；人力资源设计招聘流程方案</td>
+      <td>CLI agent + 临时工作目录；35 个白领职业；加权 rubric</td>
+      <td>专业交付物质量；LLM judge 一致性；失败后半成品回收；目录隔离与 resume</td>
+    </tr>
+    <tr>
+      <td>MCP-Atlas</td>
+      <td>从数据库查询数据并生成图表报告；跨多个 MCP 服务编排工作流；处理 API 调用失败</td>
+      <td>36 个真实 MCP 服务器；论文口径 220 个工具；Python sandbox + TypeScript harness</td>
+      <td>工具发现与选择；3–6 步多工具编排；参数化正确性；P0 并发共享 sandbox 状态污染</td>
+    </tr>
+    <tr>
+      <td>MCPMark</td>
+      <td>用 Playwright 完成网页认证；在 Notion 创建项目跟踪数据库；从 GitHub 提取数据存入 PostgreSQL</td>
+      <td>5+ MCP 服务类型；Filesystem / Notion / GitHub / PostgreSQL / Playwright；setup → agent → verify → cleanup</td>
+      <td>服务状态验证；长链工具调用（平均 16.2 轮）；<code class="language-plaintext highlighter-rouge">Pass@k</code> 与 <code class="language-plaintext highlighter-rouge">Pass^k</code> 差距；核心数据库核验异常时 fail-open</td>
+    </tr>
+    <tr>
+      <td>OfficeQA</td>
+      <td>查找 1975 年第三季度美国国债收益率；计算 1990–2000 年财政赤字年均增长率；对比两个时期的税收结构</td>
+      <td>89k 页 / 2600 万数值文档；美国财政部公报 1939–2025；文档检索 + 数值推理</td>
+      <td>大规模文档定位；跨文档多步推理；数值计算精度；数据漂移与格式变化</td>
+    </tr>
+    <tr>
+      <td>SpreadsheetBench 2</td>
+      <td>调试财务模型公式；从零构建三表联动模型；根据模板填充数据并生成图表</td>
+      <td>SWE-agent + shell / 表格环境；Docker 隔离；Debugging / Financial / Template / Visualization</td>
+      <td>端到端工作流；Cell diff（修改 + 回归）；财务模型 debugging 极难；可视化需要 VLM 验证</td>
+    </tr>
+    <tr>
+      <td>Toolathlon</td>
+      <td>从 Canvas LMS 导出并分析成绩；跨 WooCommerce、邮件和 Google Sheets 处理订单；在 Notion 创建项目看板</td>
+      <td>32 个 MCP 服务器 / 604 个工具；Canvas、Email、WooCommerce、GitHub、Notion、Google、Snowflake、BigQuery、arXiv、文档工具；容器化 hardened runner</td>
+      <td>长链工具任务；多应用状态协调；确定性评分；Containerized 与 Decoupled 模式选择</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="二按难度梯度分类">二、按难度梯度分类</h3>
+
+<h4 id="l1l2-入门级70-sota">L1–L2 入门级：70%+ SOTA</h4>
+
+<p>单服务 CRUD、简单工具调用、确定性任务。代表是 MCPMark 简单任务和 Toolathlon 基础任务。</p>
+
+<h4 id="l3-中等3560-sota">L3 中等：35–60% SOTA</h4>
+
+<p>多工具编排、专业交付物、需要一定领域知识。代表是 MCP-Atlas（62.3%）、JobBench（45.9%）和 SpreadsheetBench 2（34.9%）。</p>
+
+<h4 id="l4l5-困难-30-sota">L4–L5 困难：&lt; 30% SOTA</h4>
+
+<p>长周期任务、跨系统协调、复杂状态管理和端到端完成。代表是 ALE（30.6% pass rate）、AutomationBench（&lt; 10%）以及 Claw-Eval 的安全鲁棒性维度。</p>
+
+<h3 id="三核心洞察">三、核心洞察</h3>
+
+<h4 id="洞察-1工具数量--难度">洞察 1：工具数量 ≠ 难度</h4>
+
+<p>Toolathlon 有 604 个工具但 SOTA 达到 76.5%，而 ALE 工具数量更少但 SOTA 只有 30.6%。难度的关键不在工具多少，而在任务长度、状态管理复杂度和专业知识要求。</p>
+
+<h4 id="洞察-2评分机制决定分数天花板">洞察 2：评分机制决定分数天花板</h4>
+
+<ul>
+  <li>精确结果匹配（cell diff / 程序验证）：分数最可靠，但天花板低；</li>
+  <li>LLM judge / rubric：分数较高，但一致性存疑；</li>
+  <li>轨迹透明评分（Claw-Eval）：发现 44% 的安全违规被传统评测遗漏。</li>
+</ul>
+
+<p>不同评分机制下的分数不可直接比较。</p>
+
+<h4 id="洞察-3环境隔离是被低估的维度">洞察 3：环境隔离是被低估的维度</h4>
+
+<p>从内存对象（AutomationBench）到单容器（MCPMark）、共享 sandbox（MCP-Atlas）再到完整 VM（ALE），隔离强度递增，评测可信度也递增。MCP-Atlas 的并发共享 sandbox 问题可能导致分数虚高。</p>
+
+<h4 id="洞察-4一致性比单次通过率更重要">洞察 4：一致性比单次通过率更重要</h4>
+
+<p><code class="language-plaintext highlighter-rouge">Pass@k</code> 表示 k 次中至少 1 次通过，<code class="language-plaintext highlighter-rouge">Pass^k</code> 表示 k 次全部通过。MCPMark <code class="language-plaintext highlighter-rouge">k=4</code> 时，<code class="language-plaintext highlighter-rouge">Pass@4</code> 为 52.6%，<code class="language-plaintext highlighter-rouge">Pass^4</code> 为 33.9%，差距接近 20 个百分点。生产环境需要的是 <code class="language-plaintext highlighter-rouge">Pass^k</code>，而不是 <code class="language-plaintext highlighter-rouge">Pass@k</code>。</p>
+
+
+            </div>
+        </article>
+
+        
+        
+        
+        
+    </div>
+
+    <aside class="blog-toc-sidebar">
+        <nav id="blog-toc" class="blog-toc-nav" aria-label="Table of contents">
+            <div class="blog-toc-header">
+                <div class="blog-toc-title">On This Page</div>
+                <button
+                    id="blog-toc-toggle"
+                    class="blog-toc-toggle"
+                    type="button"
+                    aria-controls="blog-toc-list"
+                    aria-expanded="true"
+                    aria-label="收起目录"
+                    title="收起目录"
+                >
+                    <svg class="blog-toc-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="blog-toc-list" class="blog-toc-list"></div>
+        </nav>
+    </aside>
+</div>
+
+    </main>
+    <footer class="footer border-top py-2 mt-5 bg-white small">
+    <div class="container-lg">
+        <div class="row my-3">
+            <div class="col-6">
+                <div class="text-muted">
+                    <i>Last updated: Aug 2026</i>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="text-right text-muted">
+                    Built with <a href="https://github.com/luost26/academic-homepage" target="_blank"><i class="fas fa-pencil-ruler"></i> academic-homepage</a> · Visual refresh by Kimi-K3.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <pagefind-config
+        bundle-path="/Ryanhu2001/pagefind/"
+        base-url="/Ryanhu2001/"
+        excerpt-length="30"
+        lang="zh-CN"></pagefind-config>
+    <div class="modal fade site-search-modal" id="siteSearchModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="siteSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 mb-0" id="siteSearchModalLabel">Search</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <pagefind-searchbox placeholder="搜索 wiki、论文笔记、关键词..." show-sub-results="true" hide-shortcut="true"></pagefind-searchbox>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous"></script>
+    <script type="module" src="/Ryanhu2001/pagefind/pagefind-component-ui.js"></script>
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tocbot@4.36.8/dist/tocbot.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            renderMathInElement(document.body, {
+              delimiters: [
+                  {left: '$$', right: '$$', display: true},
+                  {left: '\\[', right: '\\]', display: true},
+                  {left: '$', right: '$', display: false},
+                  {left: '\\(', right: '\\)', display: false}
+              ],
+              throwOnError : false
+            });
+            Prism.highlightAll();
+            
+
+            var siteSearchModal = document.getElementById("siteSearchModal");
+            var siteSearchBox = siteSearchModal ? siteSearchModal.querySelector("pagefind-searchbox") : null;
+            function focusSiteSearch() {
+                window.setTimeout(function() {
+                    if (siteSearchBox && typeof siteSearchBox.focus === "function") {
+                        siteSearchBox.focus();
+                    }
+                }, 80);
+            }
+            if (siteSearchModal && window.jQuery) {
+                window.jQuery(siteSearchModal).on("shown.bs.modal", focusSiteSearch);
+            }
+            document.addEventListener("keydown", function(event) {
+                var key = String(event.key || "").toLowerCase();
+                var isSearchShortcut = key === "k" && (event.metaKey || event.ctrlKey);
+                var isModalOpen = siteSearchModal && siteSearchModal.classList.contains("show");
+                var target = event.target;
+                var isTyping = target && (
+                    target.tagName === "INPUT" ||
+                    target.tagName === "TEXTAREA" ||
+                    target.isContentEditable
+                );
+                if (!isSearchShortcut || (isTyping && isModalOpen) || !siteSearchModal || !window.jQuery) return;
+                event.preventDefault();
+                window.jQuery(siteSearchModal).modal("show");
+            });
+        });
+    </script>
+    
+    <script src="/Ryanhu2001/assets/js/blog.js"></script>
+    
+    <script src="/Ryanhu2001/assets/js/common.js"></script>
+</body>
+</html>

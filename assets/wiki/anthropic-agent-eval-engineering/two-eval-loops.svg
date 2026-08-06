@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="720" viewBox="0 0 1600 720" role="img" aria-labelledby="title desc">
+  <title id="title">两种 Eval Loop</title>
+  <desc id="desc">离线 Evaluation Loop 负责测量系统能力，运行时 Generator–Evaluator Loop 负责改进当前产物。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbf9f4"/>
+      <stop offset="1" stop-color="#f0ece3"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#5d5142" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrowB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#5f8fb3"/>
+    </marker>
+    <marker id="arrowG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#5b9670"/>
+    </marker>
+    <style>
+      .title { font: 700 44px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #191714; }
+      .subtitle { font: 400 22px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #655e55; }
+      .panel { font: 700 26px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; }
+      .node { font: 600 19px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #1f1c18; }
+      .body { font: 400 16px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #5e574f; }
+      .loopnote { font: 500 16px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="720" rx="36" fill="url(#bg)"/>
+  <text class="title" x="80" y="86">两种 Eval Loop：测量系统 vs 改进当前产物</text>
+  <text class="subtitle" x="82" y="126">前三篇与第五篇在左边这个循环里；第四篇把评价搬进了右边的运行时循环</text>
+
+  <!-- Left panel: offline loop -->
+  <g filter="url(#shadow)">
+    <rect x="80" y="166" width="700" height="480" rx="24" fill="#f4f8fb" stroke="#5f8fb3" stroke-width="2"/>
+  </g>
+  <text class="panel" x="116" y="216" fill="#3d6f93">离线 Evaluation Loop</text>
+  <text class="body" x="116" y="246">目的：测量能力、比较改动、决定是否发布</text>
+
+  <rect x="116" y="276" width="290" height="58" rx="12" fill="#ffffff" stroke="#5f8fb3" stroke-width="1.5"/>
+  <text class="node" x="140" y="312">固定 Task Dataset</text>
+  <rect x="456" y="276" width="290" height="58" rx="12" fill="#ffffff" stroke="#5f8fb3" stroke-width="1.5"/>
+  <text class="node" x="480" y="312">Agent Trial（多 Seed）</text>
+  <rect x="456" y="386" width="290" height="58" rx="12" fill="#ffffff" stroke="#5f8fb3" stroke-width="1.5"/>
+  <text class="node" x="480" y="422">Outcome / Trajectory Grader</text>
+  <rect x="116" y="386" width="290" height="58" rx="12" fill="#ffffff" stroke="#5f8fb3" stroke-width="1.5"/>
+  <text class="node" x="140" y="422">Capability / Regression 信号</text>
+  <rect x="116" y="496" width="290" height="58" rx="12" fill="#ffffff" stroke="#5f8fb3" stroke-width="1.5"/>
+  <text class="node" x="140" y="532">Release Decision</text>
+  <rect x="456" y="496" width="290" height="58" rx="12" fill="#ffffff" stroke="#5f8fb3" stroke-width="1.5"/>
+  <text class="node" x="480" y="524">Production Failure</text>
+  <text class="body" x="480" y="546">回流成新 Task</text>
+
+  <line x1="406" y1="305" x2="446" y2="305" stroke="#5f8fb3" stroke-width="3" marker-end="url(#arrowB)"/>
+  <line x1="601" y1="334" x2="601" y2="376" stroke="#5f8fb3" stroke-width="3" marker-end="url(#arrowB)"/>
+  <line x1="446" y1="415" x2="416" y2="415" stroke="#5f8fb3" stroke-width="3" marker-end="url(#arrowB)"/>
+  <line x1="261" y1="444" x2="261" y2="486" stroke="#5f8fb3" stroke-width="3" marker-end="url(#arrowB)"/>
+  <line x1="406" y1="525" x2="446" y2="525" stroke="#5f8fb3" stroke-width="3" marker-end="url(#arrowB)"/>
+  <path d="M 746 496 C 790 420 790 350 751 310" stroke="#5f8fb3" stroke-width="2.5" stroke-dasharray="7 6" fill="none" marker-end="url(#arrowB)"/>
+  <text class="loopnote" x="596" y="600" fill="#3d6f93">输出：分数、失败分类、回归信号</text>
+
+  <!-- Right panel: runtime loop -->
+  <g filter="url(#shadow)">
+    <rect x="820" y="166" width="700" height="480" rx="24" fill="#f1f8f3" stroke="#5b9670" stroke-width="2"/>
+  </g>
+  <text class="panel" x="856" y="216" fill="#3e7d55">运行时 Generator–Evaluator Loop</text>
+  <text class="body" x="856" y="246">目的：把“这一次”开放式任务的产物继续做好</text>
+
+  <rect x="856" y="276" width="290" height="58" rx="12" fill="#ffffff" stroke="#5b9670" stroke-width="1.5"/>
+  <text class="node" x="880" y="312">用户 Goal（1–4 句话）</text>
+  <rect x="1196" y="276" width="290" height="58" rx="12" fill="#ffffff" stroke="#5b9670" stroke-width="1.5"/>
+  <text class="node" x="1220" y="312">Generator 创建产物</text>
+  <rect x="1196" y="386" width="290" height="58" rx="12" fill="#ffffff" stroke="#5b9670" stroke-width="1.5"/>
+  <text class="node" x="1220" y="414">Evaluator 实际操作检查</text>
+  <text class="body" x="1220" y="436">Playwright · Rubric · 边界情况</text>
+  <rect x="856" y="386" width="290" height="58" rx="12" fill="#ffffff" stroke="#5b9670" stroke-width="1.5"/>
+  <text class="node" x="880" y="422">Failure Evidence</text>
+  <rect x="856" y="496" width="290" height="58" rx="12" fill="#ffffff" stroke="#5b9670" stroke-width="1.5"/>
+  <text class="node" x="880" y="524">Generator 修复</text>
+  <text class="body" x="880" y="546">refine 或彻底 pivot</text>
+
+  <line x1="1146" y1="305" x2="1186" y2="305" stroke="#5b9670" stroke-width="3" marker-end="url(#arrowG)"/>
+  <line x1="1341" y1="334" x2="1341" y2="376" stroke="#5b9670" stroke-width="3" marker-end="url(#arrowG)"/>
+  <line x1="1186" y1="415" x2="1156" y2="415" stroke="#5b9670" stroke-width="3" marker-end="url(#arrowG)"/>
+  <line x1="1001" y1="444" x2="1001" y2="486" stroke="#5b9670" stroke-width="3" marker-end="url(#arrowG)"/>
+  <path d="M 1146 525 C 1300 560 1380 480 1350 448" stroke="#5b9670" stroke-width="2.5" stroke-dasharray="7 6" fill="none" marker-end="url(#arrowG)"/>
+  <text class="loopnote" x="1180" y="600" fill="#3e7d55">每轮 5–15 次迭代，直到通过 Hard Threshold</text>
+
+  <text class="body" x="80" y="694">两个循环可以共享 Rubric、真实环境验证与 Transcript Review，但目标、成本与成功标准要分开记录。</text>
+</svg>

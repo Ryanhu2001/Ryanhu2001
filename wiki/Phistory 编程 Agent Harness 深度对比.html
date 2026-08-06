@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<!-- Template: https://github.com/luost26/academic-homepage -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="description" content="以 Phistory 快照为证据底座，拆解 13 个 coding-agent harness 的 system prompt、工具协议、sub-agent 与 compaction 机制，并对照代码规模、实现语言与社区口碑。">
+    <meta property="og:title" content="Phistory：13 个编程 Agent Harness 深度对比 - Ryan">
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="以 Phistory 快照为证据底座，拆解 13 个 coding-agent harness 的 system prompt、工具协议、sub-agent 与 compaction 机制，并对照代码规模、实现语言与社区口碑。">
+    <meta property="og:url" content="https://ryanhu2001.github.io/Ryanhu2001/wiki/Phistory%20%E7%BC%96%E7%A8%8B%20Agent%20Harness%20%E6%B7%B1%E5%BA%A6%E5%AF%B9%E6%AF%94.html">
+    <title>Phistory：13 个编程 Agent Harness 深度对比 - Ryan</title>
+    <link rel="icon" href="/Ryanhu2001/assets/ryan/avatar.jpg" type="image/jpeg">
+
+    <!-- Stylesheets -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/Ryanhu2001/pagefind/pagefind-component-ui.css">
+    
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/blog.css">
+    
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/global.css">
+</head>
+<body >
+    <a class="sr-only sr-only-focusable skip-link" href="#main-content">Skip to content</a>
+    <nav class="navbar navbar-expand-sm navbar-light fixed-top mb-5 shadow-sm">
+    <div class="container-lg">
+        <a class="navbar-brand" href="/Ryanhu2001/"><strong>Ryan</strong></a>
+        <button class="nav-search-button nav-search-button-compact d-sm-none ml-auto mr-2" type="button" data-toggle="modal" data-target="#siteSearchModal" aria-label="Search site">
+            <i class="fas fa-search" aria-hidden="true"></i>
+        </button>
+        <button class="navbar-toggler" style="font-size: 1em; padding: 0.5em;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-map" aria-hidden="true"></i> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/">Home</a>
+                </li>
+                
+                <li class="nav-item active">
+                    <a class="nav-link" href="/Ryanhu2001/wiki/">Wiki</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/paper-reading/">Paper Reading</a>
+                </li>
+                
+                <li class="nav-item nav-search-item">
+                    <button class="nav-link nav-search-button" type="button" data-toggle="modal" data-target="#siteSearchModal" aria-label="Search site">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <span>Search</span>
+                        <kbd class="d-none d-md-inline">⌘K</kbd>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <main id="main-content" class="container-lg">
+        
+
+
+
+
+<div class="reading-progress" aria-hidden="true">
+    <span></span>
+</div>
+
+<div class="blog-layout-wrapper reading-surface-layout">
+    <div class="blog-main">
+        <div class="mb-3">
+            <a class="small" href="/Ryanhu2001/wiki/">
+                <i class="fas fa-arrow-left"></i> Wiki
+            </a>
+        </div>
+
+        <details class="mobile-toc d-lg-none">
+            <summary>目录</summary>
+            <div id="blog-toc-list-mobile" class="mobile-toc-list"></div>
+        </details>
+
+        <article class="bg-white rounded-xl p-4 p-md-5 mb-4 wiki-note-card reading-surface-card" data-pagefind-body data-reading-surface data-kicker="CODING AGENT · HARNESS ARCHITECTURE">
+            <div class="blog-content wiki-note">
+                <h1 id="phistory13-个编程-agent-harness-深度对比">Phistory：13 个编程 Agent Harness 深度对比</h1>
+
+<p>所谓 <strong>harness</strong>，是模型外面的那层运行时：组装 system prompt、调度工具调用、管理上下文压缩、执行权限边界。同一个模型配不同的 harness，表现可以天差地别——2026 年 coding CLI 爆发、模型能力趋同之后，harness 设计成了产品差异的主要来源。但 harness 内部长期是黑盒，直到 <a href="https://phistory.cc/">Phistory</a> 这类项目把 13 家主流 CLI 实际发给模型的 prompt 与 tool schema 逐版本捕获下来，横向比较第一次有了可复测的证据底座。</p>
+
+<p>这不是一篇“谁的 system prompt 写得更好”的排名。我的核心判断是：</p>
+
+<blockquote>
+  <p><strong>Harness 不是一段 system prompt，而是一套运行时协议。</strong> 真正决定 Agent 能力边界的，是上下文怎样压缩、状态存在哪里、工具如何校验权限、子代理继承什么、异步结果怎样回流，以及长期行为如何被修改。</p>
+</blockquote>
+
+<p>先给四条结论：</p>
+
+<ol>
+  <li><strong>提示词长短与能力强弱无关。</strong> Codex、Grok、Pi 的核心 prompt 都不长：Codex 把能力收进 <code class="language-plaintext highlighter-rouge">exec</code>，Grok 放进 tool schema，Pi 留给扩展。真正关键的是 schema 能否尽早拒绝错误、权限是否由 runtime 强制执行。</li>
+  <li><strong>多 Agent 的分水岭不是“能不能 spawn”，而是 context、resume、workspace、completion、trust 五个字段。</strong> 只提供一个 <code class="language-plaintext highlighter-rouge">prompt</code> 的子代理，本质上仍是一次昂贵的无类型函数调用。</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">goal/plan/todo</code> 是三种状态，compaction/memory/history 是三种存储。</strong> 混用前者的典型症状是“计划写完就算目标完成”；混用后者的典型症状是把召回的旧记录当成当前事实。</li>
+  <li><strong>Skill、MCP、workflow 是三个平面：程序性知识、能力/数据边界、确定性控制流。</strong> 都叫“插件”会掩盖最重要的安全与状态差异。</li>
+</ol>
+
+<p>本文从三个互相独立的视角展开：<strong>协议</strong>（Phistory 捕获的 prompt 与 tool schema）、<strong>实现</strong>（代码规模、语言与分发形态）、<strong>口碑</strong>（社区评价与安全事件），三者并不总是一致——协议最优雅的口碑未必最好，声量最大的也未必经得起审计。<strong>怎么读</strong>：赶时间看结论、横向比较与设计原则；要做 harness 设计，逐项拆解是主菜。</p>
+
+<h1 id="研究口径phistory-能证明什么">研究口径：Phistory 能证明什么</h1>
+
+<p><a href="https://phistory.cc/">Phistory</a> 会安装指定 CLI 版本，用 <code class="language-plaintext highlighter-rouge">claude-tap</code> 发起一次最小请求，在不调用真实模型 provider 的情况下截获 prompt-bearing HTTP request，并保存 <code class="language-plaintext highlighter-rouge">prompt.md</code>、<code class="language-plaintext highlighter-rouge">trace.jsonl</code> 和 <code class="language-plaintext highlighter-rouge">meta.json</code>。<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/README.md#L22-L28">仓库对捕获流程有明确说明</a>。</p>
+
+<p>本文固定在 Phistory commit <a href="https://github.com/WEIFENG2333/phistory/tree/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db"><code class="language-plaintext highlighter-rouge">d29ec71</code></a>，使用当时列出的 13 个最新版：<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/README.md#L70-L88">版本索引</a>。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Harness</th>
+      <th>本文快照</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Claude Code</td>
+      <td><code class="language-plaintext highlighter-rouge">2.1.221</code></td>
+    </tr>
+    <tr>
+      <td>Codex CLI</td>
+      <td><code class="language-plaintext highlighter-rouge">0.146.0</code></td>
+    </tr>
+    <tr>
+      <td>Antigravity CLI</td>
+      <td><code class="language-plaintext highlighter-rouge">1.1.10</code></td>
+    </tr>
+    <tr>
+      <td>Grok Build</td>
+      <td><code class="language-plaintext highlighter-rouge">0.2.118</code></td>
+    </tr>
+    <tr>
+      <td>MiniMax Code</td>
+      <td><code class="language-plaintext highlighter-rouge">3.0.57</code></td>
+    </tr>
+    <tr>
+      <td>Kimi Code</td>
+      <td><code class="language-plaintext highlighter-rouge">0.31.1</code></td>
+    </tr>
+    <tr>
+      <td>MiMo Code</td>
+      <td><code class="language-plaintext highlighter-rouge">0.1.9</code></td>
+    </tr>
+    <tr>
+      <td>OpenClaw</td>
+      <td><code class="language-plaintext highlighter-rouge">2026.7.1-2</code></td>
+    </tr>
+    <tr>
+      <td>Hermes Agent</td>
+      <td><code class="language-plaintext highlighter-rouge">v2026.8.3</code></td>
+    </tr>
+    <tr>
+      <td>Kimi CLI</td>
+      <td><code class="language-plaintext highlighter-rouge">1.49.0</code></td>
+    </tr>
+    <tr>
+      <td>opencode</td>
+      <td><code class="language-plaintext highlighter-rouge">1.18.12</code></td>
+    </tr>
+    <tr>
+      <td>Pi</td>
+      <td><code class="language-plaintext highlighter-rouge">0.83.0</code></td>
+    </tr>
+    <tr>
+      <td>Oh My Pi</td>
+      <td><code class="language-plaintext highlighter-rouge">17.2.7</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>必须先限定证据边界：<strong>一次快照只证明该版本在这次启动模式、模型、权限、workspace、session 与 MCP/plugin 配置下暴露了什么。</strong> 它不证明产品在所有模式下都相同。例如 OpenClaw 本次是在新 workspace 的 bootstrap 状态；Antigravity 的文字提到 subagent，但此次 tool schema 没有 spawn 工具；Codex 的协作能力也受到本次 session policy 约束。下面凡是说“没有”，都特指“本次捕获没有显式暴露”，不是断言产品永远不支持。</p>
+
+<p>另外，本文证据分两层：<strong>协议分析（逐项拆解与横向比较）固定在上面这个快照</strong>；代码规模与社区评价两章超出快照范围，使用 2026-08-05 时点的公开数据（开源仓库、npm registry、HN/博客），口径在各章自注。</p>
+
+<h1 id="总览13-种控制面">总览：13 种控制面</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Harness</th>
+      <th>一句话定位</th>
+      <th>最大短板</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Claude Code</td>
+      <td>语义下沉 tool schema，能力最全</td>
+      <td>协议庞大，能力分散难审计</td>
+    </tr>
+    <tr>
+      <td>Codex CLI</td>
+      <td>小顶层工具面 + V8 编排双层协议</td>
+      <td>分层多，调试心智成本高</td>
+    </tr>
+    <tr>
+      <td>Antigravity</td>
+      <td>artifact-first 的产品交互闭环</td>
+      <td>prompt 与 tool surface 漂移</td>
+    </tr>
+    <tr>
+      <td>Grok Build</td>
+      <td>capability-gated 子代理</td>
+      <td>无显式 compaction/memory/goal</td>
+    </tr>
+    <tr>
+      <td>MiniMax Code</td>
+      <td>人格化桌面助手 + dispatcher</td>
+      <td>人格 token 税，工具名漂移</td>
+    </tr>
+    <tr>
+      <td>Kimi Code</td>
+      <td>最完整的长任务状态机</td>
+      <td>只读靠 prompt，swarm 无隔离</td>
+    </tr>
+    <tr>
+      <td>MiMo Code</td>
+      <td>checkpoint + 两级召回的恢复架构</td>
+      <td>新旧 boilerplate 互相冲突</td>
+    </tr>
+    <tr>
+      <td>OpenClaw</td>
+      <td>ambient 个人 agent 平台</td>
+      <td>副作用授权过宽</td>
+    </tr>
+    <tr>
+      <td>Hermes Agent</td>
+      <td>skill 即 procedural memory</td>
+      <td>持久行为可被自动 patch</td>
+    </tr>
+    <tr>
+      <td>Kimi CLI</td>
+      <td>清晰传统的基础 agent loop</td>
+      <td>无 goal/compaction/memory</td>
+    </tr>
+    <tr>
+      <td>opencode</td>
+      <td>模型无关的开源入口</td>
+      <td>无条件 prompt 规则失控</td>
+    </tr>
+    <tr>
+      <td>Pi</td>
+      <td>最小透明内核 + TS 扩展</td>
+      <td>核心不保证安全与长期状态</td>
+    </tr>
+    <tr>
+      <td>Oh My Pi</td>
+      <td>URI 统一的 agent OS</td>
+      <td>协议学习成本最高</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="逐项拆解">逐项拆解</h1>
+
+<h2 id="1-claude-code把-harness-语义下沉到-tool-schema">1. Claude Code：把 Harness 语义下沉到 Tool Schema</h2>
+
+<p><strong>System prompt。</strong> Claude Code 的核心行为层并不长：session guidance、文件记忆、环境、compaction 和交付规则集中在前 80 行，后面大部分 token 都是工具协议。这个结构比“把所有行为写成自然语言”更可靠，因为诸如 worktree 枚举、后台默认值、structured output 和 resume 参数都能由 runtime 校验。值得注意的是，本次 session 又额外写了“除非用户要求，不调用 Agent/Workflow”：<strong>能力存在不等于当前策略授权使用</strong>。</p>
+
+<p><strong>状态。</strong> 记忆采用“一条事实一个文件”，按 <code class="language-plaintext highlighter-rouge">user / feedback / project / reference</code> 分类；<code class="language-plaintext highlighter-rouge">MEMORY.md</code> 只保留一行索引，不堆正文。它还明确要求删除错误记忆、去重、不要保存代码和 git 已能推出的信息，并把被召回的路径当历史 claim 再验证。Compaction 则完全交给宿主：上下文过长时总结并自然继续，不要求模型提前收尾。</p>
+
+<p><strong>Sub-agent 与 workflow。</strong> <code class="language-plaintext highlighter-rouge">Agent</code> 提供动态 agent type、模型覆盖、后台默认、继续消息、worktree 和 remote isolation。独立的 <code class="language-plaintext highlighter-rouge">TaskCreate/TaskUpdate</code> 管依赖图，后台进程则由另一套 task output/stop 管理。更强的是 <code class="language-plaintext highlighter-rouge">Workflow</code>：JavaScript 脚本用 <code class="language-plaintext highlighter-rouge">agent / pipeline / parallel / workflow</code> 编排，支持 JSON Schema 输出、共享 token budget、MCP 按需加载、约 16 并发和 1000-agent 总上限；恢复时按“最长未变化的 agent 调用前缀”复用缓存，并刻意禁用 <code class="language-plaintext highlighter-rouge">Date.now()</code> 与随机数来维持可重放性。</p>
+
+<p><strong>判断。</strong> 这是 13 个里最完整的“确定性多 Agent 控制流”之一。<code class="language-plaintext highlighter-rouge">ReportFindings</code> 也说明工具不只是执行动作，还能把 review 结果变成 UI 可消费的 typed data。代价是协议很大，行为分散在 tool description、system reminder、agent definition 和 session policy 中；审计时只读最前面的 system prompt 会严重低估它。</p>
+
+<p><strong>独有功能（官方文档侧证）。</strong> 捕获之外，官方文档与 CHANGELOG 还证实了几张别家目前拿不出的牌。上述 Workflow 不是实验功能——2.1.160 起改名 <code class="language-plaintext highlighter-rouge">ultracode</code>、默认开启、企业可用 <code class="language-plaintext highlighter-rouge">disableWorkflows</code> 关闭，有<a href="https://code.claude.com/docs/en/workflows">公开文档</a>背书。其余三张：<strong>全生命周期 hooks</strong>，约 30 个事件（PreCompact、SubagentStart、WorktreeCreate、PermissionDenied……）× 5 种 handler（command / http / mcp_tool / prompt / agent），hook 本身可以是一个 LLM prompt 或一个子代理，粒度上别家的插件钩子（集中在工具执行前后）追不上；<strong>OS 级沙箱</strong>，macOS Seatbelt / Linux bubblewrap + 域名级网络代理，2.1.221 的 <code class="language-plaintext highlighter-rouge">mask</code> 模式还能对外隐藏真实凭据文件——竞品要么容器级隔离（重），要么纯权限提示；<strong>auto memory</strong>，file-per-fact + <code class="language-plaintext highlighter-rouge">MEMORY.md</code> 索引，子代理可有自己的记忆目录——AGENTS.md 类静态记忆人人有，模型自写、带索引上限的持久事实库是独一份。另外两个正名：<strong>agent teams 是另一个独立的实验功能</strong>（<code class="language-plaintext highlighter-rouge">CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS</code> flag 门控，teammate 间可互发消息），与 workflow 并列而非同一物；<code class="language-plaintext highlighter-rouge">ReportFindings</code> 则仅见于 prompt 捕获，官方文档未载。</p>
+
+<p>证据：<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/claude-code/2.1.221/prompt.md#L27-L79">memory 与 compaction</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/claude-code/2.1.221/prompt.md#L95-L151">Agent</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/claude-code/2.1.221/prompt.md#L980-L1018">typed review</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/claude-code/2.1.221/prompt.md#L1641-L1721">Workflow 控制流</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/claude-code/2.1.221/prompt.md#L1797-L1803">Workflow 恢复</a>；另见官方文档 <a href="https://code.claude.com/docs/en/workflows">workflows</a>、<a href="https://code.claude.com/docs/en/hooks">hooks</a>、<a href="https://code.claude.com/docs/en/sandboxing">sandboxing</a>、<a href="https://code.claude.com/docs/en/sub-agents">sub-agents</a>、<a href="https://code.claude.com/docs/en/agent-teams">agent teams</a>。</p>
+
+<h2 id="2-codex-cli小表面双层工具协议">2. Codex CLI：小表面、双层工具协议</h2>
+
+<p><strong>Developer prompt。</strong> Codex 使用 Developer Prompt，而不是把全部规则放进 System Prompt。最关键的上下文合同很明确：发生 compaction 后仍保留所有用户请求，把跨压缩的工作视为同一条逻辑链，不重做已经完成的操作。这比“自己记住别重复”更强，因为它直接描述了宿主会保留什么。</p>
+
+<p><strong>工具面。</strong> 顶层主要是 <code class="language-plaintext highlighter-rouge">collaboration</code>、<code class="language-plaintext highlighter-rouge">exec</code>、<code class="language-plaintext highlighter-rouge">request_user_input</code> 和 <code class="language-plaintext highlighter-rouge">wait</code>。真正的 shell、patch、goal、plan、MCP resource、image 等工具都挂在 <code class="language-plaintext highlighter-rouge">exec</code> 里的 <code class="language-plaintext highlighter-rouge">tools.*</code>。<code class="language-plaintext highlighter-rouge">exec</code> 自身是无 Node、无网络、无文件系统的临时 V8 isolate，只负责组合调用和裁剪输出。好处是顶层 schema 很小，模型可用 JavaScript 并行、过滤和聚合；代价是一次失败可能发生在“模型生成 JS → JS 调 nested tool → nested tool 调 runtime”三层中的任何一层。</p>
+
+<p><strong>Sub-agent。</strong> <code class="language-plaintext highlighter-rouge">collaboration.spawn_agent</code> 形成 <code class="language-plaintext highlighter-rouge">/root/task/...</code> 树，子代理还能继续 spawn。<code class="language-plaintext highlighter-rouge">fork_turns</code> 可取 <code class="language-plaintext highlighter-rouge">none</code>、<code class="language-plaintext highlighter-rouge">all</code> 或最近 N 轮，完整历史 fork 继承 parent model/reasoning。当前快照只有 4 个并发槽，所有 agent 共享 cwd 和 filesystem；这让协调简单，却没有 Grok/Claude 那样的 worktree 边界，多个写代理必须靠任务切片避免冲突。</p>
+
+<p><strong>Goal、plan、skills、MCP。</strong> Goal 是 durable lifecycle：只有显式请求才创建，可带 token budget，普通 blocker 必须连续出现三轮才能标记 blocked。Plan 是用户可见的当前执行状态，不等于 goal。Skills 支持 filesystem、environment resource、orchestrator resource 和 custom resource 四类 locator，是本文最一般化的技能来源模型。MCP 既可把函数直接注入为 <code class="language-plaintext highlighter-rouge">mcp__server__tool</code>，也有 list/read resources 原语。</p>
+
+<p><strong>判断。</strong> Codex 最突出的不是工具数量，而是<strong>边界分层</strong>：用户沟通、agent 协作、代码式工具编排、durable goal 各自有协议。弱点同样来自分层：排查问题时必须先判断状态属于 collaboration、<code class="language-plaintext highlighter-rouge">exec</code> store、goal、plan，还是实际 shell session。</p>
+
+<p><strong>源码补证（<code class="language-plaintext highlighter-rouge">codex-rs</code>）。</strong> prompt 层的说法在开源实现里几乎逐条可验，这也让它成为 13 家里“JS 编排”机制唯一能被源码级审计的样本。<code class="language-plaintext highlighter-rouge">exec</code> 由专用 crate <code class="language-plaintext highlighter-rouge">code-mode-runtime</code> 实现：直接嵌入 rusty_v8（锁定 <code class="language-plaintext highlighter-rouge">=150.4.0</code>，链接时开启 V8 sandbox，<strong>不是</strong> deno_core 的 JsRuntime），每次调用在独立的 <code class="language-plaintext highlighter-rouge">codex-code-mode-host</code> 子进程里新建一个干净 isolate。沙箱边界是“白名单 + 什么都没装”：全局只安装 <code class="language-plaintext highlighter-rouge">tools</code>、<code class="language-plaintext highlighter-rouge">store/load</code>、<code class="language-plaintext highlighter-rouge">notify</code>、<code class="language-plaintext highlighter-rouge">yield_control</code>、<code class="language-plaintext highlighter-rouge">exit</code> 等少数函数，同时显式删除 <code class="language-plaintext highlighter-rouge">console</code>、<code class="language-plaintext highlighter-rouge">Atomics</code>、<code class="language-plaintext highlighter-rouge">SharedArrayBuffer</code>、<code class="language-plaintext highlighter-rouge">WebAssembly</code>，任何 <code class="language-plaintext highlighter-rouge">import</code> 一律抛错——“无网络、无文件系统”不是靠拦截，而是能力从未存在。模型提交的是 freeform 工具的<strong>原始 JS 文本</strong>（带 lark grammar 约束，可选 <code class="language-plaintext highlighter-rouge">// @exec:</code> pragma 只控制 <code class="language-plaintext highlighter-rouge">yield_time_ms</code> 与 <code class="language-plaintext highlighter-rouge">max_output_tokens</code>，默认 10 秒 yield、10k token 输出预算）；JS 里每次 <code class="language-plaintext highlighter-rouge">tools.xxx()</code> 被桥成一个 Promise，host 侧每个嵌套调用独立 <code class="language-plaintext highlighter-rouge">tokio::spawn</code> 走正常工具路由——<code class="language-plaintext highlighter-rouge">Promise.all</code> 的并行就是这么落地的；中间结果只存在于 JS 内存，只有 <code class="language-plaintext highlighter-rouge">text()</code>/<code class="language-plaintext highlighter-rouge">image()</code> 显式追加的内容经 token 截断后回流模型上下文。到点未完成的脚本会作为一个 cell 挂起并返回 cell ID，模型随后用顶层 <code class="language-plaintext highlighter-rouge">wait</code> 工具对这个 cell 续等或 <code class="language-plaintext highlighter-rouge">terminate_execution</code> 强杀。collaboration 工具被刻意标记 <code class="language-plaintext highlighter-rouge">DirectModelOnly</code>，从 <code class="language-plaintext highlighter-rouge">tools.*</code> 排除，只能顶层 tool_call——编排层不能自己 spawn agent。<code class="language-plaintext highlighter-rouge">fork_turns</code> 的实现也比 prompt 说的更讲究：fork 时只保留 system/developer/user 消息和 final-answer 的 assistant 消息，工具调用、reasoning、web search 一律丢弃；<code class="language-plaintext highlighter-rouge">LastNTurns</code> 按 fork-turn 边界（以用户消息或 agent 间通信为界）保留最后 N 轮后缀。4 个并发槽的真实语义是<strong>含 root 在内的 resident thread LRU 集合</strong>，满了驱逐最久未用的可卸载者。这些细节把 Codex 的分层从“prompt 宣称”坐实为“架构强制”。</p>
+
+<p>证据：<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/codex/0.146.0/prompt.md#L25-L41">compaction 合同</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/codex/0.146.0/prompt.md#L135-L178">Skill locator</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/codex/0.146.0/prompt.md#L187-L218">团队与共享 workspace</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/codex/0.146.0/prompt.md#L329-L381"><code class="language-plaintext highlighter-rouge">spawn_agent</code> context fork</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/codex/0.146.0/prompt.md#L386-L413"><code class="language-plaintext highlighter-rouge">exec</code> isolate</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/codex/0.146.0/prompt.md#L422-L535">goal 与 MCP</a>；源码（main 分支，与 0.146.0 可能有漂移）：<a href="https://github.com/openai/codex/tree/main/codex-rs/code-mode-runtime/src/runtime"><code class="language-plaintext highlighter-rouge">code-mode-runtime</code></a>、<a href="https://github.com/openai/codex/blob/main/codex-rs/code-mode-runtime/src/runtime/callbacks.rs">嵌套工具桥接 callbacks.rs</a>、<a href="https://github.com/openai/codex/blob/main/codex-rs/core/src/agent/control/spawn.rs">fork 过滤 spawn.rs</a>、<a href="https://github.com/openai/codex/blob/main/codex-rs/core/src/agent/control/residency.rs">并发 LRU residency.rs</a>。</p>
+
+<h2 id="3-antigravityartifact-first但-prompt-与-tool-surface-漂移">3. Antigravity：Artifact-first，但 Prompt 与 Tool Surface 漂移</h2>
+
+<p><strong>System prompt。</strong> Antigravity 明显面向“做出可展示产品”，不是通用仓库维护。它默认 Vanilla CSS，并强制 vibrant colors、dark mode、glassmorphism、Google Fonts、渐变和微动画，甚至把“页面简单”定义为失败。这对从零 demo 有帮助，但对已有 design system 是错误的默认：模型会把产品品味写死在全局 prompt，而不是先读取仓库视觉语言。</p>
+
+<p><strong>Artifact 与 transcript。</strong> 长报告、表格、图和 diff 应写成 artifact，回复只指出文件与待决策，不复述全文。Transcript 同时保存 compact 与 full JSONL，逐行一一对应；当 compaction 丢掉旧轮次时，可以从 raw transcript 恢复。这是一种清晰的“工作集 / 原始轨迹”分层。异步消息采用 push wakeup，明确禁止轮询。</p>
+
+<p><strong>Sub-agent 与工具错位。</strong> Prompt 解释了 conversation ID、subagent transcript，并让模型 grep <code class="language-plaintext highlighter-rouge">invoke_subagent</code>；但本次 <code class="language-plaintext highlighter-rouge"># Tools</code> 只有 image、grep、file、command、schedule、web 等 schema，没有 spawn/invoke tool。这里应判为<strong>本次捕获配置中的不可达指令</strong>，而不是猜测产品没有 subagent。Slash commands 也只能推荐给用户，模型不能直接执行，说明 <code class="language-plaintext highlighter-rouge">/goal</code> 与 <code class="language-plaintext highlighter-rouge">/schedule</code> 属于 UI command plane，不是 agent tool plane。</p>
+
+<p><strong>Datetime。</strong> 用户消息里直接写“current local time is <code class="language-plaintext highlighter-rouge">$PHISTORY_DATETIME</code>”，没有 session-start、采样时刻或 stale 提示。长会话或恢复会话中，这会把快照伪装成实时钟；这比当前 Kimi Code 的处理更有问题。</p>
+
+<p><strong>判断。</strong> Antigravity 的强项是 artifact、transcript 与产品交互闭环；弱项是全局审美偏置和 prompt/tool 一致性。一个 harness lint 应能自动发现“prompt 引用了未注册工具”这类错误。</p>
+
+<p>证据：<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/antigravity/1.1.10/prompt.md#L16-L70">强制视觉偏好</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/antigravity/1.1.10/prompt.md#L72-L90">Skill 目录</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/antigravity/1.1.10/prompt.md#L94-L182">push 与双 transcript</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/antigravity/1.1.10/prompt.md#L284-L317">slash command 与 datetime</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/antigravity/1.1.10/prompt.md#L319">本次 tool section 起点</a>。</p>
+
+<h2 id="4-grok-buildcapability-gated-sub-agent-与-late-bound-mcp">4. Grok Build：Capability-gated Sub-agent 与 Late-bound MCP</h2>
+
+<p><strong>System prompt。</strong> Grok 的核心 prompt 很短，集中在可逆性、外部副作用确认、专用工具优先和输出质量。真正的 harness 架构都在工具描述里。这是“prompt 负责原则，schema 负责机制”的典型。</p>
+
+<p><strong>Sub-agent。</strong> <code class="language-plaintext highlighter-rouge">spawn_subagent</code> 区分 <code class="language-plaintext highlighter-rouge">general-purpose / explore / plan</code>，默认后台，支持 raw transcript resume、<code class="language-plaintext highlighter-rouge">cwd</code>、model inheritance 和 worktree。最关键的是 <code class="language-plaintext highlighter-rouge">capability_mode = read-only / read-write / execute / all</code>：如果 runtime 真按工具类别裁剪权限，它比“你是只读代理，请别写”可靠得多。一个隐患是子代理只收到 compacted <code class="language-plaintext highlighter-rouge">AGENTS.md</code>，父代理必须把关键测试和约束显式重复到 prompt。</p>
+
+<p><strong>MCP。</strong> Grok 不是把所有 MCP schema 一次塞进上下文，而是先 <code class="language-plaintext highlighter-rouge">search_tool</code> 找到候选和 schema，再用 <code class="language-plaintext highlighter-rouge">use_tool</code> 调 <code class="language-plaintext highlighter-rouge">server__tool</code>。这会显著压低初始 tool token，也允许服务器晚连接；代价是至少多一次 round trip，而且“工具名不对、schema 不合”更晚才暴露。</p>
+
+<p><strong>Workflow 与 todo。</strong> Rhai workflow 可从内联脚本、项目或用户目录启动，后台运行，带 1–1024 agent budget 和 <code class="language-plaintext highlighter-rouge">validate_only</code>。但 resume 只支持同进程暂停；进程重启后是终态，弱于 Claude 的前缀缓存恢复。<code class="language-plaintext highlighter-rouge">todo_write</code> 默认按 ID merge，只发变化项即可，比全量替换更适合长任务。</p>
+
+<p><strong>判断。</strong> Grok 的最佳设计是把只读/可写/可执行落实为 capability，而不是人格描述；主要缺口是没有显式主会话 compaction、durable memory 或 goal 协议。它适合一次 session 内的强并发，不适合把长期自主任务只交给核心 runtime。</p>
+
+<p>证据：<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/grok/0.2.118/prompt.md#L3-L38">短核心 prompt</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/grok/0.2.118/prompt.md#L785-L888">sub-agent capability/resume/isolation</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/grok/0.2.118/prompt.md#L752-L779">MCP discovery</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/grok/0.2.118/prompt.md#L952-L977">MCP invocation</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/grok/0.2.118/prompt.md#L892-L950">增量 todo</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/grok/0.2.118/prompt.md#L1010-L1077">Rhai workflow</a>。</p>
+
+<h2 id="5-minimax-code关系型桌面助手而非纯-coding-loop">5. MiniMax Code：关系型桌面助手，而非纯 Coding Loop</h2>
+
+<p><strong>System prompt。</strong> MiniMax Code 用很大篇幅塑造 Mavis：年轻同事、关心情绪、可以有偏好和一点脾气，并提供大量“不要这样说 / 应该这样说”的示例。它能让消费级桌面助手更有连续人格，但对 coding harness 是昂贵的固定税：每个代码任务都要携带与当前工作无关的关系指令。</p>
+
+<p><strong>任务路由。</strong> 默认自己做；verification 可以自由委派，implementation delegation 必须先得到用户明确同意。这比“复杂就自动 spawn”尊重授权，但 <code class="language-plaintext highlighter-rouge">task</code> schema 只有 description、prompt、agent name 和 background，没有 context inheritance、resume、capability 或 workspace isolation。它更像隐藏 child session launcher，而不是完整的 agent protocol。</p>
+
+<p><strong>Runtime 管理。</strong> <code class="language-plaintext highlighter-rouge">mavis</code> 是 CLI 风格 dispatcher，用一个 <code class="language-plaintext highlighter-rouge">{command, args}</code> 管 agent roster、system prompt、cron 和 sessions。它缩小了工具表面，又由 desktop dispatcher 做子命令级字段校验。Memory 分 <code class="language-plaintext highlighter-rouge">user / main / topic / summary</code>，基础 prompt 还要求按 project → agent → user 的最窄层级保存，并优先信任直接用户证据。</p>
+
+<p><strong>Goal 与 mismatch。</strong> 本次只暴露 <code class="language-plaintext highlighter-rouge">get_goal</code> 和 <code class="language-plaintext highlighter-rouge">update_goal</code>，没有 <code class="language-plaintext highlighter-rouge">create_goal</code>，说明 goal 由 UI/宿主启动后交给模型收尾。更明确的错误是 prompt 强制外部事实使用 <code class="language-plaintext highlighter-rouge">web_search</code>，实际工具只有返回 raw content 的 <code class="language-plaintext highlighter-rouge">web_fetch</code>。Runtime context 提到 MCP config 是数据目录的一部分，但本次没有通用 MCP tool。<code class="language-plaintext highlighter-rouge">date: $PHISTORY_DATETIME</code> 也没有 snapshot/stale 说明。</p>
+
+<p><strong>判断。</strong> MiniMax Code 的设计中心是“一个长期存在、可创建其他助手的桌面 Mavis”，不是最小 coding agent。<code class="language-plaintext highlighter-rouge">mavis</code> dispatcher 和分层 memory 值得借鉴；人格 token、工具名漂移和缺失的 delegation contract 会直接影响可靠性。</p>
+
+<p>证据：<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/minimax-code/3.0.57/prompt.md#L3-L110">persona 与 delegation policy</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/minimax-code/3.0.57/prompt.md#L224-L301">freshness 与 memory 规则</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/minimax-code/3.0.57/prompt.md#L867-L905"><code class="language-plaintext highlighter-rouge">mavis</code> dispatcher</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/minimax-code/3.0.57/prompt.md#L1140-L1241">memory schema</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/minimax-code/3.0.57/prompt.md#L1294-L1328"><code class="language-plaintext highlighter-rouge">task</code> schema</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/minimax-code/3.0.57/prompt.md#L743-L754">goal 读取/收尾</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/minimax-code/3.0.57/prompt.md#L483-L497">runtime datetime</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/minimax-code/3.0.57/prompt.md#L1507-L1554">实际 <code class="language-plaintext highlighter-rouge">web_fetch</code></a>。</p>
+
+<h2 id="6-kimi-code最完整的长任务状态机之一">6. Kimi Code：最完整的长任务状态机之一</h2>
+
+<p><strong>System prompt。</strong> Kimi Code 是 action-first：非简单问答默认实际调用工具；专用文件工具优先于 shell；并行读取被明确鼓励；workspace、secret、git 与外部副作用边界写得很细。其 compaction 合同是本文最具体的之一：宿主只重写旧轮次，尽量保留原始用户消息，生成第一人称摘要，记录命令、路径、结果、未知项和 TODO；瞬态工具状态不受保证，压缩后要重新枚举后台任务。</p>
+
+<p><strong>Sub-agent。</strong> 新 <code class="language-plaintext highlighter-rouge">Agent</code> 从零上下文启动，可 resume；coder 子代理甚至能继续调用 <code class="language-plaintext highlighter-rouge">Agent</code>、<code class="language-plaintext highlighter-rouge">AgentSwarm</code> 和 <code class="language-plaintext highlighter-rouge">mcp__*</code>。<code class="language-plaintext highlighter-rouge">AgentSwarm</code> 用 <code class="language-plaintext highlighter-rouge">{{item}}</code> 模板一次派发最多 128 个同构任务，适合批量 review。问题有两个：其一，schema 没有 worktree/isolation；其二，<code class="language-plaintext highlighter-rouge">explore</code> 被描述为 prompt-enforced read-only，却仍拥有 Bash。只要 runtime 不限制 Bash，所谓只读就是行为建议，不是权限边界。</p>
+
+<p><strong>Goal、plan、todo。</strong> 这是少数把三者真正分开的 harness：<code class="language-plaintext highlighter-rouge">CreateGoal</code> 要求可验证终态，<code class="language-plaintext highlighter-rouge">SetGoalBudget</code> 支持 turn/token/time，<code class="language-plaintext highlighter-rouge">UpdateGoal</code> 有三轮 blocker 审计；plan mode 写入 plan file 并通过 <code class="language-plaintext highlighter-rouge">ExitPlanMode</code> 做 UI 审批；<code class="language-plaintext highlighter-rouge">TodoList</code> 只追踪本次多步执行且全量替换。Goal 负责“为什么和何时结束”，plan 负责“执行前选哪条路”，todo 负责“当前做到哪一步”。</p>
+
+<p><strong>Skill 与 MCP。</strong> Skill 有 <code class="language-plaintext highlighter-rouge">Project &gt; User &gt; Extra &gt; Built-in</code> 明确优先级，匹配后必须用 <code class="language-plaintext highlighter-rouge">Skill</code> 工具装载。当前 capture 没有配置具体 MCP schema，但 coder agent 的工具表明确允许动态 <code class="language-plaintext highlighter-rouge">mcp__*</code>，说明它走按会话注入路线。</p>
+
+<p><strong>Datetime 判断。</strong> <code class="language-plaintext highlighter-rouge">0.31.1</code> 明确说 <code class="language-plaintext highlighter-rouge">$PHISTORY_DATETIME</code> 在 session start 采样、长会话会陈旧，时间敏感任务必须运行 <code class="language-plaintext highlighter-rouge">date</code>。因此“在 prompt 里写 datetime 明显有问题”这个判断过于宽：<strong>时间锚点有用，把锚点冒充 live clock 才是 bug。</strong> 历史上 <code class="language-plaintext highlighter-rouge">0.19.2</code> 只说它是 reference、精确时间用 Bash；到 <code class="language-plaintext highlighter-rouge">0.20.1</code> 才首次明确 session-start 与 stale 风险。当前实现已经修正了语义。</p>
+
+<p><strong>判断。</strong> Kimi Code 在长期目标、压缩、后台任务和 skill precedence 上很完整；最需要补的是 capability-gated read-only 和并发写隔离（AgentSwarm 与别家编排能力的逐项对比见横向比较）。</p>
+
+<p>证据：<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/kimi-code/0.31.1/prompt.md#L67-L96">compaction 与 datetime</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/kimi-code/0.31.1/prompt.md#L173-L240">Agent</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/kimi-code/0.31.1/prompt.md#L243-L303">AgentSwarm</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/kimi-code/0.31.1/prompt.md#L492-L539">goal 创建</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/kimi-code/0.31.1/prompt.md#L1184-L1241">goal budget</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/kimi-code/0.31.1/prompt.md#L1459-L1489">goal 状态守卫</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/kimi-code/0.31.1/prompt.md#L840-L940">plan approval</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/kimi-code/0.31.1/prompt.md#L1243-L1457">Skill 与 todo</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/kimi-code/0.19.2/prompt.md#L79-L81">旧 datetime 语义</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/kimi-code/0.20.1/prompt.md#L76-L78">stale 修订</a>。</p>
+
+<h2 id="7-mimo-code状态架构先进prompt-stitching-债务也最明显">7. MiMo Code：状态架构先进，Prompt Stitching 债务也最明显</h2>
+
+<p><strong>System prompt。</strong> 前半段几乎就是 opencode boilerplate：断言任何问题都离不开 extensive internet research、要求递归抓 Google、每次读 2000 行、自动创建 <code class="language-plaintext highlighter-rouge">.env</code> placeholder，并要求 Markdown todo。后半段却出现完全不同的 actor、checkpoint、task 和 memory runtime。两种范式叠在一起，形成明显的 prompt stitching debt：一个说“一切都要联网”，另一个已经有更细的按需 skill、memory 和 task 机制。</p>
+
+<p><strong>Actor。</strong> <code class="language-plaintext highlighter-rouge">actor</code> 是本文最细的子代理生命周期之一：<code class="language-plaintext highlighter-rouge">run / spawn / status / wait / cancel / send</code>，context 可取 <code class="language-plaintext highlighter-rouge">none / state / full</code>，actor ID 可跨 turn resume，输出可用 JSON Schema，还能绑定 persistent task ID。代价是 actor ID 与 task ID 是两套身份；传错 TID 时绑定会被静默丢弃，子代理结果无法进入 task progress。后台 actor 完成后也不会自动唤醒当前 turn，只会在用户下次交互时出现；需要即时结果时必须显式 wait。</p>
+
+<p><strong>Checkpoint、memory、history。</strong> checkpoint writer 是 structured state 的唯一写者，维护 project/session/task/global 四层文件。<code class="language-plaintext highlighter-rouge">memory</code> 对 curated Markdown 做 BM25，<code class="language-plaintext highlighter-rouge">history</code> 再对 raw messages/tool events 做 FTS，是正确的“先摘要召回、再逐字证据”两级模型。但内部存在一句危险矛盾：系统总则说 memory 中的函数、路径只是历史 claim，行动前要验证；memory tool 又写 <code class="language-plaintext highlighter-rouge">A HIT IS AUTHORITATIVE</code>。前者才是安全语义。</p>
+
+<p><strong>隐私与 goal。</strong> MiMo 可选择索引 Claude Code memory，并明确警告 <code class="language-plaintext highlighter-rouge">user/feedback</code> 可能被暴露给遭 prompt injection 的 subagent；这段自我揭示是诚实的，也说明跨 harness memory federation 必须默认关闭。MiMo 没有 durable goal，而是用可持久化的层级 task graph 表达工作；task 有 open、in_progress、blocked、done、abandoned，但缺少独立 completion criterion 与预算。</p>
+
+<p><strong>判断。</strong> 如果只看状态机，MiMo 很接近“可恢复 agent runtime”；如果看整个 prompt，它又是 13 个里最需要清理旧路径的之一。最佳修复不是再加冲突说明，而是删除旧 opencode 工作流，让 checkpoint/task/skill 成为唯一控制面。</p>
+
+<p>证据：<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/mimo/0.1.9/prompt.md#L3-L88">旧 boilerplate</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/mimo/0.1.9/prompt.md#L280-L352">checkpoint architecture</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/mimo/0.1.9/prompt.md#L362-L445">actor lifecycle</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/mimo/0.1.9/prompt.md#L1323-L1465">memory/history 两级召回</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/mimo/0.1.9/prompt.md#L1475-L1490">Claude memory 隐私警告</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/mimo/0.1.9/prompt.md#L1720-L1777">persistent task graph</a>。</p>
+
+<h2 id="8-openclawambient-personal-agent而非单纯-coding-harness">8. OpenClaw：Ambient Personal Agent，而非单纯 Coding Harness</h2>
+
+<p><strong>System prompt 与工具。</strong> OpenClaw 的工具覆盖 browser、canvas、paired nodes、message、gateway、media、cron、memory、goal 和 sessions；它面对的是跨设备、跨消息渠道的个人助手场景。此次新 workspace 又注入完整 <code class="language-plaintext highlighter-rouge">BOOTSTRAP / SOUL / IDENTITY / USER / TOOLS / AGENTS</code> 模板，所以 prompt 极长；正常已初始化会话不一定承担同样成本。</p>
+
+<p><strong>Sub-agent。</strong> <code class="language-plaintext highlighter-rouge">sessions_spawn</code> 默认 clean isolated context，只有确实需要当前 transcript 才 <code class="language-plaintext highlighter-rouge">context=fork</code>；还支持 sandbox、attachments、cleanup、lightContext 和 cwd。<code class="language-plaintext highlighter-rouge">sessions_yield</code> 直接结束当前 turn 等待完成事件，结果作为下一条消息回来。这比不断 <code class="language-plaintext highlighter-rouge">sessions_list</code> 轮询更节省 token，也把 async completion 定义成宿主事件。</p>
+
+<p><strong>Memory 与 goal。</strong> daily notes 保存原始发生过什么，<code class="language-plaintext highlighter-rouge">MEMORY.md</code> 保存提炼后的长期记忆，而且只在 main direct session 加载，避免群聊泄漏。<code class="language-plaintext highlighter-rouge">memory_search</code> 可检索 memory 或 session corpus，再用 <code class="language-plaintext highlighter-rouge">memory_get</code> 精确取行。Goal 有显式创建、token budget 和三轮 blocker 规则。当前时间不靠伪实时变量；需要时调用 <code class="language-plaintext highlighter-rouge">session_status</code>。</p>
+
+<p><strong>Skill governance。</strong> Skill Workshop 不是直接改 live skill，而是先创建 proposal，再由用户 apply、reject 或 quarantine。这是本文最好的技能变更治理：把“模型发现可复用经验”和“允许长期改变未来行为”分成两个动作。</p>
+
+<p><strong>风险。</strong> 默认 AGENTS heartbeat 允许 agent 自主检查项目、更新文档、commit 并 push 自己的变化。对 ambient assistant，这可能是追求主动性的选择；对代码仓库，它越过了常见的“外部可见副作用必须显式授权”边界。Skill Workshop 很保守，heartbeat 却很激进，两套安全哲学不一致。</p>
+
+<p><strong>判断。</strong> OpenClaw 最强的是 session、memory、channel 与定时任务的一体化，而不是代码编辑本身。设计 personal agent 时值得参考；设计 coding harness 时，应删去默认 push 权限，并缩小 bootstrap 注入。</p>
+
+<p>证据：<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/openclaw/2026.7.1-2/prompt.md#L3-L83">工具与事件驱动规则</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/openclaw/2026.7.1-2/prompt.md#L255-L287">memory 隔离</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/openclaw/2026.7.1-2/prompt.md#L337-L365">heartbeat 权限</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/openclaw/2026.7.1-2/prompt.md#L3497-L3622"><code class="language-plaintext highlighter-rouge">sessions_spawn/yield</code></a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/openclaw/2026.7.1-2/prompt.md#L3624-L3727">Skill Workshop</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/openclaw/2026.7.1-2/prompt.md#L1094-L1115">goal 创建</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/openclaw/2026.7.1-2/prompt.md#L3780-L3804">goal 状态守卫</a>。</p>
+
+<h2 id="9-hermes-agent把-skill-当作-procedural-memory">9. Hermes Agent：把 Skill 当作 Procedural Memory</h2>
+
+<p><strong>System prompt。</strong> 核心人格很短，但 skill policy 极其激进：只要“部分相关”也必须加载，复杂任务后还应保存新 skill；已加载 skill 发现错误时要立刻 patch。它把长期能力提升明确建模为 procedural memory，而不是把操作步骤塞进普通 memory。</p>
+
+<p><strong>Memory 与 compaction。</strong> Durable memory 只存稳定事实，task progress 和短期结果去 <code class="language-plaintext highlighter-rouge">session_search</code>。Memory 支持 atomic batch，并按最终字符预算检查，能在一次事务里删除旧项再添加新项。<code class="language-plaintext highlighter-rouge">SKILL_PRUNED</code> marker 则直接承认 compaction 可能丢掉 skill 正文，并要求使用前重新加载；这比假装技能一直在上下文里更可靠。</p>
+
+<p><strong>Sub-agent 与 trust。</strong> <code class="language-plaintext highlighter-rouge">delegate_task</code> 的 child 是隔离 conversation/terminal，后台 only，最多 3 并发；本次 nesting 被关闭，也没有 resume、context fork 或 worktree。它最值得借鉴的是 trust policy：child summary 明确被称为 self-report；上传、写文件、发布等副作用必须返回 URL/ID/path，再由 parent fetch/stat/read-back 后才能宣布成功。相比 opencode 的“generally trust”，这是更安全的默认。</p>
+
+<p><strong>确定性编排与 cron。</strong> <code class="language-plaintext highlighter-rouge">execute_code</code> 用 Python 在 5 分钟、50 次工具调用、50KB stdout 内做条件、循环和结果过滤，适合机械编排；它不等同于 Claude Workflow，因为没有 durable workflow graph 或 agent resume。Cron 可绑定 skills、在 fresh session 运行并自动投递，适合长期定时程序。</p>
+
+<p><strong>风险。</strong> <code class="language-plaintext highlighter-rouge">skill_manage</code> 要求已加载 skill 出错时立即 patch，虽然创建/删除需确认，但修改既有持久技能不经过 proposal/review。一次错误归因就可能永久改变未来行为。OpenClaw 的 pending proposal 状态比这种自动 patch 更稳。Hermes 只有 todo，没有 durable goal；<code class="language-plaintext highlighter-rouge">Conversation started: $PHISTORY_DATETIME</code> 的表述则正确地把时间标成起点而非实时钟。</p>
+
+<p><strong>判断。</strong> Hermes 的记忆分层、self-report 验证和 skill-as-procedure 很成熟；主要风险是 skill trigger 过宽与自动修改行为。应保留“发现问题”，把“应用持久修改”改成 staged proposal。</p>
+
+<p>证据：<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/hermes/v2026.8.3/prompt.md#L3-L38">memory/skill 基础规则与 compaction marker</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/hermes/v2026.8.3/prompt.md#L476-L568">delegate trust contract</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/hermes/v2026.8.3/prompt.md#L591-L666">atomic memory</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/hermes/v2026.8.3/prompt.md#L870-L918">session history</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/hermes/v2026.8.3/prompt.md#L965-L982">skill mutation</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/hermes/v2026.8.3/prompt.md#L1176-L1234">todo</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/hermes/v2026.8.3/prompt.md#L125-L138">session-start time</a>。</p>
+
+<h2 id="10-kimi-clikimi-code-rich-runtime-之前的基础循环">10. Kimi CLI：Kimi Code Rich Runtime 之前的基础循环</h2>
+
+<p><strong>Developer prompt。</strong> Kimi CLI 与 Kimi Code 共享 action-first、同语言回复、专用工具和 AGENTS.md 规则，但整体更轻。它没有独立 compaction contract，也没有 durable memory/goal。</p>
+
+<p><strong>Sub-agent。</strong> <code class="language-plaintext highlighter-rouge">Agent</code> 新实例零上下文，可按 agent ID resume，支持 model override、foreground/background 和 timeout。<code class="language-plaintext highlighter-rouge">coder / explore / plan</code> 类型明确；explore 的“prompt-enforced read-only 却仍有 Shell”问题与 Kimi Code 相同（见横向比较第 1 节）。没有 AgentSwarm、worktree、context inheritance 或 structured output。</p>
+
+<p><strong>Plan、todo、skills。</strong> Plan mode 通过文件和 <code class="language-plaintext highlighter-rouge">ExitPlanMode</code> 请求 UI 审批；<code class="language-plaintext highlighter-rouge">SetTodoList</code> 每次替换完整列表。Skill 有四级 precedence，但本次没有专用 <code class="language-plaintext highlighter-rouge">Skill</code> tool，只要求模型直接读取 <code class="language-plaintext highlighter-rouge">SKILL.md</code>。MCP 只出现在产品帮助 skill 的描述中，没有通用 MCP 工具被捕获。</p>
+
+<p><strong>Datetime。</strong> 它把 <code class="language-plaintext highlighter-rouge">$PHISTORY_DATETIME</code> 称为 reference，并要求精确时间走 Shell；这已经避免把快照当绝对真值，但没有像 Kimi Code 新版那样解释 resumed session 会陈旧。</p>
+
+<p><strong>判断。</strong> Kimi CLI 是清楚、传统、可用的 agent loop；Kimi Code 在其上补齐了 compaction、goal、swarm、Skill tool、cron 与更细的安全合同。二者差异说明“换一个 system prompt”并不能获得 rich runtime，能力来自宿主状态机。</p>
+
+<p>证据：<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/kimi/1.49.0/prompt.md#L9-L148">核心与 datetime/skills</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/kimi/1.49.0/prompt.md#L168-L279">Agent</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/kimi/1.49.0/prompt.md#L367-L480">plan approval</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/kimi/1.49.0/prompt.md#L732-L798">全量 todo</a>。</p>
+
+<h2 id="11-opencodeprompt-hygiene-最差的典型">11. opencode：Prompt Hygiene 最差的典型</h2>
+
+<p><strong>System prompt。</strong> 它把“任何问题都不能在没有 extensive internet research 的情况下解决”写成无条件真理，强制递归抓 URL 和 Google；实现依赖时每次都要联网；读代码固定 2000 行；发现环境变量时自动新建 <code class="language-plaintext highlighter-rouge">.env</code> placeholder。后果很具体：本地重命名也会增加网络延迟和 prompt-injection 面；读取小函数浪费上下文；用户只想诊断时仓库仍可能被写入。</p>
+
+<p>Prompt 还建议使用 sequential thinking “if available”，本次 schema 没有这个工具。虽然这不是硬错误，因为有 <code class="language-plaintext highlighter-rouge">if available</code>，但它暴露了模板没有根据实际 tool surface 收敛。</p>
+
+<p><strong>Memory。</strong> 用户偏好被写到项目的 <code class="language-plaintext highlighter-rouge">.github/instructions/</code> 目录下，文件名是 <code class="language-plaintext highlighter-rouge">memory.instruction.md</code>。这会把个人偏好混入版本库，可能被误提交、影响其他贡献者或跨用户泄漏。Memory 应由 harness profile/session 管，不应默认成为仓库源文件。</p>
+
+<p><strong>Sub-agent。</strong> <code class="language-plaintext highlighter-rouge">task</code> 支持 fresh/resume 和并行，但没有 context mode、capability、workspace isolation 或 output schema；更糟的是它要求 parent “generally trust” child output。没有验证句柄时，任何“测试通过、文件已写、远端已更新”都只是 self-report。</p>
+
+<p><strong>状态与扩展。</strong> 有可见 todo 和一个匹配后加载的 Skill tool，没有 main compaction、durable goal 或 persistent task graph。MCP 仅出现在 <code class="language-plaintext highlighter-rouge">customize-opencode</code> skill 的说明，本次没有通用 MCP surface。</p>
+
+<p><strong>判断。</strong> opencode 的问题不是功能少，而是全局规则缺少条件。最有效的改进是删除强制联网、固定读取量、自动 <code class="language-plaintext highlighter-rouge">.env</code> 和仓库内个人 memory，把它们分别改成 freshness guard、分页工具策略、显式写授权和 profile memory。</p>
+
+<p>证据：<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/opencode/1.18.12/prompt.md#L3-L88">无条件联网与写入规则</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/opencode/1.18.12/prompt.md#L115-L149">仓库内 memory</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/opencode/1.18.12/prompt.md#L429-L485">task 与 trust</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/opencode/1.18.12/prompt.md#L406-L570">todo/Skill</a>。</p>
+
+<h2 id="12-pi最小内核--typescript-扩展以及刻意没有-mcp">12. Pi：最小内核 + TypeScript 扩展，以及刻意没有 MCP</h2>
+
+<p><strong>System prompt 与工具。</strong> Pi 的核心只有 <code class="language-plaintext highlighter-rouge">bash / edit / read / write</code>。<code class="language-plaintext highlighter-rouge">edit</code> 支持一次提交多个不重叠替换，且所有 <code class="language-plaintext highlighter-rouge">oldText</code> 都针对同一份原始文件快照匹配；这是一条小但很好的原子性语义。Prompt 还明确说明扩展可注入 custom tools。</p>
+
+<p><strong>扩展机制（这次捕获看不到的一半）。</strong> Pi 的扩展就是一个 TypeScript 模块：默认导出工厂函数 <code class="language-plaintext highlighter-rouge">(pi: ExtensionAPI)</code>，由 jiti 直接加载、免编译，自动发现于 <code class="language-plaintext highlighter-rouge">~/.pi/agent/extensions/</code> 与项目内 <code class="language-plaintext highlighter-rouge">.pi/extensions/</code>（后者需 project trust 审批），也支持 npm/git 来源与 <code class="language-plaintext highlighter-rouge">/reload</code> 热重载。同一个 API 可以 <code class="language-plaintext highlighter-rouge">registerTool</code>（TypeBox 定义 schema，AJV 校验；可用同名注册<strong>覆盖</strong>内置工具，甚至 <code class="language-plaintext highlighter-rouge">--no-builtin-tools</code> 只留扩展工具）、<code class="language-plaintext highlighter-rouge">registerCommand</code> / <code class="language-plaintext highlighter-rouge">registerFlag</code> / <code class="language-plaintext highlighter-rouge">registerProvider</code>，并能订阅贯穿 agent loop 的事件钩子：<code class="language-plaintext highlighter-rouge">before_agent_start</code> 改写 system prompt、<code class="language-plaintext highlighter-rouge">context</code> 在每次 LLM 调用前改写消息列表、<code class="language-plaintext highlighter-rouge">tool_call</code> 拦截或修改参数、<code class="language-plaintext highlighter-rouge">session_before_compact</code> 接管压缩。<strong>权限系统刻意缺席</strong>：核心默认 YOLO，<code class="language-plaintext highlighter-rouge">tool_call</code> 事件返回 <code class="language-plaintext highlighter-rouge">{ block: true }</code> 就是官方示范的权限闸门写法——安全边界本身是扩展，不是内核。</p>
+
+<p><strong>“没有 MCP”是立场，不是欠债。</strong> Mario Zechner 明确写了 “pi does not and will not support MCP”。论证分三层：一是<strong>上下文税</strong>——Playwright MCP 21 个工具占 13.7k token、Chrome DevTools MCP 26 个工具占 18k token，会话未开始先吃掉 7–9% 上下文；二是<strong>组合性</strong>——MCP server 的输出必须穿过 agent 上下文才能组合，CLI 可以 pipe、重定向、链式调用；三是<strong>替代方案</strong>——给 agent 一组带 README 的 CLI 脚本做渐进披露（他的 browser-tools README 只有 225 token），非要用 MCP 就用 mcporter 把 server 包成 CLI。值得注意的是他自己 2025-08 的实测结论：协议本身不是问题（设计良好的 MCP 与 CLI 成功率相同、甚至快 23%），所以准确的批评对象是主流 MCP server 的工具设计与上下文倾销，不是协议本身。OMP 和社区后来都把 MCP 加了回来，恰好证明这是路线选择而非技术不能。</p>
+
+<p><strong>没有暴露的部分。</strong> 本次 capture 没有 subagent、todo、memory、goal、skill、MCP 或 explicit compaction。这不等于生态没有：当前版本已补上 compaction（上下文逼近阈值自动触发、切割点绝不落在 tool result 上、结构化摘要 + 文件读写记录跨压缩累积、可被扩展接管）和 JSONL 树形 session（<code class="language-plaintext highlighter-rouge">/fork</code> <code class="language-plaintext highlighter-rouge">/tree</code> 分支导航自动生成 branch summary）。Mario 的清单式拒绝仍然成立：无内置 todo（写 <code class="language-plaintext highlighter-rouge">TODO.md</code>）、无 plan mode（<code class="language-plaintext highlighter-rouge">--tools read,grep,find,ls</code> 凑出只读模式）、无后台 bash（用 tmux）、无 sub-agent（让 pi 通过 bash 自 spawn）。</p>
+
+<p><strong>判断。</strong> Pi 是最容易审计的 base harness：token 小、工具行为直白、失败定位简单；它押注的是“模型已经会当 coding agent，harness 的职责是提供稳定小表面然后让开”。代价是长任务恢复、安全策略、异步完成和 durable state 都不在最小内核里，全部推给扩展层——对可组合研究平台是优点，对开箱即用的长期 autonomous agent 是缺口。仓库现已移交 <a href="https://github.com/earendil-works/pi">earendil-works/pi</a>（原 badlogic/pi-mono）；另据社区对依赖关系的源码观察，Pi 也是 OpenClaw 的底层 agent 引擎。</p>
+
+<p>证据：<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/pi/0.83.0/prompt.md#L3-L32">最小 prompt 与扩展边界</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/pi/0.83.0/prompt.md#L41-L154">四个工具 schema</a>；另见 <a href="https://github.com/badlogic/pi-mono/blob/main/packages/coding-agent/docs/extensions.md">Pi 扩展文档</a>、<a href="https://github.com/badlogic/pi-mono/blob/main/packages/coding-agent/docs/compaction.md">compaction 文档</a>、Mario 的 <a href="https://mariozechner.at/posts/2025-11-02-what-if-you-dont-need-mcp/">no-MCP 论证</a>与 <a href="https://mariozechner.at/posts/2025-11-30-pi-coding-agent/">Pi 设计总结</a>。</p>
+
+<h2 id="13-oh-my-pi最接近-agent-operating-system">13. Oh My Pi：最接近 Agent Operating System</h2>
+
+<p><strong>内部资源模型。</strong> Oh My Pi 用统一 URI 表示 <code class="language-plaintext highlighter-rouge">skill://</code>、<code class="language-plaintext highlighter-rouge">agent://</code>、<code class="language-plaintext highlighter-rouge">history://</code>、<code class="language-plaintext highlighter-rouge">artifact://</code>、<code class="language-plaintext highlighter-rouge">local://</code>、<code class="language-plaintext highlighter-rouge">mcp://</code>、issue 和 PR；额外工具被挂成 <code class="language-plaintext highlighter-rouge">xd://</code> virtual device，通过 <code class="language-plaintext highlighter-rouge">write</code> JSON 执行。这样文件、agent output、history 和 MCP resource 都能进入同一 read/write 管线。</p>
+
+<p><strong>代码工具。</strong> AST edit、DAP debugger、LSP 与 browser 都是一等设备。跨文件 rename 必须走 LSP，AST rewrite 先 staged proposal 再 resolve/reject；这比把代码理解全部降级为 grep + text patch 更可靠。代价是模型要学会 URI、device schema、staging 和专用选择器，协议学习成本最高。</p>
+
+<p><strong>Eval 与 orchestration。</strong> <code class="language-plaintext highlighter-rouge">eval</code> 是跨调用和 subagent 持久化的 Python/Bun kernel，可调用任意 session tool、one-shot completion、subagent、parallel、pipeline 和 budget。它既是数据处理层，也是 DAG runtime。<code class="language-plaintext highlighter-rouge">task</code> 一次批量派发，要求 parent 先写 shared <code class="language-plaintext highlighter-rouge">Goal / Constraints / Contract</code>，每个 child 写 <code class="language-plaintext highlighter-rouge">Target / Change / Acceptance</code>，并支持 output JSON Schema。Hub 同时管理 peer messaging、job delivery和 project-scoped supervised process；最多 32 个 subagent 并发。</p>
+
+<p><strong>状态与 MCP。</strong> Todo 支持 phase、task、block/unblock，却没有显式 durable goal、长期 personal memory 或 main-session compaction contract。<code class="language-plaintext highlighter-rouge">mcp://</code> 统一的是 MCP resource 读取，不应误解为所有 MCP action 都天然变成文件操作。</p>
+
+<p><strong>两个过度承诺。</strong> 第一，<code class="language-plaintext highlighter-rouge">task</code> 宣称并发编辑重叠会自动解决，因此不应为 overlap 串行；文本合并也许能解冲突，语义冲突仍必须由 contract 与最终验证发现。第二，prompt 写“不要重新审计 applied edit，tool result 就是 verification”。同一 prompt 后面确实要求 smoke test 和行为验证，所以合理解释应是“不要为了确认 patch 落盘而重复读取”，而不是“patch 成功等于程序正确”；原措辞仍容易让模型混淆两层验证。</p>
+
+<p><strong>与 Pi 的直接对立。</strong> OMP 是 pi-mono 的 fork（现 <a href="https://github.com/can1357/oh-my-pi">can1357/oh-my-pi</a>），却重写了完整的 MCP 客户端子系统（OAuth、<code class="language-plaintext highlighter-rouge">/mcp</code> 命令族、从 <code class="language-plaintext highlighter-rouge">.claude</code>/<code class="language-plaintext highlighter-rouge">.cursor</code>/<code class="language-plaintext highlighter-rouge">.codex</code> 等 8 种配置文件自动继承），MCP 工具直接合入运行时工具表——Pi 核心拒绝付的上下文税，OMP 主动付了。同源两叉，一叉把工具当代码（扩展即 TypeScript），一叉把万物当 URI 资源，是 harness 设计张力最干净的活体对照。</p>
+
+<p><strong>判断。</strong> OMP 的最强项是把 LSP、debugger、browser、process、agent 和 resource 统一为 runtime primitives；它不是“更多工具”，而是一个 agent OS。下一步应补 durable goal/compaction，并收紧 overlap 与 edit-verification 的措辞。</p>
+
+<p>证据：<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/omp/17.2.7/prompt.md#L15-L53">内部 URI 与 virtual device</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/omp/17.2.7/prompt.md#L55-L194">LSP/AST/DAP</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/omp/17.2.7/prompt.md#L273-L318">delegation gates</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/omp/17.2.7/prompt.md#L343-L417">行为验证与争议措辞</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/omp/17.2.7/prompt.md#L666-L705">persistent eval/DAG</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/omp/17.2.7/prompt.md#L976-L1011">hub</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/omp/17.2.7/prompt.md#L1329-L1455">typed task contract</a>、<a href="https://github.com/WEIFENG2333/phistory/blob/d29ec71ac5dc451a2cb0fc7d943e5c3187ca59db/captures/omp/17.2.7/prompt.md#L1457-L1500">phase todo</a>。</p>
+
+<h1 id="横向比较差异真正在哪里">横向比较：差异真正在哪里</h1>
+
+<h2 id="1-tool-surface显式-schemadispatchermeta-toolvirtual-device">1. Tool Surface：显式 Schema、Dispatcher、Meta-tool、Virtual Device</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>模式</th>
+      <th>代表</th>
+      <th>优势</th>
+      <th>失败方式</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>大量显式 typed tools</td>
+      <td>Claude、Kimi Code、Kimi CLI</td>
+      <td>工具名与参数直接可见，权限可细分，schema 早拒绝</td>
+      <td>schema 本身占大量上下文；工具升级会扩大 prompt</td>
+    </tr>
+    <tr>
+      <td>Late-bound dispatcher</td>
+      <td>Grok MCP、MiniMax <code class="language-plaintext highlighter-rouge">mavis</code></td>
+      <td>初始表面小，可动态发现服务或子命令</td>
+      <td>多一次发现调用；参数错误到运行期才出现</td>
+    </tr>
+    <tr>
+      <td>代码式 meta-tool</td>
+      <td>Codex <code class="language-plaintext highlighter-rouge">exec</code>、Hermes <code class="language-plaintext highlighter-rouge">execute_code</code></td>
+      <td>能并行、循环、过滤大结果，减少模型 round trip</td>
+      <td>调试跨两层；若 runtime guard 不强，代码编排会放大副作用</td>
+    </tr>
+    <tr>
+      <td>Workflow DSL</td>
+      <td>Claude JavaScript、Grok Rhai</td>
+      <td>把 fan-out、barrier、budget、resume 变成确定性控制流</td>
+      <td>要维护脚本状态与缓存语义；过度 fan-out 会烧 token</td>
+    </tr>
+    <tr>
+      <td>Virtual device / URI OS</td>
+      <td>Oh My Pi</td>
+      <td>统一资源寻址，可把 LSP/DAP/browser 作为一等设备</td>
+      <td>协议最难学；错误常先表现为 URI/device 使用错误</td>
+    </tr>
+    <tr>
+      <td>最小工具内核</td>
+      <td>Pi</td>
+      <td>透明、低 token、扩展容易</td>
+      <td>核心不保证安全、长期状态和异步语义</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>工具设计的关键不是“模型会不会调用”，而是<strong>错误在多早被拒绝</strong>。例如 Grok 的 <code class="language-plaintext highlighter-rouge">capability_mode=read-only</code> 可以在 runtime 拦写；Kimi/Kimi CLI 只给 explore agent 一段“只读”文字，却仍提供 Bash，权限边界更弱。类似地，专用 <code class="language-plaintext highlighter-rouge">ReportFindings</code> 能保证 review 输出 shape，而“请按 JSON 回答”只能期待模型自觉。</p>
+
+<h2 id="2-sub-agent至少比较五个字段">2. Sub-agent：至少比较五个字段</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Harness</th>
+      <th>Context</th>
+      <th>Resume</th>
+      <th>Workspace</th>
+      <th>Completion</th>
+      <th>Parent trust</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Claude Code</td>
+      <td>新 Agent fresh；类型定义补系统上下文</td>
+      <td>SendMessage 继续</td>
+      <td>shared / worktree / remote</td>
+      <td>后台 push</td>
+      <td>明确提醒别轻信其他 agent</td>
+    </tr>
+    <tr>
+      <td>Codex</td>
+      <td><code class="language-plaintext highlighter-rouge">none / all / 最近 N 轮</code></td>
+      <td>follow-up 触发新 turn</td>
+      <td>共享 cwd/filesystem</td>
+      <td>mailbox + wait</td>
+      <td>parent 负责综合；无独立 side-effect contract</td>
+    </tr>
+    <tr>
+      <td>Antigravity</td>
+      <td>Prompt 谈 transcript/ID，本次 spawn 不可达</td>
+      <td>无法从本次 schema判断</td>
+      <td>无法判断</td>
+      <td>runtime push</td>
+      <td>无法判断</td>
+    </tr>
+    <tr>
+      <td>Grok</td>
+      <td>prompt + compacted AGENTS</td>
+      <td>raw transcript/tool state</td>
+      <td>shared / cwd / worktree</td>
+      <td>自动通知或显式取 output</td>
+      <td>未给强验证合同</td>
+    </tr>
+    <tr>
+      <td>MiniMax Code</td>
+      <td>schema 未定义 inheritance</td>
+      <td>无 resume 字段</td>
+      <td>未定义 isolation</td>
+      <td>background 完成唤醒 owner</td>
+      <td>未给强验证合同</td>
+    </tr>
+    <tr>
+      <td>Kimi Code</td>
+      <td>新实例零上下文</td>
+      <td>按 agent ID resume</td>
+      <td>未定义 isolation</td>
+      <td>synthetic user-role push</td>
+      <td>parent 负责转述，未强制 read-back</td>
+    </tr>
+    <tr>
+      <td>MiMo Code</td>
+      <td><code class="language-plaintext highlighter-rouge">none / state / full</code></td>
+      <td>actor ID resume</td>
+      <td>未定义 isolation</td>
+      <td>run inline；spawn 默认不唤醒当前 turn</td>
+      <td>“generally trust”</td>
+    </tr>
+    <tr>
+      <td>OpenClaw</td>
+      <td>isolated 默认；可 fork transcript</td>
+      <td>session/history 继续通信</td>
+      <td>继承 workspace，可要求 sandbox</td>
+      <td><code class="language-plaintext highlighter-rouge">sessions_yield</code> 等事件</td>
+      <td>应检查 session result，未形成 Hermes 式统一规则</td>
+    </tr>
+    <tr>
+      <td>Hermes</td>
+      <td>clean context + 显式 context 文本</td>
+      <td>本次无 resume</td>
+      <td>隔离 conversation/terminal</td>
+      <td>后台 push</td>
+      <td>明确把 summary 当 self-report 并要求 read-back</td>
+    </tr>
+    <tr>
+      <td>Kimi CLI</td>
+      <td>新实例零上下文</td>
+      <td>按 ID resume</td>
+      <td>未定义 isolation</td>
+      <td>后台通知</td>
+      <td>parent 转述，未强制独立验证</td>
+    </tr>
+    <tr>
+      <td>opencode</td>
+      <td>fresh；prompt 手工补全</td>
+      <td>task ID resume</td>
+      <td>未定义 isolation</td>
+      <td>自动通知</td>
+      <td>明确“generally trust”</td>
+    </tr>
+    <tr>
+      <td>Pi</td>
+      <td>无</td>
+      <td>无</td>
+      <td>无</td>
+      <td>无</td>
+      <td>无</td>
+    </tr>
+    <tr>
+      <td>Oh My Pi</td>
+      <td>blank；共享 context contract</td>
+      <td>agent/history URI 可追踪；direct task 无显式 resume 字段</td>
+      <td>eval agent 可请求 worktree</td>
+      <td>自动投递 + hub</td>
+      <td>明确 <code class="language-plaintext highlighter-rouge">completed</code> 不等于 artifact accepted</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>一个更完整的通用 schema 至少应长这样：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"task"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bounded, self-contained assignment"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"scout | implementer | reviewer"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"context"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"none | state | full | recent"</span><span class="p">,</span><span class="w"> </span><span class="nl">"turns"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"capabilities"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"read"</span><span class="p">,</span><span class="w"> </span><span class="s2">"write"</span><span class="p">,</span><span class="w"> </span><span class="s2">"execute"</span><span class="p">,</span><span class="w"> </span><span class="s2">"network"</span><span class="p">],</span><span class="w">
+  </span><span class="nl">"workspace"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shared | worktree | remote"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"completion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"inline | push | yield"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"resume_from"</span><span class="p">:</span><span class="w"> </span><span class="s2">"agent-id"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"output_schema"</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>还少不了一条宿主级规则：<strong>child 的文字是 self-report；文件、URL、测试和外部副作用必须由 parent 或独立 verifier 复核。</strong> Hermes 在这一点上最好；opencode 的默认最危险。</p>
+
+<h3 id="机制层四个问题的直接回答">机制层四个问题的直接回答</h3>
+
+<p><strong>1. 调用形态：spawn 是不是主循环里的 tool_call？是，无一例外。</strong> 凡暴露 sub-agent 的 harness，派发入口全部是模型可见的显式工具：Claude <code class="language-plaintext highlighter-rouge">Agent</code>/<code class="language-plaintext highlighter-rouge">SendMessage</code>、Codex <code class="language-plaintext highlighter-rouge">collaboration.spawn_agent</code>、Kimi <code class="language-plaintext highlighter-rouge">Agent</code>/<code class="language-plaintext highlighter-rouge">AgentSwarm</code>、Grok <code class="language-plaintext highlighter-rouge">spawn_subagent</code>、opencode <code class="language-plaintext highlighter-rouge">task</code>、MiMo <code class="language-plaintext highlighter-rouge">actor</code>、OpenClaw <code class="language-plaintext highlighter-rouge">sessions_spawn</code>、Hermes <code class="language-plaintext highlighter-rouge">delegate_task</code>、MiniMax <code class="language-plaintext highlighter-rouge">task</code>、OMP <code class="language-plaintext highlighter-rouge">task</code>。仅有的“非 tool_call”路径都在编排层内部——Claude Workflow 的 <code class="language-plaintext highlighter-rouge">agent()</code> 与 OMP eval 的 <code class="language-plaintext highlighter-rouge">agent()</code> 是脚本原语，但脚本本身仍由 <code class="language-plaintext highlighter-rouge">Workflow</code>/<code class="language-plaintext highlighter-rouge">eval</code> 工具调用启动。本次捕获中 Antigravity 的 spawn 不可达（prompt 提到 <code class="language-plaintext highlighter-rouge">invoke_subagent</code> 但 schema 没有），Pi 核心则根本没有 sub-agent。</p>
+
+<p><strong>2. 子 agent 的 system prompt 和主 agent 一致吗？没有一家是“全文复制 + 追加任务”。</strong> 三种装配模式，且前两种都有源码级证据：</p>
+
+<ul>
+  <li><strong>同 base + 追加层</strong>：Codex 把父会话的 <code class="language-plaintext highlighter-rouge">base_instructions</code> 原样写进子 config（<code class="language-plaintext highlighter-rouge">build_agent_spawn_config</code>），内置 role 层目前基本是空文件（<code class="language-plaintext highlighter-rouge">explorer.toml</code> 无内容，行为引导写在父侧描述里）；OpenClaw 生成独立的 “# Subagent Context” 文档后以 <code class="language-plaintext highlighter-rouge">extraSystemPrompt</code> 追加；Kimi CLI 的机制完全可见——所有 agent 共用 <code class="language-plaintext highlighter-rouge">agents/default/system.md</code>，第 5 行的 <code class="language-plaintext highlighter-rouge">${ROLE_ADDITIONAL}</code> 占位符由 coder/explore/plan 各自的 YAML 定义注入不同文本，同时用 <code class="language-plaintext highlighter-rouge">allowed_tools</code>/<code class="language-plaintext highlighter-rouge">exclude_tools</code> 裁剪工具（explore 被排除写工具但仍留 Shell）。</li>
+  <li><strong>per-type 整段替换</strong>：opencode 的装配点是 <code class="language-plaintext highlighter-rouge">agent.prompt ?? SystemPrompt.provider(...)</code>——agent 自带 prompt 就替换基础 prompt，否则与主代理同 base；Claude Code 每个 agent type 的 model、tools、prompt 来自 <code class="language-plaintext highlighter-rouge">.claude/agents/*.md</code> 定义或内置类型。</li>
+  <li><strong>用户自定义</strong>：MiniMax 的 <code class="language-plaintext highlighter-rouge">mavis agent create</code> 直接接受 <code class="language-plaintext highlighter-rouge">system_prompt</code> 字段；Claude/Grok/opencode/Codex role 都支持用户文件。</li>
+</ul>
+
+<p><strong>3. 结果怎么回流？事件驱动 push 已经赢了。</strong> 成熟 harness 全部明文禁止轮询：Kimi Code 后台完成以 synthetic user-role 消息送达；Claude 用 task-notification；Codex 是 mailbox + <code class="language-plaintext highlighter-rouge">wait_agent</code>（且 wait 只返回“哪些 agent 有更新”，不返回内容本身）；Hermes 强制后台、结果自行回到对话；OpenClaw 用 <code class="language-plaintext highlighter-rouge">sessions_yield</code> 挂起当前 turn 等完成事件；OMP 经 hub 自动投递。反例也有信息量：MiMo 的 <code class="language-plaintext highlighter-rouge">spawn</code> 完成<strong>不</strong>自动唤醒当前 turn，要即时结果必须显式 <code class="language-plaintext highlighter-rouge">wait</code>——prompt 得专门写一句防止模型干等。</p>
+
+<p><strong>4. AgentSwarm 和别家的多代理差在哪？它是“宿主侧模板批量展开”，不是编排。</strong> <code class="language-plaintext highlighter-rouge">AgentSwarm</code> 一次调用只接受一个 <code class="language-plaintext highlighter-rouge">prompt_template</code> 加一组字符串 <code class="language-plaintext highlighter-rouge">items</code>（≤128），宿主在启动前强校验（≥2 items、模板必含 <code class="language-plaintext highlighter-rouge">{{item}}</code>、展开后互异）并自动排队；全 swarm 同一个 subagent_type，结果各自流回。下图把它和 Claude Workflow 的控制流画在一起：左侧 AgentSwarm 的生命周期在模板展开后就结束了，右侧 Workflow 的生命周期从脚本启动一直延续到 journal 恢复。</p>
+
+<p><img src="../assets/wiki/phistory-harness/subagent-orchestration.svg" alt="AgentSwarm 的同构扇出与 Claude Workflow 的确定性编排对比" /></p>
+
+<p>逐项对照差异——上表比的是<strong>单个 spawn 的合同</strong>，下表比的是<strong>批量编排能力</strong>：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>能力</th>
+      <th>Kimi AgentSwarm</th>
+      <th>Claude Workflow</th>
+      <th>Codex collaboration</th>
+      <th>OMP task + eval</th>
+      <th>Grok spawn + Rhai</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>per-item 角色 / system prompt</td>
+      <td>全 swarm 一个 type</td>
+      <td><code class="language-plaintext highlighter-rouge">agent()</code> 独立 <code class="language-plaintext highlighter-rouge">agentType</code> / <code class="language-plaintext highlighter-rouge">model</code></td>
+      <td>每个 spawn 独立 message / role / fork</td>
+      <td><code class="language-plaintext highlighter-rouge">tasks[]</code> 每项独立 agent</td>
+      <td>每个 child 独立 capability / cwd / model</td>
+    </tr>
+    <tr>
+      <td>异构任务</td>
+      <td>单模板填空</td>
+      <td>任意 JS 生成 prompt</td>
+      <td>自由文本</td>
+      <td>自由文本 + 格式合同</td>
+      <td>自由文本</td>
+    </tr>
+    <tr>
+      <td>barrier / 阶段聚合</td>
+      <td>无，结果各自流回</td>
+      <td><code class="language-plaintext highlighter-rouge">parallel()</code> 即 barrier</td>
+      <td>仅 mailbox，无显式 barrier</td>
+      <td>DAG 波次 + pipeline 阶段</td>
+      <td>Rhai 任意控制流</td>
+    </tr>
+    <tr>
+      <td>聚合 output schema</td>
+      <td>无（128 段自由文本）</td>
+      <td>每 <code class="language-plaintext highlighter-rouge">agent()</code> 可带 JSON Schema</td>
+      <td>无</td>
+      <td>per-item <code class="language-plaintext highlighter-rouge">outputSchema</code></td>
+      <td>schema 重试不耗 budget</td>
+    </tr>
+    <tr>
+      <td>budget 护栏</td>
+      <td>仅 128 上限</td>
+      <td>共享 token budget 硬顶</td>
+      <td>捕获未见</td>
+      <td><code class="language-plaintext highlighter-rouge">+Nk</code> 建议 / <code class="language-plaintext highlighter-rouge">+Nk!</code> 硬顶</td>
+      <td><code class="language-plaintext highlighter-rouge">agent_budget</code> 1–1024</td>
+    </tr>
+    <tr>
+      <td>run 级恢复</td>
+      <td>仅逐个 <code class="language-plaintext highlighter-rouge">resume_agent_ids</code></td>
+      <td>最长不变前缀缓存 + journal</td>
+      <td>per-agent followup</td>
+      <td>kernel 状态持久，无前缀缓存</td>
+      <td>仅同进程暂停恢复</td>
+    </tr>
+    <tr>
+      <td>写隔离</td>
+      <td>无字段，共享 workspace</td>
+      <td><code class="language-plaintext highlighter-rouge">isolation: worktree</code></td>
+      <td>共享 cwd / filesystem</td>
+      <td>eval <code class="language-plaintext highlighter-rouge">isolated</code> worktree</td>
+      <td><code class="language-plaintext highlighter-rouge">isolation: worktree</code> / cwd</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>一句话：AgentSwarm 能表达“同一任务 × N 个输入”，表达不了异构角色、阶段 barrier、typed 聚合、预算和恢复；它能批量 review，不能替代 workflow。</p>
+
+<h2 id="3-goalplantasktodo-不应混为一谈">3. Goal、Plan、Task/Todo 不应混为一谈</h2>
+
+<ul>
+  <li><strong>Goal</strong>：跨 turn 的 durable objective，至少要有 completion criterion、status、budget、blocked/complete guard。Kimi Code 最完整；Codex/OpenClaw 有较小版本；MiniMax 本次只能读取和收尾宿主创建的 goal。</li>
+  <li><strong>Plan</strong>：执行前的方案与授权 artifact。Kimi Code/Kimi CLI 的 <code class="language-plaintext highlighter-rouge">ExitPlanMode</code> 会把 plan file 交给 UI 审批；它不表示任何实现已完成。</li>
+  <li><strong>Task graph</strong>：可引用、可依赖、可持久化的执行单元。MiMo 的 TID 与 Claude 的 task graph 属于这一层。</li>
+  <li><strong>Todo</strong>：当前 session 的轻量进度 UI。全量替换简单但易丢状态；按 ID merge 更适合长任务；OMP 的 phase/block 状态更丰富。</li>
+</ul>
+
+<p>MiMo 的 persistent tasks 很强，但没有“整个目标何时算结束”的独立 contract；Kimi Code 同时有三层，因此 runtime 可以区分“计划已批准”“子任务已完成”“目标已验证完成”。这不是命名差异，而是状态机能否阻止提前结束。</p>
+
+<h2 id="4-compactionmemoryhistory-的正确分层">4. Compaction、Memory、History 的正确分层</h2>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>当前工作集 --有损重写--&gt; compaction summary
+稳定跨会话事实 -------&gt; durable memory
+逐字轨迹与工具证据 ---&gt; raw history / transcript
+</code></pre></div></div>
+
+<ul>
+  <li><strong>Compaction</strong> 应由宿主触发并说明保留项、丢失项和瞬态状态。Kimi Code 最具体，Codex 和 Claude 也清楚；其余多数只提供记忆或 transcript，却没有主会话压缩合同。</li>
+  <li><strong>Memory</strong> 应只存会改变未来默认行为、且不能廉价重新发现的事实。Claude 的“一事实一文件 + 索引”和 Hermes 的短期状态禁入规则都不错。</li>
+  <li><strong>History</strong> 用来找原话、旧命令和工具错误，不能当当前世界状态。MiMo、Hermes、OpenClaw 都明确提供 raw/session search。</li>
+  <li><strong>召回内容必须被视为历史 claim。</strong> 路径、版本、服务状态会过期。MiMo memory tool 的 <code class="language-plaintext highlighter-rouge">A HIT IS AUTHORITATIVE</code> 与其总则冲突；正确语义应是“命中证明过去记录过，不证明现在仍然成立”。</li>
+  <li><strong>隐私作用域必须与 agent context 对齐。</strong> OpenClaw 只在 main session 加载私人 <code class="language-plaintext highlighter-rouge">MEMORY.md</code> 是正确做法；MiMo 对 Claude memory federation 的警告说明，跨 agent 召回不能默认开放。</li>
+</ul>
+
+<p><strong>顺带一个相关的注入上下文正确性问题：环境时间。</strong> 安全的写法是给时间字段标明采样时刻、时区和 staleness 语义（session-start snapshot，长会话会陈旧，需要实时时钟就走工具）。Kimi Code 从 <code class="language-plaintext highlighter-rouge">0.20.1</code> 起就是这样修的，Kimi CLI 与 Hermes 也基本安全；仍有问题的写法是把快照写成 “current local time” 却不给任何语义——Antigravity、MiniMax 本次就是这样，长会话或恢复会话里会把旧快照伪装成实时钟。</p>
+
+<h2 id="5-skillmcpworkflow-是三个不同平面">5. Skill、MCP、Workflow 是三个不同平面</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>机制</th>
+      <th>保存的是什么</th>
+      <th>何时使用</th>
+      <th>典型实现</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Skill</td>
+      <td>可复用步骤、规范、模板、脚本</td>
+      <td>模型知道要做什么，但需要领域程序性知识</td>
+      <td>Claude/Kimi 文件 Skill；Hermes procedural memory；OpenClaw Workshop</td>
+    </tr>
+    <tr>
+      <td>MCP</td>
+      <td>外部工具、数据与 resource boundary</td>
+      <td>需要动态访问 GitHub、数据库、业务系统或远程能力</td>
+      <td>Codex 直接注入 + resources；Grok 两阶段 dispatcher；OMP <code class="language-plaintext highlighter-rouge">mcp://</code> resource</td>
+    </tr>
+    <tr>
+      <td>Workflow</td>
+      <td>确定性 fan-out、条件、循环、聚合、预算与恢复</td>
+      <td>多 Agent 控制流不能只靠模型临场决定</td>
+      <td>Claude JavaScript、Grok Rhai、OMP eval DAG</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>三个具体结论：</p>
+
+<ol>
+  <li><strong>Skill 自动进化必须有治理。</strong> OpenClaw 的 proposal → apply/reject/quarantine 比 Hermes “发现问题立即 patch live skill”更稳。</li>
+  <li><strong>MCP eager 与 late-bound 是 token/可靠性的交换。</strong> 直接注入 schema 早发现错误但吃上下文；<code class="language-plaintext highlighter-rouge">search_tool → use_tool</code> 节省初始 token，却增加一次发现和晚失败。</li>
+  <li><strong>Swarm 不等于 workflow，workflow 的语言选择还是生态赌注。</strong> 同构模板扇出（AgentSwarm）与确定性脚本编排的逐项能力对比见 sub-agent 一节；此处只补一个常被忽略的角度：Claude 选 JavaScript、Grok 选 Rhai、OMP 复用 Python——模型写 JS 的训练语料最多、Rhai 最冷僻，同样的编排能力，模型”一次写对”的概率大概率按这个顺序递减。</li>
+</ol>
+
+<h1 id="代码规模实现语言与分发形态">代码规模、实现语言与分发形态</h1>
+
+<p>协议之外，代码本身是第三个证据来源。下表统计可获取源码的 harness（2026-08-05 时点；口径为 <code class="language-plaintext highlighter-rouge">git ls-files</code> 全量跟踪文件排除 lockfile 与 <code class="language-plaintext highlighter-rouge">node_modules</code>/<code class="language-plaintext highlighter-rouge">vendor</code>/<code class="language-plaintext highlighter-rouge">dist</code>/<code class="language-plaintext highlighter-rouge">target</code> 后的行数总和，含生成物与文档，应读作“仓库体量”而非纯代码行数）：</p>
+
+<p><img src="../assets/wiki/phistory-harness/code-size.svg" alt="8 个开源 harness 的仓库体量对比（对数刻度）" /></p>
+
+<p>上图按仓库体量排序画出 8 个开源实现：最小的 Kimi CLI 与 Pi 在 30 万行量级，最大的 OpenClaw 接近千万行——但它已不只是 coding harness，而是带移动端与 161 个渠道扩展的平台。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>项目</th>
+      <th>主语言</th>
+      <th>约 LOC</th>
+      <th>结构</th>
+      <th>star</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>OpenClaw（openclaw/openclaw）</td>
+      <td>TypeScript</td>
+      <td>~961 万</td>
+      <td>平台型巨型 monorepo：161 个渠道扩展 + iOS/macOS 原生应用</td>
+      <td>38.5 万</td>
+    </tr>
+    <tr>
+      <td>Hermes Agent（NousResearch/hermes-agent）</td>
+      <td>Python</td>
+      <td>~266 万</td>
+      <td>扁平单仓，核心依赖仅 10 个且全部 <code class="language-plaintext highlighter-rouge">==</code> 精确 pin</td>
+      <td>22.6 万</td>
+    </tr>
+    <tr>
+      <td>Oh My Pi（can1357/oh-my-pi）</td>
+      <td>TS + Rust + Python</td>
+      <td>~206 万</td>
+      <td>Pi fork，10 个 Rust crate 原生加速，Bazel 构建</td>
+      <td>2.2 万</td>
+    </tr>
+    <tr>
+      <td>opencode（anomalyco/opencode，原 sst）</td>
+      <td>TypeScript</td>
+      <td>~163 万</td>
+      <td>Turborepo monorepo，核心 .ts/.tsx 约 63 万行</td>
+      <td>19.3 万</td>
+    </tr>
+    <tr>
+      <td>Codex CLI（openai/codex）</td>
+      <td>Rust</td>
+      <td>~157 万</td>
+      <td>单 Rust workspace，129 个 crate 细粒度拆分</td>
+      <td>10.4 万</td>
+    </tr>
+    <tr>
+      <td>Grok Build（xai-org/grok-build）</td>
+      <td>Rust</td>
+      <td>~84.5 万</td>
+      <td>2026-07 丑闻后开源；工具实现大量移植自 Codex/opencode</td>
+      <td>2.4 万</td>
+    </tr>
+    <tr>
+      <td>Pi（earendil-works/pi，原 pi-mono）</td>
+      <td>TypeScript</td>
+      <td>~30 万</td>
+      <td>精炼 monorepo，9 个包，根零运行时依赖</td>
+      <td>8.4 万</td>
+    </tr>
+    <tr>
+      <td>Kimi CLI（MoonshotAI/kimi-cli）</td>
+      <td>Python</td>
+      <td>~26 万</td>
+      <td>单 Python 包 + 独立 Web UI，29 个依赖全部 pin</td>
+      <td>1.1 万</td>
+    </tr>
+    <tr>
+      <td>MiMo Code（XiaomiMiMo/MiMo-Code）</td>
+      <td>TypeScript</td>
+      <td>未逐行统计</td>
+      <td>opencode fork + SQLite FTS5 记忆 + Dream 整理子代理，MIT</td>
+      <td>1.3 万</td>
+    </tr>
+    <tr>
+      <td>Kimi Code（MoonshotAI/kimi-code）</td>
+      <td>TypeScript</td>
+      <td>未逐行统计</td>
+      <td>TS 实现已开源（MIT）；npm 分发为 21 MB 打包 bundle</td>
+      <td>0.6 万</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>（star 为 2026-08-05 时点 GitHub 数据，含社媒动量水分——OpenClaw、Hermes 的星数与工程口碑的背离见口碑章。）</p>
+
+<p>三件事值得单独说：</p>
+
+<ol>
+  <li><strong>语言分三派，选择即立场。</strong> Rust（Codex、Grok Build）押注性能与单二进制分发，代价是工程体量（codex 一个 TUI 输入框组件就 1.2 万行）；Python（Kimi CLI、Hermes）押注迭代速度与生态；TypeScript 是多数派，而“TS 主体 + Rust 原生件”（Oh My Pi）和“Python 主体 + TS 控制台”（Kimi CLI、Hermes）两种混合配方正在固化。</li>
+  <li><strong>体量差两个数量级，且与协议质量无关。</strong> Pi 用 30 万行撑起 OpenClaw 的引擎；OpenClaw 自己 961 万行却是“平台”而非 harness 内核；codex 的 157 万行里装着 129 个 crate 的工程化执念。<strong>代码行数衡量的是产品野心，不是上下文协议的好坏——30 万行的 Pi 协议反而最干净。</strong></li>
+  <li><strong>闭源与开源的边界在 2026 年快速移动。</strong> Claude Code 的 npm 包已退化为 23 KB 下载器（postinstall 拉原生二进制），Grok Build、MiMo Code 的 npm 包同样只是几 KB 的 trampoline——但 Grok、MiMo、Kimi Code 三家后来都开源了完整实现（xai-org/grok-build、XiaomiMiMo/MiMo-Code、MoonshotAI/kimi-code），真正仍闭源的只剩 Claude Code、MiniMax Code（211 MB Electron 应用）与 Antigravity CLI（44–53 MB 原生二进制）。闭源的代价是 Phistory 这类 wire 级捕获成为唯一审计窗口；开源的红利直接可见——Grok Build 开源当天，<a href="https://simonwillison.net/2026/Jul/15/grok-build/">Simon Willison 就读出了它的工具移植谱系与上传代码残留</a>。</li>
+</ol>
+
+<p>供应链姿态也在收紧：Hermes 把“全部依赖 <code class="language-plaintext highlighter-rouge">==</code> 精确 pin”写成明确的供应链防御策略，Kimi CLI 29 个依赖全 pin——harness 的分发与依赖管理都在向“可控、可复现”收敛。</p>
+
+<h1 id="社区评价口碑声量与安全事件">社区评价：口碑、声量与安全事件</h1>
+
+<p>第三方评价必须先拆三层再读：<strong>产品形态</strong>（常驻助理 vs 终端工具）、<strong>harness 工程</strong>（工具与上下文设计）、<strong>底层模型</strong>——严肃评测都会主动拆层，把“模型强”当“harness 好”是最常见的误读。以下判断综合自 Hacker News 原帖、独立博客实测、安全披露与 GitHub 数据（2026-08 时点）。</p>
+
+<ul>
+  <li><strong>Claude Code：品类定义者，爱与恨都最真实。</strong> <a href="https://news.ycombinator.com/item?id=43163011">发布帖 2127 分</a>登顶 HN，“claude code is all you need”式重度用户长文远多于同行；hooks、Skills、MCP 生态都是后来者抄袭对象。最持久的恨点是价格与额度（<a href="https://news.ycombinator.com/item?id=44713757">2025-07 周限额</a>引发 609 分抗议帖，09 月静默收紧再损信任）与封闭（2026 年初封锁 OpenCode/Pi 盗用订阅，HN 评价分裂）。值得警惕的反直觉数据：<a href="https://www.tbench.ai/leaderboard/terminal-bench/2.0">Terminal-Bench 2.0</a> 上 Claude Code + Opus 4.6 仅 58.0%，低于同模型的第三方 harness（Terminus 2 的 62.9%）——“harness 本身领先”并无量化支撑。</li>
+  <li><strong>Codex CLI：最被信任的第二名。</strong> 开源 + Rust 重写 + ChatGPT 订阅捆绑是信任三支柱；Terminal-Bench 82.2% 为官方 CLI 最高分。OpenAI 允许第三方 harness 使用订阅额度，与 Anthropic 形成鲜明对照，被反复引用为“更开放”。批评集中在早期体验粗糙与深度绑定 GPT 系模型。</li>
+  <li><strong>opencode：开放生态的基石，也是安全事故的反面教材。</strong> 19.3 万 star、约 990 contributors，“Claude Code 的开源替代”叙事最大受益者；Anthropic 法律施压（2026-03）反而送了它同情票（<a href="https://news.ycombinator.com/item?id=47460525">相关帖 1274 分</a>成年度最大帖之一）。但 <a href="https://news.ycombinator.com/item?id=46581095">2026-01 的未鉴权 RCE 披露</a>（维护者自认“被增长压垮”）、默认遥测、近 5k open issues 与 v2 卡顿，让“工程质量跟不上野心”成为固定批评。它还把“harness 税”变成了可量化指标：<a href="https://systima.ai/blog/claude-code-vs-opencode-token-overhead">一家第三方实测称 Claude Code 首轮 33k token、opencode 7k</a>（HN 706 分；其方法论在评论区受到质疑）——评论区同时指出 Pi 的开销比这还低。</li>
+  <li><strong>Pi：口碑密度最高，声量反而次一级。</strong> 没有自己的爆款帖，声望靠 Mario 的设计文章（<a href="https://news.ycombinator.com/item?id=46844822">HN 421 分</a>）、<a href="https://lucumr.pocoo.org/2026/1/31/pi/">Armin Ronacher 的背书长文</a>和“OpenClaw 底层引擎”的隐性认证累积；“minimal core + extensions vs MCP”的 <a href="https://news.ycombinator.com/item?id=45947444">183 评论大辩论</a>无定论，但极简路线明显赢得了独立开发者群体。2026-04 出售给 Earendil 引发治理观望，受 Claude 订阅封禁波及也暴露了它对模型渠道的依赖。</li>
+  <li><strong>Oh My Pi：极繁派 fork，星数涨得快、独立评测少。</strong> 8 个月 2.2 万 star，“把 IDE 接进来”的定位与 Pi 清晰分流；最具体的顾虑是用它登各家订阅 OAuth 的封号风险，性能宣称缺第三方验证。</li>
+  <li><strong>OpenClaw：声量断层第一，安全欠债也断层第一。</strong> 38.5 万 star 是 GitHub 史上最快增长之一，“常驻、主动、跑在自己硬件上”的个人 agent 形态第一次出圈，改名连续剧与大厂围剿持续供能。但提示注入数据外泄（链接预览免点击通道）、CVE-2026-25253 一键 RCE、提权漏洞、skill 供应链投毒、假冒安装包黑产链、CNCERT 警告与中国政企禁令——安全社区的定性已从 “sharp edges” 升级到 <a href="https://composio.dev/content/openclaw-security-and-vulnerabilities">“security nightmare dressed up as a daydream”</a>。社区真正的分裂不在“安不安全”（没人否认风险），而在“委托风险值不值”。</li>
+  <li><strong>Hermes Agent：社媒动量与工程共识严重不成比例。</strong> 22.6 万 star 但 <a href="https://news.ycombinator.com/item?id=48419000">HN 主帖仅 52 分</a>；4 个月涨约 20 万星的曲线与社媒刷屏一致；近 2.8 万 open issues、抄袭争议中官方修改负面 issue 的操作，都让工程社区保持“等可信第三方对比”的观望。其“经验沉淀为 Markdown skill”的自我改进主循环是真差异化，homelab 用户有具体好评。</li>
+  <li><strong>Kimi Code / Kimi CLI：中文圈认可体验，英文圈近乎隐形。</strong> HN 两帖合计 6 分；独立实测（如王若风的<a href="https://wangruofeng007.com/blog/2026-01/kimi-code-cli-review/">付费体验</a>）认可“不看配置还以为在用 Claude Code”，价格友好；但大量用户的实际用法是把 K2.5/K3 模型接进别家 harness——官方 harness 尚未形成独立口碑，中文渠道的官方投放软文需要与独立评价区分。</li>
+  <li><strong>Antigravity：最干净的“模型被 harness 拖累”样本。</strong> 好评几乎全来自“Gemini 3 强 + 免费额度”；差评全部指向产品层：发布一周内连续安全披露（持久后门、间接注入，Google 称“已知、属预期行为”）、<a href="https://news.ycombinator.com/item?id=46103532">agent 误删整个 D 盘</a>、2026-05 的 2.0 强制改版被定性为 <a href="https://news.ycombinator.com/item?id=48222529">“bait and switch”</a>（771 分），与“Google 砍产品”的刻板印象互相强化。</li>
+  <li><strong>Grok Build：架构有想法，信任在废墟上重建。</strong> git-worktree 并行子代理被认可为真正的架构差异；但 2026-07 的整库上传丑闻（所有被跟踪文件 + git 历史，<a href="https://news.ycombinator.com/item?id=48877371">有用户在家目录运行导致 SSH 密钥被传</a>）是年度级隐私事件，开源被广泛读作危机公关；$300/月定价是品类最陡。</li>
+  <li><strong>MiMo Code：最受关注的新锐，证据还薄。</strong> <a href="https://news.ycombinator.com/item?id=48490826">发布即 HN 头条</a>（557 分），“持久记忆 + Dream 每 7 天整理”被视为真差异化；批评集中在 fork opencode 不上游贡献、遥测默认回传小米域名、“200+ 步胜 Claude Code”是厂商自报评测。发布不足两月，长期口碑无数据。</li>
+  <li><strong>MiniMax Code：最大的发现是“缺席”。</strong> HN/Reddit 零讨论、独立评测为零，社区共识用法是“MiniMax 模型 + 别人家的 harness”；仅有的 harness 层直接证据是官方 repo issue 区里的崩溃与缓慢投诉。</li>
+</ul>
+
+<p>三条跨产品结论：</p>
+
+<ol>
+  <li><strong>声量与口碑经常背离。</strong> OpenClaw（38.5 万星）与 Hermes（22.6 万星）的社媒热度远超其独立技术验证的深度；口碑密度最高的恰是声量次一级的 Pi。读星数之前先读 issue 区。</li>
+  <li><strong>安全已成为 harness 评价的第一维度。</strong> 2026 年的标志性信任事件——OpenClaw 注入链、opencode RCE、Grok 整库上传、Antigravity 后门——全部发生在 harness 层而非模型层；本文前半的协议设计（capability、沙箱、skill 治理、副作用授权）正是这些事故的预案清单。</li>
+  <li><strong>大厂围剿成了开放 harness 的反向认证。</strong> Anthropic 对 OpenCode 的法律行动、Claude/Google 对 OpenClaw/opencode/Pi 的订阅封禁，在社区叙事里几乎等于生态重要性的官方盖章。</li>
+</ol>
+
+<h1 id="可直接复用的-harness-设计原则">可直接复用的 Harness 设计原则</h1>
+
+<ol>
+  <li><strong>Prompt 只写原则，权限必须在 runtime。</strong> Read-only 用 capability/tool allowlist，不用人格约束。</li>
+  <li><strong>自动 lint prompt/tool 一致性。</strong> 构建时扫描 prompt 中的工具名、slash command 和 enum，拒绝未注册引用；Antigravity 与 MiniMax 的 mismatch 应在发布前被发现。</li>
+  <li><strong>Sub-agent schema 固定暴露 context、resume、workspace、completion、capability、output schema。</strong> 不让每个 agent type 自己发明隐式语义。</li>
+  <li><strong>默认 clean context，按需 fork。</strong> OpenClaw 的 isolated-by-default 比无条件复制全部历史更省 token，也减少 prompt injection 传播。</li>
+  <li><strong>写代理默认 worktree，读代理默认 capability-gated read-only。</strong> 并发不是靠“相信不会冲突”。</li>
+  <li><strong>异步结果 push，轮询只用于诊断。</strong> Claude、OpenClaw、Hermes 的 completion event 比 sleep/status loop 更合理。</li>
+  <li><strong>分开 goal、plan、task/todo。</strong> Goal 必须有可验证终态；plan 必须是审批 artifact；todo 不承担跨 session 成功判定。</li>
+  <li><strong>Compaction 由宿主管理，并明确瞬态状态会丢。</strong> 摘要记录命令、路径、结果、未知项和 next action；后台任务 ID 要能重新枚举。</li>
+  <li><strong>Memory、history、skill 各有唯一职责。</strong> 事实进 memory，逐字证据进 history，程序步骤进 skill；不要把个人记忆写进项目仓库。</li>
+  <li><strong>持久技能修改必须 staged。</strong> 自动生成 proposal 可以，自动改变 live behavior 不行。</li>
+  <li><strong>Workflow 要有 schema、budget、resume 与 journal。</strong> 只提供 128-agent fan-out 上限，不提供聚合和恢复，不足以称为可靠 orchestration。</li>
+  <li><strong>验证分两层。</strong> Tool success 只证明动作被接受；行为正确仍需 test、smoke run、read-back、URL/ID 或独立 verifier。</li>
+  <li><strong>时间字段必须标采样点、timezone 和 staleness。</strong> 所有 time-sensitive 判断走 fresh-clock tool。</li>
+</ol>
+
+<h1 id="最终结论">最终结论</h1>
+
+<p>如果只选每个 harness 最值得借鉴的一点：</p>
+
+<ul>
+  <li>Claude Code：<strong>可恢复、可结构化的 deterministic multi-agent Workflow</strong>。</li>
+  <li>Codex CLI：<strong>小顶层工具面 + V8 编排层 + 明文化的 compaction 合同</strong>（宿主承诺压缩后仍保留全部用户请求、跨压缩视为同一条逻辑链、不重做已完成操作——模型不必靠自觉记住这些）。</li>
+  <li>Antigravity：<strong>artifact 与 raw/compact transcript 分层</strong>。</li>
+  <li>Grok Build：<strong>runtime capability-gated subagent</strong>。</li>
+  <li>MiniMax Code：<strong>agent/cron/session 的统一 desktop dispatcher</strong>。</li>
+  <li>Kimi Code：<strong>goal/plan/todo 与 compaction 的完整长任务状态机</strong>。</li>
+  <li>MiMo Code：<strong>checkpoint writer + curated memory + raw history 的恢复架构</strong>。</li>
+  <li>OpenClaw：<strong>isolated session、ambient memory 与 staged Skill Workshop</strong>。</li>
+  <li>Hermes：<strong>procedural skill memory 与 child self-report 验证</strong>。</li>
+  <li>Kimi CLI：<strong>简单、清晰的可恢复 Agent 基础循环</strong>。</li>
+  <li>opencode：<strong>反例价值——展示了无条件 prompt 如何制造系统性债务</strong>。</li>
+  <li>Pi：<strong>最小、透明、可扩展的内核</strong>。</li>
+  <li>Oh My Pi：<strong>统一 URI、LSP/DAP/AST virtual devices 与 persistent eval</strong>。</li>
+</ul>
+
+<p>没有一个 harness 把所有层都做对。当前最接近理想组合的方向，不是复制某一家的 system prompt，而是组合：<strong>Grok 的 capability、Claude 的 Workflow、Codex/Kimi 的 compaction 与 goal、Hermes 的 delegation trust、OpenClaw 的 skill governance、OMP 的代码语义工具。</strong></p>
+
+<p>把协议、实现、口碑三个视角叠起来，最后多三条判断：</p>
+
+<ol>
+  <li><strong>三者并不正相关。</strong> 协议最干净的 Pi 口碑密度最高但声量一般；声量最大的 OpenClaw 安全欠债最重；量化榜单（Terminal-Bench）上官方 harness 未必跑赢第三方。评价一个 harness 至少要分开这三本账。</li>
+  <li><strong>2026 年的分化主线是两组对立</strong>：最小可推理表面 vs 最大开箱能力（Pi vs OMP/OpenClaw），开源可审计 vs 闭源二进制（Codex/opencode/Pi 系 vs Claude Code/Antigravity）。中间态正在消失。</li>
+  <li><strong>harness 税已经可量化。</strong> 首轮请求的固定开销（第三方实测：Claude Code 约 33k、opencode 约 7k，方法论有争议；Pi 作者自报 prompt 面不足 1k，口径不同但方向一致）、工具 schema 的上下文占比、sub-agent 的固定成本，都开始出现在公开横评里——这正是 Phistory 这类项目的价值：把“谁家的 harness 更克制”从口水仗变成可复测的测量题。</li>
+</ol>
+
+
+            </div>
+        </article>
+
+        
+        
+        
+        
+        <aside class="note-backlinks" aria-label="Backlinks">
+            <div class="note-backlinks-title">引用了本文的笔记</div>
+            <ul class="note-backlinks-list">
+                
+                <li>
+                    <a href="/Ryanhu2001/paper-reading/Language%20model%20harnesses%20are%20compositional%20generalizers.html">Language model harnesses are compositional generalizers</a>
+                    <span class="note-backlinks-desc">RLM 实验证明：泛化能力可以是 harness 的职责——context offloading + 程序化子调用让每次 LM 调用保持在训练分布内，短任务 RL 泛化到 8–32 倍长任务与跨领域任务。</span>
+                </li>
+                
+            </ul>
+        </aside>
+        
+    </div>
+
+    <aside class="blog-toc-sidebar">
+        <nav id="blog-toc" class="blog-toc-nav" aria-label="Table of contents">
+            <div class="blog-toc-header">
+                <div class="blog-toc-title">On This Page</div>
+                <button
+                    id="blog-toc-toggle"
+                    class="blog-toc-toggle"
+                    type="button"
+                    aria-controls="blog-toc-list"
+                    aria-expanded="true"
+                    aria-label="收起目录"
+                    title="收起目录"
+                >
+                    <svg class="blog-toc-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="blog-toc-list" class="blog-toc-list"></div>
+        </nav>
+    </aside>
+</div>
+
+    </main>
+    <footer class="footer border-top py-2 mt-5 bg-white small">
+    <div class="container-lg">
+        <div class="row my-3">
+            <div class="col-6">
+                <div class="text-muted">
+                    <i>Last updated: Aug 2026</i>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="text-right text-muted">
+                    Built with <a href="https://github.com/luost26/academic-homepage" target="_blank"><i class="fas fa-pencil-ruler"></i> academic-homepage</a> · Visual refresh by Kimi-K3.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <pagefind-config
+        bundle-path="/Ryanhu2001/pagefind/"
+        base-url="/Ryanhu2001/"
+        excerpt-length="30"
+        lang="zh-CN"></pagefind-config>
+    <div class="modal fade site-search-modal" id="siteSearchModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="siteSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 mb-0" id="siteSearchModalLabel">Search</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <pagefind-searchbox placeholder="搜索 wiki、论文笔记、关键词..." show-sub-results="true" hide-shortcut="true"></pagefind-searchbox>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous"></script>
+    <script type="module" src="/Ryanhu2001/pagefind/pagefind-component-ui.js"></script>
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tocbot@4.36.8/dist/tocbot.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            renderMathInElement(document.body, {
+              delimiters: [
+                  {left: '$$', right: '$$', display: true},
+                  {left: '\\[', right: '\\]', display: true},
+                  {left: '$', right: '$', display: false},
+                  {left: '\\(', right: '\\)', display: false}
+              ],
+              throwOnError : false
+            });
+            Prism.highlightAll();
+            
+
+            var siteSearchModal = document.getElementById("siteSearchModal");
+            var siteSearchBox = siteSearchModal ? siteSearchModal.querySelector("pagefind-searchbox") : null;
+            function focusSiteSearch() {
+                window.setTimeout(function() {
+                    if (siteSearchBox && typeof siteSearchBox.focus === "function") {
+                        siteSearchBox.focus();
+                    }
+                }, 80);
+            }
+            if (siteSearchModal && window.jQuery) {
+                window.jQuery(siteSearchModal).on("shown.bs.modal", focusSiteSearch);
+            }
+            document.addEventListener("keydown", function(event) {
+                var key = String(event.key || "").toLowerCase();
+                var isSearchShortcut = key === "k" && (event.metaKey || event.ctrlKey);
+                var isModalOpen = siteSearchModal && siteSearchModal.classList.contains("show");
+                var target = event.target;
+                var isTyping = target && (
+                    target.tagName === "INPUT" ||
+                    target.tagName === "TEXTAREA" ||
+                    target.isContentEditable
+                );
+                if (!isSearchShortcut || (isTyping && isModalOpen) || !siteSearchModal || !window.jQuery) return;
+                event.preventDefault();
+                window.jQuery(siteSearchModal).modal("show");
+            });
+        });
+    </script>
+    
+    <script src="/Ryanhu2001/assets/js/blog.js"></script>
+    
+    <script src="/Ryanhu2001/assets/js/common.js"></script>
+</body>
+</html>

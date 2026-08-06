@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 640" font-family="-apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect width="1040" height="640" fill="#ffffff"/>
+  <text x="520" y="36" text-anchor="middle" font-size="21" font-weight="700" fill="#0f172a">同构扇出 vs 确定性编排：AgentSwarm 与 Claude Workflow 的控制流差异</text>
+
+  <!-- Left panel: AgentSwarm -->
+  <rect x="20" y="60" width="480" height="540" rx="12" fill="#eff6ff" stroke="#bfdbfe"/>
+  <text x="260" y="90" text-anchor="middle" font-size="16" font-weight="700" fill="#1d4ed8">Kimi AgentSwarm · 同构扇出</text>
+
+  <rect x="60" y="110" width="400" height="46" rx="8" fill="#ffffff" stroke="#93c5fd"/>
+  <text x="260" y="129" text-anchor="middle" font-size="13" fill="#0f172a">一次 tool_call</text>
+  <text x="260" y="146" text-anchor="middle" font-size="12" fill="#475569">prompt_template + items（2–128 个字符串）</text>
+  <line x1="260" y1="156" x2="260" y2="172" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="60" y="176" width="400" height="46" rx="8" fill="#ffffff" stroke="#93c5fd"/>
+  <text x="260" y="195" text-anchor="middle" font-size="13" fill="#0f172a">宿主侧展开并强校验</text>
+  <text x="260" y="212" text-anchor="middle" font-size="12" fill="#475569">模板必含占位符 · 展开后 prompt 互异</text>
+  <line x1="260" y1="222" x2="260" y2="238" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="60" y="242" width="400" height="40" rx="8" fill="#ffffff" stroke="#93c5fd"/>
+  <text x="260" y="259" text-anchor="middle" font-size="13" fill="#0f172a">自动排队 · 全 swarm 同一 subagent_type</text>
+  <text x="260" y="275" text-anchor="middle" font-size="12" fill="#475569">模型逐个执行，无阶段概念</text>
+
+  <line x1="130" y1="282" x2="130" y2="300" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="260" y1="282" x2="260" y2="300" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="390" y1="282" x2="390" y2="300" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="70" y="304" width="120" height="38" rx="8" fill="#dbeafe" stroke="#93c5fd"/>
+  <text x="130" y="327" text-anchor="middle" font-size="13" fill="#1e3a8a">agent i</text>
+  <rect x="200" y="304" width="120" height="38" rx="8" fill="#dbeafe" stroke="#93c5fd"/>
+  <text x="260" y="327" text-anchor="middle" font-size="13" fill="#1e3a8a">agent j</text>
+  <rect x="330" y="304" width="120" height="38" rx="8" fill="#dbeafe" stroke="#93c5fd"/>
+  <text x="390" y="327" text-anchor="middle" font-size="13" fill="#1e3a8a">agent k …</text>
+
+  <line x1="130" y1="342" x2="130" y2="404" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+  <line x1="260" y1="342" x2="260" y2="404" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+  <line x1="390" y1="342" x2="390" y2="404" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+
+  <rect x="60" y="408" width="400" height="46" rx="8" fill="#ffffff" stroke="#93c5fd"/>
+  <text x="260" y="427" text-anchor="middle" font-size="13" fill="#0f172a">结果各自流回（无聚合点）</text>
+  <text x="260" y="444" text-anchor="middle" font-size="12" fill="#475569">N 条 synthetic user 消息，父代理自行综合</text>
+
+  <text x="260" y="500" text-anchor="middle" font-size="13" fill="#b91c1c">无 barrier · 无聚合 schema · 无 budget 护栏</text>
+  <text x="260" y="522" text-anchor="middle" font-size="13" fill="#b91c1c">无 worktree 隔离 · 无 run 级恢复</text>
+  <text x="260" y="560" text-anchor="middle" font-size="12" fill="#64748b">能表达：同一任务 × N 个输入（批量 review）</text>
+  <text x="260" y="580" text-anchor="middle" font-size="12" fill="#64748b">不能表达：异构角色、阶段、typed 聚合、预算、恢复</text>
+
+  <!-- Right panel: Claude Workflow -->
+  <rect x="540" y="60" width="480" height="540" rx="12" fill="#fffbeb" stroke="#fde68a"/>
+  <text x="780" y="90" text-anchor="middle" font-size="16" font-weight="700" fill="#b45309">Claude Workflow · 确定性编排</text>
+
+  <rect x="580" y="110" width="400" height="46" rx="8" fill="#ffffff" stroke="#fcd34d"/>
+  <text x="780" y="129" text-anchor="middle" font-size="13" fill="#0f172a">一次 tool_call：JS 脚本（关键词 ultracode）</text>
+  <text x="780" y="146" text-anchor="middle" font-size="12" fill="#475569">控制流写在代码里，不靠模型逐轮决定</text>
+  <line x1="780" y1="156" x2="780" y2="172" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="580" y="176" width="400" height="40" rx="8" fill="#ffffff" stroke="#fcd34d"/>
+  <text x="780" y="193" text-anchor="middle" font-size="13" fill="#0f172a">runtime：pipeline / parallel</text>
+  <text x="780" y="209" text-anchor="middle" font-size="12" fill="#475569">≤16 并发 · ≤1000 agent/run · 共享 token budget 硬顶</text>
+
+  <line x1="650" y1="216" x2="650" y2="234" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="780" y1="216" x2="780" y2="234" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="910" y1="216" x2="910" y2="234" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="580" y="238" width="126" height="38" rx="8" fill="#fef3c7" stroke="#fcd34d"/>
+  <text x="643" y="261" text-anchor="middle" font-size="12" fill="#78350f">agent(schema)</text>
+  <rect x="717" y="238" width="126" height="38" rx="8" fill="#fef3c7" stroke="#fcd34d"/>
+  <text x="780" y="261" text-anchor="middle" font-size="12" fill="#78350f">agent(schema)</text>
+  <rect x="854" y="238" width="126" height="38" rx="8" fill="#fef3c7" stroke="#fcd34d"/>
+  <text x="917" y="261" text-anchor="middle" font-size="12" fill="#78350f">agent(schema)</text>
+
+  <line x1="580" y1="296" x2="980" y2="296" stroke="#b45309" stroke-width="3"/>
+  <text x="975" y="300" font-size="12" fill="#b45309" text-anchor="end">barrier</text>
+
+  <line x1="780" y1="296" x2="780" y2="318" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="580" y="322" width="400" height="40" rx="8" fill="#ffffff" stroke="#fcd34d"/>
+  <text x="780" y="339" text-anchor="middle" font-size="13" fill="#0f172a">typed JSON 聚合（StructuredOutput 强制 shape）</text>
+  <text x="780" y="355" text-anchor="middle" font-size="12" fill="#475569">下一阶段可以依赖上一阶段的类型化结果</text>
+  <line x1="780" y1="362" x2="780" y2="378" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="580" y="382" width="400" height="40" rx="8" fill="#ffffff" stroke="#fcd34d"/>
+  <text x="780" y="399" text-anchor="middle" font-size="13" fill="#0f172a">journal.jsonl + 最长不变前缀缓存</text>
+  <text x="780" y="415" text-anchor="middle" font-size="12" fill="#475569">run 级 resume；禁 Date.now / Math.random 保可重放</text>
+
+  <text x="780" y="500" text-anchor="middle" font-size="13" fill="#166534">确定性控制流：循环、分支、barrier 在代码里</text>
+  <text x="780" y="522" text-anchor="middle" font-size="13" fill="#166534">per-item 角色 / model / schema / worktree 隔离</text>
+  <text x="780" y="560" text-anchor="middle" font-size="12" fill="#64748b">脚本可存为 .claude/workflows/ 复用，可被企业策略关闭</text>
+  <text x="780" y="580" text-anchor="middle" font-size="12" fill="#64748b">代价：协议学习成本高，过度 fan-out 会烧 token</text>
+</svg>

@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="600" viewBox="0 0 1600 600" role="img" aria-labelledby="title desc">
+  <title id="title">三项独立改动怎样叠加成“全面退化”</title>
+  <desc id="desc">Reasoning Effort 默认值、Thinking 清理 Bug 与简洁 Prompt 三条时间线在三、四月间叠加。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbf9f4"/>
+      <stop offset="1" stop-color="#f0ece3"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#5d5142" flood-opacity="0.12"/>
+    </filter>
+    <style>
+      .title { font: 700 44px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #191714; }
+      .subtitle { font: 400 22px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #655e55; }
+      .bar { font: 700 19px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #ffffff; }
+      .bar-sub { font: 500 15px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #ffffff; opacity: 0.92; }
+      .date { font: 700 16px "SF Mono", Menlo, monospace; fill: #5e574f; }
+      .body { font: 400 17px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #5e574f; }
+      .axis { font: 500 16px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #837a6e; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="600" rx="36" fill="url(#bg)"/>
+  <text class="title" x="80" y="86">三项独立改动怎样叠加成“全面退化”</text>
+  <text class="subtitle" x="82" y="126">命中不同模型、不同流量与不同时间段；用户体验把它们合并成一句“Claude Code 变差了”</text>
+
+  <!-- Axis: Mar 1 (x=140) to Apr 30 (x=1520): 60 days, 23px/day -->
+  <line x1="140" y1="490" x2="1520" y2="490" stroke="#837a6e" stroke-width="2"/>
+  <g stroke="#837a6e" stroke-width="2">
+    <line x1="140" y1="484" x2="140" y2="496"/>
+    <line x1="485" y1="484" x2="485" y2="496"/>
+    <line x1="830" y1="484" x2="830" y2="496"/>
+    <line x1="1175" y1="484" x2="1175" y2="496"/>
+    <line x1="1520" y1="484" x2="1520" y2="496"/>
+  </g>
+  <text class="axis" x="118" y="522">3月1日</text>
+  <text class="axis" x="463" y="522">3月16日</text>
+  <text class="axis" x="808" y="522">4月1日</text>
+  <text class="axis" x="1153" y="522">4月16日</text>
+  <text class="axis" x="1488" y="522">5月1日</text>
+
+  <!-- Bar 1: Mar 4 (x=209) to Apr 7 (x=992) -->
+  <g filter="url(#shadow)"><rect x="209" y="180" width="783" height="74" rx="14" fill="#d9a84e"/></g>
+  <text class="bar" x="235" y="212">① Reasoning Effort 默认值 high → medium</text>
+  <text class="bar-sub" x="235" y="238">Sonnet 4.6 / Opus 4.6 · 纸面 Pareto 合理，用户直接感到“变笨”</text>
+  <text class="date" x="209" y="170">3-04 上线</text>
+  <text class="date" x="905" y="170">4-07 回滚</text>
+
+  <!-- Bar 2: Mar 26 (x=715) to Apr 10 (x=1061) -->
+  <g filter="url(#shadow)"><rect x="715" y="278" width="346" height="74" rx="14" fill="#c36c67"/></g>
+  <text class="bar" x="737" y="310">② Thinking 清理状态 Bug</text>
+  <text class="bar-sub" x="737" y="336">跨过 1h 空闲后每轮都清理推理历史</text>
+  <text class="date" x="715" y="268">3-26 引入</text>
+  <text class="date" x="962" y="268">4-10 修复</text>
+
+  <!-- Bar 3: Apr 16 (x=1175) to Apr 20 (x=1267) -->
+  <g filter="url(#shadow)"><rect x="1175" y="376" width="200" height="74" rx="14" fill="#8c78bd"/></g>
+  <text class="bar" x="1195" y="408">③ 简洁 Prompt</text>
+  <text class="bar-sub" x="1195" y="434">三模型 −3%</text>
+  <text class="date" x="1175" y="366">4-16 上线</text>
+  <text class="date" x="1290" y="366">4-20 回滚</text>
+
+  <text class="body" x="80" y="572">三条时间线在 4 月中旬前后交叠；2026-04-20 的 v2.1.116 全部解决，4-23 发布复盘并重置订阅用户 Usage Limit。</text>
+</svg>

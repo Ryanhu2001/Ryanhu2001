@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="520" viewBox="0 0 1080 520" role="img" aria-labelledby="title desc">
+  <title id="title">OpenThoughts-Agent data recipe map</title>
+  <desc id="desc">A self-made diagram showing the OpenThoughts-Agent data recipe as a sequence of controlled choices before SFT and RL.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#4f5f66"/></marker>
+    <style>
+      .bg { fill: #fbf6ea; }
+      .box { fill: #fffaf0; stroke: #b89a62; stroke-width: 2; rx: 14; }
+      .box2 { fill: #f6f8fb; stroke: #7893b0; stroke-width: 2; rx: 14; }
+      .text { fill: #1f2428; font-family: Inter, Arial, sans-serif; font-size: 23px; font-weight: 700; }
+      .small { fill: #4f5459; font-family: Inter, Arial, sans-serif; font-size: 15px; font-weight: 500; }
+      .line { stroke: #4f5f66; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect class="bg" width="1080" height="520"/>
+  <text class="text" x="56" y="62">OpenThoughts-Agent: data recipe is the main object</text>
+  <text class="small" x="56" y="94">The paper treats agent SFT data as a set of ablatable design choices, then studies how RL changes behavior.</text>
+
+  <rect class="box" x="60" y="160" width="150" height="95"/>
+  <text class="text" x="89" y="200">Sources</text>
+  <text class="small" x="89" y="228">task pools</text>
+  <rect class="box" x="250" y="160" width="150" height="95"/>
+  <text class="text" x="283" y="200">Mixing</text>
+  <text class="small" x="283" y="228">top-k sources</text>
+  <rect class="box" x="440" y="160" width="150" height="95"/>
+  <text class="text" x="466" y="200">Filtering</text>
+  <text class="small" x="466" y="228">quality gates</text>
+  <rect class="box" x="630" y="160" width="150" height="95"/>
+  <text class="text" x="663" y="200">Teacher</text>
+  <text class="small" x="663" y="228">rollout style</text>
+  <rect class="box" x="820" y="160" width="190" height="95"/>
+  <text class="text" x="848" y="200">Trace filter</text>
+  <text class="small" x="848" y="228">multi-turn tools</text>
+
+  <rect class="box2" x="250" y="335" width="230" height="100"/>
+  <text class="text" x="302" y="376">SFT policy</text>
+  <text class="small" x="302" y="405">behavior from recipe</text>
+  <rect class="box2" x="600" y="335" width="230" height="100"/>
+  <text class="text" x="642" y="376">RL phase</text>
+  <text class="small" x="642" y="405">exploration vs collapse</text>
+
+  <path class="line" d="M210 207 H242"/>
+  <path class="line" d="M400 207 H432"/>
+  <path class="line" d="M590 207 H622"/>
+  <path class="line" d="M780 207 H812"/>
+  <path class="line" d="M915 255 C860 310 680 325 830 384"/>
+  <path class="line" d="M365 255 V327"/>
+  <path class="line" d="M480 385 H592"/>
+</svg>

@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<!-- Template: https://github.com/luost26/academic-homepage -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="description" content="Anthropic 的 agent eval 工程手册：好评测不是一个分数，而是把任务、轨迹、环境状态、grader、人工校准和生产信号串成能持续修系统的闭环。">
+    <meta property="og:title" content="Demystifying Evals for AI Agents - Ryan">
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="Anthropic 的 agent eval 工程手册：好评测不是一个分数，而是把任务、轨迹、环境状态、grader、人工校准和生产信号串成能持续修系统的闭环。">
+    <meta property="og:url" content="https://ryanhu2001.github.io/Ryanhu2001/paper-reading/Demystifying%20Evals%20for%20AI%20Agents.html">
+    <title>Demystifying Evals for AI Agents - Ryan</title>
+    <link rel="icon" href="/Ryanhu2001/assets/ryan/avatar.jpg" type="image/jpeg">
+
+    <!-- Stylesheets -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/Ryanhu2001/pagefind/pagefind-component-ui.css">
+    
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/blog.css">
+    
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/global.css">
+</head>
+<body >
+    <a class="sr-only sr-only-focusable skip-link" href="#main-content">Skip to content</a>
+    <nav class="navbar navbar-expand-sm navbar-light fixed-top mb-5 shadow-sm">
+    <div class="container-lg">
+        <a class="navbar-brand" href="/Ryanhu2001/"><strong>Ryan</strong></a>
+        <button class="nav-search-button nav-search-button-compact d-sm-none ml-auto mr-2" type="button" data-toggle="modal" data-target="#siteSearchModal" aria-label="Search site">
+            <i class="fas fa-search" aria-hidden="true"></i>
+        </button>
+        <button class="navbar-toggler" style="font-size: 1em; padding: 0.5em;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-map" aria-hidden="true"></i> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/">Home</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/wiki/">Wiki</a>
+                </li>
+                
+                <li class="nav-item active">
+                    <a class="nav-link" href="/Ryanhu2001/paper-reading/">Paper Reading</a>
+                </li>
+                
+                <li class="nav-item nav-search-item">
+                    <button class="nav-link nav-search-button" type="button" data-toggle="modal" data-target="#siteSearchModal" aria-label="Search site">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <span>Search</span>
+                        <kbd class="d-none d-md-inline">⌘K</kbd>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <main id="main-content" class="container-lg">
+        
+
+
+
+
+<div class="reading-progress" aria-hidden="true">
+    <span></span>
+</div>
+
+<div class="blog-layout-wrapper">
+    <div class="blog-main">
+        <div class="mb-3">
+            <a class="small" href="/Ryanhu2001/paper-reading/">
+                <i class="fas fa-arrow-left"></i> Paper Reading
+            </a>
+        </div>
+
+        <details class="mobile-toc d-lg-none">
+            <summary>目录</summary>
+            <div id="blog-toc-list-mobile" class="mobile-toc-list"></div>
+        </details>
+
+        <article class="bg-white rounded-xl p-4 p-md-5 mb-4 wiki-note-card" data-pagefind-body>
+            <div class="blog-content wiki-note">
+                <h1 id="anthropicagent-eval-的产出不是分数而是能修系统的失败信号">Anthropic：agent eval 的产出不是分数，而是能修系统的失败信号</h1>
+
+<ul>
+  <li><strong>Source</strong>: <a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents">Demystifying evals for AI agents</a></li>
+  <li><strong>Authors</strong>: Mikaela Grace, Jeremy Hadfield, Rodrigo Olivares, Jiri De Jonghe</li>
+  <li><strong>Published</strong>: 2026-01-09, Anthropic Engineering</li>
+  <li><strong>关键词</strong>: agent eval, evaluation harness, task / trial / grader / trajectory / outcome, code-based grader, LLM-as-judge, human calibration, pass@k, pass^k, eval-driven development, transcript review</li>
+  <li><strong>相关分享</strong>: <a href="/Ryanhu2001/wiki/Paper-sharing-3%20Anthropic%20%E7%9A%84%20Agent%20Eval%20%E5%B7%A5%E7%A8%8B.html">Paper-sharing-3：Anthropic 的 Agent Eval 工程</a>——本文与其余四篇 Anthropic Eval 文章的按时间线串讲</li>
+</ul>
+
+<h2 id="读法给人和-agent-的路标">读法：给人和 agent 的路标</h2>
+
+<p>不要按 benchmark paper 读——它没有新数据集、没有实验，是一篇 <strong>agent eval 工程手册</strong>。它想讲清楚的是：agent 会调用工具、修改环境、积累中间状态，所以评测不能只看最后一句回答；一个可用的 eval 要同时管住 <strong>任务定义、环境隔离、轨迹证据、最终状态、grader 公平性、生产信号回流</strong> 六件事。最省力的读法是三段式：先记住第二节那组 vocabulary（task/trial/grader/trajectory/outcome/harness），再按自己的 agent 类型跳到对应小节挑 grader 组合，最后把 Step 0-8 路线图当 checklist 逐条对照。</p>
+
+<p>给以后做 wiki/paper-reading pipeline 的 agent 检索，关键词是：<code class="language-plaintext highlighter-rouge">task bank</code>、<code class="language-plaintext highlighter-rouge">trajectory</code>、<code class="language-plaintext highlighter-rouge">outcome</code>、<code class="language-plaintext highlighter-rouge">evaluation harness</code>、<code class="language-plaintext highlighter-rouge">agent harness</code>、<code class="language-plaintext highlighter-rouge">reference solution</code>、<code class="language-plaintext highlighter-rouge">balanced positive negative cases</code>、<code class="language-plaintext highlighter-rouge">read transcripts</code>、<code class="language-plaintext highlighter-rouge">capability eval saturation</code>、<code class="language-plaintext highlighter-rouge">pass@k pass^k</code>、<code class="language-plaintext highlighter-rouge">Swiss cheese model</code>。</p>
+
+<h2 id="一句话判断">一句话判断</h2>
+
+<p>这篇最有价值的判断是：<strong>agent eval 不是”给模型排个榜”，而是一个持续把失败样本、环境状态、轨迹证据、自动 grader 和人工判断连接起来的产品系统</strong>。分数只是表层输出，真正重要的是它能不能回答：这次失败公平吗、该修 agent 还是修任务还是修 grader、改动有没有回归、模型升级值不值得切、生产里的新问题怎样进入下一轮测试集。文章用 CORE-Bench 的 <strong>42% → 78% → 95%</strong> 三级跳证明了这一点：同一个模型，换 scaffold 就差 36 个百分点，再修 grader 又差 17 个百分点——不读细节的分数几乎没有信息量。</p>
+
+<h2 id="图表优先读法">图表优先读法</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>先看</th>
+      <th>图 / 表</th>
+      <th>读完应该抓住什么</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>自制 eval flywheel</td>
+      <td>全文骨架：失败进任务库，transcript review 决定修什么，生产信号回流</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>single-turn vs agent eval 原图</td>
+      <td>agent eval 的对象多了 tools、environment、agent loop 和最终状态</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>components 原图</td>
+      <td>task、trial、trajectory、outcome、grader、两种 harness 是不同层次</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>pass@k vs pass^k 原图</td>
+      <td>“多试几次能成功”和”每次都可靠”是两种产品承诺</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>roadmap 原图 + CORE-Bench 数字</td>
+      <td>低分先查 scaffold 和 grader，再怪模型</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Swiss cheese 原图 + 六方法对照表</td>
+      <td>自动 eval 只是第一层防线，每层都有洞</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="先看我画的闭环图">先看我画的闭环图</h2>
+
+<p><img src="../assets/paper-reading/anthropic-agent-evals/agent-eval-flywheel.svg" alt="Self-made agent eval flywheel" /></p>
+
+<p><em>自制图解：把全文重组成一个 flywheel——task bank 吸收真实失败（正负例平衡），isolated trials 复刻生产 harness，同时收集 trajectory 和 outcome 两种证据，hybrid graders（code/model/human）打分后由 transcript review 判断失败是否公平、该修 agent/task/harness/grader 里的哪一个，过关的 capability eval 沉淀为 regression suite，底部虚线是生产信号（monitoring、A/B、feedback、human studies）回流进任务库。后文每一节对应图里一个节点。</em></p>
+
+<h2 id="agent-eval-和-single-turn-eval-差在哪">Agent eval 和 single-turn eval 差在哪</h2>
+
+<p>文章对 eval 的定义很朴素：”给 AI 一个输入，对输出应用 grading logic 来度量成功”。single-turn eval 就是 prompt → response → 打分。agent eval 的复杂度来自三个变化：</p>
+
+<ul>
+  <li><strong>工具调用会改变世界状态</strong>：agent 可能改文件、下单、更新数据库；最后一句”我完成了”不等于事情真的完成，grader 必须去环境里验证。</li>
+  <li><strong>错误沿轨迹传播</strong>：早期一次错误搜索或错误工具参数，会让后面每一步看似合理但整体跑偏。</li>
+  <li><strong>好答案可能突破静态 rubric</strong>：Opus 4.5 在 τ2-Bench 航班预订任务里发现了 policy loophole，按原评测算失败，但从用户目标看反而是更好的解法——静态 grader 天然会漏掉这类”超纲的对”。</li>
+</ul>
+
+<p><img src="../assets/paper-reading/anthropic-agent-evals/official-eval-structure.png" alt="Anthropic official comparison between single-turn and agent evaluations" /></p>
+
+<p><em>原图来自 Anthropic：左边 single-turn eval 的输入/输出边界很窄（prompt 进、response 出、grading logic 查文本）；右边 agent eval 多了 tools、environment、task、agent loop 和 environment update，grading logic 也从”检查文本”变成”检查环境里是否真的出现了可验证结果”。</em></p>
+
+<h2 id="一组必须钉死的-vocabulary">一组必须钉死的 vocabulary</h2>
+
+<p>搭 eval 系统之前，先把这组词的层次分开——很多”分数看不懂”的问题都源于把它们混在一起：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>概念</th>
+      <th>白话解释</th>
+      <th>为什么不能省</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Task / problem / test case</td>
+      <td>一个带输入和成功标准的测试题</td>
+      <td>任务不清楚，后面所有分数都是噪声</td>
+    </tr>
+    <tr>
+      <td>Trial</td>
+      <td>同一 task 的一次运行</td>
+      <td>agent 非确定性强，同题要跑多次才知道稳定性</td>
+    </tr>
+    <tr>
+      <td>Grader</td>
+      <td>给某个方面打分的逻辑</td>
+      <td>一个 task 可以挂多个 grader、多个 assertion</td>
+    </tr>
+    <tr>
+      <td>Transcript / trace / trajectory</td>
+      <td>一次 trial 的完整记录：输出、工具调用、推理、中间结果、环境交互</td>
+      <td>不读轨迹就不知道失败是 agent 错、grader 错还是 task 错</td>
+    </tr>
+    <tr>
+      <td>Outcome</td>
+      <td>trial 结束时的最终环境状态</td>
+      <td>用户真正关心的是数据库、文件、订单、PR 是否正确</td>
+    </tr>
+    <tr>
+      <td>Evaluation harness</td>
+      <td>跑 eval 的基础设施：发任务、并发跑 trial、记录轨迹、执行 grader、汇总分数</td>
+      <td>决定 eval 是否可复现、可扩展</td>
+    </tr>
+    <tr>
+      <td>Agent harness / scaffold</td>
+      <td>让模型像 agent 一样行动的系统：工具编排、上下文管理、执行循环</td>
+      <td>评测对象是 model + harness，不是裸模型</td>
+    </tr>
+    <tr>
+      <td>Evaluation suite</td>
+      <td>一组测某类能力或行为的 tasks</td>
+      <td>支撑 capability eval 和 regression eval 的长期维护</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><img src="../assets/paper-reading/anthropic-agent-evals/official-components.png" alt="Anthropic official components of agent evaluations" /></p>
+
+<p><em>原图来自 Anthropic：一次 eval 里 task、trial、trajectory、outcome、grader 的嵌套关系。两个容易忽略的点：trajectory 和 outcome 是两种证据——前者解释”它怎么做”，后者证明”世界最后对不对”，只看 outcome 会漏掉危险行为，只看 trajectory 又可能惩罚合理的替代路径；agent harness 和 evaluation harness 要分开想，很多”模型能力差”其实是 harness 限制或 grader bug。</em></p>
+
+<h2 id="为什么要早建-eval三个公司的时间线">为什么要早建 eval：三个公司的时间线</h2>
+
+<p>没有 eval 的团队会进入 reactive debugging：用户说变差 → 手工复现 → 修一个 bug → 不知道有没有引入回归 → 等下一批抱怨。文章给了三条真实时间线：</p>
+
+<ul>
+  <li><strong>Claude Code</strong>：早期靠内部 dogfooding 和用户反馈快速迭代，后来先给 concision、file edits 这类窄行为加 eval，再扩展到 over-engineering 这种复杂行为。</li>
+  <li><strong>Descript</strong>：video editing agent 把成功拆成三维——<strong>不破坏东西、按要求做、做得好</strong>；从人工评分演进到产品团队定义 criteria 的 LLM graders，并定期做人工校准。</li>
+  <li><strong>Bolt</strong>：agent 已大规模使用后补 eval，<strong>3 个月</strong>内搭出能运行 agent、做 static analysis、用 browser agents 实测 app、再用 LLM judge 看 instruction following 的系统。</li>
+</ul>
+
+<p>我的理解：<strong>eval 是产品、工程、研究之间带宽最高的接口</strong>。产品团队用它明确”什么叫好”，工程团队用它防回归，研究团队用它 hill-climb；模型升级时，有 eval 的团队几小时就能判断是否值得切换，没有的团队要靠几周的感觉测试。eval 的成本在前期可见，收益在整个生命周期复利。</p>
+
+<h2 id="grader-三件套确定性优先llm-必须校准人类是金标准">Grader 三件套：确定性优先，LLM 必须校准，人类是金标准</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Grader 类型</th>
+      <th>典型手段</th>
+      <th>优点</th>
+      <th>风险</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Code-based / deterministic</td>
+      <td>单元测试、状态断言、static analysis、工具调用验证、transcript 指标</td>
+      <td>快、便宜、客观、可复现、好 debug</td>
+      <td>对合法变体过于刚性，缺乏 nuance</td>
+    </tr>
+    <tr>
+      <td>Model-based / LLM judge</td>
+      <td>rubric 打分、自然语言 assertion、pairwise 比较、多 judge 共识</td>
+      <td>灵活、可扩展，能处理开放式输出</td>
+      <td>非确定性、成本高、必须人工校准</td>
+    </tr>
+    <tr>
+      <td>Human</td>
+      <td>专家 review、spot-check、A/B test、inter-annotator agreement</td>
+      <td>最接近真实用户和专家判断</td>
+      <td>慢、贵，不适合每次提交都跑</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>实际系统几乎都是组合拳：coding agent 用 unit tests 保 correctness、LLM rubric 看代码质量；support agent 用 state check 验证退款真的处理了、LLM rubric 看同理心。文章特别警告 <strong>不要过度检查路径</strong>：硬性规定工具调用顺序，会把模型自己找到的有效路径打成失败——更稳的方式是检查产物和最终状态，用 transcript review 观察危险策略。</p>
+
+<p>另一组要分开的概念：<strong>capability eval</strong> 问”这个 agent 能做好什么”，应该从低通过率起步，给团队一座可以爬的山；<strong>regression eval</strong> 问”它还能做好过去会做的事吗”，应该维持接近 <strong>100%</strong> 的通过率，一掉就是回归警报。成熟后，打满分的 capability eval 会毕业进 regression suite。</p>
+
+<h2 id="按-agent-类型选尺子">按 agent 类型选尺子</h2>
+
+<ul>
+  <li><strong>Coding agents</strong>：主 grader 天然是确定性的——测试能不能过、是否修了 failing tests 且不破坏 passing tests。SWE-bench Verified（GitHub issues + 测试套件）和 Terminal-Bench（Linux kernel 编译、ML 训练这类端到端任务）都是这个路线。好的套件还会叠 static analysis、state check、transcript 指标（turns/tool calls/tokens/latency）和 LLM rubric（是否过度设计、是否尊重现有风格）。</li>
+  <li><strong>Conversational agents</strong>：难点在任务完成和交流质量都算数——退款处理了但态度糟糕，和态度很好但没改后端状态，都是失败。做法是 <strong>verifiable end-state + rubric</strong>，常需要第二个 LLM 模拟用户；τ-Bench / τ2-Bench 就是这种多轮 benchmark 的代表。一个任务可以同时挂 state check（ticket resolved）、transcript 约束（10 turns 内）、LLM rubric（语气得体、不编造政策）。</li>
+  <li><strong>Research agents</strong>：输出主观、专家会互相不同意、ground truth 随网页漂移。组合 <strong>groundedness</strong>（关键 claim 有 source 支撑）、<strong>coverage</strong>（覆盖任务要求的事实）、<strong>source quality</strong>（用权威来源）、客观题用 exact match，开放式质量频繁对齐专家判断。BrowseComp 是这类”验证容易、求解难”的代表。</li>
+  <li><strong>Computer-use agents</strong>：通过截图、点击、键盘操作真实 GUI，必须在真实或 sandboxed 环境跑并检查最终状态。WebArena 用 URL/page state/backend 检查浏览器任务，OSWorld 用脚本检查文件系统、配置、数据库和 UI 属性。一个实用 tradeoff：总结 Wikipedia 时从 DOM 抽文本更高效，在 Amazon 找 laptop case 时截图更高效——Claude for Chrome 的 eval 就专门检查 agent 会不会按场景选对工具。</li>
+</ul>
+
+<h2 id="非确定性passk-和-passk-是两种产品承诺">非确定性：pass@k 和 pass^k 是两种产品承诺</h2>
+
+<p><img src="../assets/paper-reading/anthropic-agent-evals/official-pass-metrics.png" alt="Anthropic official pass@k and pass^k comparison" /></p>
+
+<p><em>原图来自 Anthropic：横轴是尝试次数 k。k=1 时两条曲线都等于单次成功率；k 增大后 pass@k（k 次里至少一次成功）逼近 100%，pass^k（k 次全部成功）跌向 0%。同一个 agent，两个指标讲的是完全不同的故事。</em></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>指标</th>
+      <th>含义</th>
+      <th>适合什么产品语义</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">pass@k</code></td>
+      <td>k 次里至少一次成功</td>
+      <td>只要有一个可用结果就有价值的任务</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">pass^k</code></td>
+      <td>k 次必须全部成功</td>
+      <td>客服、交易、生产操作——用户期待每次都稳</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>文章的例子：单次成功率 75% 的 agent 跑 3 次，”3 次都成功”的概率只有 <strong>(0.75)^3 ≈ 42%</strong>。这就是 demo 和上线的落差：demo 展示的是 pass@k 的乐观面，用户体验要求的是 pass^k 的一致性。面向用户的可靠性承诺，必须盯 pass^k。</p>
+
+<h2 id="从-0-到-1-的九步路线图">从 0 到 1 的九步路线图</h2>
+
+<p><img src="../assets/paper-reading/anthropic-agent-evals/official-eval-creation.png" alt="Anthropic official roadmap to excellent evals" /></p>
+
+<p><em>原图来自 Anthropic：从 start early 到 long-term maintenance 的建设流程图。核心不是步骤数量，而是顺序——先有真实失败构成的任务库和无歧义的成功标准，再谈 harness 和 grader 的工程化。</em></p>
+
+<p><strong>Step 0-3：把任务库搭起来。</strong> 不用等几百个任务，<strong>20-50 个来自真实失败的简单任务</strong>就够开工——早期每次改动影响明显，小样本信号足够。把上线前的手测清单、bug tracker、support queue 转成 task，按用户影响排优先级。好 task 的标准：两个领域专家独立判断能给出相同 pass/fail；任务描述包含 grader 检查所需的全部信息（audit Terminal-Bench 时发现过：任务没说文件路径、测试却假设了特定路径，agent 无辜失败）；有 <strong>reference solution</strong> 证明可解、顺便验证 grader 没写错——frontier model 出现 <strong>0% pass@100</strong> 时，多半是任务坏了而不是模型不行。正负例要平衡：Claude.ai 的 web search eval 同时覆盖”查天气”这类该搜的 query 和 “who founded Apple?” 这类该直接回答的 query——<strong>单边 eval 会训练出单边行为</strong>。</p>
+
+<p><strong>Step 4-5：harness 稳定，grader 不脆。</strong> eval 里的 agent 要尽量像生产环境的 agent；trial 之间必须隔离，清掉 leftover files、cached data、资源耗尽这些相关失败源——Anthropic 内部就出过 Claude 通过查看前面 trial 留下的 git history 拿到不公平优势的事故。grader 设计的几个坑：能确定性就确定性，但别把合法变体写死；多组件任务给 partial credit（”找对了问题但没退成款”和”完全没做”要区分开）；LLM judge 要有 Unknown 退出选项，减少信息不足时的幻觉评分；一个维度一个 judge，别让单个 judge 一口气判所有复杂维度；grader 要抗作弊，通过 eval 必须真的需要完成任务。</p>
+
+<p>最有警示性的两个案例都在这里。<strong>CORE-Bench</strong>：Opus 4.5 用原 CORE-Agent scaffold 只有 <strong>42%</strong>；换成 Claude Code、模型不变，直接到 <strong>78%</strong>——scaffold 本身在锁死模型；再修掉刚性数值匹配（期望 <code class="language-plaintext highlighter-rouge">96.124991…</code> 却惩罚 <code class="language-plaintext highlighter-rouge">96.12</code>）、任务歧义、随机任务不可复现这些 grader/task 问题，才到约 <strong>95%</strong>。<strong>METR</strong> 的 time horizon benchmark 则出过阈值 bug：任务文字要求”达到”某分数，grader 却要求”超过”，遵守指令的模型反而吃亏。原则只有一条：<strong>低分不一定 agent 差，高分不一定 agent 好；先读 transcript，再信数字。</strong></p>
+
+<p><strong>Step 6-8：读轨迹、防饱和、有人养。</strong> 定期读大量 trial 的 transcript 和评分，确认失败看起来公平、grader 真的在测重要的东西——这是 agent 开发的核心技能。capability eval 会饱和：SWE-bench Verified 一年内从 <strong>40% 到超过 80%</strong>，接近饱和时进步会显得虚假地小；Qodo 起初觉得 Opus 4.5 提升不明显，后来发现是自己的 one-shot coding eval 没覆盖更长的 agentic 任务，换成 agentic eval framework 才看到真实进步。长期维护上，核心 infrastructure 交给专门 eval team，但 task 应该由最接近用户的人贡献——现在 PM、客户成功、销售都能用 Claude Code 把 eval task 提成 PR，”let them”。更进一步是 eval-driven development：先写 eval 再做能力，像 TDD 一样迭代。</p>
+
+<h2 id="自动-eval-不是全部swiss-cheese-才是现实">自动 eval 不是全部：Swiss cheese 才是现实</h2>
+
+<p><img src="../assets/paper-reading/anthropic-agent-evals/official-swiss-cheese.png" alt="Anthropic official Swiss cheese model for AI agent quality" /></p>
+
+<p><em>原图来自 Anthropic：Swiss cheese 模型——每一层评测方法都有洞（automated evals 可能和真实使用脱节、监控是事后的、人工 review 不可规模化），但错位叠放的多层能挡住单层漏掉的失败。</em></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>方法</th>
+      <th>它抓什么</th>
+      <th>主要短板</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Automated evals</td>
+      <td>快速迭代、回归、每次提交都能跑、无用户影响</td>
+      <td>前期投入大，可能和真实使用脱节造成虚假信心</td>
+    </tr>
+    <tr>
+      <td>Production monitoring</td>
+      <td>真实用户行为、真实错误和分布漂移</td>
+      <td>事后反应，问题已经影响用户，信号噪</td>
+    </tr>
+    <tr>
+      <td>A/B testing</td>
+      <td>真实结果指标：retention、task completion</td>
+      <td>慢（数天到数周）、需要流量、不解释为什么</td>
+    </tr>
+    <tr>
+      <td>User feedback</td>
+      <td>没预料到的问题、自带真实例子</td>
+      <td>稀疏、自选择、偏向严重问题</td>
+    </tr>
+    <tr>
+      <td>Manual transcript review</td>
+      <td>subtle failure、质量直觉、judge 校准</td>
+      <td>不可规模化，reviewer 会疲劳</td>
+    </tr>
+    <tr>
+      <td>Systematic human studies</td>
+      <td>主观任务金标准、校准 LLM grader</td>
+      <td>贵、慢，复杂领域需要专家</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>落地节奏：automated evals 管 pre-launch 和 CI/CD；上线后开 production monitoring；大改动用 A/B 验证；feedback 持续 triage、每周抽样读 transcript；human studies 定期校准 LLM grader。</p>
+
+<h2 id="附录框架是加速器质量在任务里">附录：框架是加速器，质量在任务里</h2>
+
+<p>文章附录盘点了几个 eval 框架，值得存档备查：</p>
+
+<ul>
+  <li><strong>Harbor</strong>：容器化 agent 环境，支持跨云大规模跑 trial，task/grader 有标准化格式；Terminal-Bench 2.0 就通过它的 registry 分发。</li>
+  <li><strong>Braintrust</strong>：离线评测 + 生产可观测 + 实验追踪，附带 <code class="language-plaintext highlighter-rouge">autoevals</code> 预置 scorer 库。</li>
+  <li><strong>LangSmith</strong>：tracing、离线/在线 eval、数据集管理，深度绑定 LangChain 生态。</li>
+  <li><strong>Langfuse</strong>：功能类似的 self-hosted 开源替代，适合有数据驻留要求的团队。</li>
+  <li><strong>Arize</strong>：开源的 Phoenix（tracing/debug/评测）加商业的 AX（规模化与监控）。</li>
+</ul>
+
+<p>文章的态度很清醒：很多团队混用多个工具或干脆自己写脚本，<strong>框架只是加速器，eval 的质量永远在高质量 task 和 grader 的迭代里</strong>。</p>
+
+<h2 id="我怎么看">我怎么看</h2>
+
+<h3 id="可信之处">可信之处</h3>
+
+<ul>
+  <li><strong>案例有名有姓有数字</strong>：CORE-Bench 42→78→95、Bolt 3 个月、SWE-bench 40→80、(0.75)^3≈42%，都是可核对的具体证据，不是空泛原则。</li>
+  <li><strong>诚实暴露自家事故</strong>：git history 污染、CORE-Bench grader bug 都是 Anthropic 自己踩的坑，这类自曝比”最佳实践清单”可信得多。</li>
+  <li><strong>对 LLM judge 的态度克制</strong>：反复强调人工校准、Unknown 选项、维度拆分，没有把 LLM-as-judge 当银弹卖。</li>
+  <li><strong>“先读 transcript 再信数字”贯穿全文</strong>：这是一条能直接改变工作习惯的原则，而且给了 42→78 这种量级的理由。</li>
+</ul>
+
+<h3 id="需要警惕">需要警惕</h3>
+
+<ul>
+  <li><strong>不是可复现研究</strong>：没有新数据集和系统实验，案例来自 Anthropic 和合作客户的一面之词，方向可信但数字不可外推。</li>
+  <li><strong>LLM judge 校准只有原则没有协议</strong>：说要 human calibration，但没给误差曲线、标注一致性指标或具体流程。</li>
+  <li><strong>安全攻防点到为止</strong>：grader bypass、prompt injection 只作为”要抗作弊”的原则出现，没有 threat model。</li>
+  <li><strong>有推广自家生态的成分</strong>：CORE-Bench 案例同时是”scaffold 很重要”的论据和 Claude Code 的广告；附录里 Harbor 也是自家关联项目。</li>
+  <li><strong>多 agent 与长任务评测是承认的空白</strong>：文章自己说这个领域 nascent，结论会随 agent 形态演化。</li>
+</ul>
+
+<h2 id="对我的价值">对我的价值</h2>
+
+<p>这套框架可以直接落到我的 wiki/paper-reading agent pipeline 上，映射成一个轻量 eval harness：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>文章概念</th>
+      <th>对应到 paper-reading pipeline</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Task</td>
+      <td>给定 URL / arXiv / local markdown，产出一篇可发布精读</td>
+    </tr>
+    <tr>
+      <td>Outcome</td>
+      <td>markdown 存在、frontmatter 完整、source link 可点、Jekyll build 通过</td>
+    </tr>
+    <tr>
+      <td>Deterministic grader</td>
+      <td><code class="language-plaintext highlighter-rouge">check_paper_reading_figures.py</code>：≥3 原图 + 1 自制图、路径存在、caption 齐全</td>
+    </tr>
+    <tr>
+      <td>LLM rubric</td>
+      <td>主线是否清楚、关键数字是否可回溯、是否区分原图和自制图、是否避免空泛总结</td>
+    </tr>
+    <tr>
+      <td>Human calibration</td>
+      <td>我读完觉得”有重点、有细节、有味道”，把不满意处变成新 checklist 项</td>
+    </tr>
+    <tr>
+      <td>Regression suite</td>
+      <td>已定稿的高质量 note 作为风格样本，防止新 note 退化成短摘要</td>
+    </tr>
+    <tr>
+      <td>pass^k</td>
+      <td>一篇成功不算数：连续多篇稳定过全部 gate 才说明 pipeline 可靠</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>三条直接可执行的迁移：<strong>正负例平衡</strong>——eval 里不只测”该配图时配了”，也要测”不该硬凑图时没凑”；<strong>partial credit</strong>——”图齐了但 caption 敷衍”和”完全没图”要区分；<strong>读 transcript</strong>——agent 写砸一篇时，先看它的轨迹判断是 prompt 歧义、工具限制还是能力问题，再决定修哪层。</p>
+
+<h2 id="一句话收束">一句话收束</h2>
+
+<p>把 eval 当作 agent 系统本身的一部分而不是外挂的记分牌——失败变成任务，任务变成回归护栏，分数低时先审 scaffold 和 grader 再怪模型，这就是整篇文章值得带走的姿势。</p>
+
+            </div>
+        </article>
+
+        
+        
+        
+        
+        <aside class="note-backlinks" aria-label="Backlinks">
+            <div class="note-backlinks-title">引用了本文的笔记</div>
+            <ul class="note-backlinks-list">
+                
+                <li>
+                    <a href="/Ryanhu2001/wiki/Paper-sharing-3%20Anthropic%20%E7%9A%84%20Agent%20Eval%20%E5%B7%A5%E7%A8%8B.html">Paper-sharing-3: Anthropic 的 Agent Eval 工程</a>
+                    <span class="note-backlinks-desc">按时间顺序解读 Anthropic 五篇 Agent Eval 工程文章：从评测结构、基础设施噪声、Eval awareness、Generator–Evaluator Loop 到生产质量闭环。</span>
+                </li>
+                
+            </ul>
+        </aside>
+        
+    </div>
+
+    <aside class="blog-toc-sidebar">
+        <nav id="blog-toc" class="blog-toc-nav" aria-label="Table of contents">
+            <div class="blog-toc-header">
+                <div class="blog-toc-title">On This Page</div>
+                <button
+                    id="blog-toc-toggle"
+                    class="blog-toc-toggle"
+                    type="button"
+                    aria-controls="blog-toc-list"
+                    aria-expanded="true"
+                    aria-label="收起目录"
+                    title="收起目录"
+                >
+                    <svg class="blog-toc-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="blog-toc-list" class="blog-toc-list"></div>
+        </nav>
+    </aside>
+</div>
+
+    </main>
+    <footer class="footer border-top py-2 mt-5 bg-white small">
+    <div class="container-lg">
+        <div class="row my-3">
+            <div class="col-6">
+                <div class="text-muted">
+                    <i>Last updated: Aug 2026</i>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="text-right text-muted">
+                    Built with <a href="https://github.com/luost26/academic-homepage" target="_blank"><i class="fas fa-pencil-ruler"></i> academic-homepage</a> · Visual refresh by Kimi-K3.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <pagefind-config
+        bundle-path="/Ryanhu2001/pagefind/"
+        base-url="/Ryanhu2001/"
+        excerpt-length="30"
+        lang="zh-CN"></pagefind-config>
+    <div class="modal fade site-search-modal" id="siteSearchModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="siteSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 mb-0" id="siteSearchModalLabel">Search</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <pagefind-searchbox placeholder="搜索 wiki、论文笔记、关键词..." show-sub-results="true" hide-shortcut="true"></pagefind-searchbox>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous"></script>
+    <script type="module" src="/Ryanhu2001/pagefind/pagefind-component-ui.js"></script>
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tocbot@4.36.8/dist/tocbot.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            renderMathInElement(document.body, {
+              delimiters: [
+                  {left: '$$', right: '$$', display: true},
+                  {left: '\\[', right: '\\]', display: true},
+                  {left: '$', right: '$', display: false},
+                  {left: '\\(', right: '\\)', display: false}
+              ],
+              throwOnError : false
+            });
+            Prism.highlightAll();
+            
+
+            var siteSearchModal = document.getElementById("siteSearchModal");
+            var siteSearchBox = siteSearchModal ? siteSearchModal.querySelector("pagefind-searchbox") : null;
+            function focusSiteSearch() {
+                window.setTimeout(function() {
+                    if (siteSearchBox && typeof siteSearchBox.focus === "function") {
+                        siteSearchBox.focus();
+                    }
+                }, 80);
+            }
+            if (siteSearchModal && window.jQuery) {
+                window.jQuery(siteSearchModal).on("shown.bs.modal", focusSiteSearch);
+            }
+            document.addEventListener("keydown", function(event) {
+                var key = String(event.key || "").toLowerCase();
+                var isSearchShortcut = key === "k" && (event.metaKey || event.ctrlKey);
+                var isModalOpen = siteSearchModal && siteSearchModal.classList.contains("show");
+                var target = event.target;
+                var isTyping = target && (
+                    target.tagName === "INPUT" ||
+                    target.tagName === "TEXTAREA" ||
+                    target.isContentEditable
+                );
+                if (!isSearchShortcut || (isTyping && isModalOpen) || !siteSearchModal || !window.jQuery) return;
+                event.preventDefault();
+                window.jQuery(siteSearchModal).modal("show");
+            });
+        });
+    </script>
+    
+    <script src="/Ryanhu2001/assets/js/blog.js"></script>
+    
+    <script src="/Ryanhu2001/assets/js/common.js"></script>
+</body>
+</html>

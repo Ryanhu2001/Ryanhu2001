@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="620" viewBox="0 0 1600 620" role="img" aria-labelledby="title desc">
+  <title id="title">从 Offline Eval 到生产的闭环</title>
+  <desc id="desc">离线评测、公开版本 Dogfooding、渐进发布与监控、用户反馈、最小复现任务、新检查项，最终回流 Regression Suite。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbf9f4"/>
+      <stop offset="1" stop-color="#f0ece3"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#5d5142" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6e6254"/>
+    </marker>
+    <style>
+      .title { font: 700 44px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #191714; }
+      .subtitle { font: 400 22px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #655e55; }
+      .node { font: 600 19px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #1f1c18; }
+      .sub { font: 400 15px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #5e574f; }
+      .phase { font: 700 15px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; letter-spacing: 0.08em; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="620" rx="36" fill="url(#bg)"/>
+  <text class="title" x="80" y="86">从 Offline Eval 到生产的闭环</text>
+  <text class="subtitle" x="82" y="126">用户体验的被测对象是完整生产系统；离线全绿只是闭环的起点</text>
+
+  <!-- Top row: L to R -->
+  <g filter="url(#shadow)">
+    <rect x="80" y="180" width="330" height="110" rx="18" fill="#eef5fb" stroke="#5f8fb3" stroke-width="2"/>
+    <rect x="470" y="180" width="330" height="110" rx="18" fill="#eef7f2" stroke="#5b9670" stroke-width="2"/>
+    <rect x="860" y="180" width="330" height="110" rx="18" fill="#fffaf1" stroke="#d9a84e" stroke-width="2"/>
+    <rect x="1250" y="180" width="270" height="110" rx="18" fill="#fff0f0" stroke="#c36c67" stroke-width="2"/>
+  </g>
+  <text class="phase" x="112" y="212" fill="#3d6f93">OFFLINE</text>
+  <text class="node" x="112" y="240">Capability / Regression Eval</text>
+  <text class="sub" x="112" y="266">多 Seed · 置信区间 · 版本固定</text>
+
+  <text class="phase" x="502" y="212" fill="#3e7d55">DOGFOOD</text>
+  <text class="node" x="502" y="240">Public-build Dogfooding</text>
+  <text class="sub" x="502" y="266">与外部用户完全一致的版本</text>
+
+  <text class="phase" x="892" y="212" fill="#b8860b">ROLLOUT</text>
+  <text class="node" x="892" y="240">Gradual Rollout + 监控</text>
+  <text class="sub" x="892" y="266">Soak Period · 每模型单独看</text>
+
+  <text class="phase" x="1282" y="212" fill="#a04a44">PRODUCTION</text>
+  <text class="node" x="1282" y="240">用户反馈与真实 Transcript</text>
+  <text class="sub" x="1282" y="266">/feedback · 线上可复现案例</text>
+
+  <line x1="410" y1="235" x2="460" y2="235" stroke="#6e6254" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="800" y1="235" x2="850" y2="235" stroke="#6e6254" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="1190" y1="235" x2="1240" y2="235" stroke="#6e6254" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <!-- Down arrow -->
+  <path d="M 1385 290 L 1385 360" stroke="#6e6254" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- Bottom row: R to L -->
+  <g filter="url(#shadow)">
+    <rect x="1120" y="370" width="400" height="110" rx="18" fill="#f5f1ff" stroke="#8c78bd" stroke-width="2"/>
+    <rect x="620" y="370" width="400" height="110" rx="18" fill="#f5f1ff" stroke="#8c78bd" stroke-width="2"/>
+    <rect x="80" y="370" width="440" height="110" rx="18" fill="#f2f0eb" stroke="#786f64" stroke-width="2"/>
+  </g>
+  <text class="phase" x="1152" y="402" fill="#6a5a96">DISTILL</text>
+  <text class="node" x="1152" y="430">最小可复现 Task</text>
+  <text class="sub" x="1152" y="456">长会话 · 空闲恢复 · Flag 组合状态</text>
+
+  <text class="phase" x="652" y="402" fill="#6a5a96">CODIFY</text>
+  <text class="node" x="652" y="430">新 Outcome / Trajectory Check</text>
+  <text class="sub" x="652" y="456">把根因写成可自动判定的断言</text>
+
+  <text class="phase" x="112" y="402" fill="#615a4f">FEED BACK</text>
+  <text class="node" x="112" y="430">回流 Regression Suite</text>
+  <text class="sub" x="112" y="456">同类退化下一次在发布前被拦截</text>
+
+  <line x1="1110" y1="425" x2="1030" y2="425" stroke="#6e6254" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="610" y1="425" x2="530" y2="425" stroke="#6e6254" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <!-- Loop back up -->
+  <path d="M 80 425 C 30 425 30 235 70 235" stroke="#6e6254" stroke-width="2.5" stroke-dasharray="7 6" fill="none" marker-end="url(#arrow)"/>
+
+  <text class="sub" x="80" y="560">单个 Aggregate Quality Score 分不清默认推理预算、跨层状态机和 System Prompt 三类根因——闭环的每一步都要保留分辨率。</text>
+</svg>
