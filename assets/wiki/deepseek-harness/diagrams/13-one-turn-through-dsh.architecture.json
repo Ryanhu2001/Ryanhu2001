@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "一次用户请求的执行顺序",
+    "quality_profile": "showcase",
+    "viewBox": [1600, 600],
+    "legend": { "mode": "hidden" }
+  },
+  "components": [
+    { "id": "inbox", "type": "external", "label": "接收用户输入", "sublabel": "Agent Inbox", "pos": [35, 225], "size": [175, 72] },
+    { "id": "turnStart", "type": "database", "label": "开始本轮处理", "sublabel": "turn/start · step/start", "pos": [260, 225], "size": [180, 72] },
+    { "id": "request", "type": "backend", "label": "组装请求并调用模型", "sublabel": "提示词 · 工具定义 · 历史", "pos": [490, 225], "size": [190, 72] },
+    { "id": "assistant", "type": "database", "label": "记录模型输出", "sublabel": "assistant/message", "pos": [730, 225], "size": [180, 72] },
+    { "id": "pipeline", "type": "security", "label": "检查并执行工具", "sublabel": "工具执行管线", "pos": [960, 225], "size": [180, 72] },
+    { "id": "toolResult", "type": "database", "label": "记录执行结果", "sublabel": "tool/result · step/end", "pos": [1190, 225], "size": [180, 72] },
+    { "id": "turnStop", "type": "backend", "label": "继续或结束", "sublabel": "下一次模型调用 / turn/end", "pos": [1420, 225], "size": [160, 72] }
+  ],
+  "connections": [
+    { "id": "claimInput", "from": "inbox", "to": "turnStart", "variant": "default" },
+    { "id": "assembleRequest", "from": "turnStart", "to": "request", "variant": "emphasis" },
+    { "id": "streamOutput", "from": "request", "to": "assistant", "label": "模型流式输出", "variant": "default", "labelAt": [705, 320] },
+    { "id": "dispatchTool", "from": "assistant", "to": "pipeline", "label": "模型请求工具", "variant": "security", "labelAt": [935, 311] },
+    { "id": "appendResult", "from": "pipeline", "to": "toolResult", "variant": "emphasis" },
+    { "id": "evaluateStop", "from": "toolResult", "to": "turnStop", "variant": "default" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "两个时间单位",
+      "items": [
+        "Step 是一次模型请求及其工具执行",
+        "Turn 可以包含零个或多个 Step"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "记录与执行分开",
+      "items": [
+        "持久事件记录已经发生的事实",
+        "执行节点控制当前流程"
+      ]
+    }
+  ]
+}

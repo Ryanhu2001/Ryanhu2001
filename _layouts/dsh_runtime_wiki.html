@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{ page.description }}">
+  <meta name="color-scheme" content="dark light">
+  <title>{{ page.title }}</title>
+  <link rel="stylesheet" href="{{ '/assets/css/dsh-runtime-wiki.css' | relative_url }}">
+  <script>
+    (() => {
+      const stored = localStorage.getItem('dsh-runtime-theme');
+      const preferred = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      document.documentElement.dataset.theme = stored || preferred;
+    })();
+  </script>
+</head>
+<body>
+  <div class="reading-progress" aria-hidden="true"><span data-reading-progress></span></div>
+
+  <header class="site-header">
+    <a class="site-header__home" href="{{ '/wiki/' | relative_url }}">Ryan's Wiki</a>
+    <span class="site-header__title">DeepSeek Harness</span>
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换明暗主题">
+      <span aria-hidden="true">◐</span>
+      <span data-theme-label>切换主题</span>
+    </button>
+  </header>
+
+  <main class="reading-column" data-pagefind-body>
+    <header class="article-hero" id="top">
+      <p class="article-hero__eyebrow">{{ page.duration }}</p>
+      <h1>{{ page.title }}</h1>
+      <p class="article-hero__lead">{{ page.lead }}</p>
+      <div class="revision-note">
+        <span>本文核对版本</span>
+        <code>{{ page.source_revision }}</code>
+        <a data-source-evidence href="https://github.com/deepseek-ai/deepseek-harness/tree/{{ page.source_revision }}">查看固定版本源码 ↗</a>
+      </div>
+      <div class="opening-path" aria-label="从 Agent Loop 到 Runtime 的主线">
+        <code>User → Model → Tools → Model</code>
+        <span aria-hidden="true">逐渐变成</span>
+        <code>一个程序 → 多个会话 → 不同能力 → 可恢复历史 → 远程执行 → Runtime</code>
+      </div>
+    </header>
+
+    <nav class="article-toc" data-article-toc aria-label="文章目录">
+      <p class="article-toc__label">目录</p>
+      <p class="article-toc__loading">正在根据正文标题生成目录…</p>
+    </nav>
+
+    <article class="dsh-article" data-dsh-article>
+      {{ content }}
+    </article>
+
+    <footer class="article-footer">
+      <p>本页由同目录的 Markdown 讲稿直接渲染。五张 HTML / SVG 图只是辅助层，完整论证都在正文、表格、伪代码和源码说明中。</p>
+      <a href="#top">回到开头 ↑</a>
+    </footer>
+  </main>
+
+  <dialog class="diagram-dialog" data-diagram-dialog>
+    <div class="diagram-dialog__window">
+      <header>
+        <div>
+          <span>中文辅助图 · 可缩放与切换主题</span>
+          <h4 data-diagram-dialog-title>图解</h4>
+        </div>
+        <button type="button" data-diagram-close aria-label="关闭图解">关闭 ×</button>
+      </header>
+      <div class="diagram-dialog__body">
+        <div class="diagram-dialog__loading" data-diagram-loading>正在载入图解…</div>
+        <iframe title="DeepSeek Harness 中文辅助图" data-diagram-frame></iframe>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="{{ '/assets/js/dsh-runtime-wiki.js' | relative_url }}"></script>
+</body>
+</html>

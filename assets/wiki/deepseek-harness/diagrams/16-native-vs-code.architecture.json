@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "两种工具调用方式",
+    "quality_profile": "showcase",
+    "viewBox": [1600, 700],
+    "legend": { "mode": "hidden" }
+  },
+  "components": [
+    { "id": "nativeModel", "type": "external", "label": "模型选择一个工具", "sublabel": "Native 调用", "pos": [100, 100], "size": [210, 72] },
+    { "id": "nativePipeline", "type": "security", "label": "检查并执行工具", "sublabel": "权限 · 审批 · 执行", "pos": [690, 100], "size": [220, 72] },
+    { "id": "nativeResult", "type": "frontend", "label": "结果回到模型", "sublabel": "再决定下一次调用", "pos": [1270, 100], "size": [210, 72] },
+    { "id": "codeModel", "type": "external", "label": "模型生成一段程序", "sublabel": "循环 · 分支 · 聚合", "pos": [70, 430], "size": [210, 72] },
+    { "id": "runCode", "type": "messagebus", "label": "执行 run_code", "sublabel": "程序化工具接口", "pos": [440, 430], "size": [190, 72] },
+    { "id": "runtime", "type": "backend", "label": "Runtime 执行程序", "sublabel": "内部工具调用仍走同一管线", "pos": [800, 430], "size": [250, 72] },
+    { "id": "curatedResult", "type": "frontend", "label": "筛选结果回到模型", "sublabel": "只返回需要的信息", "pos": [1270, 430], "size": [210, 72] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Native：每次调用都回到模型", "wraps": ["nativeModel", "nativePipeline", "nativeResult"], "pad": 30 },
+    { "kind": "region", "label": "Code：循环和聚合在 Runtime 内完成", "wraps": ["codeModel", "runCode", "runtime", "curatedResult"], "pad": 30 }
+  ],
+  "connections": [
+    { "id": "nativeCall", "from": "nativeModel", "to": "nativePipeline", "label": "一次调用", "variant": "default" },
+    { "id": "nativeReturn", "from": "nativePipeline", "to": "nativeResult", "label": "完整中间结果", "variant": "emphasis" },
+    { "id": "programTransport", "from": "codeModel", "to": "runCode", "label": "程序", "variant": "default" },
+    { "id": "executeProgram", "from": "runCode", "to": "runtime", "label": "确定性控制流", "variant": "emphasis" },
+    { "id": "returnCurated", "from": "runtime", "to": "curatedResult", "label": "筛选与聚合", "variant": "emphasis" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "底层工具没有变化",
+      "items": [
+        "两种呈现方式复用同一组底层工具",
+        "Code 内部调用仍经过权限与审批"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "执行顺序发生变化",
+      "items": [
+        "Native 依赖模型多次往返",
+        "Code 把循环、分支与聚合移到普通 Runtime"
+      ]
+    }
+  ]
+}

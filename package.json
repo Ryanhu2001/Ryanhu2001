@@ -2,9 +2,10 @@
   "name": "ryan-personal-wiki",
   "private": true,
   "scripts": {
-    "build": "npm run check:figures:gate && bundle exec jekyll build && pagefind --site _site",
+    "build": "npm run check:deepseek-share && npm run check:figures:gate && bundle exec jekyll build && python3 scripts/check_deepseek_harness_share.py --rendered-root _site && pagefind --site _site",
     "build:site": "bundle exec jekyll build",
     "build:search": "pagefind --site _site",
+    "check:deepseek-share": "python3 scripts/check_deepseek_harness_share.py",
     "audit:figures": "python3 scripts/audit_paper_reading_visuals.py",
     "check:figures": "python3 scripts/check_paper_reading_figures.py",
     "check:figures:gate": "python3 scripts/check_paper_reading_figures.py --baseline scripts/paper_reading_figure_debt.json"

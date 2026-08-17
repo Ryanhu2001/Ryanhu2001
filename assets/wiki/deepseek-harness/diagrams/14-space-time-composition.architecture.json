@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "一项能力对谁生效、何时撤销",
+    "quality_profile": "showcase",
+    "viewBox": [1600, 700],
+    "legend": { "mode": "hidden" }
+  },
+  "components": [
+    { "id": "host", "type": "cloud", "label": "Host 的公共服务", "sublabel": "凭据 · 工具注册表", "pos": [100, 105], "size": [220, 72] },
+    { "id": "pluginA", "type": "backend", "label": "Agent A 的 GitHub 工具", "sublabel": "插件注册", "pos": [610, 105], "size": [220, 72] },
+    { "id": "agentA", "type": "frontend", "label": "Agent A", "sublabel": "可以使用 GitHub 工具", "pos": [1190, 55], "size": [210, 72] },
+    { "id": "agentB", "type": "frontend", "label": "Agent B", "sublabel": "看不到 A 的工具", "pos": [1190, 190], "size": [210, 72] },
+    { "id": "mount", "type": "external", "label": "加载插件", "sublabel": "mount", "pos": [100, 455], "size": [190, 70] },
+    { "id": "active", "type": "messagebus", "label": "注册开始生效", "sublabel": "工具 · 提示词 · 监听器", "pos": [610, 455], "size": [230, 70] },
+    { "id": "unmount", "type": "security", "label": "卸载插件", "sublabel": "unmount：全部撤销", "pos": [1200, 455], "size": [200, 70] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "作用范围：谁可以使用", "wraps": ["host", "pluginA", "agentA", "agentB"], "pad": 28 },
+    { "kind": "region", "label": "生命周期：何时生效、何时撤销", "wraps": ["mount", "active", "unmount"], "pad": 28 }
+  ],
+  "connections": [
+    { "id": "resolveHost", "from": "host", "to": "pluginA", "label": "读取公共服务", "variant": "default" },
+    { "id": "visibleToA", "from": "pluginA", "to": "agentA", "label": "只对 A 注册", "variant": "emphasis" },
+    { "id": "sharedToB", "from": "host", "to": "agentB", "label": "使用 Host 公共服务", "variant": "dashed", "labelDy": 18 },
+    { "id": "createEffects", "from": "mount", "to": "active", "label": "产生注册", "variant": "emphasis" },
+    { "id": "disposeEffects", "from": "active", "to": "unmount", "label": "撤销注册", "variant": "security" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "作用范围",
+      "items": [
+        "依赖可以从 Host 层解析",
+        "新增能力仍只对 Agent A 可见"
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "生命周期",
+      "items": [
+        "加载插件时产生注册",
+        "卸载插件时必须完整撤销"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "完整历史如何变成本轮模型输入",
+    "quality_profile": "showcase",
+    "viewBox": [1500, 650],
+    "legend": { "mode": "hidden" }
+  },
+  "components": [
+    { "id": "sessionLog", "type": "database", "label": "完整事件记录", "sublabel": "SessionEvent：A · B · C · D · E · F · G", "tag": "只追加", "pos": [70, 120], "size": [220, 78] },
+    { "id": "compaction", "type": "messagebus", "label": "压缩过程的记录", "sublabel": "start · summary · end", "tag": "继续追加", "pos": [70, 410], "size": [220, 78] },
+    { "id": "derive", "type": "backend", "label": "重新生成消息", "sublabel": "deriveMessages", "pos": [470, 120], "size": [210, 78] },
+    { "id": "replace", "type": "backend", "label": "替换一段旧内容", "sublabel": "SurfaceOp.replace", "pos": [470, 410], "size": [210, 78] },
+    { "id": "surface", "type": "frontend", "label": "本轮模型输入", "sublabel": "摘要 + F + G", "tag": "由历史生成", "pos": [880, 265], "size": [230, 82] },
+    { "id": "model", "type": "external", "label": "模型", "sublabel": "只接收本轮输入", "pos": [1260, 265], "size": [190, 82] }
+  ],
+  "connections": [
+    { "id": "foldEvents", "from": "sessionLog", "to": "derive", "label": "读取全部事件", "variant": "emphasis" },
+    { "id": "emitReplacement", "from": "compaction", "to": "replace", "label": "追加摘要与替换说明", "variant": "dashed" },
+    { "id": "applyReplacement", "from": "replace", "to": "derive", "label": "应用替换操作", "variant": "default", "fromSide": "top", "toSide": "bottom" },
+    { "id": "buildSurface", "from": "derive", "to": "surface", "label": "生成本轮输入", "variant": "emphasis" },
+    { "id": "sendRequest", "from": "surface", "to": "model", "label": "发送请求", "variant": "default" }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "原始记录不删除",
+      "items": [
+        "A 到 G 仍留在只追加日志",
+        "Summary 也是新追加的持久事件"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "只改变本轮输入",
+      "items": [
+        "旧区间被遮蔽，而不是被改写",
+        "模型只看到 Summary 与近期消息"
+      ]
+    }
+  ]
+}

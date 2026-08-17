@@ -1,0 +1,13 @@
+<div class="diagram-slot">
+  <button
+    class="diagram-link"
+    type="button"
+    data-diagram-open
+    data-diagram-title="{{ include.title }}"
+    data-diagram-src="{{ include.src | relative_url }}"
+  >
+    <span>辅助图 {{ include.number }} / 5</span>
+    <strong>{{ include.description }}</strong>
+    <small>{{ include.note }}</small>
+  </button>
+</div>
