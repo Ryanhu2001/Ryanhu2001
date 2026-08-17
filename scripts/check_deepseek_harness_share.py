@@ -30,42 +30,65 @@ REQUIRED_PART_IDS = (
     "part-comparison",
 )
 
-REQUIRED_TOPIC_IDS = tuple(
-    f"section-{part}-{topic}"
-    for part in range(1, 6)
-    for topic in range(1, 6)
+REQUIRED_PART_TITLES = (
+    "Part 1｜Overview：AgentLoop 之外还要管理什么",
+    "Part 2｜Everything Is a Plugin：DSH 如何组织这些能力",
+    "Part 3｜Core Designs：会话、模型输入、工具和长期任务",
+    "Part 4｜Four Agent Presets：四种 Agent 分别改变了什么",
+    "Part 5｜Conclusion：这套设计解决了什么，又付出了什么",
 )
 
-REQUIRED_TOPIC_NUMBERS = tuple(
-    f"{part}.{topic}"
-    for part in range(1, 6)
-    for topic in range(1, 6)
+REQUIRED_TOPIC_NUMBERS = (
+    "1.1", "1.2",
+    *(f"{part}.{topic}" for part in range(2, 6) for topic in range(1, 6)),
 )
+
+REQUIRED_TOPIC_IDS = tuple(f"section-{number.replace('.', '-')}" for number in REQUIRED_TOPIC_NUMBERS)
 
 REQUIRED_DIAGRAMS = (
-    "13-one-turn-through-dsh",
-    "14-space-time-composition",
+    "13-session-composition-turn",
+    "14-host-preset-agent",
     "15-history-to-model-surface",
     "16-native-vs-code",
     "17-session-activation",
 )
 
 REQUIRED_CONTENT = (
-    "一个 Host 可以同时运行多个 Session",
-    "Session 的标识和历史可以跨进程保留",
-    "当前 E2B 是 POC",
-    "远程执行不等于多租户安全",
-    "一个 Turn 可以包含零个、一个或多个 Step",
+    "Session A 与 Session B 加入同一份 Standard Preset",
+    "组件依赖满足以后",
+    "注册进入 Preset 的作用范围",
+    "当前 E2B 是 ephemeral POC",
+    "不是 hard multi-tenant boundary",
+    "可以包含零个、一个或多个 Step",
+    "packages/core/agent-loop/src/agent.ts",
+    "**源码批注版（中文注释为后加）：**",
     "作用范围和生命周期",
     "Cordis 不负责决定模型下一步做什么",
-    "AgentLoop 维护 Turn 与 Step 的执行顺序",
+    "AgentLoop 的职责仍然明确",
+    "一个 Session 从创建到 Turn 结束",
+    "Host plane 与 Agent plane",
+    "依赖倒置解决源码应该依赖谁",
+    "Consumer 只依赖稳定的 Service Definition",
+    "Composition 是选择并安装 Provider 的地方",
+    "Filesystem 与 Subprocess 还必须共同描述同一个 Execution World",
+    "这个注册动作改变了 Plugin 外部的状态，所以它是一项副作用",
+    "持久 SessionEvent 不由 Effect 撤销",
+    "Agent 负责当前执行，Session 记录持久事实",
     "SessionEvent",
     "压缩上下文不等于删除历史",
     "Model Surface",
+    "Model-visible means logged",
     "Activation 不是另一种 Session",
     "Tool Execution Pipeline",
     "四个 Preset",
     "At what point does it become a Runtime?",
+)
+
+PROHIBITED_UNSOURCED_INFERENCES = (
+    "如果模型第一次搜索文件",
+    "模型 Adapter 可以改变而不重写 Turn 顺序",
+    "Tool Runtime 可以增加审批或并发调度而不重写模型流",
+    "Persistence 可以从 JSONL 切到 SQLite",
 )
 
 PROHIBITED_NARRATION = (
@@ -82,6 +105,8 @@ PROHIBITED_NARRATION = (
     "遥控器",
     "脑子里的世界",
     "最漂亮的点",
+    "README 对这个关系写得很直接",
+    "这就是 Overview 需要的",
     ".plain-answer",
     ".implementation-note",
 )
@@ -95,6 +120,90 @@ PROHIBITED_SHOWCASE_MARKERS = (
     "data-slide=",
     "simulator",
     "runtime-map",
+)
+
+PROHIBITED_STALE_TUTORIAL = (
+    "├── Agent 选择：",
+    "packages/core-agent-loop",
+    "packages/core-session",
+    "packages/shell-tool-bash",
+    "@mod ",
+    "Roll Log",
+    "每个 Agent 建独立的 realm",
+    "第一个说不停",
+    "| bail |",
+    "FSERB",
+)
+
+PROHIBITED_OVERVIEW_JARGON = (
+    "effective view",
+    "wire identity",
+    "single-flight",
+    "durable facts",
+    "Deferred Discovery",
+)
+
+EVIDENCE_PROVENANCE_LABELS = (
+    "**源码摘录：**",
+    "**源码批注版（中文注释为后加）：**",
+    "**配置摘录：**",
+    "**流程图摘录：**",
+    "**忠实伪代码（非仓库原文）：**",
+    "**关系整理（非仓库原文）：**",
+)
+
+REQUIRED_OVERVIEW_GLOSSARY = (
+    "Host",
+    "Agent",
+    "Inbox",
+    "Session",
+    "SessionEvent",
+    "Child Session",
+    "Activation",
+    "Plugin",
+    "Service",
+    "Context",
+    "Composition",
+    "Agent Preset",
+    "Preset generation",
+    "Host / Agent plane",
+    "Registration",
+    "Scope",
+    "Event",
+    "Fiber",
+    "Effect",
+    "Disposer",
+    "Waterfall",
+    "Service Definition / Provider / Consumer",
+    "Dependency Inversion",
+    "Capability Seam",
+    "Execution World",
+    "Persistence",
+    "Compaction",
+    "Subagent",
+    "AgentLoop",
+    "Turn",
+    "Step",
+    "Projection",
+    "Model Surface",
+    "Tool Presentation",
+    "Agent Runtime",
+)
+
+REQUIRED_OVERVIEW_DOCS = (
+    "docs/architecture.md",
+    "docs/cordis-primer.md",
+    "docs/cordis-tutorial/03-services.md",
+    "packages/preset/agent-presets/README.md",
+    "docs/subsystems/session.md",
+    "docs/subsystems/system-prompt.md",
+    "docs/subsystems/tools.md",
+    "docs/tool-execution-pipeline.md",
+    "docs/capability-seams.md",
+    "docs/cookbook/adding-a-package.md",
+    "docs/cookbook/adding-a-tool.md",
+    "docs/subsystems/subagent.md",
+    "docs/subsystems/compaction.md",
 )
 
 PART_HEADING_RE = re.compile(
@@ -256,6 +365,18 @@ def validate_topic_sections(source: str, errors: list[str]) -> None:
         require(details.lstrip().startswith("<summary>源码依据："), f"{prefix} source note needs a consistent 源码依据 summary", errors)
         require("{: .evidence-summary}" in details, f"{prefix} source note needs an evidence summary", errors)
         require("data-source-evidence" in details, f"{prefix} source note needs a pinned evidence link", errors)
+        provenance_labels = [label for label in EVIDENCE_PROVENANCE_LABELS if label in details]
+        require(
+            len(provenance_labels) == 1,
+            f"{prefix} source note must identify exactly one evidence provenance type",
+            errors,
+        )
+        if provenance_labels:
+            require(
+                re.search(re.escape(provenance_labels[0]) + r"\s*```", details) is not None,
+                f"{prefix} evidence provenance label must sit directly above its block",
+                errors,
+            )
         require(
             re.search(r"^```(?:[a-zA-Z0-9_-]+)?\s*$.*?^```\s*$", details, re.MULTILINE | re.DOTALL) is not None,
             f"{prefix} source note needs pseudocode, a short excerpt, or a structure sample",
@@ -271,22 +392,50 @@ def validate_markdown(source: str, errors: list[str]) -> None:
     part_matches = list(PART_HEADING_RE.finditer(content))
     topic_matches = list(TOPIC_HEADING_RE.finditer(content))
     part_ids = tuple(match.group(2) for match in part_matches)
+    part_titles = tuple(match.group(1) for match in part_matches)
     topic_numbers = tuple(match.group(1) for match in topic_matches)
     topic_ids = tuple(match.group(3) for match in topic_matches)
 
     require(part_ids == REQUIRED_PART_IDS, "Markdown must contain the five Part headings in the expected order", errors)
-    require(topic_numbers == REQUIRED_TOPIC_NUMBERS, "Markdown must contain sections 1.1 through 5.5 in order", errors)
-    require(topic_ids == REQUIRED_TOPIC_IDS, "Markdown section ids must be section-1-1 through section-5-5", errors)
+    require(part_titles == REQUIRED_PART_TITLES, "Markdown must use the reviewed Part titles", errors)
+    require(topic_numbers == REQUIRED_TOPIC_NUMBERS, "Markdown must contain the reviewed topic sequence", errors)
+    require(topic_ids == REQUIRED_TOPIC_IDS, "Markdown topic ids must match the reviewed topic sequence", errors)
 
     for match in part_matches:
         require(re.search(r"[\u3400-\u9fff]", match.group(1)) is not None, f"Part heading must be Chinese-first: {match.group(1)}", errors)
     for match in topic_matches:
         require(re.search(r"[\u3400-\u9fff]", match.group(2)) is not None, f"Topic heading must be Chinese-first: {match.group(2)}", errors)
 
-    require(content.count("{: .section-lead}") == 25, "every one of the 25 topics needs one natural .section-lead paragraph", errors)
-    require(content.count('<details class="source-note"') == 25, "every topic needs an expandable source note", errors)
-    require(content.count("{: .evidence-summary}") == 25, "every source note needs a reader-facing evidence summary", errors)
-    require(content.count("data-source-evidence") >= 25, "Markdown needs at least twenty-five source evidence links", errors)
+    topic_count = len(REQUIRED_TOPIC_IDS)
+    require(content.count("{: .section-lead}") == topic_count, "every topic needs one natural .section-lead paragraph", errors)
+    require(content.count('<details class="source-note"') == topic_count, "every topic needs an expandable source note", errors)
+    require(content.count("{: .evidence-summary}") == topic_count, "every source note needs a reader-facing evidence summary", errors)
+    require(content.count("data-source-evidence") >= topic_count, "Markdown needs at least one source evidence link per topic", errors)
+
+    talk_routes = re.findall(r"<!--\s*talk-route:\s*(.*?)\s*-->", source)
+    require(len(talk_routes) == 5, "Markdown needs one invisible talk-route comment before each Part", errors)
+    for index, route in enumerate(talk_routes, start=1):
+        require(f"Part {index}" in route, f"talk-route {index} must identify Part {index}", errors)
+        require("full:" in route and "short:" in route, f"talk-route {index} needs full and short paths", errors)
+
+    overview_match = re.search(
+        r"^##\s+Part 1｜.*?^##\s+Part 2｜",
+        content,
+        re.MULTILINE | re.DOTALL,
+    )
+    if overview_match:
+        overview_prose = re.sub(
+            r'<details class="source-note"[^>]*>.*?</details>',
+            "",
+            overview_match.group(0),
+            flags=re.DOTALL,
+        )
+        for marker in PROHIBITED_OVERVIEW_JARGON:
+            require(marker not in overview_prose, f"Overview prose contains implementation-first jargon: {marker}", errors)
+        for term in REQUIRED_OVERVIEW_GLOSSARY:
+            require(f"| `{term}` |" in overview_prose, f"Overview glossary is missing: {term}", errors)
+        for path in REQUIRED_OVERVIEW_DOCS:
+            require(path in overview_match.group(0), f"Overview documentation index is missing: {path}", errors)
 
     diagram_includes = re.findall(r"\{%\s+include\s+dsh/diagram\.html\s+.*?%\}", content)
     require(len(diagram_includes) == len(REQUIRED_DIAGRAMS), "Markdown must include exactly five focused diagram components", errors)
@@ -297,8 +446,12 @@ def validate_markdown(source: str, errors: list[str]) -> None:
         require(marker in content, f"Markdown is missing required explanation or boundary: {marker}", errors)
     for marker in PROHIBITED_SHOWCASE_MARKERS:
         require(marker not in content, f"old showcase/simulator structure remains in Markdown: {marker}", errors)
+    for marker in PROHIBITED_STALE_TUTORIAL:
+        require(marker not in content, f"stale tutorial claim or path remains in Markdown: {marker}", errors)
     for marker in PROHIBITED_NARRATION:
         require(marker not in content, f"prohibited narration/template remains in Markdown: {marker}", errors)
+    for marker in PROHIBITED_UNSOURCED_INFERENCES:
+        require(marker not in content, f"unsourced AgentLoop inference remains in Markdown: {marker}", errors)
 
     revisions = re.findall(
         r"https://github\.com/deepseek-ai/deepseek-harness/(?:blob|tree)/([^/\s)]+)",
@@ -308,7 +461,7 @@ def validate_markdown(source: str, errors: list[str]) -> None:
     require(all(revision == REVISION for revision in revisions), "all DSH source links must use the disclosed revision", errors)
 
     han_count = len(re.findall(r"[\u3400-\u9fff]", content))
-    require(han_count >= 12_000, f"Chinese long-form body is too short ({han_count} Han characters; need 12000)", errors)
+    require(han_count >= 10_500, f"Chinese long-form body is too short ({han_count} Han characters; need 10500)", errors)
     validate_topic_sections(content, errors)
 
 
@@ -420,23 +573,24 @@ def validate_rendered_page(html: str, errors: list[str]) -> None:
     require(len(parser.diagram_sources) == len(REQUIRED_DIAGRAMS), "rendered page must expose exactly five focused diagram links", errors)
     require(parser.paragraphs >= 90, "rendered page needs at least ninety prose paragraphs", errors)
     require(parser.tables >= 7, "rendered page needs at least seven explanatory tables", errors)
-    require(parser.pre_blocks >= 25, "rendered page needs concrete pseudocode or source excerpts", errors)
-    require(parser.details == 25, "rendered page needs one source note per topic", errors)
-    require(parser.source_links >= 25, "rendered page needs at least twenty-five source evidence links", errors)
-    require(parser.section_leads == 25, "rendered page needs one natural section lead per topic", errors)
-    require(parser.evidence_summaries == 25, "rendered source notes need reader-facing evidence summaries", errors)
-    require(parser.source_note_pre_blocks == 25, "each rendered source note needs pseudocode or a short source excerpt", errors)
+    require(parser.pre_blocks >= len(REQUIRED_TOPIC_IDS), "rendered page needs concrete pseudocode or source excerpts", errors)
+    topic_count = len(REQUIRED_TOPIC_IDS)
+    require(parser.details == topic_count, "rendered page needs one source note per topic", errors)
+    require(parser.source_links >= topic_count, "rendered page needs at least one source evidence link per topic", errors)
+    require(parser.section_leads == topic_count, "rendered page needs one natural section lead per topic", errors)
+    require(parser.evidence_summaries == topic_count, "rendered source notes need reader-facing evidence summaries", errors)
+    require(parser.source_note_pre_blocks == topic_count, "each rendered source note needs pseudocode or a short source excerpt", errors)
 
     h2s = [text for tag, text in parser.headings if tag == "h2"]
     h3s = [text for tag, text in parser.headings if tag == "h3"]
     require(len(h2s) == 5, "rendered page must use exactly five Part-level h2 headings", errors)
-    require(len(h3s) == 25, "rendered page must use exactly twenty-five topic h3 headings", errors)
+    require(len(h3s) == len(REQUIRED_TOPIC_IDS), "rendered page must use the reviewed number of topic h3 headings", errors)
     for heading in h2s + h3s:
         require(re.search(r"[\u3400-\u9fff]", heading) is not None, f"rendered heading must be Chinese-first: {heading}", errors)
 
     visible = " ".join(parser.visible_text)
     han_count = len(re.findall(r"[\u3400-\u9fff]", visible))
-    require(han_count >= 12_000, f"rendered Chinese body is too short ({han_count} Han characters; need 12000)", errors)
+    require(han_count >= 10_500, f"rendered Chinese body is too short ({han_count} Han characters; need 10500)", errors)
 
     for slug in REQUIRED_DIAGRAMS:
         require(any(f"{slug}.html" in source for source in parser.diagram_sources), f"rendered page does not open required diagram: {slug}", errors)
@@ -490,7 +644,7 @@ def main() -> int:
         return 1
 
     scope = "Markdown source and rendered HTML" if args.rendered_root else "Markdown source"
-    print(f"DeepSeek Harness wiki check passed ({scope}; 5 Parts; 25 topics; {len(REQUIRED_DIAGRAMS)} focused diagrams).")
+    print(f"DeepSeek Harness wiki check passed ({scope}; 5 Parts; {len(REQUIRED_TOPIC_IDS)} topics; {len(REQUIRED_DIAGRAMS)} focused diagrams).")
     return 0
 
 

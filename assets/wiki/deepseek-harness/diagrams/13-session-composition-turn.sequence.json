@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "一个 Session 从 Composition 到 Turn 结束",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "legend": {
+      "mode": "hidden"
+    },
+    "viewBox": [1400, 820]
+  },
+  "participants": [
+    { "id": "client", "type": "external", "label": "Client", "sublabel": "Browser / TUI" },
+    { "id": "factory", "type": "backend", "label": "Agent Factory", "sublabel": "create + setup" },
+    { "id": "preset", "type": "backend", "label": "Agent Preset", "sublabel": "Plugin composition" },
+    { "id": "registries", "type": "messagebus", "label": "Prompt / Tools", "sublabel": "scoped registries" },
+    { "id": "loop", "type": "backend", "label": "AgentLoop", "sublabel": "Turn / Step driver" },
+    { "id": "session", "type": "database", "label": "Session Log", "sublabel": "SessionEvent source" },
+    { "id": "model", "type": "cloud", "label": "Model", "sublabel": "LLM adapter" },
+    { "id": "tool_runtime", "type": "security", "label": "Tool Runtime", "sublabel": "guarded execution" }
+  ],
+  "segments": [
+    { "from": 150, "to": 310, "label": "Session 创建与 Composition 绑定" },
+    { "from": 325, "to": 585, "label": "Turn 开始与 Step 1" },
+    { "from": 600, "to": 750, "label": "Step 2 与 Turn 结束" }
+  ],
+  "messages": [
+    { "id": "create_session", "from": "client", "to": "factory", "y": 170, "label": "创建 Session：workspace + preset", "variant": "emphasis" },
+    { "id": "prepare_session", "from": "factory", "to": "session", "y": 198, "label": "prepare；写入 cwd / preset Header", "variant": "dashed" },
+    { "id": "join_preset", "from": "factory", "to": "preset", "y": 226, "label": "setup(agentCtx)：加入 standing Preset", "variant": "emphasis" },
+    { "id": "register_capabilities", "from": "preset", "to": "registries", "y": 254, "label": "依赖满足后，注册 Prompt / Tools", "variant": "emphasis", "note": "Registration 进入 Preset 的作用范围，Agent 通过 parent binding 读取。" },
+    { "id": "publish_agent", "from": "factory", "to": "loop", "y": 282, "label": "发布 Agent，开始接收 Inbox", "variant": "return" },
+
+    { "id": "send_message", "from": "client", "to": "loop", "y": 342, "label": "发送用户消息", "variant": "emphasis" },
+    { "id": "turn_start", "from": "loop", "to": "session", "y": 370, "label": "turn/start", "variant": "dashed" },
+    { "id": "assemble_step_one", "from": "loop", "to": "registries", "y": 398, "label": "按 Agent scope 组装 Prompt + Tool Schemas", "variant": "default" },
+    { "id": "step_one_log", "from": "loop", "to": "session", "y": 426, "label": "step/start + user/message；deriveMessages()", "variant": "dashed" },
+    { "id": "step_one_request", "from": "loop", "to": "model", "y": 454, "label": "Step 1：Model Request", "variant": "emphasis" },
+    { "id": "step_one_response", "from": "model", "to": "loop", "y": 482, "label": "assistant/message + Tool Calls", "variant": "return" },
+    { "id": "record_tool_call", "from": "loop", "to": "session", "y": 510, "label": "assistant/message + tool/call", "variant": "dashed" },
+    { "id": "execute_tool", "from": "loop", "to": "tool_runtime", "y": 538, "label": "执行 Tool Call：pre → execute → post", "variant": "security" },
+    { "id": "return_tool_result", "from": "tool_runtime", "to": "loop", "y": 566, "label": "Tool Result", "variant": "return" },
+    { "id": "finish_step_one", "from": "loop", "to": "session", "y": 594, "label": "tool/result + step/end", "variant": "dashed" },
+
+    { "id": "step_two_log", "from": "loop", "to": "session", "y": 622, "label": "step/start；重新组装并 deriveMessages()", "variant": "dashed" },
+    { "id": "step_two_request", "from": "loop", "to": "model", "y": 650, "label": "Step 2：Model Request", "variant": "emphasis" },
+    { "id": "step_two_response", "from": "model", "to": "loop", "y": 678, "label": "最终 assistant/message", "variant": "return" },
+    { "id": "close_turn", "from": "loop", "to": "session", "y": 706, "label": "assistant/message + step/end + turn/end", "variant": "dashed" },
+    { "id": "final_reply", "from": "loop", "to": "client", "y": 734, "label": "最终回答", "variant": "return" }
+  ]
+}
