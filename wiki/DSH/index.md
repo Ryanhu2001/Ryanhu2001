@@ -2,8 +2,8 @@
 layout: dsh_runtime_wiki
 title: "DeepSeek Harness：从 Agent Loop 到 Composable Agent Runtime"
 public: true
-description: "从 AgentLoop、多 Session 和 Plugin Composition 出发，分析 DeepSeek Harness 如何记录会话、组织模型输入、执行工具并管理长期任务。"
-lead: "AgentLoop 只描述执行怎样向前推进；DSH 还要决定 Session 使用哪套 Composition、组件怎样注册、模型看见什么，以及运行事实如何进入 Session Log。"
+description: "从 AgentLoop 和多 Session 出发，分析 DeepSeek Harness 如何分配能力、记录会话、组织模型输入、执行工具并管理长期任务。"
+lead: "AgentLoop 只描述执行怎样向前推进；DSH 还要决定每个 Session 使用哪些 Prompt 和 Tools、模型看见什么，以及运行事实如何进入 Session Log。"
 duration: "技术分享讲稿 · 约 56 分钟正文 + Q&A"
 source_revision: "47f943859bef60e4160492346772ded9b24f765a"
 type: agent-harness
@@ -20,161 +20,100 @@ permalink: /wiki/DSH/
 5. 每个 Part 标题前的 talk-route 注释只服务演讲取舍，不会显示在页面中。
 -->
 
-一个 Coding Agent 最初看起来只有一条很短的执行路径：用户提出要求，模型决定下一步，系统执行工具，再把结果交回模型。只运行一个会话、只提供一组固定工具时，用 AgentLoop 描述它完全够用。
-
-真实使用很快会出现一个更具体的场景：同一个 Host 同时运行多个 Session；它们可以加入同一份 Agent Preset，却使用不同 Workspace、Session Log 和 Agent 状态。仅仅这个场景，就要求系统说明哪些组件可以共享，哪些数据必须按 Session 分开。
-
-这场分享不会从 Cordis 的术语开始，也不会把 DSH 介绍成一张功能列表。叙述从 AgentLoop 的职责边界开始，然后依次回答：不同 Agent 的能力从哪里来，Plugin 怎样协作，会话怎样保存，模型实际看到什么，工具和长期任务怎样执行。标题中的 Agent Runtime 留到最后再解释；它是这些具体机制运行起来后的整体，不是一个预设结论，也不是源码里的某个单独 Class。
-
 | Part | 建议时长 | 讨论内容 |
 |---|---:|---|
 | Part 1 · Overview | 6 min | 跨 Session 的 Preset 场景与一条完整 Session 时序 |
 | Part 2 · Everything Is a Plugin | 15 min | AgentLoop 与其他能力如何被组合到一起 |
 | Part 3 · Core Designs | 20 min | Session、模型输入、压缩、工具与长期任务 |
 | Part 4 · Four Agent Presets | 8 min | Standard、Code、Minimal、Cordis 分别改变了什么 |
-| Part 5 · Conclusion | 7 min | 怎样比较这套设计，它的代价是什么，Runtime 又指什么 |
-
-页面中的实现判断固定到 front matter 标出的 DSH revision。每个小节末尾都有一组可以展开的源码依据：先概括文档或代码能证明什么，再给短原文、结构摘录或忠实伪代码。五张交互图只处理不适合线性文字的关系；不打开任何图，正文仍然可以独立阅读和修改。
+| Part 5 · Conclusion | 7 min | 用五个问题回收前文，并回答 Loop 何时变成 Runtime |
 
 <!-- talk-route: Part 1 | 6 min | full: 1.1→1.2 | short: 1.1→1.2 -->
 ## Part 1｜Overview：AgentLoop 之外还要管理什么 {#part-introduction}
 
-Overview 只看一个场景和一条时序：同一份 Standard Preset 同时服务两个 Workspace 中的 Session，然后选择其中一个 Session，从创建与 Composition 绑定一直跟到一次 Turn 结束。
+后面的场景和时序会用到八个名字：
 
-后文会反复使用下面这些名词。这里先统一它们在本文中的含义；`Realm`、`SurfaceOp` 等只影响具体实现核对的名字，仍留在对应源码依据中解释。
+| 名词 | 在 Overview 中具体指什么 |
+|---|---|
+| `Host` | 当前正在运行的 DSH 进程。它可以同时管理多个 Agent 与 Session，并持有它们共同使用的基础能力。 |
+| `Agent` | 当前进程里真正执行工作的对象。它从 Inbox 取输入，启动 Turn，并负责取消和当前运行状态；同一个 Session 以后可以重新创建新的 Agent 来继续。 |
+| `Inbox` | Agent 还没有处理的输入队列。用户消息、Follow-up 和注入的上下文先进入这里；被 AgentLoop 领取并通过 `agent/pre-step` 后，最终内容才写进 Session Log。 |
+| `Session` | 一段会话的身份和按顺序追加的事件记录。当前没有 Agent 在运行时，这段记录仍然可以保存，之后再加载继续。 |
+| `SessionEvent` | Session Log 中已经追加的一条记录，例如 `turn/start`、用户消息、模型消息、Tool Call 或 Tool Result。它记录已经发生的事情，不是等待执行的命令。 |
+| `AgentLoop` | 推进一次执行的组件：领取 Inbox 输入，建立 Turn 和 Step，发起模型请求，把模型返回的 Tool Calls 交给 Tool Runtime，并判断是否还要继续下一 Step。 |
+| `Turn` | 从 `turn/start` 到 `turn/end` 的一次完整处理；可以包含零个、一个或多个 Step。 |
+| `Step` | 一次模型请求，以及这次响应所触发的全部 Tool Executions。 |
+{: .overview-glossary}
 
-| 名词 | 本文中的含义 | 层次 |
-|---|---|---|
-| `Host` | 一次 DSH 启动后的常驻后台进程，持有跨 Session 共用的基础设施 | 运行对象 |
-| `Agent` | 当前进程中推进一个普通 Session 的 live runtime object；顶层 Session 的运行对象通常就叫 Agent，不叫 Activation | 运行对象 |
-| `Inbox` | Agent 当前进程中的 FIFO 输入队列；用户消息、Follow-up 或注入 Context 被领取后才进入 Turn 与 Session Log | 运行对象 |
-| `Session` | 稳定身份及其 append-only 事件日志；不是浏览器 Tab，也不是当前 live Agent | 运行对象 |
-| `SessionEvent` | 写入 Session Log 的 typed fact，例如消息、Turn/Step 边界和 Tool Call/Result | 运行对象 |
-| `Child Session` | Subagent 相对 Parent 独立创建的 SessionId 与 Session Log；它不是 Parent Session 中的一段临时状态 | 运行对象 |
-| `Activation` | Continuable Child Session 可选的进程内运行实例；只属于 Subagent 语境，不是 Plugin，也不会再拥有第二份 Session | 运行对象 |
-| `Plugin` | 由 Cordis 挂载并参与依赖、注册和卸载生命周期的组件；Session、Activation 等运行实例本身不是 Plugin | 组件组织 |
-| `Service` | Plugin 通过 `ctx.<key>` 提供或消费的稳定能力接口 | 组件组织 |
-| `Context` | Plugin 解析 Service、Event、Scope 与生命周期的当前环境 | 组件组织 |
-| `Composition` | 已经挂载在一起的 Plugin、Service 与 Registration 关系；它组织 Runtime，但不等于 Runtime | 组件组织 |
-| `Agent Preset` | 一个包含 `agent.cordis.yml` 的 Agent-side Composition，例如 standard、code、minimal、cordis | 组件组织 |
-| `Preset generation` | 某次实际挂载的 Preset 快照；已有 Session 保持原 generation，新 Session 可以进入新 generation | 组件组织 |
-| `Host / Agent plane` | Host plane 放跨 Session 共用的基础设施；Agent plane 放当前 Agent 获得的 model-facing contributions | 组件组织 |
-| `Registration` | Plugin 加入的 Tool、Prompt Section、Listener、Provider 等条目；通常会返回或由 Helper 持有对应 Disposer | 组件组织 |
-| `Scope` | Registration 对谁可见；本文常见查找顺序是 `agent → preset → global` | 组件组织 |
-| `Event` | Plugin 参与某个执行时点的扩展接口；Cordis Event 是 live 调用机制，写入日志的 `SessionEvent` 是另一类持久事实 | 组件组织 |
-| `Fiber` | 某个 Plugin 的一次实际挂载；它拥有这次挂载产生的 Effect，并在卸载时触发清理 | 组件组织 |
-| `Effect` | 执行一项可撤销的安装动作，并把返回的 Disposer 绑定到当前 Fiber；不是 Plugin 配置字段 | 组件组织 |
-| `Disposer` | Effect 或 Registration 返回的清理函数；手动释放或 Plugin 卸载时执行，多个 Disposer 按注册的相反顺序清理 | 组件组织 |
-| `Waterfall` | 可包裹一次调用的 middleware 链；Listener 调用 `next()` 才继续下一层，不调用即可拒绝或替换最终结果 | 组件组织 |
-| `Service Definition / Provider / Consumer` | 分别定义稳定接口、实现接口、使用接口；三者共同形成一项可替换能力 | 组件组织 |
-| `Dependency Inversion` | Consumer 依赖 Service Definition，不依赖具体 Provider；Composition 负责选择 Provider | 组件组织 |
-| `Capability Seam` | 由 Service Definition、Provider 与 Consumer 构成的一项可替换能力 | 组件组织 |
-| `Execution World` | Filesystem 与 Subprocess Provider 共同指向的文件和进程环境；两者必须描述同一个本地或远端世界 | 组件组织 |
-| `Persistence` | Session Log 的落盘、加载、批量写入与 Flush 子系统；由 Coordinator、Persistence Seam 和 JSONL/SQLite Backend Plugins 共同完成 | 核心子系统 |
-| `Compaction` | 保留原始 SessionEvent，同时通过 Summary 与 Projection replacement 缩短后续 Model Surface 的子系统；不是删除历史，也不是单个 Plugin | 核心子系统 |
-| `Subagent` | 委派 Child Session 的子系统，由 `ctx.subagents` Registry、Provider Plugins、model-facing Tools、Child Session 与可选 Activation 共同组成 | 核心子系统 |
-| `AgentLoop` | 推进 Inbox、Turn、Step、模型请求与 continuation 判断的 driver；它本身也是 Plugin | 执行 |
-| `Turn` | 从 `turn/start` 到 `turn/end` 的一次完整处理，可以包含零个、一个或多个 Step | 执行 |
-| `Step` | 一次 Model Request，加上该请求触发的 Tool Executions | 执行 |
-| `Projection` | 从完整 Session Log 派生出的某种读取结果，例如模型消息或 UI 视图 | 模型输入 |
-| `Model Surface` | 某次请求中模型实际看到的 System Prompt、Tools、Context、History 等内容 | 模型输入 |
-| `Tool Presentation` | 底层 Tool 以 native、code 或 both 哪种接口呈现给模型 | 模型输入 |
-| `Agent Runtime` | Composition 生效后，连同 Agent、Session、模型请求、工具执行和资源所有权一起运行的系统 | 整体 |
+### 1.1 两个 Session，为什么会拿到不同的能力 {#section-1-1}
 
-后文涉及实现时，可以直接从下面这些入口继续读；每个入口只负责一个问题，不需要从 Package 目录开始猜。
-
-| 想查什么 | 文档入口 | 主要内容 |
-|---|---|---|
-| DSH 全局结构 | [Architecture ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/architecture.md) | Plugin tree、Turn flow、Session Log、Capability Seam，以及新行为应该进入哪里 |
-| Cordis 的基本概念 | [Cordis Primer ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/cordis-primer.md) · [Services Tutorial ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/cordis-tutorial/03-services.md) | Context、Service、`inject`、Effect、Event、Waterfall，以及依赖变化时的 Plugin 生命周期 |
-| Preset 怎样跨 Session 工作 | [Agent Presets README ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/preset/agent-presets/README.md) | standing mount、scope parent、generation、blank-session recompose 与 child composition |
-| Session 与事件日志 | [Session ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/subsystems/session.md) | SessionEvent vocabulary、模型历史派生和 Turn/Step 边界 |
-| Prompt 与模型输入组装 | [System Prompt ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/subsystems/system-prompt.md) | Prompt Sections、Prompt Context、Tool providers 与 assembly |
-| Tool 注册与执行 | [Tools ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/subsystems/tools.md) · [Execution Pipeline ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/tool-execution-pipeline.md) | Tool Definition、scoped schemas、Approval、hooks 与结果收尾 |
-| 可替换能力怎样设计 | [Capability Seams ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/capability-seams.md) | Definition、Provider、Consumer 及其依赖图 |
-| 添加新的 Plugin 或 Tool | [Adding a Package ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/cookbook/adding-a-package.md) · [Adding a Tool ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/cookbook/adding-a-tool.md) | 新 Package 的 Service/Event/Effect 接入，以及 model-facing Tool 的完整路径 |
-| 添加新的模型 Adapter | [Adding an LLM Adapter ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/cookbook/adding-an-llm-adapter.md) | Provider 注册、stream contract 与模型请求适配 |
-| 长期子任务 | [Subagent ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/subsystems/subagent.md) | Child Session、Activation、Follow-up、Interrupt 与 Resume |
-| 历史如何缩短为模型输入 | [Compaction ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/subsystems/compaction.md) | Compaction Events、Surface replacement 与恢复路径 |
-
-### 1.1 同一个 Host 上的两个 Session {#section-1-1}
-
-Host 是一次 DSH 启动后常驻的后台进程，持有跨 Session 共用的 AgentLoop、Session Store、LLM 和 Tool Registry。Agent Preset 是一份 `agent.cordis.yml`；其中列出的 Plugin 被挂载以后形成 Preset Composition，决定 Agent 获得哪些 Persona、Prompt、Tools、Plan 与 Compaction 能力。
+同一个 DSH 进程里，Session A 在 repo-A 中使用 Standard，Session B 在 repo-B 中使用 Minimal。它们由同一种 AgentLoop 推进，但使用的 Prompt、Tools、Workspace 和 Session Log 都不相同。
 {: .section-lead}
 
-现在创建两个 Session：Session A 与 Session B 加入同一份 Standard Preset，A 工作在 repo-A，B 工作在 repo-B。DSH 不为每个 Session 重新挂载一棵 Standard Plugin tree；它先保证 Standard 已经挂载，再把 A、B 各自的 Agent scope 绑定到这份 Preset Composition。
+| | Session A | Session B |
+|---|---|---|
+| Workspace | repo-A | repo-B |
+| Agent Preset | Standard | Minimal |
+| 主要模型能力 | 文件工具、Skills、Plan、Compaction、Subagent 等 | Persistent Bash 与 Editor |
+| 会话记录 | Session Log A | Session Log B |
+{: .session-scenario}
 
-```text
-DSH Host
-└── Standard Preset（挂载一次）
-    ├── Agent A scope → Session A → repo-A / Session Log A
-    └── Agent B scope → Session B → repo-B / Session Log B
-```
+Agent Preset 是创建 Session 时选择的一组 Agent 组件。Standard 和 Minimal 的具体差异留到 Part 4；这里需要看到的只是：两个 Session 即使运行在同一个 DSH 进程里，也可以得到不同的模型输入和工具集合。
 
-这不是唯一可行的实现：系统也可以为每个 Session 单独挂载一棵 Preset Plugin tree。当前 DSH 选择 standing mount，同一 generation 的 Prompt Section、Tool Definition、Listener 和 Plugin 生命周期只建立一次；README 也因此把它的常驻成本描述为“per generation rather than per session”。代价是共享 Plugin 不能把某个 Session 的可变状态只存在一个实例字段里，而要从 Session Log 读取，或者按 SessionId / AgentId 分开保存。
-
-所以这里共享的是 Preset 定义及其 Registration，不是 Workspace 和历史。Agent A 与 B 都沿 `agent → preset → global` 读取 Standard 的注册，但各自拥有 Session Log、Inbox、Cancellation 和 Workspace。下一节选择 Session A，把 Composition 绑定、Registration 生效以及一次 Turn 的执行顺序放到同一条时序里。
+AgentLoop 分别推进两个 Agent 各自的 Turn 与 Step，却不负责单独决定 A 为什么看到这些 Tools、B 为什么看到另一些 Tools，也不能把两边的 Workspace 与历史混在一起。这个问题才是 Part 2 要讨论的组件组织。下一节先选择 Session A，看一次 Turn 如何真正流转。
 
 <details class="source-note" markdown="1">
-<summary>源码依据：Preset 怎样挂载并绑定 Agent</summary>
+<summary>源码依据：Workspace 与 Preset 为什么是 Session 自己的选择</summary>
 
-**Preset 实现结论：**`mount()` 先通过 `ensureStanding()` 取得该 Preset 的 standing mount，再把当前 Agent 的 scope parent 绑定到 `standing.key`。同一 standing mount 可以服务多个 Agent；每个 Agent 保留自己的 binding。
+**Session 与 Preset 源码结论：**Session Header 分别记录 `cwd` 与 `agentPreset`；Preset id 必须持久保存，因为它决定这个 Session 的 Prompt 与 Tools。Standard 和 Minimal 的配置文件则列出两套不同的 model-facing 组件。
 {: .evidence-summary}
 
-**源码批注版（中文注释为后加）：**
+**忠实伪代码（非仓库原文）：**
 
 ```ts
-async mount(agentCtx: Context, id?: string): Promise<AgentPreset> {
-  // 取得当前 Agent 的 ScopeKey；没有 Scope 就无法加入任何 Preset
-  const agentKey = scopeOf(agentCtx)
-  if (agentKey === undefined) {
-    throw new Error('agent-presets: refusing to compose an unscoped context; the scope key is what joins an agent to its preset')
-  }
+export interface SessionHeader {
+  // version、id、createdAt 等字段省略
 
-  // 根据 PresetId 解析并验证 Preset
-  const preset = await this.resolveMountable(id)
+  // 这个 Session 创建时使用的工作目录
+  readonly cwd?: string
 
-  // 已经存在的 generation 直接复用，否则先创建 standing mount
-  const standing = await this.ensureStanding(preset)
+  // parentSession、seedLength、origin、delegationDepth 等字段省略
 
-  // 把 Agent Scope 的 parent 指向 Preset Scope；Prompt、Tool 等注册由此可见
-  this.bindings.set(agentKey, bindScopeParent(agentKey, standing.key))
-
-  // 返回实际选中的 Preset，供调用方记录 Session 使用的 Preset
-  return preset
+  // 这个 Session 的 Agent 使用哪一套 Preset
+  readonly agentPreset?: string
 }
 ```
 
-[packages/preset/agent-presets/src/index.ts：mount() ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/preset/agent-presets/src/index.ts#L275-L287){: data-source-evidence=""}
+[packages/core/session/src/types.ts：SessionHeader ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/core/session/src/types.ts#L62-L99){: data-source-evidence=""}
 
-[packages/preset/agent-presets/README.md ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/preset/agent-presets/README.md){: data-source-evidence=""}
+[Standard Preset ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/apps/cli/config/agent-presets/standard/agent.cordis.yml){: data-source-evidence=""}
+
+[Minimal Preset ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/apps/cli/config/agent-presets/minimal/agent.cordis.yml){: data-source-evidence=""}
 </details>
 
 ### 1.2 一个 Session 从创建到 Turn 结束 {#section-1-2}
 
-创建 Session A 时，Agent Factory 先准备 Session 与 Header，再在 Agent 发布以前执行 Preset setup。组件依赖满足以后，Preset 中的 Plugin 才建立 Prompt、Tool 等 Registration；注册进入 Preset 的作用范围，Agent 通过 parent binding 读取它们。完成这一步以后，AgentLoop 才开始接收消息并推进 Turn。
+创建 Session A 时，DSH 先准备 Session 和负责执行它的 Agent。在 Agent 对外可用以前，创建流程会确认当前 Standard 版本的运行实例已经挂载，并把这个 Agent 关联到它；如果它已经存在，本次创建只建立关联，不会再安装一遍同样的 Plugin。
 {: .section-lead}
 
-| 名称 | 在这条时序中的含义 |
-|---|---|
-| Session | append-only `SessionEvent` log，保存已经发生的交互事实 |
-| Component dependency | Plugin 通过 `inject` 等待所需 Service 可用 |
-| Registration | Plugin 注册的 Prompt、Tool 或 Listener；跟随作用范围和生命周期 |
-| Turn | 从 `turn/start` 到 `turn/end`；可以包含零个、一个或多个 Step |
-| Step | 一次 Model Request，加上这次请求触发的 Tool Executions |
+图中的“Agent 创建流程”只是对这段创建代码的统称，不是另一种需要长期存在的运行对象。源码把创建接口命名为 `AgentFactory`：`ctx.agents` 接收创建请求，再交给 AgentLoop 提供的 Factory 准备 Session、执行 setup，最后发布 Agent。
 
-用户消息进入 AgentLoop 后，Loop 先写入 `turn/start`。每个 Step 都按当前 Agent scope 组装 Prompt 与 Tool Schemas，从 Session Log 派生模型历史，然后请求模型。图中的 Step 1 产生 Tool Calls，工具结果写回 Session，因此还需要 Step 2；Step 2 直接得到最终回答，随后写入 `step/end` 与 `turn/end`。
+Preset 中的一个 Plugin 可能依赖另一个 Plugin 在运行时注册的 Service。例如文件工具需要先取得 Filesystem 和 Tool Registry；依赖没有准备好时，它不会带着残缺能力开始运行。Plugin 第一次挂载时加入的 Prompt、Tool 或 Listener 才叫 Registration；后来使用同一 Preset 版本的 Session 只是读取这些已有 Registration，不会重复注册。依赖怎样声明、Registration 怎样在卸载时清理，留到 Part 2 再展开。
 
-这张图把两种关系放在同一条时间线上：上半段是 Session 如何取得 Composition 与 Registrations，下半段是这些注册怎样参与一次 Turn。虚线写入 Session Log 的是可持久事实；模型请求、Tool Runtime 和组件 setup 是当前运行过程。
+用户消息先进入 Inbox。AgentLoop 准备处理它时写入 `turn/start`，随后建立第一个 Step：读取当前 Agent 的 Prompt 与 Tool Schemas，从 Session Log 生成模型历史，然后请求模型。图中的 Step 1 产生 Tool Calls，工具结果写回 Session，因此还需要 Step 2；Step 2 得到最终回答，随后写入 `step/end` 与 `turn/end`。
 
-{% include dsh/diagram.html number="1" title="一个 Session 从 Composition 到 Turn 结束" src="/assets/wiki/deepseek-harness/diagrams/13-session-composition-turn.html" description="展开 Session 创建、Preset 注册以及两个 Step 的完整时序" note="查看依赖满足、Registration、Session Log、Turn 与 Step 如何连接" %}
+源码把“从 Session Log 生成模型历史”这个动作命名为 `Session.deriveMessages()`。它只读取当前对模型可见的事件，把 `user/message`、`assistant/message` 和 `tool/result` 转成模型 API 需要的 `Message[]`；它不会调用模型、不会追加 SessionEvent，也不会修改原始日志。
 
-Overview 到这里结束。Part 2 再分别解释 AgentLoop、Preset 与其他 Plugin 为什么能够用同一套 Composition 机制安装和协作。
+这张图把两段过程放在同一条时间线上：上半段是 Agent 创建、确认 Preset 运行实例并建立关联，下半段是一个包含两个 Step 的 Turn。虚线写入 Session Log 的是可以在以后重新读取的 SessionEvent；Preset 关联、模型请求和 Tool Runtime 调用不是 SessionEvent，它们各自遵守运行时生命周期。
+
+{% include dsh/diagram.html number="1" title="一个 Session 从关联 Preset 到 Turn 结束" src="/assets/wiki/deepseek-harness/diagrams/13-session-composition-turn.html" description="展开 Session 创建、Preset 运行实例关联以及两个 Step 的完整时序" note="查看共享 Registration、Session Log、Turn 与 Step 如何连接" %}
+
+Overview 到这里结束。Part 2 再解释这些组件怎样取得依赖、加入调用过程，并在卸载时清理自己的 Registration。
 
 <details class="source-note" markdown="1">
-<summary>源码依据：Composition setup 与 Turn flow</summary>
+<summary>源码依据：Agent 创建、消息派生与 Turn flow</summary>
 
-**Preset、Cordis 与 Architecture 文档结论：**Agent Factory 在发布 Agent 前执行 Preset setup；Plugin 等待声明的依赖并建立可撤销注册。进入 Turn 后，每个 Step 读取当前注册、请求模型、执行 Tool Calls，并把模型可见事实写入 Session Log。
+**Core、Preset、Session 与 Architecture 文档结论：**AgentFactory 在发布 Agent 前准备 Session 并执行 setup；Preset setup 确保 standing generation 已挂载并关联 Agent；`deriveMessages()` 从日志生成模型 Messages。进入 Turn 后，每个 Step 读取当前注册、请求模型、调度 Tool Calls，并把模型可见事实写回 Session Log。
 {: .evidence-summary}
 
 **流程图摘录：**
@@ -198,6 +137,10 @@ turn/end
 
 [packages/preset/agent-presets/README.md：Where to call mount ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/preset/agent-presets/README.md#where-to-call-mount){: data-source-evidence=""}
 
+[docs/subsystems/core.md：AgentFactory ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/subsystems/core.md#ctxagents--agentregistry){: data-source-evidence=""}
+
+[docs/subsystems/session.md：deriveMessages() ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/subsystems/session.md#derived-history-derivemessages-and-deriveeventmessage){: data-source-evidence=""}
+
 [docs/cordis-primer.md：Cordis in five ideas ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/cordis-primer.md#cordis-in-five-ideas){: data-source-evidence=""}
 
 [docs/architecture.md：Turn flow ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/architecture.md#turn-flow){: data-source-evidence=""}
@@ -205,247 +148,464 @@ turn/end
 [packages/core/agent-loop/src/agent.ts：turn() ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/core/agent-loop/src/agent.ts#L245-L329){: data-source-evidence=""}
 </details>
 
+<details markdown="1">
+<summary>后续 Docs 与源码阅读入口</summary>
+
+下面的入口按问题整理，不需要先从 Package 目录猜实现位置。
+
+| 想查什么 | 文档入口 | 主要内容 |
+|---|---|---|
+| DSH 全局结构 | [Architecture ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/architecture.md) | Plugin tree、Turn flow、Session Log、Capability Seam，以及新行为应该进入哪里 |
+| Cordis 的基本概念 | [Cordis Primer ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/cordis-primer.md) · [Services Tutorial ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/cordis-tutorial/03-services.md) | Context、Service、`inject`、Effect、Event、Waterfall，以及依赖变化时的 Plugin 生命周期 |
+| Preset 怎样跨 Session 工作 | [Agent Presets README ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/preset/agent-presets/README.md) | standing mount、scope parent、generation、blank-session recompose 与 child composition |
+| Session 与事件日志 | [Session ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/subsystems/session.md) | SessionEvent vocabulary、模型历史派生和 Turn/Step 边界 |
+| Prompt 与模型输入组装 | [System Prompt ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/subsystems/system-prompt.md) | Prompt Sections、Prompt Context、Tool providers 与 assembly |
+| Tool 注册与执行 | [Tools ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/subsystems/tools.md) · [Execution Pipeline ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/tool-execution-pipeline.md) | Tool Definition、scoped schemas、Approval、hooks 与结果收尾 |
+| Shell Capability Seam | [Shell Family ↗](https://github.com/deepseek-ai/deepseek-harness/tree/47f943859bef60e4160492346772ded9b24f765a/packages/shell) · [Shell Subsystem ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/subsystems/shell.md) | `ctx.shell` Definition、Local/Sandbox Provider、`tool-bash` Consumer 与 Request/Spec 语义 |
+| 可替换能力怎样设计 | [Capability Seams ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/capability-seams.md) | Definition、Provider、Consumer 及其依赖图 |
+| 添加新的 Plugin 或 Tool | [Adding a Package ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/cookbook/adding-a-package.md) · [Adding a Tool ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/cookbook/adding-a-tool.md) | 新 Package 的 Service/Event/Effect 接入，以及 model-facing Tool 的完整路径 |
+| 添加新的模型 Adapter | [Adding an LLM Adapter ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/cookbook/adding-an-llm-adapter.md) | Provider 注册、stream contract 与模型请求适配 |
+| 长期子任务 | [Subagent ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/subsystems/subagent.md) | Child Session、Activation、Follow-up、Interrupt 与 Resume |
+| 历史如何缩短为模型输入 | [Compaction ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/subsystems/compaction.md) | Compaction Events、Surface replacement 与恢复路径 |
+
+</details>
+
 <!-- talk-route: Part 2 | 15 min | full: 2.1→2.2→2.3→2.4→2.5 | short: 2.1→2.4→2.5 -->
 ## Part 2｜Everything Is a Plugin：DSH 如何组织这些能力 {#part-composition}
 
-Part 1 把一个 Session 从 Composition 绑定到 Turn 结束串了起来。现在拆开这条时序背后的组件关系：AgentLoop 为什么也是 Plugin，Plugin 怎样取得依赖、参与调用和撤销注册，具体实现又怎样在不修改 Consumer 的情况下被替换。最后再回到同一个 Host 上的多个 Agent。
+Part 1 看到同一个 DSH 可以为两个 Session 提供不同的 Prompt 与 Tools。Part 2 先分清 TypeScript 声明、Service Definition、运行时 Service 和 Registry 条目，再沿 Shell 这一个例子看依赖、注册、卸载、Provider 替换和声明式组合。
 
-### 2.1 AgentLoop 为什么也是一个 Plugin {#section-2-1}
+### 2.1 一个 Plugin 挂载时，运行时真正新增了什么 {#section-2-1}
 
-DSH 把 AgentLoop 与 Model Adapter、Tool Registry、Session Service 一起装进 Cordis Plugin tree。AgentLoop 仍然负责推进执行；“也是 Plugin”改变的是它与其他组件的关系，而不是取消它对 Turn 和 Step 的控制职责。
+配置选择并挂载的是 Plugin。`Context` 中的 Service 类型声明，以及 `ToolRuntime` 等实现类，在挂载前就已经存在；对于 `ToolRuntime` 这类 Class Provider，只有 Plugin 被构造并执行 `super(ctx, name)` 后，当前 Context 才出现对应的运行时 Service 实例。普通 Plugin 也可以不注册 Service，只向已有 Registry 加入 Registration。
 {: .section-lead}
 
-这里的 “Everything” 指组成产品的能力模块，不是说每条 SessionEvent、每个 Agent 或每次 Tool Call 都是 Plugin。源码中的 `AgentLoop` 继承 `Service`，声明自己需要 `agents`、`sessions`、`llm`、`tools` 和 `systemPrompt`；构造时把自己发布成 `ctx.agentLoop`。因此它由 Composition 安装，也只能在依赖已经可用的环境中工作。
+以 `ctx.tools` 为例，四个动作发生在不同阶段：
 
-AgentLoop 的职责仍然明确：从 Inbox 认领输入，写入 Turn/Step 边界，组装请求，调用模型，安排 Tool Calls，并判断是否还欠下一个 Step。它不是空壳，也不是只负责调用一串 Callback。
+| 阶段 | 实际发生的事 | 是否改变运行时 |
+|---|---|---|
+| TypeScript declaration merging | `Context` 接口声明 `tools: ToolRuntime`，让 `ctx.tools` 通过类型检查 | 否；TypeScript 声明不会在运行时注册任何东西 |
+| 实现类源码 | `ToolRuntime extends Service` 定义 Tool Registry 的方法和行为 | 否；这里只是可被加载的代码 |
+| Provider Plugin 挂载 | Loader 构造 `ToolRuntime`，构造函数调用 `super(ctx, 'tools')` | 是；Cordis 内部通过 `ctx.reflect.provide(...)` 注册这个实例 |
+| Consumer Plugin 挂载 | `tool-bash` 调用 `ctx.tools.register(...)` | 是；现有 Tool Registry 多了一条 `bash` Registration |
 
-同时，Plan、Compaction、Subagent 和权限审批没有全部写成 AgentLoop 内部的分支。Compaction 在 `agent/pre-step` 与 `agent/request-error` 参与，Plan 通过 SessionEvent、Prompt Section 和 Tool 改变协作状态，权限检查进入 Tool Execution Pipeline，Subagent 由独立 Registry、Provider 和 Tool 组成。AgentLoop 驱动主流程，这些组件通过稳定的 Service 或 Event 接入。
+所以 Service Definition、运行时 Service 实例和 Registry 条目是三个层次。`ToolRuntime` 的类与类型一直在源码中；挂载以后，当前 Context 才能解析到这一个 `ToolRuntime` 实例；再挂载 `tool-bash`，这个实例内部才多出 `bash` Tool。
 
-Plugin 也不等于 Feature。一个 Feature 往往横跨多个 Plugin 和数据结构：Plan Mode 包含 Service、Session Event、Prompt Section、Tool 与 Command；Subagent 包含 Service Definition、多个 Provider、model-facing Tools、Child Session 和 Activation Manager。`Everything Is a Plugin` 描述的是组件如何进入系统，不是说每个功能只对应一个文件。
+后文使用四个运行时术语：
 
-<details class="source-note" markdown="1">
-<summary>源码依据：AgentLoop 怎样作为 Service 进入 Composition</summary>
+| 名称 | 它是什么 | DSH 中的例子 |
+|---|---|---|
+| `Plugin` | Cordis 安装和卸载的生命周期单元 | `dsh-tools`、`dsh-tool-bash`、`dsh-agent-loop` |
+| `Service` | 已注册在当前 Context 中、可通过 `ctx.<name>` 解析的具名能力实例 | `ctx.tools`、`ctx.shell`、`ctx.sessions`、`ctx.agentLoop` |
+| `Registry` | 一类负责保存多项 Registration 的 Service；并非所有 Service 都是 Registry | `ctx.tools` 保存 Tool Definition；`ctx.llm` 保存 Adapter |
+| `Registration` | 某个 Plugin 插入 Service/Registry 的一条可撤销记录 | `tool-bash` 加入 `bash` Tool 和 `tool:bash` Prompt Section |
 
-**AgentLoop 源码结论：**`AgentLoop` 本身是一个 Cordis `Service`，依赖其他核心 Service，并把工厂能力发布到 `ctx.agentLoop`。Architecture 同时要求新增行为优先进入已有 Service、Event 或 Capability Seam。
-{: .evidence-summary}
+这里的 Service 不是单独部署的网络服务，Registry 也不是另一套外部数据库；它们都是当前 DSH 进程中的对象，只是职责不同。
 
-**源码批注版（中文注释为后加）：**
+源码目录看不出“哪些文件夹是 Plugin”，因为 Plugin 不是目录类型，而是 Package 入口遵守的挂载协议。DSH 仍按 `shell`、`llm`、`session`、`preset` 等业务领域组织目录。打开一个 Package 的 `src/index.ts`，通常从下面三种形态判断：
 
-```ts
-// AgentLoop 也是一个由 Cordis 管理的 Service
-export class AgentLoop extends Service implements AgentFactory {
-  // 这些 Service 全部可用以后，AgentLoop 才能进入工作状态
-  static inject = ['agents', 'sessions', 'llm', 'tools', 'systemPrompt']
+| 入口形态 | 源码标志 | 例子 |
+|---|---|---|
+| Class Plugin | `default export` 一个可构造的 `Service` 子类 | `AgentLoop`、`ToolRuntime`、`LocalBashExecutor` |
+| Namespace / function-style Plugin | 命名导出 `name`、`inject`、`Config`、`apply`，没有 `default export` | `tool-bash`、Persona |
+| Object Plugin | 导出一个包含 `apply` 的对象 | Cordis 支持的第三种较少见形态 |
 
-  constructor(ctx: Context, config: Config) {
-    // 运行时把这个实例注册成 ctx.agentLoop
-    super(ctx, 'agentLoop')
-    // ...
-  }
-}
+不是每个 Package 都是准备给 Composition 直接挂载的。`dsh-shell` 主要提供抽象 `ShellExecutor` Definition，shipped 配置实际挂载的是 Local/Sandbox 等具体 Provider 子类；纯类型、算法和工具函数包也只会被其他 Package import。Architecture 所说的 “Everything Is a Plugin”，指产品中的可替换运行组件共同服从 Plugin 生命周期，不是说仓库里的每个目录都叫 Plugin。
+
+要看某个产品实际挂载了哪些 Plugin，最直接的入口不是扫描目录，而是查看 Profile 的 `--dump-config` 输出或 Preset 的 `agent.cordis.yml`；每个启用的 row 都会给 Loader 一个需要 import 和挂载的 Package。
+
+Tool Registry 可以具体理解为当前 Context 中已经注册的 `ctx.tools` 实例。它的实现类型是 `ToolRuntime`，负责保存当前可见的 Tool Definitions、向模型组装 Tool Schemas，并让 Tool Call 进入统一执行管线。`ToolRuntime` 类在挂载前就存在；`bash`、`read` 等具体工具则是运行时插入这个 Registry 的 Registration。
+
+AgentLoop 声明的五项 `inject` 也都能找到明确提供者：
+
+| `ctx` key | 运行时由哪个 Provider Plugin 注册 | 它负责什么 |
+|---|---|---|
+| `ctx.agents` | `AgentRegistry` / `dsh-agent` | 保存 live Agent，并提供统一的 `create()` / `resume()` 入口 |
+| `ctx.sessions` | `SessionStore` / `dsh-session` | 创建和保存当前进程中的 Session 对象 |
+| `ctx.llm` | `LlmRuntime` / `dsh-llm` | 保存模型 Adapter Registration，并提供流式模型调用入口 |
+| `ctx.tools` | `ToolRuntime` / `dsh-tools` | 保存 Tool Registration、组装 Schema、执行 Tool Call |
+| `ctx.systemPrompt` | `SystemPrompt` / `dsh-system-prompt` | 保存 Prompt Section、Context 和 Tool Schema Provider，并组装模型请求的 Prompt 部分 |
+
+`LlmRuntime` 与 `SystemPrompt` 的类和 `Context` 类型声明在源码中早已存在；`ctx.llm` 和 `ctx.systemPrompt` 的运行时实例都由对应的 Service Provider Plugin 注册。随后 DeepSeek、Pi 等 Adapter Plugin 向 `ctx.llm` 插入 Adapter Registration，Persona、Tool 等 Plugin 再向 `ctx.systemPrompt` 插入 Section 或 Tool Provider Registration。
+
+Agent Factory 则是另一种关系。`AgentRegistry` 暴露 `ctx.agents.create()` 和 `resume()`，但它不固定 Agent 怎样构造；`AgentLoop` 实现 `AgentFactory` 接口，并通过 `ctx.agents.setFactory(this)` 成为当前创建实现：
+
+```text
+Host / Client
+  → ctx.agents.create(options)
+  → AgentRegistry 查找当前 AgentFactory
+  → AgentLoop 创建 Session 与 Agent、执行 setup、最后发布
 ```
 
-[packages/core/agent-loop/src/index.ts：AgentLoop Service ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/core/agent-loop/src/index.ts#L295-L320){: data-source-evidence=""}
+这符合工厂模式的核心目的：使用方只调用稳定的创建接口，不需要 `new ReactLoopAgent(...)`，也不依赖具体 AgentLoop 包。更精确地说，它是一个接口式 Factory/Delegate；这里没有必要把它说成负责创建一整族相关对象的 Abstract Factory。
+
+Shell 例子中的关系是：
+
+```text
+dsh-tools Plugin
+  └── 挂载时注册 ctx.tools：ToolRuntime / Tool Registry 实例
+
+dsh-bash-sandbox Plugin
+  └── 挂载时注册 ctx.shell：ShellExecutor 实例
+
+dsh-tool-bash Plugin
+  ├── 使用 ctx.tools、ctx.shell、ctx.systemPrompt
+  ├── 向 ctx.tools 注册 bash Tool
+  └── 向 ctx.systemPrompt 注册 Bash Prompt Section
+```
+
+Composition 也不是 `Plugin + Service + Registration` 三张平级清单。配置先描述 Plugin rows 与父子关系；Loader 挂载这些 Plugin 后，部分 Plugin 注册运行时 Service 实例，另一些 Plugin 再插入 Tool、Prompt、Listener 等 Registration。本文把这棵已挂载的 Plugin 图及其运行时连接关系称为 Composition。TypeScript 声明不会由 Composition 创建；Agent、Inbox、SessionEvent 和正在运行的进程则是 Runtime 中的对象或状态。
+
+同一个运行时对象可以承担两项角色。`AgentLoop` 由 Cordis 以 Class Plugin 形式挂载；构造函数中的 `super(ctx, 'agentLoop')` 又把这个实例注册为 `ctx.agentLoop` Service。随后执行的 `ctx.agents.setFactory(this)` 是另一项 Registration：把同一个实例登记成 `ctx.agents.create/resume` 的委托实现。`ToolRuntime` 同理；`tool-bash` 则只作为 Consumer Plugin 运行，不注册新的 Service 实例。
+
+“AgentLoop 也是 Plugin”不表示它没有核心职责。它仍然从 Inbox 认领输入、写入 Turn/Step 边界、组装请求、调用模型并判断是否继续；只是 Plan、Compaction、权限与 Subagent 不必把全部规则硬编码进 AgentLoop。
+
+<details class="source-note" markdown="1">
+<summary>源码依据：同一个对象怎样同时是 Plugin 和 Service Provider</summary>
+
+**Cordis、AgentLoop、ToolRuntime 与 tool-bash 源码结论：**`declare module` 只扩展 TypeScript 的 `Context` 类型；Service 子类实例只有在构造函数调用 `super(ctx, name)` 后才注册到当前 Context。AgentLoop 另外向 AgentRegistry 登记 AgentFactory，普通 Plugin 也可以只向既有 Registry 插入 Registration。
+{: .evidence-summary}
+
+**关系整理（非仓库原文）：**
+
+```text
+// 编译期：只让 TypeScript 认识 ctx.tools，不产生运行时代码
+declare module '@deepseek-ai/cordis' {
+  interface Context { tools: ToolRuntime }
+}
+
+// 运行时：Loader 挂载 Class Plugin
+mount(ToolRuntime)
+  → new ToolRuntime(ctx)
+  → super(ctx, 'tools')
+  → ctx.reflect.provide(...) registers toolRuntimeInstance as "tools"
+
+// 另一项运行时贡献：Consumer Plugin 插入 Registry 条目
+mount(toolBash)
+  → ctx.tools.register(bashDefinition)
+```
+
+[packages/core/agent-loop/src/index.ts：AgentLoop Service 与 Factory Registration ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/core/agent-loop/src/index.ts#L295-L351){: data-source-evidence=""}
+
+[packages/core/tools/src/index.ts：ToolRuntime Service ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/core/tools/src/index.ts#L783-L832){: data-source-evidence=""}
+
+[vendor/cordis/src/service.ts：Service constructor ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/vendor/cordis/src/service.ts){: data-source-evidence=""}
+
+[packages/core/agent/src/index.ts：AgentRegistry / AgentFactory / setFactory ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/core/agent/src/index.ts#L175-L387){: data-source-evidence=""}
+
+[packages/llm/llm/src/index.ts：LlmRuntime Service ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/llm/llm/src/index.ts#L280-L338){: data-source-evidence=""}
+
+[packages/core/system-prompt/src/index.ts：SystemPrompt Service ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/core/system-prompt/src/index.ts#L337-L390){: data-source-evidence=""}
+
+[packages/shell/tool-bash/src/index.ts：Registration ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/shell/tool-bash/src/index.ts#L190-L242){: data-source-evidence=""}
+
+[vendor/cordis/src/registry.ts：Plugin shapes ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/vendor/cordis/src/registry.ts#L215-L319){: data-source-evidence=""}
+
+[Cordis Services Tutorial：compile time vs runtime ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/cordis-tutorial/03-services.md#provide-a-service){: data-source-evidence=""}
 
 [docs/architecture.md：Where new behavior goes ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/architecture.md#where-new-behavior-goes){: data-source-evidence=""}
 </details>
 
-### 2.2 Context、Service 与 inject 怎样建立依赖 {#section-2-2}
+### 2.2 tool-bash 从 ctx 里拿到了什么 {#section-2-2}
 
-Plugin 之间不靠 YAML 行序或直接导入具体实现来决定谁先启动。Provider 把能力注册为稳定的 `ctx.<key>`，Consumer 用 `inject` 声明自己必须取得哪些 Service；Cordis 在依赖满足以后才让这个 Plugin 生效。
+Cordis 执行 `tool-bash.apply(ctx)` 时传入的 `ctx`，是这次 Plugin 挂载所处的 Context。它既用于解析运行时 Service，也让后续 Effect 归属于当前 Fiber；Registry 再从这个 Context 取得 Registration 应写入的 DSH Scope layer。它不是一个装满所有全局单例的普通对象。
 {: .section-lead}
 
-以文件工具为例，`tool-fs` 需要 Tool Registry、Filesystem 和 System Prompt。源码中的依赖声明只有一行：
+实现上 `ctx` 是 Proxy。读取 `ctx.shell` 时，Cordis 才沿当前 Context 的 Service 解析关系寻找名为 `shell` 的实例；`isolate` group 可以让相同 Service 名在不同 Context 中指向不同 Provider 实例。这是 Cordis 的 Service isolation。
 
-**源码摘录：**
+`ctx.tools` 的情况还多一层：Standard 中的 `tool-bash` 解析到 Host 上同一个 ToolRuntime 实例，但 `ctx.tools.register()` 会根据调用 Context 的 DSH ScopeKey，把 `bash` Definition 写进 Standard Preset 的 Registry layer。以后某个 Agent 通过 `agent → preset → global` 链读取 Tool。Service 实例的解析与 Registry 条目的可见范围因此不是同一件事。
+
+Plugin 与运行时 Service 的区别可以直接从这里看：`tool-bash` 是 Cordis 管理其加载和卸载的生命周期单元；`ctx.shell`、`ctx.tools` 则是 Provider Plugin 挂载后注册到 Context 的实例。`tool-bash` 自己不注册新 Service，而是消费四个已经存在的实例：
 
 ```ts
-export const inject = ['tools', 'fs', 'systemPrompt']
+export const inject = ['tools', 'shell', 'systemPrompt', 'shellEnv']
 ```
 
-这行没有选择 Local Filesystem 或 E2B Filesystem，只说明 `tool-fs` 离开 `ctx.fs` 就无法工作。Loader 会等 `fs` Service 存在再执行 `apply()`；如果依赖消失，这次 Plugin 挂载也会退出。配置文件可以为了阅读把相关行放在一起，但启动关系来自依赖图，不来自肉眼看到的上下顺序。
+| 必需 Service | `tool-bash` 中的调用 | 为什么需要它 |
+|---|---|---|
+| `ctx.tools` | `ctx.tools.register(...)` | `tool-bash` 解析 Host 的 ToolRuntime/Tool Registry 实例，再把 `bash` 写入当前 Preset 的 Registry layer。没有它，模型不会得到可调用的 `bash` Tool。 |
+| `ctx.systemPrompt` | `ctx.systemPrompt.section(...)` | 注册一段跨调用的固定指导：每次查看 Bash 结果都要检查 exit code。Tool Schema 说明单次参数，Prompt Section 提供持续行为规则，两者用途不同。 |
+| `ctx.shell` | `ctx.shell.resolve()`、`run()`、`start()` | 真正解析并执行命令。当前对象可能是 Local Provider，也可能是 Sandbox Provider；`tool-bash` 不直接启动进程。 |
+| `ctx.shellEnv` | `ctx.shellEnv.collect(exec)` | 为这一次命令生成可信的 `DSH_*` 环境快照，例如 `DSH_HOME`、`DSH_SHELL=1`、当前 `DSH_SESSION_ID`，以及可用时的 `DSH_SESSION_JSONL`。 |
 
-Context 是这次解析发生的环境。读取 `ctx.fs` 不是读取一个在应用启动时固定写死的普通字段，而是解析当前 Context 可以看到的 `fs` Service。后面讲 Preset 时，同一个 Service key 可以因为 Scope 与 Composition 不同而落在不同的可见范围中。
+`shell` 与 `shellEnv` 因此不是一回事：`shell` 决定“命令怎样执行”，`shellEnv` 决定“这次命令应收到哪些 DSH 管理的环境信息”。`shellEnv` 不运行命令，也不直接修改宿主进程的 `process.env`；它只是为每次 Tool Call 生成一个显式 overlay，再交给 `ctx.shell`。
 
-这里还要分清 TypeScript 声明与运行时事实：给 `Context` interface 增加 `fs: FileSystem`，只让编译器接受 `ctx.fs`；真正让运行时拥有这项能力的是某个 `FileSystem` Provider 构造并通过 `super(ctx, 'fs')` 注册 Service。`inject = ['fs']` 再让 Consumer 等待这项运行时能力。三者分别解决类型、提供能力和声明依赖，不能互相代替。
+`dsh-shell` 也不是当前正在工作的 Shell 实例。它是 Service Definition Package，导出抽象 `ShellExecutor`、Request/Spec/Result 类型和共同语义。实际挂载的 `bash-local` 或 `bash-sandbox` 才构造具体子类，并通过 `super(ctx, 'shell')` 把这个实例注册为当前 Scope 可解析的 `ctx.shell`。
 
-Service method 与 Event 也从这里分开：当调用方知道自己要使用哪项能力时，直接调用 `ctx.fs.readText()` 等方法；当系统希望未知数量的 Plugin 在某个时点参与时，才发布 Event。下一节专门看 Event 如何参与调用，以及这些注册怎样在卸载时清理。
+所以 Context、Service 与 `inject` 的关系是：Provider Plugin 先在某个 Context 中注册运行时 Service 实例；Consumer Plugin 用 `inject` 声明必需的 Service 名；Cordis 等四项依赖都可解析以后才运行 `tool-bash.apply(ctx)`。任何必需 Service 消失时，这次 `tool-bash` Fiber 会卸载；依赖恢复后再重新运行。
+
+在 Cordis 底层，依赖尚未满足的 Fiber 处于 `pending`，不会执行一半的 `apply()`。但 DSH 的正式 Profile Boot 和 Agent Preset mount 会审计仍未激活的配置 row，并把缺失依赖变成带 Plugin 名称的启动错误；不能把 `pending` 理解成产品永远静默忽略错误。
+
+`tool-bash` 还会通过 `ctx.get()` 查询 Jobs、Approval 或 Sandbox Policy。这些是可选或条件依赖：没有 Jobs 时前台 Bash 仍可用，后台调用会明确失败；Approval 只在提权路径需要；Sandbox Policy 只在当前 `ctx.shell` 宣告自己提供隔离时成为必需，缺失会让 `tool-bash` 在加载阶段响亮失败。`inject` 表达无条件依赖，`ctx.get()` 则允许 Plugin 根据当前能力决定某条路径是否成立。
 
 <details class="source-note" markdown="1">
-<summary>源码依据：Filesystem Service 与 tool-fs 怎样通过 key 连接</summary>
+<summary>源码依据：tool-bash 的四项必需 Service 分别在哪里使用</summary>
 
-**Filesystem 源码结论：**Service Definition 把实现注册为 `ctx.fs`；`tool-fs` 只声明自己需要 `fs`，没有选择具体 Provider。依赖是否可用决定 Consumer Plugin 何时激活。
+**Cordis、tool-bash、Shell 与 ShellEnv 源码结论：**TypeScript 声明只负责类型检查。Cordis Context/`isolate` 选择运行时 Service 实例，ToolRuntime 与 SystemPrompt 再用 DSH ScopeKey 决定 Registration layer；`tool-bash` 最后通过 `ctx.shell` 执行命令，并由 `ctx.shellEnv` 生成每次调用的 `DSH_*` snapshot。
 {: .evidence-summary}
 
-**源码批注版（中文注释为后加）：**
+**忠实伪代码（非仓库原文）：**
 
 ```ts
-// Service Definition：任何具体 Filesystem Provider 都通过这个稳定 key 发布能力
-export abstract class FileSystem extends Service {
-  constructor(ctx: Context) {
-    super(ctx, 'fs')
+export const inject = ['tools', 'shell', 'systemPrompt', 'shellEnv']
+
+export function apply(ctx: Context): void {
+  ctx.systemPrompt.section({ name: 'tool:bash', /* ... */ })
+
+  ctx.tools.register(defineTool({
+    name: 'bash',
+    async execute(args, exec) {
+      const dshEnv = ctx.shellEnv.collect(exec)
+      const spec = ctx.shell.resolve({ command: args.command, dshEnv })
+      return ctx.shell.run(spec)
+    },
+  }))
+}
+```
+
+[packages/shell/tool-bash/src/index.ts：四项调用 ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/shell/tool-bash/src/index.ts#L30-L390){: data-source-evidence=""}
+
+[packages/shell/shell/src/index.ts：ShellExecutor Definition ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/shell/shell/src/index.ts#L65-L100){: data-source-evidence=""}
+
+[packages/shell/shell-env/src/index.ts：ShellEnvRegistry ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/shell/shell-env/src/index.ts#L1-L190){: data-source-evidence=""}
+
+[vendor/cordis/src/reflect.ts：Context Service resolution ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/vendor/cordis/src/reflect.ts#L135-L163){: data-source-evidence=""}
+
+[Cordis Tutorial：Dependencies are tracked after load ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/cordis-tutorial/03-services.md#dependencies-are-tracked-after-load){: data-source-evidence=""}
+
+[Agent Presets README：What a mount rejects ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/preset/agent-presets/README.md#what-a-mount-rejects){: data-source-evidence=""}
+</details>
+
+### 2.3 tool-bash 从挂载到退出发生了什么 {#section-2-3}
+
+`tool-bash` 不是每次 Tool Call 来了才临时加载。Loader 在配置 row 启用且四项依赖准备好以后挂载它，运行一次 `apply()`；由此注册的 Bash Prompt 和 `bash` Tool 会持续服务后续请求，直到这次挂载结束。
+{: .section-lead}
+
+源码给这条生命周期用了三个容易混淆的名字：
+
+| 名称 | 准确含义 |
+|---|---|
+| `Fiber` | 某个 Plugin 的一次挂载记录和控制句柄。它保存本次挂载的配置、依赖状态和待清理项；不是线程、协程，也不是 Agent。 |
+| `Effect` | 由 Fiber 跟踪的一项安装动作。它执行 setup，对外增加 Registration 或资源，并把相应清理方法交给 Fiber。 |
+| `Disposer` | Effect 返回的清理函数，通常是 `() => void` 或异步函数。例如从 Tool Registry 删除 `bash`。 |
+| `unload / dispose` | 结束这一次 Plugin 挂载并执行所有 Disposer。它不会删除磁盘上的 Package，也不表示 Node 立即卸载模块代码。 |
+
+这里的 Effect 可以理解为“由 Cordis 跟踪、能够撤销的副作用”。Plugin 不需要先写一份 Effect 清单；调用 `ctx.on()`、`ctx.tools.register()`、`ctx.systemPrompt.section()` 或 `ctx.effect()` 时，当前 Fiber 就会记录对应清理动作。只创建外部资源却没有返回 Disposer，才会留下 Cordis 无法自动回收的副作用。
+
+Fiber 的主要状态变化可以直接写成：
+
+```text
+pending（等待依赖）
+  → loading（执行 apply / 构造 Service）
+  → active（Registration 正在生效）
+  → unloading（执行 Disposer）
+  → disposed（这次挂载结束）
+
+loading 期间抛错 → failed
+```
+
+Effect 的最小结构是：
+
+**忠实伪代码（非仓库原文）：**
+
+```ts
+ctx.effect(() => {
+  registry.add('bash')      // setup：对外增加内容
+  return () => {
+    registry.delete('bash') // disposer：撤销这次增加
+  }
+})
+```
+
+Tool、Prompt、Listener 等框架 Registration 已经通过 Helper 接入 Effect。Plugin 自己创建的 Timer、文件 Watcher、Socket 或其他外部资源，则需要显式放进 `ctx.effect()`：setup 创建资源，Disposer 关闭资源。否则 Plugin 即使退出，回调或连接仍可能继续存活。
+
+`tool-bash` 没有直接写这段模板，因为 `ctx.systemPrompt.section()` 和 `ctx.tools.register()` 已经把 Registration 封装成 Effect。挂载与退出的真实顺序是：
+
+```text
+Loader 挂载 tool-bash
+  → 创建这次挂载的 Fiber
+  → 执行 apply(ctx)
+  → 注册 tool:bash Prompt Section
+  → 注册 bash Tool
+  → Fiber 进入 active，可处理很多次 Tool Call
+
+Fiber 开始 unload
+  → 先开始撤销后注册的 bash Tool
+  → 再开始撤销 Prompt Section
+  → Fiber 进入 disposed
+```
+
+Cordis 会按注册的相反顺序开始调用 Disposer，但多个异步 Disposer 的完成顺序没有串行保证：Fiber 会等待它们全部结束，却可能让不同 Effect 的异步清理重叠运行。真正有先后依赖的清理步骤必须放进同一个 `ctx.effect()` 返回的 Disposer，由这一个函数自己按顺序 `await`。`tool-bash` 的 Tool 与 Prompt Registration 都使用框架 Helper，不需要另外保存清理句柄。
+
+一次挂载通常在下面几类情况退出：
+
+| 触发条件 | 会发生什么 |
+|---|---|
+| 代码显式调用 `await fiber.dispose()` | 立即结束这次挂载并等待清理完成 |
+| 父 Plugin、根 Context 或整个应用关闭 | 子 Fiber 随父级一起清理 |
+| 普通 Loader Composition 删除、禁用或热替换这一 row | 原 Fiber 退出；候选配置可再建立新 Fiber |
+| `inject` 中的必需 Service 消失或被替换 | 依赖该 Service 的 Fiber 退出；依赖恢复后重新挂载 |
+
+它不会因为一次 Bash 调用结束、一个 Step/Turn 结束或 Agent 进入 idle 就自动卸载。Agent Preset 还有更具体的规则：当前 standing generation 会跨多个 Session 存活；文件更新只让之后的 Session 使用新 generation，旧 generation 当前不会主动回收。因此 Standard 中的 `tool-bash` 也不是“关掉一个 Session 就卸载一次”。
+
+卸载只撤销这次 Plugin 安装的 Registration，不会撤销已经执行过的命令，也不会删除已经写入的 SessionEvent。后台进程等资源由 Subprocess 或 Jobs 的所有者单独清理；Effect 不能替代每个子系统自己的资源所有权。
+
+Effect 回答“这项 Registration 存在多久”；Waterfall 回答“一次调用怎样经过多层处理”，两者也不能混在一起。Waterfall Listener 收到当前参数和 `next()`：调用 `next()` 才把控制权交给下一层，不调用就用自己的 Decision 结束这条链。模型调用 `bash` 时，已经存在的 Registration 被 Tool Runtime 找到，然后调用经过：
+
+```text
+tools/pre-execute
+  → tools/execute
+  → tool-bash execute()
+  → ctx.shell.resolve() + ctx.shell.run()
+  → tools/post-execute
+```
+
+Scope 与 Effect 分别回答两个问题：Scope 决定谁能看见 Registration，Effect 决定它存在到什么时候。Cordis 管理这两类关系，但不负责决定模型下一步做什么；AgentLoop 仍负责推进 Turn 与 Step，Session 记录已经发生的事实，Persistence 再负责把这些 Event 落盘。
+
+<details class="source-note" markdown="1">
+<summary>源码依据：Fiber、Effect 和 Disposer 如何清理 bash Registration</summary>
+
+**Cordis、Tool 与 System Prompt 源码结论：**Fiber 是一次 Plugin application 的生命周期实例；Effect 收集 Disposer。Fiber unload 时按逆序开始清理并等待全部任务，但不同 Effect 的异步 Disposer 可以并发；`tools.register()` 与 `systemPrompt.section()` 都会随所属 Fiber 撤销。
+{: .evidence-summary}
+
+**忠实伪代码（非仓库原文）：**
+
+```ts
+type Disposer = () => void | Promise<void>
+
+class Fiber {
+  state: 'pending' | 'loading' | 'active' | 'unloading' | 'disposed'
+  effects: Disposer[]
+
+  async dispose() {
+    this.state = 'unloading'
+    const cleanupTasks = this.effects.reverse().map(dispose => run(dispose))
+    await Promise.all(cleanupTasks)
+    this.state = 'disposed'
   }
 }
 
-// Consumer：只声明需要 fs，不导入或选择 fs-local / fs-e2b
-export const inject = ['tools', 'fs', 'systemPrompt']
-```
-
-[packages/fs/fs/src/index.ts：FileSystem Service Definition ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/fs/fs/src/index.ts#L66-L70){: data-source-evidence=""}
-
-[packages/fs/tool-fs/src/index.ts：inject ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/fs/tool-fs/src/index.ts#L18-L23){: data-source-evidence=""}
-
-[docs/cordis-primer.md：Context 与 inject ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/cordis-primer.md#cordis-in-five-ideas){: data-source-evidence=""}
-
-[Cordis Tutorial：Dependencies are tracked after load ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/cordis-tutorial/03-services.md#dependencies-are-tracked-after-load){: data-source-evidence=""}
-</details>
-
-### 2.3 Event 怎样扩展调用，Effect 怎样清理注册 {#section-2-3}
-
-Plugin 通常会做两类贡献：在某个执行时点参与一次调用，或者向 Registry 安装 Tool、Prompt Section、Listener 等 Registration。Cordis 分别用 Event 和 Effect 管理这两件事。
-{: .section-lead}
-
-Event 的 Dispatch Mode 是公共契约，不同模式处理不同协作关系：
-
-| 模式 | 调用关系 | 典型用途 |
-|---|---|---|
-| `emit` | 同步通知所有 Listener，不收集返回值 | 广播已经发生的 live 变化 |
-| `parallel` | 并发等待所有 Listener | 多个互不依赖的异步参与者 |
-| `serial` | 按注册顺序逐个等待 | 顺序执行的 checkpoint |
-| `waterfall` | Listener 包裹下一层，可改写或短路 | 请求、模型流、工具执行与策略 |
-
-Waterfall 最容易和普通通知混淆。Listener 调用 `next()`，控制才进入下一层；`next()` 的返回值再回到外层，外层可以继续修改。如果某个拥有决定权的 Listener 不调用 `next()`，后续 Listener 和默认实现都不会执行。`agent/pre-step`、`agent/request`、`llm/stream`、`system-prompt/assemble` 以及三段 Tool Execution hooks 都使用这种关系。
-
-**关系整理（非仓库原文）：**
-
-```text
-Listener A
-  → next()
-    → Listener B
-      → next()
-        → 默认实现
-      ← 结果
-    ← B 可以修改结果
-  ← A 得到最终结果
-```
-
-Effect 处理另一件事。Persona Plugin 调用 `ctx.systemPrompt.section()` 以后，Registry 中多出一个 Prompt Section；这个注册动作改变了 Plugin 外部的状态，所以它是一项副作用。`section()` 返回删除该 Section 的 Disposer，`ctx.effect()` 把 Disposer 交给当前 Fiber。Fiber 是这一次实际挂载的 Plugin 实例；它卸载时，持有的 Disposer 按相反顺序执行。
-
-**关系整理（非仓库原文）：**
-
-```text
-ctx.effect(setup)
-  → 立即执行 setup
-  → setup 安装 Registration，并返回 Disposer
-  → 当前 Fiber 保存 Disposer
-  → Fiber 卸载时执行 Disposer
-```
-
-Effect 不是每个 Plugin 都要在 YAML 中声明的字段，也不负责回滚所有已经发生的事情。`ctx.on()` 等 Cordis Helper 已经把 Listener 注册接入对应生命周期；而已经提交的 `session.append(...)` 代表持久事实，持久 SessionEvent 不由 Effect 撤销。
-
-Scope 与 Effect 仍是两件事：Scope 决定谁能看见 Registration，Effect 决定它存在到什么时候。一个 Tool 可以只对 Standard Preset 下的 Agent 可见，同时跟随这一代 Preset Fiber 卸载；可见范围正确但 Disposer 丢失，仍然会产生残留。
-
-Cordis 不负责决定模型下一步做什么，也不保存 Conversation。它提供的是依赖解析、调用扩展点和可撤销生命周期；AgentLoop 仍负责推进 Turn 与 Step，Session 仍负责记录持久事实。
-
-<details class="source-note" markdown="1">
-<summary>源码依据：Persona Plugin 怎样声明依赖与 Effect</summary>
-
-**Persona 与 Cordis 结论：**Persona Plugin 等待 `systemPrompt` Service，在自己的 Scope 中注册 Prompt Section，并让 Effect 持有 Section 的 Disposer。Cordis Fiber 卸载时反向执行收集到的 Disposer。
-{: .evidence-summary}
-
-**源码批注版（中文注释为后加）：**
-
-```ts
-// Plugin 名称，以及必须等待的 Service
-export const name = 'persona'
-export const inject = ['systemPrompt']
-
-export function apply(ctx: Context, config: Config): void {
-  // section() 注册 Prompt Section 并返回 Disposer；
-  // effect() 把这个 Disposer 绑定到当前 Plugin Fiber
-  ctx.effect(() => ctx.systemPrompt.section({
-    name: PERSONA_SECTION,
-    order: PERSONA_ORDER,
-    text: config.text,
-    ...(config.complete ? { complete: true } : {}),
-  }), 'persona.section()')
-
-  if (!(config.includeRuntimeContext ?? true)) ctx.systemPrompt.suppressRuntimeContext()
+function registerTool(definition): Disposer {
+  return currentFiber.effect(() => {
+    toolLayer.insert(definition.name, definition)
+    return () => toolLayer.remove(definition.name)
+  })
 }
 ```
 
-[packages/preset/persona/src/index.ts ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/preset/persona/src/index.ts#L27-L68){: data-source-evidence=""}
+[vendor/cordis/src/fiber.ts：Fiber / Effect / Disposable ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/vendor/cordis/src/fiber.ts){: data-source-evidence=""}
 
-[docs/cordis-primer.md：Cordis in five ideas ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/cordis-primer.md#cordis-in-five-ideas){: data-source-evidence=""}
+[packages/core/system-prompt/src/index.ts：section() ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/core/system-prompt/src/index.ts#L373-L390){: data-source-evidence=""}
 
-[docs/cordis-primer.md：Waterfall semantics ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/cordis-primer.md#cordis-waterfall-semantics){: data-source-evidence=""}
+[packages/core/tools/src/index.ts：register() ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/core/tools/src/index.ts#L1031-L1061){: data-source-evidence=""}
+
+[packages/core/tools/tests/scoped.spec.ts：dispose removes registrations ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/core/tools/tests/scoped.spec.ts#L109-L116){: data-source-evidence=""}
+
+[Agent Presets README：generation lifetime ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/preset/agent-presets/README.md#known-limitations-and-deferred-work){: data-source-evidence=""}
 </details>
 
 ### 2.4 依赖倒置怎样形成 Capability Seam {#section-2-4}
 
-Context 与 `inject` 解决运行时怎样找到依赖，依赖倒置解决源码应该依赖谁：Consumer 只依赖稳定的 Service Definition，不依赖 Local、Sandbox 或 E2B 等具体 Provider；Composition 是选择并安装 Provider 的地方。
+Shell 这项能力被拆成三个角色：`dsh-shell` 定义 `ctx.shell`，`bash-local` 或 `bash-sandbox` 提供实现，`tool-bash` 把它变成模型可见的 Tool。三者合在一起，才形成完整的 Capability Seam。
 {: .section-lead}
-
-Filesystem 可以把这条关系完整展开：
 
 | 角色 | 当前实现中的例子 | 负责什么 |
 |---|---|---|
-| Service Definition | `FileSystem` / `ctx.fs` | 文件身份、读取、写入、错误等稳定语义 |
-| Provider | `fs-local`、`fs-sandbox`、`fs-e2b` | 把接口连接到本机、受限本机或远端环境 |
-| Consumer | `tool-fs` | Tool Schema、参数验证、读取窗口和结果呈现 |
-| Policy | `fs-observation-policy` | 通过 `fs/*` Event 加入 read-before-write 等决策 |
+| Service Definition | `dsh-shell` / `ShellExecutor` | `resolve/run/start`、Request/Result 类型和失败语义 |
+| Service Provider | `bash-local`、`bash-sandbox` | 命令究竟怎样启动、是否经过 Sandbox、怎样收集输出 |
+| Consumer | `tool-bash` | 模型看到的 Tool Schema、Prompt 指引、参数校验和结果呈现 |
 
-`tool-fs` 的源码只通过 `ctx.fs` 读写文件，没有导入 `fs-local` 或 `fs-e2b`。因此替换 Provider 不要求在 Consumer 中增加 `remote` 分支。反过来，Provider 也不拥有模型看到的 Schema 和说明；这些内容留在 Consumer，换 Provider 时模型接口可以保持一致。
+依赖倒置说的是源码依赖方向。`tool-bash` 依赖 `ShellExecutor` 的接口与类型，不依赖 `LocalBashExecutor`；Provider 也实现同一份 Definition。只有 Composition 需要知道当前选择了哪个具体 Provider。
 
-一项完整 Capability Seam 需要 Definition、Provider 和 Consumer 三个角色。单独写一个接口、一个实现或一个 Tool，都还没有形成可替换能力。角色可以位于不同 Package，也可以在简单场景中合并；判断标准是依赖方向和替换边界，而不是目录数量。
+```text
+tool-bash
+   │ 只调用 ctx.shell
+   ▼
+ShellExecutor Definition
+   ▲
+   ├── LocalBashExecutor
+   └── SandboxBashExecutor
+```
 
-Filesystem 与 Subprocess 还必须共同描述同一个 Execution World。`tool-fs-search` 通过 `ctx.subprocess` 启动 ripgrep，`lsp-stdio` 同时通过 `ctx.fs` 读取源码、通过 `ctx.subprocess` 启动 Language Server。若两项 Provider 指向不同机器，它们就会看到不同文件和进程；因此 Local 组合使用 `fs-local + subprocess-local`，E2B 组合则同时替换为 `fs-e2b + subprocess-e2b`。
+Definition 不只是为了让 TypeScript 编译通过，它还决定跨实现必须一致的语义。例如 `run()` 只有在进程根本无法启动等基础设施故障时 reject；非零退出码、Timeout 和被 Signal 终止都返回带完整事实的 `ShellRunResult`。Provider 可以更换，但不能各自发明一套结果含义。
 
-替换以后，Bash、PTY、LSP 和文件工具继续消费原来的接口。变化的是文件和进程实际存在的位置，不是每个 Consumer 的实现。Architecture 文档强调的正是这种传播关系：Provider 的选择可以通过稳定 Service 同时影响多个 Consumer。
+`bash-sandbox` 也没有复制 `tool-bash`。它继承 Local Provider 的进程机制，只在启动前通过 `ctx.sandbox` 包装 argv，并通过 `sandboxMode` 告诉 Consumer 当前支持隔离。`tool-bash` 据此决定是否向模型显示 `sandbox_permissions` 和 `justification`，但仍然不导入 Sandbox Provider。
 
-这里的边界也必须一起保留：当前 E2B 是 ephemeral POC。Cordis Service、AgentLoop、Session Log、LLM 请求和 Skills 仍在 Host 进程；E2B 只提供远端 Filesystem 与 Subprocess 世界。它没有完整 reconnect、workspace synchronization 或 durable remote handle，也不是 hard multi-tenant boundary。
+Shell 下面还有一条 Subprocess Seam。`bash-local` 自己不调用 Node `child_process`，而是注入 `ctx.subprocess`。把 `subprocess-local` 换成 `subprocess-e2b` 后，`tool-bash` 和 `bash-local` 都不需要改，命令已经在远端执行。为了让 Read、Search、LSP 和 Bash 看到同一批文件，Filesystem Provider 也要一起换成 E2B，这两项 Provider 共同组成 Execution World。
+
+这里仍要保留实现边界：当前 E2B 是 ephemeral POC。被替换的是 Filesystem 与 Subprocess Provider；Harness 进程、Cordis 对象、模型调用、Agent/Session 状态、Persistence、Skills 和更高层协议状态仍留在 Host。它没有完整 reconnect、workspace synchronization 或 durable remote handle，因此不能据此声称整个 Harness 已经迁移到远端。
 
 <details class="source-note" markdown="1">
-<summary>源码依据：Consumer 为什么不依赖 Local 或 E2B Provider</summary>
+<summary>源码依据：Local 与 Sandbox Provider 怎样复用同一 Shell Definition</summary>
 
-**Filesystem、LSP 与 E2B 源码结论：**`tool-fs` 只要求 `fs`，`lsp-stdio` 只要求 `fs` 与 `subprocess`；E2B 通过同一个 sandbox owner 提供这两个 Service 的实现。Consumer 不导入 E2B 实现，Composition 才选择 Provider。
+**Shell Provider 源码结论：**`LocalBashExecutor` 实现 `ShellExecutor` 并把进程创建交给 `ctx.subprocess`；`SandboxBashExecutor` 继承同一实现，在启动边界增加 `ctx.sandbox`。两者都发布为 `ctx.shell`，Consumer 不变。
 {: .evidence-summary}
 
 **源码批注版（中文注释为后加）：**
 
 ```ts
-// 文件 Tool 只依赖抽象的 fs Service
-export const inject = ['tools', 'fs', 'systemPrompt']
+export class LocalBashExecutor extends ShellExecutor {
+  // Local Provider 仍然依赖更底层的 Subprocess Seam
+  static inject = ['subprocess']
 
-// LSP Provider 同时使用抽象的 fs 与 subprocess，保证源码和进程处于同一 Execution World
-export const inject = ['fs', 'lsp', 'subprocess']
+  async run(spec: ShellExecSpec): Promise<ShellRunResult> {
+    return this.runArgv(spec, ['bash', '-c', spec.command])
+  }
+
+  protected async runArgv(spec: ShellExecSpec, argv: readonly string[]): Promise<ShellRunResult> {
+    using d = deadline(spec.signal, spec.timeoutMs, 'BASH_TIMEOUT')
+    // 实际进程由当前 ctx.subprocess Provider 创建
+    const handle = this.ctx.subprocess.spawn(this.spawnSpec(spec, argv, spec.stdoutMaxBytes, d.signal))
+    // ...收集结果
+  }
+}
+
+export class SandboxBashExecutor extends LocalBashExecutor {
+  static override inject = ['subprocess', 'sandbox', 'sandboxPolicy']
+
+  private confine(command: string, policy: SandboxPolicy): ConfinedArgv {
+    // Sandbox Provider 只改变启动 argv，复用其余 Local 机制
+    return this.ctx.sandbox.confine(['bash', '-c', command], policy)
+  }
+}
 ```
 
-[packages/fs/tool-fs/src/index.ts：Consumer inject ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/fs/tool-fs/src/index.ts#L18-L23){: data-source-evidence=""}
+[packages/shell/bash-local/src/index.ts ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/shell/bash-local/src/index.ts#L95-L257){: data-source-evidence=""}
 
-[packages/lsp/lsp-stdio/src/index.ts：Execution World inject ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/lsp/lsp-stdio/src/index.ts#L41-L48){: data-source-evidence=""}
+[packages/shell/bash-sandbox/src/index.ts ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/shell/bash-sandbox/src/index.ts#L37-L179){: data-source-evidence=""}
 
-[packages/e2b/e2b/README.md：共享 Sandbox Owner ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/e2b/e2b/README.md){: data-source-evidence=""}
+[docs/subsystems/shell.md ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/subsystems/shell.md){: data-source-evidence=""}
 
 [docs/architecture.md：Capability seams ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/architecture.md#capability-seams){: data-source-evidence=""}
+
+[packages/e2b/README.md：POC boundary ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/e2b/README.md){: data-source-evidence=""}
 </details>
 
-### 2.5 Composition 怎样连接 Host、Preset 与多个 Agent {#section-2-5}
+### 2.5 声明式 Composition 怎样连接 Host 与 Agent {#section-2-5}
 
-Capability Seam 说明具体实现怎样替换，Agent Preset 说明某类 Agent 最终取得哪些能力。当前 DSH 把长期存在的 Host Composition 与 Agent-side Composition 分开，再由 standing Preset 把后者提供给多个 Agent。
+Base Bundle 在 Host 侧声明 `subprocess-local`、Sandbox Policy 和 `bash-sandbox`；Standard Preset 在 Agent 侧声明 `tool-bash`。Loader 挂载这些行以后，`inject` 把 Consumer 与当前 `ctx.shell` Provider 连接起来，一条完整 Shell 能力才真正存在。
 {: .section-lead}
 
-Host plane 与 Agent plane 是当前 Preset 设计使用的职责名称，不是两台机器或两个进程。Standard 的配置文件明确把 Registries、Persistence、Sandbox、Approval、Model Route 和跨 Session Providers 留在 Host；Preset 主要贡献 Persona、Prompt Section、Tools、Skills，以及是否启用 Plan、Compaction、Delegation、Workflow 和某种 Tool Presentation。
+这部分更准确的说法是“声明式组合”，而不是整个系统都采用声明式编程：YAML 声明希望存在的 Plugin、配置和启用条件，Loader 根据依赖图决定何时挂载；Plugin 的 `apply()` 内部仍然使用普通 TypeScript，命令式地注册 Prompt、Tool 与 Listener。
+
+| 名称 | 它处在哪个阶段 | Shell 例子 |
+|---|---|---|
+| `Bundle` | Host 配置的分发单位：一组 Cordis rows 及其代码，由 Profile 选择和叠加 | Base Bundle 提供 Subprocess、Sandbox、Shell Provider rows |
+| `Agent Preset` | Agent 侧的配置输入：一个包含 `agent.cordis.yml` 的目录 | Standard Preset 提供 `tool-bash` row |
+| `Composition` | 上述输入被解析并挂载后形成的 Plugin 图，以及随之注册的运行时 Service 实例与 Registry 条目 | `ctx.shell` Provider 实例、`ctx.tools` Registry 实例和 `bash` Registration 已经连通 |
+| `Runtime` | Composition 正在运行时，再加上具体 Agent、Session、Inbox、进程和其他状态 | 某个 Session 真正发起并执行 Bash Tool Call |
+
+因此 Bundle 和 Agent Preset 都是 Composition 的输入来源，不是 Composition 本身；Composition 又只是 Runtime 的组件结构，不包含某个 Session 此刻正在执行的具体状态。
 
 | Host Composition 持有 | Standard Preset 贡献或选择 |
 |---|---|
+| Subprocess、Sandbox、`ctx.shell` Provider | `tool-bash` / `tool-pwsh` Consumer |
 | AgentLoop、Agent/Session Registry、Persistence | Persona 与 Prompt Sections |
 | Tool、System Prompt、Skill 等 Registry | 向该 Preset 注册的 Tools 与 Skill roots |
 | Sandbox、Approval、Credentials、Model Route | 是否向模型提供 Plan、Compaction 与 Delegation |
 | Subagent Registry 与具体 Providers | model-facing Subagent Tools 与 Workflow |
-| Filesystem、Subprocess 等底层 Provider | Tool Presentation 等模型侧选择 |
 
-这个划分不是根据 Feature 名字决定。例如 `subagents` Registry 和具体 Providers 需要被 Host API 与多个 Session 使用，所以留在 Host；Standard 决定是否给自己的 Agent 注册 model-facing delegation Tools。Plan Service 没有相同的 Host 消费者，Standard 在自己的隔离组里拥有它。具体判断来自消费者、作用范围和生命周期，而不是“它听起来是否属于 Agent”。
+Host plane 与 Agent plane 是职责划分，不是两台机器或两个进程。Shell Provider 要同时服务多个 Session，也被 Host 侧配置和执行策略管理，所以留在 Host；`tool-bash` 决定模型是否获得 Bash Tool，因而由 Preset 贡献。同样，Subagent Registry 留在 Host，而 Standard 只选择是否提供 model-facing delegation Tools。
 
 在 Agent plane 内，当前实现也没有为每个 Session 重复挂载 Standard。Roster 第一次使用某个 generation 时建立 standing composition；之后 Agent A、B 把各自 ScopeKey 的 parent 指向该 Preset ScopeKey，读取顺序是 `agent → preset → global`。
 
@@ -465,7 +625,7 @@ Standard standing composition
 | Prompt Sections、Tool Definitions、Skills roots | Agent、Inbox、Cancellation |
 | Scoped Listeners 与 Preset-owned Service instances | 以 SessionId/AgentId 为 key 的 mutable state |
 
-这项选择不是 Cordis 强制要求。每个 Session 单独挂载 Preset 也能工作，但会按 Session 重复建立 Plugin、Listener、Watcher 和 Registration；standing mount 把这部分成本改成 per generation。相应代价是共享 Plugin 必须把 Session 状态放进 Session Log、按 identity 建索引，或者使用明确的 per-agent structure，不能只用一个实例字段保存“当前 Session”。
+这是 `dsh-agent-presets` 明确选择的生命周期：Plugin、Listener、Watcher 和 Registration 按 generation 建立，而不是按 Session 建立。相应代价是共享 Plugin 必须把 Session 状态放进 Session Log、按 identity 建索引，或者使用明确的 per-agent structure，不能只用一个实例字段保存“当前 Session”。
 
 事件监听也沿相同 Parent Chain 过滤。Standing Preset 中注册的 scoped listener 会收到加入这一 Preset 的 Agent Event，却不会接收 Sibling Preset 的 Agent Event。Host 在没有 live Agent 时读取 cold transcript，也可以根据 durable PresetId 取得对应 standing key，用同一套 Prompt 与 Presentation Registration 解释历史。
 
@@ -474,24 +634,46 @@ Standard standing composition
 Preset 文件变化时，下一次新建 Session 可以进入新的 generation；已经运行的 Session 继续绑定原来的 generation。这样不会在一段已有历史中途突然改变 Tool Schema 或 Prompt。代价是旧 generation 仍要存活，直到整个 tree 被释放；当前实现也把 generation 回收列为未完成问题。
 
 <details class="source-note" markdown="1">
-<summary>源码依据：Host 与 standing Preset 分别持有什么</summary>
+<summary>源码依据：Shell Provider 与 Consumer 怎样由两份配置组成</summary>
 
-**Standard 配置与 Preset README 结论：**Standard 是 Agent-plane composition，Host 保留 Registries、Persistence、Sandbox、Approval 与 Model Route；一个 Preset generation 只挂载一次，多个 Agent 通过 parent binding 读取它的 Registration，Session 状态仍按 identity 分开。
+**Base Bundle、Standard 与 Preset README 结论：**Host 配置声明 Subprocess、Sandbox 和 Shell Provider；Standard 只声明 model-facing Shell Consumer。一个 Standard generation 挂载一次，多个 Agent 通过 parent binding 使用这些 Registration，Session 状态仍按 identity 分开。
 {: .evidence-summary}
 
-**关系整理（非仓库原文）：**
+Base Bundle 中的 Host rows：
 
-```text
-Host Composition
-  ├── registries / persistence / sandbox / approval / providers
-  └── AgentLoop
+**配置摘录：**
 
-Standard standing composition（one per generation）
-  ├── persona / prompt / tools / skills
-  ├── plan / compaction / workflow choices
-  ├── Agent A parent binding → Session A state
-  └── Agent B parent binding → Session B state
+```yaml
+- id: subprocess
+  name: '@deepseek-ai/dsh-subprocess-local'
+
+- id: sandbox
+  name: '@deepseek-ai/dsh-sandbox-local'
+
+- id: sandbox-policy
+  name: '@deepseek-ai/dsh-sandbox-policy'
+  config:
+    mode: !!js process.env.DSH_PERMISSION_MODE ?? 'workspace-write'
+    workspaceRoot: !!js process.cwd()
+
+- id: bash-sandbox
+  name: '@deepseek-ai/dsh-bash-sandbox'
+  disabled: !!js process.platform === 'win32'
+  config:
+    timeoutMs: 60000
 ```
+
+Standard Preset 中的 Agent row：
+
+**配置摘录：**
+
+```yaml
+- id: tool-bash
+  name: '@deepseek-ai/dsh-tool-bash'
+  disabled: !!js process.platform === 'win32'
+```
+
+[Base Bundle Shell rows ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/bundle/base/cordis.patch.yml#L163-L182){: data-source-evidence=""}
 
 [Standard Preset 的 Host / Agent 注释 ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/apps/cli/config/agent-presets/standard/agent.cordis.yml){: data-source-evidence=""}
 
@@ -505,12 +687,12 @@ Composition 解释一个 Agent 拿到哪些组件。接下来沿一次真实执�
 
 ### 3.1 Session 如何记录执行过程并支持恢复 {#section-3-1}
 
-DSH 把 Session 定义为按顺序追加的 typed SessionEvent log。它记录一段 Agent interaction 中已经发生的事实；模型消息、网页展示和恢复判断都从这份记录重新生成，而不是各自维护另一份历史。
+DSH 把 Session 定义为按顺序追加、带类型的 SessionEvent log。它记录一段 Agent interaction 中已经发生的事实；模型消息、网页展示和恢复判断都从这份记录重新生成，而不是各自维护另一份历史。
 {: .section-lead}
 
 这种组织通常称为 Event Sourcing：系统保存发生过的 Event，再从 Event 计算当前需要的视图。DSH 并不是完全不使用 Messages；它不把 Messages 维护成第二份独立历史，而是在请求模型时通过 `deriveMessages()` 从 Session Log 生成。
 
-Agent 负责当前执行，Session 记录持久事实。Agent 拥有 Inbox、Cancellation 与当前 Status；Session 拥有可重放的 Event Log。进程内 Agent 可以释放和重建，但已经提交的 SessionEvent 不因此消失。Part 2 讨论 Plugin 安装在哪里，这一节讨论运行数据能否跨过进程生命周期，两者不是同一项分类。
+Agent 负责当前执行，Session 记录已经发生的事实。Agent 拥有 Inbox、Cancellation 与当前 Status；Session 拥有可重放的 Event Log。释放 Agent 不等于清空 Session Log，但 Event 能否跨进程恢复，还取决于 Persistence 是否完成落盘。Part 2 讨论 Plugin 安装在哪里，这一节讨论运行数据能否跨过进程生命周期，两者不是同一项分类。
 
 只保存 user/assistant messages 不够。一次工具调用是否执行成功、模型当时拿到了哪些 Tool Schemas、使用哪个 Provider 和 Model、Turn 是否在中途崩溃，都会影响后续恢复与调试。DSH 因此记录 Turn、Step、消息、Tool Call、Tool Result 和 Request Header 等不同事件。
 
@@ -526,15 +708,15 @@ SessionEvent log
 
 `request/header` 保存 Call Config、最终 System Prompt 和已经组装的 Tool Schemas，它是重建 Request Envelope 的依据。`request/context` 另外保存 Provider、Model 与 Context Window，用于记录 Route 与容量变化，但不参与 Header Equality。两者都不生成聊天消息；`assistant/chunk` 保留流式回放，`assistant/message` 才进入模型历史。
 
-| 内容 | 是否持久化 | 恢复时怎样处理 |
+| 内容 | 与 Persistence 的关系 | 恢复时怎样处理 |
 |---|---|---|
-| SessionEvent | 是 | 从 Persistence 加载 |
+| SessionEvent Log | 内存中的唯一事实来源；Persistence 异步复制并按批次落盘 | 从已持久化 Event 重建 Session |
 | 模型 Messages | 不单独保存 | `deriveMessages()` 从 Event 重新生成 |
 | UI Conversation | 不作为第二真源 | 从同一 Log Projection 得到 |
-| live Agent / Inbox / Cancellation | 否 | 需要时重新创建 |
-| Subagent Activation | 否 | 根据 durable child Session 冷恢复 |
+| live Agent / Inbox / Cancellation | 不持久化为当前执行对象 | 需要时重新创建 |
+| Subagent Activation | 不持久化 | 根据 durable child Session 冷恢复 |
 
-Persistence 是独立接口，可以接 JSONL 或 SQLite。Cold Session 从存储加载时，如果日志里有 `turn/start` 却没有对应的 `turn/end`，恢复逻辑会保留已经持久化的中间事件，再追加 synthetic interrupted `turn/end`；它不会截掉整个 Turn。这个修复只适用于 cold load，仍在内存中执行的 live Session 不会被擅自补结束事件。遇到当前版本无法忠实理解的必需 Event 或旧格式时，DSH 选择明确拒绝，而不是静默跳过后继续执行。
+Persistence 是独立接口，可以接 JSONL 或 SQLite。Cold Session 从存储加载时，如果日志尾部仍有未闭合 Turn，恢复逻辑会保留已经持久化的中间事件；必要时先为悬空 Tool Call 写入错误结果、关闭未结束的 Step，最后追加 synthetic interrupted `turn/end`。它不会截掉整个 Turn。这个修复只适用于 cold load，仍在内存中执行的 live Session 不会被擅自补结束事件。遇到当前版本无法忠实解释的格式版本或必需 Event 时，DSH 选择明确拒绝；受支持的 legacy 迁移则由专门逻辑处理，不能把两者统称为“旧格式一律失败”。
 
 持久化还有一个时间边界：`session.append()` 先提交内存中的事实并同步发出 `session/event`，Persistence Plugin 再把 Event 放进按 Session 管理的批次。`session/flush` 会取消等待并排空已有批次；调用方如果要在 `whenIdle()` 后立即读取存储，仍要显式等待 Flush。Turn 结束本身不会自动证明 Backend 已完成 durable write。
 
@@ -550,7 +732,9 @@ Persistence 是独立接口，可以接 JSONL 或 SQLite。Cold Session 从存�
 const events = await persistence.loadCold(sessionId)
 
 if (hasOpenTurn(events)) {
-  // 保留 Turn 中已经持久化的 Event，只补充明确的中断结尾
+  // 保留已持久化 Event；按需补齐悬空 Tool、Step，再关闭 Turn
+  appendMissingToolErrors(events)
+  closeOpenStepIfNeeded(events)
   append({ type: 'turn/end', reason: { kind: 'interrupted' } })
 }
 
@@ -599,7 +783,7 @@ System Prompt Registry 支持全局与 scoped contribution。同名 Prompt Secti
 
 Skills 也遵循类似边界：Host 可以拥有 Skill Registry，Preset 决定向自己的作用范围贡献哪些 Skill roots 和 model-facing Tool。系统“知道哪些 Skills”和这个 Agent“能发现并加载哪些 Skills”不是同一个问题。
 
-Plan Mode 是一个更具体的例子。`plan/mode` 作为 Session Event 保存，当前状态由 Log fold 得到；启用后加入 `plan:policy` Prompt Section。`exit_plan_mode` 始终留在 Tool Catalog 中，所以进入和退出 Plan 只改变 Prompt，不改变工具目录。这样既能恢复协作状态，也避免 Mode switch 本身导致 Tool Schema 前缀变化。
+Plan Mode 是一个更具体的例子。`plan/mode` 作为 Session Event 保存，当前状态由 Log fold 得到；启用后加入 `plan:policy` Prompt Section。`exit_plan_mode` 始终留在 Tool Catalog 中，因此状态切换不会改变 Tool Schemas；变化的是 Plan Policy Section，已提交的切换还可能在对话尾部追加一条 user-role notice。这样既能恢复协作状态，也把“Prompt 变化”和“Tool Catalog 是否变化”分开记录。
 
 | 关注点 | DSH 的处理 |
 |---|---|
@@ -656,7 +840,7 @@ Session Log： A B C D E F G + compaction events + summary message
 
 这张图把 Log、替换范围和最终请求分开：
 
-{% include dsh/diagram.html number="3" title="完整历史如何变成较短的模型输入" src="/assets/wiki/deepseek-harness/diagrams/15-history-to-model-surface.html" description="展开原始事件、摘要替换与最终 Model Surface" note="观察历史保留与模型输入缩短如何同时成立" %}
+{% include dsh/diagram.html number="3" title="完整历史如何变成较短的 Messages" src="/assets/wiki/deepseek-harness/diagrams/15-history-to-model-surface.html" description="展开原始 Event、log-only summary、replacement message 与最终 Messages" note="观察历史保留与模型可见对话缩短如何同时成立" %}
 
 `compaction/start` 与 `compaction/end` 形成 durable bracket。进程崩溃后，如果发现没有匹配结束的 live compaction，系统可以识别它没有完整完成。`compaction/summary` 本身是 Log-only；真正进入 Model Surface 的是带 replace 操作的新 user message。这样“发生了一次摘要”和“模型以后看到这段摘要”是两项分别记录的事实。
 
@@ -687,15 +871,15 @@ append({ type: 'compaction/end', ... })
 
 [docs/subsystems/compaction.md ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/subsystems/compaction.md){: data-source-evidence=""}
 
-[docs/subsystems/session.md：Surface types ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/subsystems/session.md#surface-types){: data-source-evidence=""}
+[docs/subsystems/session.md：SurfaceOp ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/subsystems/session.md){: data-source-evidence=""}
 </details>
 
 ### 3.4 一项 Tool Call 如何真正执行 {#section-3-4}
 
-模型看见 Tool Schema 以后，并不是直接调用对应函数。DSH 先把 Tool Call 写入 Session，再经过解析、限制、审批、Sandbox 与可扩展执行管线，最后把规范化结果写回 Session。
+模型看见 Tool Schema 以后，并不是直接调用对应函数。DSH 先把 Tool Call 写入 Session，再经过可见定义解析、参数校验、扩展 Policy、Approval、Guard 和执行 Waterfall，最后把规范化结果写回 Session。Sandbox 只由需要它的 Tool/Provider 在实际执行点使用。
 {: .section-lead}
 
-一个 `ToolDefinition` 不只有名称和 Input Schema，还可以包含 Output Schema、Execute 函数、调度元数据和 Presentation 元数据。真正发给模型的 Schema 使用显式 allowlist 生成；执行调度、审批状态和内部字段不会因为存在于 ToolDefinition 就自动暴露给模型。
+一个 `ToolDefinition` 由 model-facing `ToolSchema`、必需的 canonical `output` 声明、`execute` 函数，以及可选的调度、Finalizer 和 UI Presentation 字段组成。真正发给模型的 `ToolSchema[]` 通过显式 allowlist 生成；`output`、`execute`、`finalizeContent`、`timeoutMs`、`isConcurrencySafe`、`presentCall` 和 `presentResult` 都不会进入模型请求。
 
 ```text
 assistant Tool Call
@@ -706,20 +890,21 @@ resolve visible executable definition
   ↓
 tools/pre-execute
   ↓
-monotonic guards + approval + sandbox policy
+approval decision + monotonic guards
   ↓
 tools/execute waterfall → tool body
+  └─ Shell / FS 等相关 Tool 在自己的执行点解析并强制 Sandbox Policy
   ↓
 tools/post-execute → normalize / finalize
   ↓
 session tool/result
 ```
 
-这条 Tool Execution Pipeline 是执行权限的共同入口。可见性过滤决定模型能否看见并命名一个 Tool；执行层仍会重新解析当前 Scope，并应用只能收紧、不能在后续阶段放宽的 Guard。Presentation、Visibility 和 Authority 因而是三件相关但不等价的事情。
+这条 Tool Execution Pipeline 是通用 Tool Policy 的共同入口。可见性过滤决定模型能否看见并命名一个 Tool；执行层仍会重新解析当前 Scope，并应用只能收紧、不能在后续阶段放宽的 Guard。Sandbox 不是每个 Tool 都必经的通用阶段：Shell 与 Filesystem 等能力在自己的 Consumer/Provider 边界解析并强制相应 Policy。Presentation、Visibility 和 Authority 因而是三件相关但不等价的事情。
 
-工具的调度元数据还可以决定多个 Call 能否并行，结果 Finalizer 则负责把取消、解析失败、未知 Tool 和执行异常统一转成可记录的结果。无论失败发生在参数解析、Approval 还是 Tool Body，Session 都需要得到与原 `callId` 配对的终态，避免下一次 `deriveMessages()` 生成悬空 Tool Call。
+工具的调度元数据可以决定多个 Call 能否并行。取消、参数解析失败、未知 Tool、Policy 拒绝和执行异常先由 ToolRuntime 的外层归一化转成可记录结果；如果当前 Call 已解析到有效 Definition，它的 `finalizeContent` 再对最终 model-facing content 执行一次同步约束。无论失败发生在哪一层，Session 都需要得到与原 `callId` 配对的终态，避免下一次 `deriveMessages()` 生成悬空 Tool Call。
 
-Code Mode 改变的是模型组织工具调用的方式。Native 模式下，模型通常每得到一个 Tool Result 都要再次推理；Code 模式向模型提供 `run_code` 与生成的 SDK，让一段程序在一次 Runtime 执行中完成搜索、并发读取、分支、筛选和聚合，再把整理后的结果返回模型。
+Code Mode 改变的是模型组织工具调用的方式。Native 模式的一次响应可以包含一批 Tool Calls；这批结果写回以后，若任务仍要继续，就需要新的模型请求来决定下一批动作。Code 模式向模型提供 `run_code` 与生成的 SDK，让一段程序在一次 Runtime 执行中完成多次 subcall、并发读取、分支、筛选和聚合，再把整理后的结果返回模型。
 
 {% include dsh/diagram.html number="4" title="Native Tools 与 Code Mode 的调用差异" src="/assets/wiki/deepseek-harness/diagrams/16-native-vs-code.html" description="比较模型逐次编排与 Runtime 内程序化编排" note="Code Mode 改变调用接口，但不绕过工具权限管线" %}
 
@@ -730,7 +915,7 @@ Code Mode 的 SDK subcall 仍通过同一个 Tool Runtime，受到相同的 Tool
 <details class="source-note" markdown="1">
 <summary>源码依据：Code subcall 为什么仍经过统一工具管线</summary>
 
-**Tools 与 Code Mode 文档结论：**Native 调用和 Code SDK subcall 最终都由 ToolRuntime 解析并执行；Nested subcall 可以访问当前 Agent 可见的底层工具，但仍经过限制、Approval 和 `tools/*` hooks。Worker thread 只提供 containment。
+**Tools 与 Code Mode 文档结论：**Native 调用和 Code SDK subcall 最终都由 ToolRuntime 解析并执行；Nested subcall 可以访问当前 Agent 可见的底层工具，但仍经过限制、Approval 和 `tools/*` hooks。Sandbox enforcement 属于相关 Tool/Provider 的执行点；Worker thread 只提供 containment。
 {: .evidence-summary}
 
 **忠实伪代码（非仓库原文）：**
@@ -738,8 +923,13 @@ Code Mode 的 SDK subcall 仍通过同一个 Tool Runtime，受到相同的 Tool
 ```ts
 async function dispatch(call, { nested }) {
   const tool = resolveExecution(call.name, agentScope, nested)
+  const decision = await preExecuteWaterfall(tool, call)
+  if (decision.kind === 'deny') return deniedResult(decision)
+  if (decision.kind === 'ask') {
+    const grant = await approval.resolve(decision)
+    if (grant !== 'allowed-once') return deniedResult(decision)
+  }
   await runMonotonicGuards(tool, call)
-  await approval.check(tool, call)
   return toolsWaterfall.execute(tool, call)
 }
 
@@ -762,7 +952,7 @@ Goal、Subagent 和 Workflow 都能让工作超出一次普通 Turn，但它们�
 | Subagent | 新的 child Session | 可独立运行、恢复和继续对话的委派工作 |
 | Workflow / Ralph | 更高层 orchestration | 在现有 Agent、Goal、Subagent 与工具上组织重复执行 |
 
-Subagent 不是 AgentLoop builtin。`ctx.subagents` 是 named Provider Registry；spawn-in-process、fork、ACP、Codex、Claude Code 和 DSH SDK 等实现可以共存。Model-facing delegation Tool 选择 Provider，Control Tools 负责 follow-up、interrupt 和列表查询。这样“由谁执行 child”与“主 Agent 如何委派”可以分别扩展。
+Subagent 不是 AgentLoop builtin。`ctx.subagents` 是 named Provider Registry；spawn-in-process、fork、ACP、Codex、Claude Code 和 DSH SDK 等实现可以共存。每个 `dsh-tool-subagent` 实例在配置中绑定一个 Provider 和一个模型可见 Tool 名称；模型选择的是当前可见的 delegation Tool，不是临时传入任意 Provider id。Control Tools 负责 follow-up、interrupt 和列表查询。这样“由谁执行 child”与“主 Agent 如何委派”可以分别扩展。
 
 Provider 还要声明自己支持哪些 Start-time Capability，例如 Persona、Tool Filter、Depth Limit 与 Structured Output。不支持的请求在启动前明确失败，不能接受以后静默忽略。Continuable Child 则由 `prepareContinuable` 的存在表示支持，因为它的 Session 与 Activation 由 Continuation Manager 统一建立，而不是交给每个 Provider 各写一套恢复协议。
 
@@ -923,9 +1113,9 @@ Minimal Model Surface
 
 Minimal 还展示了 Composition 不只是“增加 Plugin”。它在自己的 isolate group 中提供 Local Filesystem，从而只在这个 Preset 内覆盖 Host 的 Filesystem Provider；同组的 Editor 使用这份实现，其他 Preset 继续解析 Host 默认 Provider。
 
-`includeRuntimeContext: false` 只影响模型侧动态上下文，不会关闭 Host 的 Sandbox、Workspace 或 Session 机制。Minimal 仍运行在同一 Host，Tool 执行仍使用统一管线，历史仍写入同一 Session 模型。它缩小的是 Agent-side composition 与 Model Surface，不是绕开基础设施。
+`includeRuntimeContext: false` 只影响模型侧动态上下文，不会删除 Host 的 Workspace、Session 或 Tool Runtime。Minimal 仍运行在同一 Host，Tool Call 仍经过统一管线，历史仍写入同一套 SessionEvent 机制。
 
-这类替换必须谨慎描述。Minimal 没有改变整个进程的 `ctx.fs`，也不是另起一个 Host；它只让属于这个 Preset group 的 consumer 解析到更近的 Service。正文使用“在 Minimal 内替换”即可，具体 `Realm` 和 shadow 规则留给源码依据。
+但“工具更少”不能推出“权限更低”。Minimal 的 Editor 明确解析到 Preset 内的 bare `fs-local`，覆盖 Host 的 sandboxed Filesystem Provider；Persistent Bash 的 Terminal Backend 则继续消费 Host 的 Subprocess 与 Sandbox Policy。Minimal 缩小的是 Agent-side composition 与 Model Surface，不是统一收紧所有执行权限。它也没有改变整个进程的 `ctx.fs`：只有这个 Preset group 的 Consumer 解析到更近的实例。
 
 <details class="source-note" markdown="1">
 <summary>源码依据：Minimal 怎样缩小并替换 Agent Composition</summary>
@@ -958,30 +1148,42 @@ Minimal 还展示了 Composition 不只是“增加 Plugin”。它在自己的 
 
 ### 4.4 Cordis：Agent 可以修改 Composition {#section-4-4}
 
-Cordis Preset 在 Standard 能力上增加 Cordis Toolset、Composition Authoring Skill 和专门 Persona，使 Agent 能读取当前 Composition、编写新的 Plugin，并把临时组件挂载到 live Host。
+Cordis Preset 在 Standard 能力上增加 Cordis Toolset、Composition Authoring Skill 和专门 Persona，使 Agent 能检查当前进程中的 Composition，定义临时 Dynamic Package，并控制它何时运行和停止。
 {: .section-lead}
 
-它把前面的 Composition 从部署者维护的文件变成模型可以操作的对象。Agent 可以检查当前 Cordis tree，生成 JavaScript Plugin，调用 `cordis_mount` 安装，再在不需要时卸载。Authoring Skill 则指导它复制 shipped Preset、编辑用户目录中的 `agent.cordis.yml`，避免直接破坏安装内容。
+当前 Toolset 先用 `cordis_inspect` 读取状态，再用 `cordis_define`、`cordis_run`、`cordis_stop` 和 `cordis_undefine` 管理一份 Dynamic Package：
+
+| Tool | 实际语义 |
+|---|---|
+| `cordis_inspect` | 读取当前进程中的 Service、Plugin Fiber、Tool 与本 Session 的 Dynamic Package |
+| `cordis_define` | 保存 Host/Browser 两半代码并做语法检查，但不执行 |
+| `cordis_run` | 运行已定义 Package：Host half 在受限 VM 中求值，Browser half 发送给打开的页面 |
+| `cordis_stop` | 停止当前运行，等待 Host half 清理并撤回 Browser half；Definition 仍保留 |
+| `cordis_undefine` | 必要时先停止，再删除这份内存 Definition |
 
 ```text
 Cordis Preset
 = Standard capabilities
 + Cordis inspection tools
-+ cordis_mount / unmount
++ cordis_define / run / stop / undefine
 + composition-authoring skill
 + dedicated persona
 ```
 
-这并不表示 DSH 可以安全地让任意低信任输入“自我进化”。`cordis_mount` 会把模型写出的 JavaScript 放进当前 live runtime 执行；代码可以接触 Host 中已有的 Service 和能力。仓库明确要求把它视为接近 Shell access 的权限。
+Dynamic Package 只存在于当前 DSH 进程内存。它可以跨后续 Turn 保持运行，注册的 Tool、Prompt 或 Listener 甚至可能影响同一进程中的其他 Session；但只有定义它的 Session 能查看和控制这份 Package。`cordis_stop`、`cordis_undefine`、Toolset 卸载或 DSH 重启都会结束这段生命周期。它不会自动创建 Plugin 文件，也不会自动写入 `agent.cordis.yml`。
 
-临时 Mount 还必须拥有明确 disposer。若 Agent 新增 Tool、Prompt 或 Listener 后不保存卸载句柄，这些注册会继续影响后续请求；若它改写 shipped Preset，升级又可能覆盖修改。Authoring Flow 因而要求先复制到 User Preset，再编辑文件，并把 live experiment 与长期配置分开管理。
+Runner 为每次运行持有 Fiber。Dynamic Package 的 façade 不暴露任意 `ctx.effect()`；它允许的 `on`、`provide`、`tools.register` 等路径已经接入清理机制，`cordis_stop` 会 dispose 这次运行并等待清理完成。这里不需要让模型自己保存裸 Disposer，长期保存也不能依赖内存中的 Dynamic Package。
+
+这并不表示 DSH 可以安全地让任意低信任输入修改自身。VM 只提供 containment，不是安全边界；Host-realm helper 仍可能让代码触达 Node 与已有 Service。仓库要求把这套 Toolset 按接近 Bash access 的权限处理。
+
+Composition Authoring Skill 处理的是另一条持久路径：复制 shipped Preset 到 User Preset，再编辑用户目录中的文件。Dynamic Package 用于 live experiment，Preset 文件用于后续 Session 仍能使用的 Composition，两者不能混成同一种“挂载”。
 
 Cordis Preset 的价值在于把 Composition 的表达力推到极端：Agent 不只使用一套组合，也可以参与编写组合。但是否允许这种能力，是 Trust Policy，而不是 Composition Framework 自动做出的决定。
 
 <details class="source-note" markdown="1">
 <summary>源码依据：Cordis Preset 能做什么以及信任边界</summary>
 
-**Cordis 配置结论：**Preset 增加 `dsh-tool-cordis` 与本地 Composition Authoring Skill；Persona 明确区分 Host Composition 与 Agent Preset，并要求不要修改 shipped install。Model-written JavaScript 在 live runtime 中执行，应按 Shell 权限对待。
+**Cordis 配置与 Toolset README 结论：**Preset 增加 `dsh-tool-cordis` 与本地 Composition Authoring Skill。当前 Toolset 使用 inspect/define/run/stop/undefine 生命周期；Dynamic Package 只存在于进程内存，由 Runner/Fiber 清理，VM 不是安全边界。
 {: .evidence-summary}
 
 **配置摘录：**
@@ -998,6 +1200,8 @@ Cordis Preset 的价值在于把 Composition 的表达力推到极端：Agent �
 ```
 
 [Cordis Agent Preset ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/apps/cli/config/agent-presets/cordis/agent.cordis.yml){: data-source-evidence=""}
+
+[tool-cordis README：Dynamic Package lifecycle ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/extensions/tool-cordis/README.md){: data-source-evidence=""}
 </details>
 
 ### 4.5 四个 Preset 到底差在哪里 {#section-4-5}
@@ -1015,9 +1219,9 @@ Cordis Preset 的价值在于把 Composition 的表达力推到极端：Agent �
 | Subagent / Workflow | 有 | 有 | 无 | 有 |
 | Tool Presentation | native | code | 简单 native | native |
 | 修改 live Composition | 无 | 无 | 无 | 有 |
-| 信任范围 | 常规 Coding Agent | 增加代码执行面 | 较小能力面 | 很高，接近 Shell |
+| 信任边界 | 取决于 Host Sandbox / Approval | Worker 仅 containment，不是安全边界 | Model Surface 小，但 Persistent Shell 与 bare FS 仍需高信任 | Live Runtime 代码，接近 Shell access |
 
-Standard 与 Code 的主要能力范围相近，但模型接口不同；Minimal 是独立定义的小 Composition，不是 Standard 在运行中的临时状态；Cordis 把 Composition Authoring 暴露给模型。表里的“Tool Presentation”不能与“Preset”合并，否则无法解释 Standard 也可以理论上选择 another presentation，Plan Mode 又为什么能在所有这些 Preset 内单独切换。
+Standard 与 Code 的主要能力范围相近，但模型接口不同；Minimal 是独立定义的小 Composition，不是 Standard 在运行中的临时状态；Cordis 把 Composition Authoring 暴露给模型。Code Preset 通过独立的 `tool-presentation` row 选择 `code`，Plan Mode 又由 Session Event 单独切换，因此 Preset、Tool Presentation 和 Plan Mode 不能合并成一个“模式”概念。
 
 Session 创建时会记录所选 Preset，因为它决定模型能看到的 Prompt 与 Tools。空白 Session 可以 recompose 到另一 Preset；一旦已经产生历史，切换会被拒绝。原因不是实现上不能改 parent binding，而是已有 Tool Calls 与 Prompt 语义属于原来的 Composition，贸然切换会让历史中出现当前 Agent 已无法理解或执行的工具。
 
@@ -1047,277 +1251,243 @@ recompose(nextPreset)
 [Agent Presets README：Composing a child agent ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/preset/agent-presets/README.md#composing-a-child-agent){: data-source-evidence=""}
 </details>
 
-<!-- talk-route: Part 5 | 7 min | full: 5.1→5.2→5.3→5.4→5.5 | short: 5.3→5.4→5.5 -->
+<!-- talk-route: Part 5 | 7 min | full: 5.1→5.2→5.3→5.4→5.5 | short: 5.1→5.2→5.5 -->
 ## Part 5｜Conclusion：这套设计解决了什么，又付出了什么 {#part-comparison}
 
-最后不做 Feature 勾选表。Claude Code、Codex、Kimi 与 DSH 都在处理现代 Harness 的共同问题；真正可比的是它们如何定义 Agent、Session、Tool Surface、Subagent 和恢复语义，以及这些选择带来什么成本。
+前四部分出现的机制，最终都在回答几个具体问题：一条消息为什么可能触发多次模型请求，历史为什么不能只存成 Messages，Shell 为什么能整体换到另一套执行环境，新规则怎样加入又怎样退出，以及什么时候只谈 AgentLoop 已经不够了。
 
-### 5.1 比较不同 Harness 时，真正可比的是什么 {#section-5-1}
+### 5.1 一条用户消息一定只调用一次模型吗 {#section-5-1}
 
-两个产品都提供 Plan、Compaction 或 Subagent，不代表它们采用了相同架构。比较时需要确认这些名称背后的身份、持久化、权限与生命周期，而不是只确认 UI 中是否有同名入口。
+不一定。DSH 中与模型请求一一对应的是 Step，不是用户消息，也不是 Turn；一个 Turn 可以没有 Step，也可以连续执行多个 Step。
 {: .section-lead}
 
-例如，一个 Subagent 可能只是执行一次外部命令并返回文本，也可能拥有 durable child Session、continuation Inbox 和 cold resume。两者在 Feature 表里都可以打勾，但 Follow-up、Interrupt、父子权限和进程重启后的含义完全不同。
+第一批输入被 Agent 接收后，Loop 先写入 `turn/start`，再经过 `agent/pre-step`。如果这批输入被拒绝，或被改写为空，Turn 会直接以零个 Step 结束。只要进入 `step/start`，这一 Step 就包含一次模型请求，以及这次响应触发的全部 Tool Calls。
 
-| 比较问题 | 需要确认的语义 |
-|---|---|
-| 一个 Agent 怎样定义？ | 固定 Application、普通配置，还是运行中组合的能力集合 |
-| Capability 对谁有效？ | User、Project、Session、Agent、Preset 与 Global 如何区分 |
-| 运行中变化怎样传播？ | 立即更新、仅新 Session 生效，还是必须 Restart |
-| Durable State 的来源是什么？ | Messages、Typed Events，或其他模型 |
-| 模型请求怎样构造？ | Prompt、Tools、Skills、Dynamic Context 与 History 怎样进入 |
-| Compaction 修改什么？ | 删除历史，还是改变后续请求的 Projection |
-| Subagent 是什么？ | One-shot Call、Child Loop、Durable Child Session 或外部产品 |
-| 取消与恢复由谁负责？ | Identity、Authority、Ownership 和 Cleanup 怎样定义 |
-| Tool Change 怎样影响 Cache？ | Schema、顺序与高位 Prefix 是否稳定 |
+模型调用 Tool 后，结果会先以 `tool/result` 写入 Session。若这个结果还需要模型继续处理，Loop 不会新开一个 Turn，而是在同一 Turn 中进入下一个 Step。因此最常见的三种情况是：
 
-比较结论还要带版本与证据。公开文档没有说明已有 Session 是否接受 MCP Tool Update，就应保留 Unknown；不能因为产品看起来简单，就替它补一个最简单的内部实现。相同名称也不能推出相同语义：Plan UI 不代表一定使用 durable Event，支持 MCP 不代表 Tool Ordering 一定稳定。
+| 实际发生的事 | Turn 中的 Step 数 |
+|---|---:|
+| 首批输入在进入 Step 前被拒绝或清空 | 0 |
+| 模型直接给出最终回答 | 1 |
+| 模型调用 Tool，读取结果后继续推理 | 2 个或更多 |
 
-同一产品内部也可能同时存在多种答案。Built-in Tools 可以固定，Project MCP 可以动态，Deferred Tool Search 又可能只改变模型侧展开方式；Subagent 既可能调用本产品 child，也可能委派给外部 Agent Product。比较表若只允许一个 Yes/No，会把这些路径压成错误结论。
-
-DSH 的价值不需要建立在“其他 Harness 没有这些 Feature”上。Claude Code 有不同 MCP Config Scope 与动态 Tool Update，Codex 公开讨论 Prompt Cache 与 Tool Ordering，其他现代 Harness 也在解决长上下文与多 Agent。共同问题越真实，比较不同答案才越有意义。
+所以“用户发了一条消息”“系统执行了一轮工作”“模型发起了一次请求”是三个不同的计数单位。AgentLoop 负责把流程向前推进；真正发起模型请求、执行 Tool，以及在固定节点加入规则，分别通过对应的 Service 和 Event 完成。
 
 <details class="source-note" markdown="1">
-<summary>源码依据：比较结果如何保持可核对</summary>
+<summary>源码依据：Architecture 怎样定义 Turn 与 Step</summary>
 
-**比较方法：**每个判断同时记录日期或版本、公开来源、可以确认的语义和仍未知的部分；未知项不由推测补齐。DSH 内部结论继续固定到本页 revision，其他产品优先引用官方公开材料。
+**架构文档结论：**一个 Step 是一次模型请求及其 Tool Calls；一个 Turn 包含零个或多个 Step，从领取输入之前开始，到没有待处理工作时结束。
 {: .evidence-summary}
 
-**忠实伪代码（非仓库原文）：**
-
-```ts
-comparison = {
-  question: '已有 Session 是否接收动态 Tool 变化？',
-  product: 'example harness',
-  versionOrDate: '2026-08',
-  confirmed: ['supports provider tool updates'],
-  unknown: ['propagation timing', 'cache invalidation details'],
-  source: 'official documentation',
-}
-```
-
-[Claude Code MCP docs ↗](https://code.claude.com/docs/en/mcp){: data-source-evidence=""}
-
-[OpenAI：Unrolling the Codex agent loop ↗](https://openai.com/index/unrolling-the-codex-agent-loop/){: data-source-evidence=""}
-</details>
-
-### 5.2 工具变化为什么会影响模型输入和 KV Cache {#section-5-2}
-
-Tool Definition 通常位于模型请求的高位部分。增加工具、删除工具、修改 Schema 或改变排序，都可能改变后续请求前缀；要求 exact prefix match 的缓存因此无法继续复用。
-{: .section-lead}
-
-假设上一轮模型看到 Tool A、B、C，下一轮 MCP Provider 增加 Tool D。即使 Conversation History 完全相同，请求前部已经变化。若工具集合相同、序列化顺序却从 A/B/C 变成 B/A/C，字节前缀同样不同。
+**流程图摘录：**
 
 ```text
-Request N：   system + [Tool A, Tool B, Tool C]         + history
-Request N+1： system + [Tool A, Tool B, Tool C, Tool D] + history
-                              ↑ prefix changed
+turn/start
+  claim next-step input plus one queued message
+  assemble prompt sections + tool schemas
+  -> agent/pre-step                   reject | enter(messages)
+     reject, or a first enter rewritten empty -> close the turn with no step
+     step/start
+     append entered messages as user/message
+     derive model history from the log
+     agent/request -> llm/stream -> assistant/chunk* -> assistant/message
+     tool/call* -> tools/pre-execute -> tools/execute -> tools/post-execute -> tool/result*
+     step/end
+     tools owe another request, or next-step input arrived -> claim -> next step
+  -> agent/turn-stopping
+turn/end
 ```
 
-不同 Harness 可以选择固定完整目录、动态目录、按需发现完整 Schema，或者用 Code/Programmatic Interface 表达一批 Tool。没有一种方案在所有任务上都最好：
+[docs/architecture.md：Turn flow ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/architecture.md#turn-flow){: data-source-evidence=""}
+</details>
 
-| 策略 | 优点 | 代价 |
-|---|---|---|
-| 固定完整 Tool Catalog | Prefix 更稳定 | 首轮 Schema Token 较大 |
-| 动态 Tool Catalog | 当前能力集合直接准确 | Tool Change 造成 Cache Miss |
-| Deferred Discovery | 完整 Schema 按需出现 | 增加发现步骤与状态语义 |
-| Code Presentation | Runtime 内批量调用与聚合 | SDK Token、Worker 与安全成本 |
+### 5.2 为什么 Session 不直接保存一份 Messages 数组 {#section-5-2}
 
-DSH 的几个具体选择是：Tool Registry 按 Agent Scope 解析；Tool Presentation 可以 per-agent 选择；Plan Mode 保持 Tool Catalog 不变；`request/header` 记录最终 System Prompt 与 Schemas；model-facing package 要声明 Token 与 KV Cache Effect。这些措施让变化可追踪，但不会保证所有请求命中缓存。
+因为 Messages 只表示模型在某次请求中看到的对话内容，无法完整表示 Turn、Step、原始流式输出、Tool Call、请求配置和 Compaction 等已经发生的事实。
+{: .section-lead}
 
-Tool Schema 的位置也很重要。若高位 System 与 Tools 保持稳定，变化只追加在 Conversation 尾部，已有 Prefix 更容易复用；若每轮把时间、工作区状态或动态 Tool Description 写回高位 Prompt，哪怕正文对话没变也会不断失效。DSH 将动态 Prompt Context 单独物化，正是在结构上区分稳定说明与运行中事实。
+DSH 把一串只追加的、带类型的 `SessionEvent` 作为会话历史。`Session.deriveMessages()` 再从其中生成模型需要的 `Message[]`。这不是把同一份数据换个名字：许多 Event 只记录执行过程，并不会变成模型消息；`assistant/chunk` 用于回放和用量记录，进入模型历史的是组装完成后的 `assistant/message`。
 
-真实评估不能只看一轮 Input Token。还要同时记录首轮与后续轮、Cache Read/Write、TTFT、额外 Tool Discovery Step、模型调用次数、Runtime 执行成本和任务成功率。权限或工作区真实变化时，正确 Model Surface 仍然优先，不能为了缓存保留已经失效的 Tool Schema。
+这项区分也解释了 Compaction。压缩发生后，旧 Event 仍留在 Log 中；新的 `user/message` 通过 `surfaceOp.replace` 替换模型以后看到的一段内容。于是系统可以同时回答两个问题：
+
+- 当时实际发生了什么：读取完整 Session Log。
+- 下一次模型应该看到什么：读取当前 Model Surface，再生成 Messages。
+
+`request/header` 还会记录最终 System Prompt、调用配置与 Tool Schemas。恢复时重新派生，而不是信任另一份可能已经与日志不一致的 Messages 数组。这里最重要的边界仍然是：Model-visible means logged。
 
 <details class="source-note" markdown="1">
-<summary>源码依据：为什么 Tool Ordering 也会造成 Cache Miss</summary>
+<summary>源码依据：Session Log 怎样派生 Messages 与 Compaction Surface</summary>
 
-**公开资料结论：**Codex 团队将 Prompt Caching 描述为 exact prefix match，并记录过 MCP Tool Ordering 不稳定导致 Cache Miss；Claude Code 也把 MCP Tool Definition 与 Prompt Cache 放在同一设计问题中。
+**Session 与 Compaction 文档结论：**SessionEvent Log 是交互历史的唯一事实来源；`deriveMessages()` 只投影会进入模型历史的 Event。Compaction 追加新的替换节点并遮蔽旧 Surface 节点，不删除原始 Event。
 {: .evidence-summary}
 
 **关系整理（非仓库原文）：**
 
 ```text
-same set, different serialization:
+SessionEvent log
+  ├─ deriveMessages()      → Message[] for the model
+  ├─ transcript projection → human-readable transcript
+  └─ persistence           → durable replay
 
-[Tool A, Tool B, Tool C]
-[Tool B, Tool A, Tool C]
-
-engineering requirement:
-stable ordering + stable serialization + explicit surface changes
+compaction
+  ├─ append compaction/start | summary | end
+  ├─ append user/message with surfaceOp.replace
+  └─ keep the replaced events in the original log
 ```
 
-[Claude Code prompt caching docs ↗](https://code.claude.com/docs/en/prompt-caching){: data-source-evidence=""}
+[docs/subsystems/session.md ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/subsystems/session.md){: data-source-evidence=""}
 
-[Codex Agent Loop：Prompt caching ↗](https://openai.com/index/unrolling-the-codex-agent-loop/){: data-source-evidence=""}
+[docs/subsystems/compaction.md ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/subsystems/compaction.md){: data-source-evidence=""}
 </details>
 
-### 5.3 DSH 比较特别的地方是什么 {#section-5-3}
+### 5.3 Bash 从本机换到远端，需要改多少代码 {#section-5-3}
 
-DSH 的特点不在某个独有 Feature，而在于多个 Feature 尽量复用同一套 Plugin 生命周期、Session 记录、Model Surface 生成和 Capability 接口，不必各自在 AgentLoop 中建立一套规则。
+`tool-bash` 不需要改成一份远程版本。它依赖的是 `ctx.shell` 的接口；Shell Executor 再通过 `ctx.subprocess` 启动进程。具体采用本地还是远端实现，由 Composition 选择 Provider。
 {: .section-lead}
 
-第一，主要能力使用统一 Composition vocabulary。Tool、Prompt、Session、LLM、Compaction、Subagent 和 AgentLoop 都通过 Service、Event 与 Effect 接入。它们的业务语义不同，但依赖如何等待、注册如何撤销、作用范围如何选择，可以使用同一种机制表达。
+这就是依赖倒置真正带来的结果：Consumer 依赖 Service Definition，Provider 实现 Definition，只有负责组装系统的配置需要知道当前选中了哪个 Provider。Tool 的 Schema、输出呈现和工作目录语义仍由 `tool-bash` 负责，不会因为进程换了位置就复制一套。
 
-第二，可替换能力遵守明确的依赖方向。Consumer 依赖 Service Definition，Composition 选择 Provider；Filesystem、Subprocess、Persistence、Compaction 与 Subagent 都可以用 Definition / Provider / Consumer 检查完整性。依赖注入让运行时找到实现，依赖倒置让 Consumer 不被某个实现锁死。
+不过只替换 Subprocess Provider 仍然不够。Bash 读取的文件、File Tool 读取的文件、LSP 打开的文件必须属于同一个 Workspace。因此移动到 E2B 时，`ctx.fs` 与 `ctx.subprocess` 的 Provider 要一起替换；Bash、PTY、LSP 与文件工具会沿各自接口进入同一个远端 Execution World。
 
-第三，Session Event Log 是 durable interaction history。恢复、Fork、UI、Telemetry 和模型 Messages 都从这份记录派生。已经发生的事实与 live Agent Object 分开以后，进程内对象可以释放，历史仍保持一致。
-
-第四，Execution History 与 Model Surface 分离。Compaction 可以保留原始事件，只替换模型以后看到的 Projection；Plan 可以记录状态并改变 Prompt；Skills、Tools 和 Code SDK 都作为当前请求的一部分单独组装。
-
-第五，模型侧影响进入 Package Contract。What the model sees、Token Effect 和 KV Cache Effect 不再只是 Prompt 作者的隐性知识，而需要在 model-facing package 中被说明和校验。
-
-| 需要评审的内容 | DSH 中对应的检查 |
-|---|---|
-| Plugin 加入和退出 | 依赖、Registration、Disposer、Scope |
-| 事实是否需要恢复 | 是否成为 SessionEvent |
-| 模型实际看到什么 | Request Header、Prompt Assembly、Projection |
-| 能力怎样替换 | Definition、Provider、Consumer 是否完整 |
-| 长期任务由谁拥有 | Session、Activation、Parent Authority、Cleanup |
-
-这些统一规则不能自动保证实现正确。它们的价值是让问题有稳定归属：新行为应该写到哪里，哪些测试必须覆盖，失败或卸载时由谁清理。框架名字本身仍不能替代并发、崩溃和权限测试。
-
-反过来看，DSH 的 distinct 之处也不是“Cordis 比所有框架都强”。Dependency Injection、Event Log、Middleware 和 Scoped Registry 都有其他实现方式。这里值得研究的是它把这些机制用于同一组 Harness 边界，并要求 Tool、Prompt、Session 与 Subagent 在一套所有权规则下协作。
+这个例子证明的是 DSH 的抽象允许 Execution World 与 Host Runtime 解耦，不是已经完成了分布式 Agent Runtime。当前 E2B 仍是 ephemeral POC，没有 durable remote handle、完整 reconnect 或 workspace synchronization。
 
 <details class="source-note" markdown="1">
-<summary>源码依据：Architecture 怎样为不同变化指定归属</summary>
+<summary>源码依据：Provider Swap 怎样移动 Execution World</summary>
 
-**Architecture 文档结论：**需要持久化的事实进入 Session Event；Live Coordination 使用 Agent Event；Policy 与 Adapter 进入 Capability Event 或 Service；可替换实现要形成 Definition、Provider、Consumer；单 Agent 注册使用 Agent scope。
+**Architecture 与 Portable Execution World 设计记录结论：**Filesystem 和 Subprocess Provider 共同定义执行世界；上层 Consumer 只依赖稳定 Service。远端组合替换这两个 Provider 后，Shell、PTY 与 LSP 不需要各自增加 E2B 分支。
 {: .evidence-summary}
 
 **关系整理（非仓库原文）：**
 
 ```text
-durable fact            → SessionEvent
-live request/turn rule  → agent/* event
-tool policy             → tools/* pipeline
-swappable implementation→ capability seam
-one-agent contribution  → scoped registration
-cross-session facility  → Host service
+tool-bash ─────────────→ ctx.shell ─────→ ctx.subprocess
+terminal / LSP ─────────────────────────→ ctx.subprocess
+file tools ─────────────────────────────→ ctx.fs
+
+local composition:  subprocess-local + fs-local
+remote composition: subprocess-e2b   + fs-e2b
 ```
 
-[DeepSeek Harness Architecture ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/architecture.md){: data-source-evidence=""}
+[docs/architecture.md：Capability seams ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/architecture.md#capability-seams){: data-source-evidence=""}
 
-[Capability seams ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/architecture.md#capability-seams){: data-source-evidence=""}
+[Portable Execution World 设计记录 ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/.agents/notes/implemented/architecture/2026-07-28-portable-execution-world-consumers.md){: data-source-evidence=""}
 </details>
 
-### 5.4 这套设计的代价和当前边界 {#section-5-4}
+### 5.4 不改 AgentLoop，新的规则怎样加入和退出 {#section-5-4}
 
-DSH 没有消除复杂度，而是把它从一个中心控制器分解到作用范围、Service 归属、Event Schema、Projection、Generation、Authority 和 Cleanup 中。这有利于替换和局部测试，也提高了理解与实现成本。
+DSH 不把权限、重试、Tool 和 Prompt 的规则全部写进 AgentLoop：Plugin 把它们注册到已有 Service 或 Event，卸载时再撤销自己创建的 Registration。
 {: .section-lead}
 
-| 获得的能力 | 同时承担的成本 |
+不同需求进入不同位置，而不是都塞进 Loop：
+
+| 需求 | 接入位置 |
 |---|---|
-| Host 与 Agent-side Composition 分开 | 要判断 Service 的真实消费者与所有者 |
-| Scoped Registration | 要理解 Parent Chain、Shadow 与 Registration Leakage |
-| Reversible Plugin Lifecycle | 每项副作用都必须有可靠 Disposer |
-| Event-sourced Session | 要维护 Event Schema、兼容性与 Crash Semantics |
-| Model Surface Projection | 要证明 Replace、Tool Pairing 与 Header Reconstruction 正确 |
-| Preset Generation | 新旧 Generation 可能同时常驻，需要回收策略 |
-| Continuable Subagent | 要维护 Parent Authority、Activation 与 child-first disposal |
+| 新增模型可见 Tool | `ctx.tools.register()` |
+| Tool 执行前的审批或 Policy | `tools/pre-execute` |
+| 模型请求失败后的恢复 | `agent/request-error` |
+| 修改请求或包装模型调用 | `agent/request` / `llm/stream` |
+| 增加 System Prompt 内容 | `ctx.systemPrompt.section()` |
 
-Preset Generation 是一个具体例子。文件变化后，新 Session 使用新 generation，已有 Session 保持原定义，这保证历史语义稳定；但 superseded generation 当前不会主动回收，重复编辑会增加 live watcher 和 Plugin subtree。要安全回收，需要知道最后一个 joined Agent 何时离开。
+实现上，这些 Registration 会被当前 Fiber 记录为 Effect；Plugin 卸载时，对应的 Disposer 负责撤销注册或关闭资源。
 
-Agent 生命周期还有类似问题。当前设计记录指出 Host 某些路径会长期保留访问过的 live Agent；对象本身可以在 dispose 后回收，但缺少 idle eviction 时，进程内成本随曾经运行的 Session 增长。Durable Session 能恢复，不代表 live Agent 应永久常驻。
+一次 Tool Call 结束、一个 Step 或 Turn 结束、Agent 进入 idle，都不会让 Plugin 自动卸载。卸载发生在这次挂载被显式 dispose、父 Plugin Tree 关闭、Loader 热替换，或者它依赖的必需 Service 消失时。卸载只撤销这次挂载拥有的 Registration 和资源；已经写入 Session 的历史不会被删掉。
 
-远程执行的限制也必须留在正文。当前 E2B 是 ephemeral POC，没有完整 reconnect、workspace sync 和 durable remote handles；AgentLoop 与 LLM 并没有整体运行在远端。Code worker thread 提供资源限制，却不是 hard multi-tenant boundary。Cloud deployment 仍需要 Container、Credential、Filesystem 与 Network Isolation。
+这也回答两个容易混在一起的问题。
 
-最后，Event Sourcing 和 Projection 也有长期维护成本。新增 model-visible state 必须能从 Log 重建；Persistence Backend 要同步写入新的 durable field；遇到无法解释的 required Event 应 fail loud。任何一处遗漏都会让“类型上存在”与“重启后仍存在”产生差异。
+第一，正常 Session 对话中 Tool 通常不会因为“这一轮用完了”而卸载。如果 Preset 文件在运行中被修改，已有 Session 继续留在原来的 standing generation，新 Session 才加入新 generation。DSH 这样做，是为了避免已经产生的 Tool Calls 突然面对另一套 Tool 定义。
 
-所以这套设计是否值得，取决于产品是否真的需要多 Session、不同 Agent Composition、恢复、长期 Subagent、动态工具和远程执行。若只有单会话与固定 Tool，一个清楚的小 Loop 仍可能是更合适的实现。
+第二，如果某种动态机制真的让一个新 Tool 进入当前 Agent 的有效 Tool Catalog，下一次请求中的 Tool Schemas 就会变化。依赖 exact-prefix 的 KV Cache 无法把变化前的整个请求前缀视为相同；这不等于 DSH 或 Provider 承诺某次请求必然命中或必然不命中缓存，只能确定请求前缀已经改变。Plan Mode 特意让 `exit_plan_mode` 在两种状态下都保持注册，就是为了切换 Mode 时不改变 Tool Catalog；Plan Policy Prompt 会变化，提交切换时还可能追加一条 user-role notice。
 
 <details class="source-note" markdown="1">
-<summary>源码依据：Preset Generation 与远程执行有哪些已知限制</summary>
+<summary>源码依据：Plugin 何时清理 Registration，DSH 怎样控制 Tool Catalog 变化</summary>
 
-**当前 README 与设计记录结论：**运行中 Session 继续绑定原 Generation，Superseded Generation 尚不回收；Agent idle eviction 仍是 TODO。E2B 明确保留 ephemeral、reconnect 与 synchronization 限制；Code worker thread 不是多租户安全边界。
+**Lifecycle、Preset 与 Plan 文档结论：**Plugin 卸载会撤销其注册并递归清理子 Plugin；普通调用边界不会触发卸载。Preset Generation 对已运行 Agent 保持稳定，而 Plan Mode 通过常驻退出 Tool 避免 Mode 切换改变 Tool Catalog。
 {: .evidence-summary}
 
-**忠实伪代码（非仓库原文）：**
-
-```ts
-onPresetFileChanged(nextGeneration) {
-  generationForNewSessions = nextGeneration
-  // existing sessions remain on their current generation
-}
-
-knownLimits = {
-  generationReclamation: false,
-  idleAgentEviction: false,
-  e2bReconnect: false,
-  e2bWorkspaceSync: false,
-  workerThreadIsSecurityBoundary: false,
-}
-```
-
-[Agent Presets README：Known limitations ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/preset/agent-presets/README.md#known-limitations-and-deferred-work){: data-source-evidence=""}
-
-[Portable Execution World：Consequences ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/.agents/notes/implemented/architecture/2026-07-28-portable-execution-world-consumers.md#consequences){: data-source-evidence=""}
-</details>
-
-### 5.5 从 AgentLoop 到 Agent Runtime {#section-5-5}
-
-现在可以回到标题中的 Runtime：它不是 Composition 的同义词，也不是 AgentLoop 的新名字。AgentLoop 是整体 Composition 中的一个 Plugin；Composition 说明组件怎样组织；Runtime 是这些组件生效后，连同具体 Session、Agent 和执行资源一起运行的整个系统。
-{: .section-lead}
-
-三者可以这样区分：
-
-| 名称 | 它回答的问题 |
-|---|---|
-| AgentLoop | 一次 Turn 按什么顺序执行，何时继续或停止 |
-| Composition | 安装哪些 Plugin，它们如何依赖、注册和退出 |
-| Agent Runtime | 这些组件运行以后，系统怎样管理身份、历史、模型请求、工具、长期任务和资源 |
+**关系整理（非仓库原文）：**
 
 ```text
-Agent Runtime
-├── 已经生效的 Composition
-│   ├── Host Composition
-│   │   └── AgentLoop 也是其中一个 Plugin
-│   └── Agent-side Composition / Preset Contributions
-├── Durable Session State
-├── Live Agent / Inbox / Cancellation
-├── Model Request Assembly
-├── Tool Execution and Authority
-├── Subagent Session / Activation Ownership
-└── Filesystem / Process Execution World
+Tool Call / Step / Turn ends
+  → plugin remains ACTIVE
+
+plugin unloads
+  → run effect disposers
+  → remove owned Tool / Prompt / Listener registrations
+
+preset file changes
+  → later sessions may join a new generation
+  → existing sessions keep their current generation
+
+effective Tool Schema changes
+  → request prefix changes
 ```
 
-所以 Runtime 不是 Composition。没有 Composition，DSH 不知道组件怎样进入系统；只有 Composition 文件，也还没有正在运行的 Agent、已经追加的 SessionEvent、执行中的 Tool Call 或需要清理的 Activation。更准确的关系是：DSH 用 Composition 组织 Runtime 的组件，Runtime 再承担这些组件运行时产生的身份、状态和资源。
+[Plugin lifecycle：Automatic cleanup ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/user/develop/framework/index.md#automatic-cleanup){: data-source-evidence=""}
 
-同样，AgentLoop 虽然位于整体 Composition 内，也不能因此说 Runtime 等于 AgentLoop 加几个 Plugin。Runtime 还包括不在 Plugin 配置中静态列出的具体实体：某个 Session 的 Event Log、当前 Inbox 中的消息、一次正在等待 Approval 的 Tool Call、一个可被 cold resume 的 Child Session，以及 Provider 此刻持有的文件与进程资源。
+[Agent Presets README：Model Experience ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/preset/agent-presets/README.md#model-experience){: data-source-evidence=""}
 
-这场分享最终留下五个边界：
+[docs/subsystems/plan.md：The exit tool ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/subsystems/plan.md#the-exit-tool-and-the-plan-command){: data-source-evidence=""}
+</details>
 
-1. 能力不仅要问“有没有”，还要问对谁有效、何时加载和撤销。
-2. Durable Facts 不等于 Live Execution；Session 可以保留，Agent Object 可以重建。
-3. Execution History 不等于 Model Surface；Compaction 因此可以保留历史而缩短请求。
-4. Capability 不等于 Model Presentation；Code Mode 因此可以改变接口而复用底层 Tools。
-5. Runtime 必须明确 Ownership；Session、Subagent、Process、Sandbox、Effect 和 Context 都要知道谁负责取消、恢复与释放。
+### 5.5 什么时候只谈 AgentLoop 已经不够了 {#section-5-5}
+
+当系统除了推进一次 Turn，还要同时管理多种 Agent 定义、可恢复历史、模型输入、长期子任务和执行资源时，AgentLoop 仍然重要，但它只描述了 Runtime 的一部分。
+{: .section-lead}
+
+三者的边界可以直接写成：
+
+| 名称 | 负责回答什么 |
+|---|---|
+| AgentLoop | 一个 Turn 怎样进入 Step、请求模型、把 Tool Calls 交给 Tool Runtime，并在没有待处理工作时结束 |
+| Composition | 哪些 Plugin 被挂载，哪些运行时 Service 实例与 Registry 条目因此生效，以及它们跟随什么生命周期 |
+| Agent Runtime | Composition 生效以后，具体 Agent、Session、Inbox、模型请求、Tool Call、Subagent 与执行资源怎样共同运行 |
+
+因此 Runtime 不是 Composition。Composition 负责组织组件；Runtime 还包含这些组件运行后产生的身份、持久状态和活动资源。AgentLoop 也确实属于 Composition，但不能因此把整个 Runtime 缩成 AgentLoop：某个 Session 的 Event Log、Inbox 里尚未处理的输入、等待审批的 Tool Call、Subagent 的 Child Session 与 Activation，都不只是 Loop 内的一段控制流。
+
+Standard、Code、Minimal 和 Cordis 也不是四个 AgentLoop。它们复用同一套 Host 能力和执行机制，但选择不同的 Plugin、Prompt、Tool Presentation 与信任范围。四个 Preset 说明了 Composition 可以改变 Agent 的能力和模型接口，而不用复制四套主循环。
+
+这套设计没有让复杂度消失。它要求实现者继续处理 Scope、生命周期、Event Schema、Projection、Generation 和资源所有权；当前 superseded Preset Generation 还不会主动回收，E2B 尚无完整恢复语义，Code Runtime 的 worker thread 也不是 hard multi-tenant boundary。对于固定工具、单会话、无需恢复的程序，一个清楚的小 Loop 仍可能更合适。
+
+整场分享可以收在五个边界上：
+
+1. 一项能力不仅要问“有没有”，还要问谁能看到、什么时候撤销。
+2. Durable facts ≠ Live execution：Session 可以保留，正在运行的 Agent 可以结束后重建。
+3. Execution history ≠ Model Surface：Compaction 可以保留历史，同时改变下次请求看到的内容。
+4. Capability ≠ Model Presentation：Code Preset 可以改变模型使用 Tool 的接口，同时复用底层执行管线。
+5. Runtime 必须明确 Ownership：Session、Subagent、Process、Sandbox 和 Plugin Effect 都要知道谁负责取消、恢复与释放。
 
 > **A Harness starts as a Loop. At what point does it become a Runtime?**
 {: .final-question}
 
-答案不是代码达到多少行。当系统不得不同时管理多个身份、可恢复历史、不同 Agent 的能力、模型输入、长期执行与资源所有权时，仅用 Loop 已经无法准确描述它。DSH 的尝试，是让这些问题分别进入 Composition、Session、Projection 和 Capability，而不是继续扩张 AgentLoop。
+不是代码达到某个行数的时候，而是它开始同时承担能力组合、持久历史、模型输入、长期执行和资源所有权的时候。DSH 的核心选择，是让这些问题分别进入 Composition、Session、Model Surface 与 Capability Seam，而不是继续把所有规则写进 AgentLoop。
 
 <details class="source-note" markdown="1">
-<summary>源码依据：继续阅读 DSH 的建议顺序</summary>
+<summary>源码依据：AgentLoop、Composition 与 Runtime 的边界来自哪里</summary>
 
-**阅读依据：**Architecture 先给出 Plugin Tree、Turn Flow、Session Log 与 Capability Seam 的总关系；随后按 Session、Model Surface、Compaction、Tools、Subagent 与 Preset 进入具体实现，比从 Cordis 类型或 Package 目录开始更容易保持层次。
+**Architecture 与 Preset 文档结论：**Architecture 把 Turn Flow、Session Log、Capability Seam 和新行为的扩展位置分别定义；Preset 再决定某个 Agent 实际加入哪一份 model-facing Composition。Runtime 是这些机制与具体运行状态的总和，不是源码中的单独 Class。
 {: .evidence-summary}
 
 **关系整理（非仓库原文）：**
 
 ```text
-docs/architecture.md
-  → docs/subsystems/session.md
-  → docs/subsystems/system-prompt.md
-  → docs/subsystems/compaction.md
-  → docs/tool-execution-pipeline.md
-  → docs/subsystems/subagent.md
-  → packages/preset/agent-presets/README.md
-  → apps/cli/config/agent-presets/*/agent.cordis.yml
+AgentLoop
+  └─ drives Turn / Step
+
+Composition
+  ├─ mounted Plugin graph
+  ├─ registered Service instances
+  └─ scoped Registrations + lifecycle
+
+Agent Runtime
+  ├─ effective Composition
+  ├─ Agent / Inbox / cancellation
+  ├─ durable SessionEvent log
+  ├─ model request assembly
+  ├─ Tool and Subagent execution
+  └─ filesystem / process resources
 ```
 
-[DeepSeek Harness Architecture ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/architecture.md){: data-source-evidence=""}
+[docs/architecture.md ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/architecture.md){: data-source-evidence=""}
 
-[Subsystem documentation ↗](https://github.com/deepseek-ai/deepseek-harness/tree/47f943859bef60e4160492346772ded9b24f765a/docs/subsystems){: data-source-evidence=""}
+[Agent Presets README ↗](https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/packages/preset/agent-presets/README.md){: data-source-evidence=""}
 </details>

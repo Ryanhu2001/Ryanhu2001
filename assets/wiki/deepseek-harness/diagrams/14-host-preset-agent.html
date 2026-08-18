@@ -4919,22 +4919,22 @@
         <text x="940" y="115" class="t-cloud" font-size="9" font-weight="600">两个独立 Session</text>
 
         <!-- Connection paths (before components for correct z-order) -->
-        <path data-edge-from="host" data-edge-to="preset" data-edge-label="提供共享 Service 与 Registry" data-edge-key="0" data-edge-id="hostToPreset" data-composition-points="330,321;500,321" d="M 330 321 L 500 321" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="host" data-edge-to="preset" data-edge-label="提供运行时 Service 实例与 Registry" data-edge-key="0" data-edge-id="hostToPreset" data-composition-points="330,321;500,321" d="M 330 321 L 500 321" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="preset" data-edge-to="agentA" data-edge-label="绑定作用范围" data-edge-key="1" data-edge-id="presetToAgentA" data-composition-points="780,314;870,314;870,162;960,162" d="M 780 314 L 862 314 Q 870 314 870 306 L 870 170 Q 870 162 878 162 L 960 162" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
         <path data-edge-from="preset" data-edge-to="agentB" data-edge-label="绑定作用范围" data-edge-key="2" data-edge-id="presetToAgentB" data-composition-points="780,328;870,328;870,472;960,472" d="M 780 328 L 862 328 Q 870 328 870 336 L 870 464 Q 870 472 878 472 L 960 472" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
         <path data-edge-from="agentA" data-edge-to="sessionA" data-edge-label="只读写 A 的记录" data-edge-key="3" data-edge-id="agentAToSessionA" data-composition-points="1190,162;1290,162" d="M 1190 162 L 1290 162" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="agentB" data-edge-to="sessionB" data-edge-label="只读写 B 的记录" data-edge-key="4" data-edge-id="agentBToSessionB" data-composition-points="1190,472;1290,472" d="M 1190 472 L 1290 472" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
 
         <!-- Components -->
-        <g id="node-host" data-node-id="host" data-node-label="Host Composition" tabindex="0" role="button" aria-label="Focus Host Composition, AgentLoop · Session · Registries · Sandbox, 共享的 Host 能力" aria-pressed="false" data-node-kind="backend" data-node-sublabel="AgentLoop · Session · Registries · Sandbox" data-node-context="共享的 Host 能力">
-          <title>Host Composition · AgentLoop · Session · Registries · Sandbox · 共享的 Host 能力</title>
+        <g id="node-host" data-node-id="host" data-node-label="Host Composition" tabindex="0" role="button" aria-label="Focus Host Composition, AgentLoop · Session Store · Registries · Sandbox, 共享的 Host 能力" aria-pressed="false" data-node-kind="backend" data-node-sublabel="AgentLoop · Session Store · Registries · Sandbox" data-node-context="共享的 Host 能力">
+          <title>Host Composition · AgentLoop · Session Store · Registries · Sandbox · 共享的 Host 能力</title>
           <rect x="80" y="280" width="250" height="82" rx="6" class="c-mask"/>
           <rect x="80" y="280" width="250" height="82" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(86 286) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-detail-anchor x="205" y="319" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Host Composition</text>
-        <text data-detail="context" x="205" y="335" class="t-muted" font-size="9" text-anchor="middle">AgentLoop · Session · Registries · Sandbox</text>
+        <text data-detail="context" x="205" y="335" class="t-muted" font-size="8.4" text-anchor="middle">AgentLoop · Session Store · Registries · Sandbox</text>
         </g>
 
         <g id="node-preset" data-node-id="preset" data-node-label="Standard Preset" tabindex="0" role="button" aria-label="Focus Standard Preset, 同一代 composition 在进程内挂载一次, Preset standing composition" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="同一代 composition 在进程内挂载一次" data-node-context="Preset standing composition">
@@ -5001,9 +5001,9 @@
         </g>
 
         <!-- Connection labels -->
-        <g data-detail="context" data-edge-from="host" data-edge-to="preset" data-edge-label="提供共享 Service 与 Registry" data-edge-key="0" data-edge-id="hostToPreset">
-          <rect x="342.8" y="301" width="144.4" height="14" rx="3" class="c-mask"/>
-          <text x="415" y="311" class="t-muted" font-size="8" text-anchor="middle">提供共享 Service 与 Registry</text>
+        <g data-detail="context" data-edge-from="host" data-edge-to="preset" data-edge-label="提供运行时 Service 实例与 Registry" data-edge-key="0" data-edge-id="hostToPreset">
+          <rect x="328.4" y="301" width="173.2" height="14" rx="3" class="c-mask"/>
+          <text x="415" y="311" class="t-muted" font-size="8" text-anchor="middle">提供运行时 Service 实例与 Registry</text>
         </g>
         <g data-detail="context" data-edge-from="preset" data-edge-to="agentA" data-edge-label="绑定作用范围" data-edge-key="1" data-edge-id="presetToAgentA">
           <rect x="836.2" y="218" width="67.6" height="14" rx="3" class="c-mask"/>

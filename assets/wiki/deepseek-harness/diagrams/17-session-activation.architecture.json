@@ -12,7 +12,7 @@
     { "id": "running", "type": "backend", "label": "正在运行", "sublabel": "Activation：Agent + 消息队列", "tag": "至多一个", "pos": [340, 255], "size": [220, 78] },
     { "id": "waiting", "type": "messagebus", "label": "等待新消息", "sublabel": "Activation 仍在内存", "tag": "可以唤醒", "pos": [650, 255], "size": [220, 78] },
     { "id": "cold", "type": "external", "label": "当前没有运行实例", "sublabel": "Session 可以恢复", "tag": "未驻留", "pos": [960, 255], "size": [210, 78] },
-    { "id": "retained", "type": "database", "label": "身份与历史仍保留", "sublabel": "进程退出后仍在", "tag": "可持久化", "pos": [1260, 255], "size": [230, 78] }
+    { "id": "retained", "type": "database", "label": "已持久化的身份与历史", "sublabel": "完成落盘后可跨进程恢复", "tag": "Persistence", "pos": [1260, 255], "size": [230, 78] }
   ],
   "connections": [
     { "id": "spawnActivation", "from": "childSession", "to": "running", "label": "创建运行实例", "variant": "emphasis" },
@@ -28,7 +28,7 @@
       "title": "会话可以跨进程保留",
       "items": [
         "Child Session 有稳定身份与独立历史",
-        "当前没有运行实例时仍然可以恢复"
+        "已持久化后，当前没有运行实例时仍然可以恢复"
       ]
     },
     {

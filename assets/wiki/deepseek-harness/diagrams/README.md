@@ -16,9 +16,9 @@
 
 | 顺序 | 主题 | 类型 | 交互图 | Spec |
 | --- | --- | --- | --- | --- |
-| 01 | 一个 Session 从 Composition 到 Turn 结束 | Sequence | [HTML](13-session-composition-turn.html) | [JSON](13-session-composition-turn.sequence.json) |
+| 01 | 一个 Session 从关联 Preset 到 Turn 结束 | Sequence | [HTML](13-session-composition-turn.html) | [JSON](13-session-composition-turn.sequence.json) |
 | 02 | Host、Preset 与 Agent 的关系 | Architecture | [HTML](14-host-preset-agent.html) | [JSON](14-host-preset-agent.architecture.json) |
-| 03 | 完整历史如何变成本轮模型输入 | Architecture | [HTML](15-history-to-model-surface.html) | [JSON](15-history-to-model-surface.architecture.json) |
+| 03 | 完整历史如何变成较短的 Messages | Architecture | [HTML](15-history-to-model-surface.html) | [JSON](15-history-to-model-surface.architecture.json) |
 | 04 | Native 与 Code 的工具调用顺序 | Architecture | [HTML](16-native-vs-code.html) | [JSON](16-native-vs-code.architecture.json) |
 | 05 | 子会话与当前运行实例 | Architecture | [HTML](17-session-activation.html) | [JSON](17-session-activation.architecture.json) |
 

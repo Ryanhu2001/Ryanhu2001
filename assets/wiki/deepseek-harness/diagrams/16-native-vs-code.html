@@ -4909,34 +4909,34 @@
         <rect width="100%" height="100%" fill="url(#grid)" />
 
         <!-- Boundaries (behind everything) -->
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="0" x="70" y="70" width="1440" height="122" rx="12" class="c-region" stroke-width="1"/>
-        <text x="78" y="88" class="t-cloud" font-size="9" font-weight="600">Native：每次调用都回到模型</text>
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="0" x="70" y="70" width="1450" height="122" rx="12" class="c-region" stroke-width="1"/>
+        <text x="78" y="88" class="t-cloud" font-size="9" font-weight="600">Native：模型跨 Step 编排 Tool Call 批次</text>
 
         <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="1" x="40" y="400" width="1470" height="122" rx="12" class="c-region" stroke-width="1"/>
         <text x="48" y="418" class="t-cloud" font-size="9" font-weight="600">Code：循环和聚合在 Runtime 内完成</text>
 
         <!-- Connection paths (before components for correct z-order) -->
-        <path data-edge-from="nativeModel" data-edge-to="nativePipeline" data-edge-label="一次调用" data-edge-key="0" data-edge-id="nativeCall" data-composition-points="310,136;690,136" d="M 310 136 L 690 136" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="nativePipeline" data-edge-to="nativeResult" data-edge-label="完整中间结果" data-edge-key="1" data-edge-id="nativeReturn" data-composition-points="910,136;1270,136" d="M 910 136 L 1270 136" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="nativeModel" data-edge-to="nativePipeline" data-edge-label="一批 Tool Calls" data-edge-key="0" data-edge-id="nativeCall" data-composition-points="320,136;690,136" d="M 320 136 L 690 136" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="nativePipeline" data-edge-to="nativeResult" data-edge-label="配对的 Tool Results" data-edge-key="1" data-edge-id="nativeReturn" data-composition-points="910,136;1260,136" d="M 910 136 L 1260 136" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
         <path data-edge-from="codeModel" data-edge-to="runCode" data-edge-label="程序" data-edge-key="2" data-edge-id="programTransport" data-composition-points="280,466;440,466" d="M 280 466 L 440 466" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="runCode" data-edge-to="runtime" data-edge-label="确定性控制流" data-edge-key="3" data-edge-id="executeProgram" data-composition-points="630,466;800,466" d="M 630 466 L 800 466" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
         <path data-edge-from="runtime" data-edge-to="curatedResult" data-edge-label="筛选与聚合" data-edge-key="4" data-edge-id="returnCurated" data-composition-points="1050,466;1270,466" d="M 1050 466 L 1270 466" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
 
         <!-- Components -->
-        <g id="node-nativeModel" data-node-id="nativeModel" data-node-label="模型选择一个工具" tabindex="0" role="button" aria-label="Focus 模型选择一个工具, Native 调用, Native：每次调用都回到模型" aria-pressed="false" data-node-kind="external" data-node-sublabel="Native 调用" data-node-context="Native：每次调用都回到模型">
-          <title>模型选择一个工具 · Native 调用 · Native：每次调用都回到模型</title>
-          <rect x="100" y="100" width="210" height="72" rx="6" class="c-mask"/>
-          <rect x="100" y="100" width="210" height="72" rx="6" class="c-external" stroke-width="1.5"/>
+        <g id="node-nativeModel" data-node-id="nativeModel" data-node-label="模型发出 Tool Calls" tabindex="0" role="button" aria-label="Focus 模型发出 Tool Calls, 一次响应可包含多个 Call, Native：模型跨 Step 编排 Tool Call 批次" aria-pressed="false" data-node-kind="external" data-node-sublabel="一次响应可包含多个 Call" data-node-context="Native：模型跨 Step 编排 Tool Call 批次">
+          <title>模型发出 Tool Calls · 一次响应可包含多个 Call · Native：模型跨 Step 编排 Tool Call 批次</title>
+          <rect x="100" y="100" width="220" height="72" rx="6" class="c-mask"/>
+          <rect x="100" y="100" width="220" height="72" rx="6" class="c-external" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(106 106) scale(0.6875)">
             <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
             <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
           </g>
-          <text data-detail-anchor x="205" y="134" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">模型选择一个工具</text>
-        <text data-detail="context" x="205" y="150" class="t-muted" font-size="9" text-anchor="middle">Native 调用</text>
+          <text data-detail-anchor x="210" y="134" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">模型发出 Tool Calls</text>
+        <text data-detail="context" x="210" y="150" class="t-muted" font-size="9" text-anchor="middle">一次响应可包含多个 Call</text>
         </g>
 
-        <g id="node-nativePipeline" data-node-id="nativePipeline" data-node-label="检查并执行工具" tabindex="0" role="button" aria-label="Focus 检查并执行工具, 权限 · 审批 · 执行, Native：每次调用都回到模型" aria-pressed="false" data-node-kind="security" data-node-sublabel="权限 · 审批 · 执行" data-node-context="Native：每次调用都回到模型">
-          <title>检查并执行工具 · 权限 · 审批 · 执行 · Native：每次调用都回到模型</title>
+        <g id="node-nativePipeline" data-node-id="nativePipeline" data-node-label="检查并执行工具" tabindex="0" role="button" aria-label="Focus 检查并执行工具, 权限 · 审批 · 执行, Native：模型跨 Step 编排 Tool Call 批次" aria-pressed="false" data-node-kind="security" data-node-sublabel="权限 · 审批 · 执行" data-node-context="Native：模型跨 Step 编排 Tool Call 批次">
+          <title>检查并执行工具 · 权限 · 审批 · 执行 · Native：模型跨 Step 编排 Tool Call 批次</title>
           <rect x="690" y="100" width="220" height="72" rx="6" class="c-mask"/>
           <rect x="690" y="100" width="220" height="72" rx="6" class="c-security" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(696 106) scale(0.6875)">
@@ -4947,18 +4947,18 @@
         <text data-detail="context" x="800" y="150" class="t-muted" font-size="9" text-anchor="middle">权限 · 审批 · 执行</text>
         </g>
 
-        <g id="node-nativeResult" data-node-id="nativeResult" data-node-label="结果回到模型" tabindex="0" role="button" aria-label="Focus 结果回到模型, 再决定下一次调用, Native：每次调用都回到模型" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="再决定下一次调用" data-node-context="Native：每次调用都回到模型">
-          <title>结果回到模型 · 再决定下一次调用 · Native：每次调用都回到模型</title>
-          <rect x="1270" y="100" width="210" height="72" rx="6" class="c-mask"/>
-          <rect x="1270" y="100" width="210" height="72" rx="6" class="c-frontend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(1276 106) scale(0.6875)">
+        <g id="node-nativeResult" data-node-id="nativeResult" data-node-label="一批结果进入下一请求" tabindex="0" role="button" aria-label="Focus 一批结果进入下一请求, 需要继续时再开 Step, Native：模型跨 Step 编排 Tool Call 批次" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="需要继续时再开 Step" data-node-context="Native：模型跨 Step 编排 Tool Call 批次">
+          <title>一批结果进入下一请求 · 需要继续时再开 Step · Native：模型跨 Step 编排 Tool Call 批次</title>
+          <rect x="1260" y="100" width="230" height="72" rx="6" class="c-mask"/>
+          <rect x="1260" y="100" width="230" height="72" rx="6" class="c-frontend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(1266 106) scale(0.6875)">
             <rect x="2" y="3" width="12" height="10" rx="2"/>
             <path d="M2 6.5h12"/>
             <circle cx="4.1" cy="4.8" r=".7" class="sigil-fill"/>
             <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
           </g>
-          <text data-detail-anchor x="1375" y="134" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">结果回到模型</text>
-        <text data-detail="context" x="1375" y="150" class="t-muted" font-size="9" text-anchor="middle">再决定下一次调用</text>
+          <text data-detail-anchor x="1375" y="134" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">一批结果进入下一请求</text>
+        <text data-detail="context" x="1375" y="150" class="t-muted" font-size="9" text-anchor="middle">需要继续时再开 Step</text>
         </g>
 
         <g id="node-codeModel" data-node-id="codeModel" data-node-label="模型生成一段程序" tabindex="0" role="button" aria-label="Focus 模型生成一段程序, 循环 · 分支 · 聚合, Code：循环和聚合在 Runtime 内完成" aria-pressed="false" data-node-kind="external" data-node-sublabel="循环 · 分支 · 聚合" data-node-context="Code：循环和聚合在 Runtime 内完成">
@@ -5013,13 +5013,13 @@
         </g>
 
         <!-- Connection labels -->
-        <g data-detail="context" data-edge-from="nativeModel" data-edge-to="nativePipeline" data-edge-label="一次调用" data-edge-key="0" data-edge-id="nativeCall">
-          <rect x="475.8" y="116" width="48.4" height="14" rx="3" class="c-mask"/>
-          <text x="500" y="126" class="t-muted" font-size="8" text-anchor="middle">一次调用</text>
+        <g data-detail="context" data-edge-from="nativeModel" data-edge-to="nativePipeline" data-edge-label="一批 Tool Calls" data-edge-key="0" data-edge-id="nativeCall">
+          <rect x="464" y="116" width="82" height="14" rx="3" class="c-mask"/>
+          <text x="505" y="126" class="t-muted" font-size="8" text-anchor="middle">一批 Tool Calls</text>
         </g>
-        <g data-detail="context" data-edge-from="nativePipeline" data-edge-to="nativeResult" data-edge-label="完整中间结果" data-edge-key="1" data-edge-id="nativeReturn">
-          <rect x="1056.2" y="116" width="67.6" height="14" rx="3" class="c-mask"/>
-          <text x="1090" y="126" class="t-backend" font-size="8" text-anchor="middle">完整中间结果</text>
+        <g data-detail="context" data-edge-from="nativePipeline" data-edge-to="nativeResult" data-edge-label="配对的 Tool Results" data-edge-key="1" data-edge-id="nativeReturn">
+          <rect x="1034.4" y="116" width="101.2" height="14" rx="3" class="c-mask"/>
+          <text x="1085" y="126" class="t-backend" font-size="8" text-anchor="middle">配对的 Tool Results</text>
         </g>
         <g data-detail="context" data-edge-from="codeModel" data-edge-to="runCode" data-edge-label="程序" data-edge-key="2" data-edge-id="programTransport">
           <rect x="345" y="446" width="30" height="14" rx="3" class="c-mask"/>
@@ -5236,7 +5236,7 @@
           <h3>执行顺序发生变化</h3>
         </div>
         <ul>
-          <li>&bull; Native 依赖模型多次往返</li>
+          <li>&bull; 较长调用序列通常跨多个模型请求</li>
           <li>&bull; Code 把循环、分支与聚合移到普通 Runtime</li>
         </ul>
       </div>

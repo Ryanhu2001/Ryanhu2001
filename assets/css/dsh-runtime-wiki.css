@@ -768,6 +768,22 @@ tbody tr:last-child td {
     min-width: 640px;
   }
 
+  table.overview-glossary thead,
+  table.overview-glossary tbody,
+  table.session-scenario thead,
+  table.session-scenario tbody {
+    min-width: 0;
+    table-layout: auto;
+  }
+
+  table.overview-glossary th:first-child,
+  table.overview-glossary td:first-child,
+  table.session-scenario th:first-child,
+  table.session-scenario td:first-child {
+    width: 94px;
+    white-space: nowrap;
+  }
+
   .dsh-article blockquote {
     padding: 15px 17px;
   }

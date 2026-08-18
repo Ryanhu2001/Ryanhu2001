@@ -53,33 +53,100 @@ REQUIRED_DIAGRAMS = (
     "17-session-activation",
 )
 
+REQUIRED_DIAGRAM_FACTS = {
+    "13-session-composition-turn": (
+        "确保运行实例已挂载；关联 Agent",
+        "后续 Session 复用已有 Registration",
+    ),
+    "14-host-preset-agent": (
+        "AgentLoop · Session Store · Registries · Sandbox",
+        "提供运行时 Service 实例与 Registry",
+    ),
+    "15-history-to-model-surface": (
+        "log-only：start · summary · end",
+        "user/message + SurfaceOp.replace",
+    ),
+    "16-native-vs-code": (
+        "一次响应可包含多个 Call",
+        "一批 Tool Calls",
+    ),
+    "17-session-activation": (
+        "完成落盘后可跨进程恢复",
+        "已持久化后，当前没有运行实例时仍然可以恢复",
+    ),
+}
+
+PROHIBITED_DIAGRAM_FACTS = (
+    "初始化这个 Session 的 Preset",
+    "模型选择一个工具",
+    "Native：每次调用都回到模型",
+    "进程退出后仍在",
+    "只改变本轮输入",
+)
+
 REQUIRED_CONTENT = (
-    "Session A 与 Session B 加入同一份 Standard Preset",
-    "组件依赖满足以后",
-    "注册进入 Preset 的作用范围",
+    "Session A 在 repo-A 中使用 Standard，Session B 在 repo-B 中使用 Minimal",
+    "依赖没有准备好时，它不会带着残缺能力开始运行",
+    "Plugin 第一次挂载时加入的 Prompt、Tool 或 Listener 才叫 Registration",
+    "Agent 还没有处理的输入队列",
+    "Session Log 中已经追加的一条记录",
+    "TypeScript 声明不会在运行时注册任何东西",
+    "当前 Context 才能解析到这一个 `ToolRuntime` 实例",
     "当前 E2B 是 ephemeral POC",
     "不是 hard multi-tenant boundary",
     "可以包含零个、一个或多个 Step",
     "packages/core/agent-loop/src/agent.ts",
+    "packages/shell/shell/src/index.ts",
+    "packages/shell/tool-bash/src/index.ts",
+    "packages/bundle/base/cordis.patch.yml",
     "**源码批注版（中文注释为后加）：**",
-    "作用范围和生命周期",
-    "Cordis 不负责决定模型下一步做什么",
-    "AgentLoop 的职责仍然明确",
+    "Scope 决定谁能看见 Registration，Effect 决定它存在到什么时候",
+    "Cordis 管理这两类关系，但不负责决定模型下一步做什么",
+    "Service Definition、运行时 Service 实例和 Registry 条目是三个层次",
+    "Plugin 不是目录类型",
+    "不是每个 Package 都是准备给 Composition 直接挂载的",
+    "Tool Registry 可以具体理解为当前 Context 中已经注册的 `ctx.tools` 实例",
+    "tool-bash 从 ctx 里拿到了什么",
+    "实现上 `ctx` 是 Proxy",
+    "`tool-bash` 解析 Host 的 ToolRuntime/Tool Registry 实例，再把 `bash` 写入当前 Preset 的 Registry layer",
+    "`shell` 与 `shellEnv` 因此不是一回事",
+    "`dsh-shell` 也不是当前正在工作的 Shell 实例",
+    "DSH 的正式 Profile Boot 和 Agent Preset mount 会审计仍未激活的配置 row",
+    "`ctx.llm` 和 `ctx.systemPrompt` 的运行时实例都由对应的 Service Provider Plugin 注册",
+    "`LlmRuntime` 与 `SystemPrompt` 的类和 `Context` 类型声明在源码中早已存在",
+    "`ctx.agents.setFactory(this)` 是另一项 Registration",
+    "这符合工厂模式的核心目的",
+    "Composition 也不是 `Plugin + Service + Registration` 三张平级清单",
+    "Bundle 和 Agent Preset 都是 Composition 的输入来源",
     "一个 Session 从创建到 Turn 结束",
+    "图中的“Agent 创建流程”只是对这段创建代码的统称",
+    "源码把“从 Session Log 生成模型历史”这个动作命名为 `Session.deriveMessages()`",
+    "它不会调用模型、不会追加 SessionEvent，也不会修改原始日志",
     "Host plane 与 Agent plane",
-    "依赖倒置解决源码应该依赖谁",
-    "Consumer 只依赖稳定的 Service Definition",
-    "Composition 是选择并安装 Provider 的地方",
-    "Filesystem 与 Subprocess 还必须共同描述同一个 Execution World",
-    "这个注册动作改变了 Plugin 外部的状态，所以它是一项副作用",
-    "持久 SessionEvent 不由 Effect 撤销",
-    "Agent 负责当前执行，Session 记录持久事实",
+    "依赖倒置说的是源码依赖方向",
+    "`tool-bash` 依赖 `ShellExecutor` 的接口与类型，不依赖 `LocalBashExecutor`",
+    "只有 Composition 需要知道当前选择了哪个具体 Provider",
+    "声明式组合",
+    "而不是整个系统都采用声明式编程",
+    "Filesystem Provider 也要一起换成 E2B，这两项 Provider 共同组成 Execution World",
+    "`ctx.systemPrompt.section()` 和 `ctx.tools.register()` 已经把 Registration 封装成 Effect",
+    "某个 Plugin 的一次挂载记录和控制句柄",
+    "这里的 Effect 可以理解为“由 Cordis 跟踪、能够撤销的副作用”",
+    "它不会因为一次 Bash 调用结束、一个 Step/Turn 结束或 Agent 进入 idle 就自动卸载",
+    "Effect 回答“这项 Registration 存在多久”",
+    "Plugin 自己创建的 Timer、文件 Watcher、Socket 或其他外部资源",
+    "多个异步 Disposer 的完成顺序没有串行保证",
+    "卸载只撤销这次 Plugin 安装的 Registration",
+    "不会删除已经写入的 SessionEvent",
+    "Agent 负责当前执行，Session 记录已经发生的事实",
     "SessionEvent",
     "压缩上下文不等于删除历史",
     "Model Surface",
     "Model-visible means logged",
     "Activation 不是另一种 Session",
     "Tool Execution Pipeline",
+    "Sandbox 不是每个 Tool 都必经的通用阶段",
+    "`cordis_define`、`cordis_run`、`cordis_stop` 和 `cordis_undefine`",
     "四个 Preset",
     "At what point does it become a Runtime?",
 )
@@ -133,6 +200,12 @@ PROHIBITED_STALE_TUTORIAL = (
     "第一个说不停",
     "| bail |",
     "FSERB",
+    "Plugin 运行以后，可能提供一个 Service",
+    "每个 Session 单独挂载 Preset 也能工作",
+    "for (const dispose of this.disposers.reverse()) await dispose()",
+    "monotonic guards + approval + sandbox policy",
+    "cordis_mount",
+    "cordis_unmount",
 )
 
 PROHIBITED_OVERVIEW_JARGON = (
@@ -158,36 +231,9 @@ REQUIRED_OVERVIEW_GLOSSARY = (
     "Inbox",
     "Session",
     "SessionEvent",
-    "Child Session",
-    "Activation",
-    "Plugin",
-    "Service",
-    "Context",
-    "Composition",
-    "Agent Preset",
-    "Preset generation",
-    "Host / Agent plane",
-    "Registration",
-    "Scope",
-    "Event",
-    "Fiber",
-    "Effect",
-    "Disposer",
-    "Waterfall",
-    "Service Definition / Provider / Consumer",
-    "Dependency Inversion",
-    "Capability Seam",
-    "Execution World",
-    "Persistence",
-    "Compaction",
-    "Subagent",
     "AgentLoop",
     "Turn",
     "Step",
-    "Projection",
-    "Model Surface",
-    "Tool Presentation",
-    "Agent Runtime",
 )
 
 REQUIRED_OVERVIEW_DOCS = (
@@ -199,6 +245,7 @@ REQUIRED_OVERVIEW_DOCS = (
     "docs/subsystems/system-prompt.md",
     "docs/subsystems/tools.md",
     "docs/tool-execution-pipeline.md",
+    "docs/subsystems/shell.md",
     "docs/capability-seams.md",
     "docs/cookbook/adding-a-package.md",
     "docs/cookbook/adding-a-tool.md",
@@ -240,6 +287,7 @@ class PageParser(HTMLParser):
         self.tables = 0
         self.pre_blocks = 0
         self.details = 0
+        self.source_notes = 0
         self.source_links = 0
         self.section_leads = 0
         self.evidence_summaries = 0
@@ -268,6 +316,7 @@ class PageParser(HTMLParser):
         if tag == "details":
             self.details += 1
             if "source-note" in classes:
+                self.source_notes += 1
                 self._source_note_depth += 1
         if "section-lead" in classes:
             self.section_leads += 1
@@ -506,6 +555,8 @@ def validate_support_files(errors: list[str]) -> None:
             ".dsh-article > h2",
             ".dsh-article > h3",
             ".section-lead",
+            ".overview-glossary",
+            ".session-scenario",
             ".term-note",
             ".toc-part",
         ):
@@ -553,6 +604,12 @@ def validate_diagrams(errors: list[str]) -> None:
                 errors,
             )
 
+        specification_text = "\n".join(path.read_text(encoding="utf-8") for path in specifications)
+        for marker in REQUIRED_DIAGRAM_FACTS.get(slug, ()):
+            require(marker in specification_text, f"diagram {slug} is missing reviewed fact: {marker}", errors)
+        for marker in PROHIBITED_DIAGRAM_FACTS:
+            require(marker not in specification_text, f"diagram {slug} retains a misleading claim: {marker}", errors)
+
 
 def validate_rendered_page(html: str, errors: list[str]) -> None:
     parser = PageParser()
@@ -575,11 +632,11 @@ def validate_rendered_page(html: str, errors: list[str]) -> None:
     require(parser.tables >= 7, "rendered page needs at least seven explanatory tables", errors)
     require(parser.pre_blocks >= len(REQUIRED_TOPIC_IDS), "rendered page needs concrete pseudocode or source excerpts", errors)
     topic_count = len(REQUIRED_TOPIC_IDS)
-    require(parser.details == topic_count, "rendered page needs one source note per topic", errors)
+    require(parser.source_notes == topic_count, "rendered page needs one source note per topic", errors)
     require(parser.source_links >= topic_count, "rendered page needs at least one source evidence link per topic", errors)
     require(parser.section_leads == topic_count, "rendered page needs one natural section lead per topic", errors)
     require(parser.evidence_summaries == topic_count, "rendered source notes need reader-facing evidence summaries", errors)
-    require(parser.source_note_pre_blocks == topic_count, "each rendered source note needs pseudocode or a short source excerpt", errors)
+    require(parser.source_note_pre_blocks >= topic_count, "each rendered source note needs pseudocode or a short source excerpt", errors)
 
     h2s = [text for tag, text in parser.headings if tag == "h2"]
     h3s = [text for tag, text in parser.headings if tag == "h3"]

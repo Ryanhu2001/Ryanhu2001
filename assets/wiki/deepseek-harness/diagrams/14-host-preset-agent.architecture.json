@@ -16,7 +16,7 @@
       "id": "host",
       "type": "backend",
       "label": "Host Composition",
-      "sublabel": "AgentLoop · Session · Registries · Sandbox",
+      "sublabel": "AgentLoop · Session Store · Registries · Sandbox",
       "pos": [80, 280],
       "size": [250, 82],
       "sources": [
@@ -134,7 +134,7 @@
       "id": "hostToPreset",
       "from": "host",
       "to": "preset",
-      "label": "提供共享 Service 与 Registry",
+      "label": "提供运行时 Service 实例与 Registry",
       "variant": "default"
     },
     {
