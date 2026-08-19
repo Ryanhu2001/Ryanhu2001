@@ -54,19 +54,18 @@ PDF
 
 ### 1.1 一张表看完
 
-| 产品 / harness | PPTX | XLSX | DOCX | PDF | 核心范式 |
-| --- | --- | --- | --- | --- | --- |
-| 豆包 / Super Doubao | `lark-slides` → SML 2.0 → `lark-cli slides` | `lark-sheets` → Lark Sheets API | `lark-doc` → Lark Docs API | 输入读取与输出 backend：待确认 | 云端 Office IR / API |
-| WorkBuddy | `PptxGenJS`、`python-pptx`、HTML → PPTX | `openpyxl` / `pandas` | `python-docx` | 读：`pypdf`/`pdfplumber`/PyMuPDF；写：WeasyPrint/ReportLab | Skill 驱动的通用代码执行 |
-| Kimi Code / Web | 官方示例 `python-pptx`；推荐社区 Skills 覆盖 HTML/SVG/native/image PPTX | `openpyxl` + `pandas` + KimiXlsx CLI / OpenXML（待确认） | C# OpenXML SDK / raw OOXML（待确认） | `pdfplumber` 读；HTML/Paged.js 写（待确认） | Skill-heavy；backend 由 Skill 决定 |
-| Qwen Code | skill-dependent | skill-dependent | skill-dependent | 读：内置多模态 PDF bridge（待确认）；写：skill-dependent | Office-unaware harness |
-| QwenWork | HTML 1280×720 工作台 → 导出 PPTX/PDF/HTML | `pandas` + `openpyxl` + recalc（待确认） | 在线 Word 可编辑；本地 serializer 待确认 | 读：产品支持，backend 待确认；写：Markdown → PDF | Workbench / code / GUI 混合 |
-| ChatGPT Work / artifact skills | `@oai/artifact-tool` presentation object model | `@oai/artifact-tool` Workbook API | `python-docx` + OOXML helpers | API 输入：抽 text + page images；本地 Skill：text extraction + Poppler render；写：ReportLab | Artifact object model + code execution |
-| Claude Code + `document-skills` | 新建 `PptxGenJS`；已有 deck raw OOXML | `openpyxl` + `pandas` + LibreOffice 重算 | 新建 `docx-js`；已有文档 raw OOXML | API 输入：每页 text + image；Skill：`pypdf`/`pdfplumber` + Poppler；写：ReportLab | Library codegen + OOXML escape hatch |
-| Manus | PowerPoint Mode 原生 `.pptx`；内部 engine 待确认 | `openpyxl`（待确认）；Google Workspace 另走 CLI | 本地 backend 待确认；Google Docs 走 Workspace CLI | 产品支持读取 PDF；具体 backend 待确认 | Native PPT + sandbox / connector |
-| Genspark / GenOffice | 自研 parse/render/edit engine；typed slide tools | Univer + Rust sidecar（calamine / IronCalc） | block tree + dirty OOXML splice | 读/渲染：`pdf.js`；编辑：`pdf-lib` | Native Office engine |
-| MuleRun | `PptxGenJS` 动态安装（待确认）；Office Sync | backend 待确认；Office Sync 可回写 | backend 待确认 | 输入读取与输出 backend：待确认 | VM + dynamic Skill + Office Sync |
-| OfficeCLI | OpenXML | OpenXML | OpenXML | 不在核心 read/write scope | Agent-native DOM DSL |
+| 产品 / harness | PPTX | XLSX | DOCX | PDF |
+| --- | --- | --- | --- | --- |
+| 豆包 / Super Doubao | `lark-slides` → SML 2.0 → `lark-cli slides` | `lark-sheets` → Lark Sheets API | `lark-doc` → Lark Docs API | 输入读取与输出 backend：待确认 |
+| WorkBuddy | `PptxGenJS`、`python-pptx`、HTML → PPTX | `openpyxl` / `pandas` | `python-docx` | 读：`pypdf`/`pdfplumber`/PyMuPDF；写：WeasyPrint/ReportLab |
+| Kimi Code / Web | 官方示例 `python-pptx`；推荐社区 Skills 覆盖 HTML/SVG/native/image PPTX | `openpyxl` + `pandas` + KimiXlsx CLI / OpenXML（待确认） | C# OpenXML SDK / raw OOXML（待确认） | `pdfplumber` 读；HTML/Paged.js 写（待确认） |
+| Qwen Code | skill-dependent | skill-dependent | skill-dependent | 读：内置多模态 PDF bridge（待确认）；写：skill-dependent |
+| QwenWork | HTML 1280×720 工作台 → 导出 PPTX/PDF/HTML | `pandas` + `openpyxl` + recalc（待确认） | 在线 Word 可编辑；本地 serializer 待确认 | 读：产品支持，backend 待确认；写：Markdown → PDF |
+| ChatGPT Work / artifact skills | `@oai/artifact-tool` presentation object model | `@oai/artifact-tool` Workbook API | `python-docx` + OOXML helpers | API 输入：抽 text + page images；本地 Skill：text extraction + Poppler render；写：ReportLab |
+| Claude Code + `document-skills` | 新建 `PptxGenJS`；已有 deck raw OOXML | `openpyxl` + `pandas` + LibreOffice 重算 | 新建 `docx-js`；已有文档 raw OOXML | API 输入：每页 text + image；Skill：`pypdf`/`pdfplumber` + Poppler；写：ReportLab |
+| Manus | PowerPoint Mode 原生 `.pptx`；内部 engine 待确认 | `openpyxl`（待确认）；Google Workspace 另走 CLI | 本地 backend 待确认；Google Docs 走 Workspace CLI | 产品支持读取 PDF；具体 backend 待确认 |
+| Genspark / GenOffice | 自研 parse/render/edit engine；typed slide tools | Univer + Rust sidecar（calamine / IronCalc） | block tree + dirty OOXML splice | 读/渲染：`pdf.js`；编辑：`pdf-lib` |
+| MuleRun | `PptxGenJS` 动态安装（待确认）；Office Sync | backend 待确认；Office Sync 可回写 | backend 待确认 | 输入读取与输出 backend：待确认 |
 
 ### 1.2 技术路线
 
