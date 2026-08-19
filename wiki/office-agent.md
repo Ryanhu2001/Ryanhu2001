@@ -19,35 +19,16 @@ kicker: "OFFICE AGENT · SKILL / BACKEND / QA"
 | PPTX | `PptxGenJS`、`python-pptx`、`@oai/artifact-tool`、自研 engine | raw OOXML、`python-pptx`、native slide state | XML/package validator、LibreOffice、缩略图/PNG、视觉 QA |
 | XLSX | `openpyxl`、`pandas`、`rust_xlsxwriter`、`@oai/artifact-tool`、自研 engine | OOXML、Excel/云端 workbook API | 公式重算、`inspect`、错误扫描、渲染 |
 | DOCX | `docx-js`、`python-docx`、OpenXML SDK | `lxml`/raw OOXML、native block tree | LibreOffice → PDF/PNG、结构审计 |
-| PDF | ReportLab、HTML + Paged.js、`pdf-lib` | `pypdf`、`pikepdf`、`qpdf`、`pdf-lib` | 文本/结构：`pypdf`、`pdfplumber`、`pdf.js`；页面渲染：Poppler、PyMuPDF、`pdf.js` → PNG → VLM/OCR |
+| PDF | ReportLab、`md2pdf`（MDX → React SSR → Chromium）、HTML + Paged.js、`pdf-lib` | `pypdf`、`pikepdf`、`qpdf`、`pdf-lib` | 文本/结构：`pypdf`、`pdfplumber`、`pdf.js`；页面渲染：Poppler、PyMuPDF、`pdf.js` → PNG → VLM/OCR |
 
 `pandas` 主要负责表格数据处理，不是完整的 XLSX serializer；LibreOffice 负责重算/渲染，Poppler 负责页面渲染，PyMuPDF 同时能抽取内容和 rasterize 页面。
 
-### 0.2 PDF 怎么 read
-
-```text
-PDF
-├─ 有 text layer → pypdf / pdfplumber / pdf.js
-│                → 文本、坐标、表格、metadata、form fields
-├─ 需要看版面   → Poppler / PyMuPDF / pdf.js
-│                → 每页 PNG → 多模态模型
-└─ 扫描件       → 每页 PNG → OCR / 多模态模型
-```
-
-稳妥的 PDF Skill 会同时做 **text extraction + page render**：前者便于搜索、引用和表格抽取，后者用于看图表、版面和扫描页。读输入 PDF 与生成 PDF 是两条链；输出既可能由 ReportLab 直接创建，也可能从 HTML、DOCX 或 PPTX 导出。
-
-- [`pypdf`](https://pypdf.readthedocs.io/)：文本、metadata、页面、加密、AcroForm。
-- [`pdfplumber`](https://github.com/jsvine/pdfplumber)：字符坐标、行、表格和布局抽取。
-- [`pdf.js`](https://mozilla.github.io/pdf.js/)：浏览器端解析与页面渲染。
-- [PyMuPDF](https://pymupdf.readthedocs.io/)：文本/图片抽取与页面 rasterize。
-- [Poppler](https://poppler.freedesktop.org/)：把 PDF 页面渲染为 PNG，常用入口是 `pdftoppm`。
-
-### 0.3 成体系的 skill / CLI / MCP
+### 0.2 成体系的 skill / CLI / MCP
 
 - [Anthropic document-skills](https://github.com/anthropics/skills)：`pptx`、`xlsx`、`docx`、`pdf` 四个 skill。
 - [OpenAI Work with files](https://learn.chatgpt.com/docs/artifacts-viewer)：Documents、Presentations、Spreadsheets、PDF artifact workflows；旧的 `openai/skills` 仓库已 deprecated。
 - [Lark CLI](https://github.com/larksuite/cli)：[`lark-slides`](https://github.com/larksuite/cli/tree/main/skills/lark-slides)、[`lark-sheets`](https://github.com/larksuite/cli/tree/main/skills/lark-sheets)、[`lark-doc`](https://github.com/larksuite/cli/tree/main/skills/lark-doc)。
-- [Kimi CLI Skills](https://moonshotai.github.io/kimi-cli/en/customization/skills.html)；Kimi 推荐的社区 PPT Skills 与非官方产品 Skill 提取在 2.3 分开列出。
+- [Kimi CLI Skills](https://moonshotai.github.io/kimi-cli/en/customization/skills.html)说明 CLI 的 Skill 机制；Web 第一方 `kimi-slides`、辅助 Skills、Kimi 推荐的社区 PPT Skills 与非官方 Office Skill 提取在 2.3 分开列出。
 - [OfficeCLI](https://github.com/iOfficeAI/OfficeCLI)：统一 `get/query/set/add/remove/batch/validate`，也可通过 `officecli mcp` 暴露 MCP。
 
 ## 1. 总览
@@ -58,14 +39,13 @@ PDF
 | --- | --- | --- | --- | --- |
 | 豆包 / Super Doubao | `lark-slides` → SML 2.0 → `lark-cli slides` | `lark-sheets` → Lark Sheets API | `lark-doc` → Lark Docs API | 输入读取与输出 backend：待确认 |
 | WorkBuddy | `PptxGenJS`、`python-pptx`、HTML → PPTX | `openpyxl` / `pandas` | `python-docx` | 读：`pypdf`/`pdfplumber`/PyMuPDF；写：WeasyPrint/ReportLab |
-| Kimi Code / Web | 官方示例 `python-pptx`；推荐社区 Skills 覆盖 HTML/SVG/native/image PPTX | `openpyxl` + `pandas` + KimiXlsx CLI / OpenXML（待确认） | C# OpenXML SDK / raw OOXML（待确认） | `pdfplumber` 读；HTML/Paged.js 写（待确认） |
-| Qwen Code | skill-dependent | skill-dependent | skill-dependent | 读：内置多模态 PDF bridge（待确认）；写：skill-dependent |
-| QwenWork | HTML 1280×720 工作台 → 导出 PPTX/PDF/HTML | `pandas` + `openpyxl` + recalc（待确认） | 在线 Word 可编辑；本地 serializer 待确认 | 读：产品支持，backend 待确认；写：Markdown → PDF |
+| Kimi Web / CLI | 第一方 `kimi-slides`：`.pptd` YAML DSL ↔ PPTX；`check` / `screenshot` | `openpyxl` + `pandas` + KimiXlsx CLI / OpenXML（第三方提取，待确认） | C# OpenXML SDK / raw OOXML（第三方提取，待确认） | 读：`pdfplumber`；操作：`pikepdf`；写：HTML/CSS → Paged.js → Chromium（第三方提取，待确认） |
+| QwenWork | HTML 1280×720 工作台 → 导出 PPTX/PDF/HTML | `pandas` + `openpyxl` + recalc（待确认） | 在线 Word 可编辑；本地 serializer 待确认 | 读 text layer：`pdftotext`；写：MDX → `md2pdf` → React SSR → Chromium → PDF |
 | ChatGPT Work / artifact skills | `@oai/artifact-tool` presentation object model | `@oai/artifact-tool` Workbook API | `python-docx` + OOXML helpers | API 输入：抽 text + page images；本地 Skill：text extraction + Poppler render；写：ReportLab |
 | Claude Code + `document-skills` | 新建 `PptxGenJS`；已有 deck raw OOXML | `openpyxl` + `pandas` + LibreOffice 重算 | 新建 `docx-js`；已有文档 raw OOXML | API 输入：每页 text + image；Skill：`pypdf`/`pdfplumber` + Poppler；写：ReportLab |
-| Manus | PowerPoint Mode 原生 `.pptx`；内部 engine 待确认 | `openpyxl`（待确认）；Google Workspace 另走 CLI | 本地 backend 待确认；Google Docs 走 Workspace CLI | 产品支持读取 PDF；具体 backend 待确认 |
+| Manus | PowerPoint Mode 原生 `.pptx`；内部 engine 待确认 | `openpyxl`；Google Workspace 另走 CLI | `python-docx` 待确认；Google Docs 走 Workspace CLI | `pdftotext` |
 | Genspark / GenOffice | 自研 parse/render/edit engine；typed slide tools | Univer + Rust sidecar（calamine / IronCalc） | block tree + dirty OOXML splice | 读/渲染：`pdf.js`；编辑：`pdf-lib` |
-| MuleRun | `PptxGenJS` 动态安装（待确认）；Office Sync | backend 待确认；Office Sync 可回写 | backend 待确认 | 输入读取与输出 backend：待确认 |
+| MuleRun | `PptxGenJS` 动态安装（待确认）；Office Sync | / | / | / |
 
 ### 1.2 技术路线
 
@@ -174,26 +154,35 @@ DOCX Skill → Python → python-docx → DOCX
 
 `pypdf`/`pdfplumber` 读 text layer，PyMuPDF 的页面图像补足图表、扫描件和版面信息。
 
-#### 另一条通道：腾讯文档
+### 2.3 Kimi Web / Kimi CLI
+
+[Kimi CLI 官方文档](https://moonshotai.github.io/kimi-cli/en/customization/skills.html)只规定 Skill 的发现和调用机制；Office backend 由具体 Skill 决定。
+
+#### PPTX：第一方 `kimi-slides`
 
 ```text
-WorkBuddy → Tencent Docs connector → 云端文档/表格/幻灯片对象
+新建：内容 / 文档 / 大纲 → .pptd（YAML DSL）
+                         → kimi-slides check / screenshot
+                         → kimi_ref → Kimi 编辑器 → 用户导出 PPTX / images
+
+编辑：PPTX → kimi-slides convert → .pptd → 修改 → check
+复刻：图片 / PDF → 视觉分析 + 素材裁切 → .pptd
 ```
 
-- [Skills 机制](https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Skills-Market)
-- [腾讯文档连接器](https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Knowledge-Base/Tencent-Doc)
+`.pptd` 是对 OOXML 的简化抽象：保留主题、布局、元素位置和定义，去掉复杂的 master 嵌套，每页自包含。配套 CLI 支持 `.pptd ↔ .pptx`、校验和截图；但 Kimi Web 的交付合同是 `.pptd + kimi_ref`，PPTX 由用户在编辑器中导出。
 
-### 2.3 Kimi Code / Kimi Web
-
-[Kimi CLI 官方文档](https://moonshotai.github.io/kimi-cli/en/customization/skills.html)规定 Skill 的发现和调用机制，不绑定 Office backend。
-
-#### PPTX：官方 CLI 示例
+需要生成图片时，第一方 `image_generation` 只走素材旁路：
 
 ```text
-Skill instructions → Python → python-pptx → PPTX
+prompt + optional reference URLs → agent-gw → JPG / PNG → media → .pptd
 ```
 
-这是官方文档里的 Skill 示例，不是 Kimi 内置 PPT engine。
+- [Kimi Slides](https://www.kimi.com/slides) · [Kimi Slides 帮助中心](https://www.kimi.com/zh-cn/help/slides)
+
+#### 其他第一方 Skills：不属于 Office backend
+
+- `kimi-widget`：在会话内的 sandboxed iframe 渲染 HTML/SVG/CSS/JS，使用预载的 Kimi design system；不读写 Office 文件。
+- [`kimi-help-center`](https://www.kimi.com/zh-cn/help)：把产品问题路由到对应帮助中心文章；不参与文件生成或解析。
 
 #### PPTX：Kimi 推荐的社区 Skills
 
@@ -203,7 +192,7 @@ Skill instructions → Python → python-pptx → PPTX
 | --- | --- |
 | [`knowledge-cat-ppt-skill`](https://github.com/gnipbao/knowledge-cat-ppt-skill) | story plan → 按任务选择 `@oai/artifact-tool` native PPTX、HTML deck 或 image-first PPTX |
 | [`guizang-ppt-skill`](https://github.com/op7418/guizang-ppt-skill) | 内容 → 单文件 HTML；瑞士/电子杂志风格 + WebGL，主输出不是 native PPTX |
-| [`starrykit-plugin`](https://github.com/StarryKit/starrykit-plugin) | Agent → hosted MCP → StarryKit editable design state → PPTX/PDF/SVG/PNG/JPEG/HTML/Google Slides |
+| [`starry-slides`](https://github.com/StarryKit/starrykit-plugin) | Agent → hosted MCP → StarryKit editable design state → PPTX/PDF/SVG/PNG/JPEG/HTML/Google Slides |
 | [`agentbuff-presentation-skills`](https://github.com/nugrahalabib/AgentBuff-Presentation-Skills) | HTML-first → browser render → PDF/PNG/JPG/PPTX；PPTX 可选 image 或 editable mode |
 | [`frontend-slides`](https://github.com/zarazhangrui/frontend-slides) | 内容 → 零依赖单文件 HTML；已有 PPTX 先抽文本/图片/备注，再重建为 Web deck |
 | [`slide-skill`](https://github.com/icgma/slide-skill) | PDF/Markdown/DOCX/URL → Markdown → SVG → DrawingML/OOXML → fully editable PPTX → LibreOffice render/QA |
@@ -214,7 +203,7 @@ Skill instructions → Python → python-pptx → PPTX
 | [`powerpoint-fancy-design`](https://github.com/Phlegonlabs/Powerpoint-fancy-design) | Markdown → 1600×900 HTML → PNG → image-based PPTX；视觉一致，但页面元素不可编辑 |
 | [`slide-creator`](https://github.com/kaisersong/slide-creator) | prompt → `BRIEF.json` → HTML → validate/eval → `kai-html-export` → PPTX/PNG；支持像素保真与 native editable mode |
 
-#### 非官方产品 Skills（待确认）
+#### 非官方 Office Skills（待确认）
 
 下面三条来自 [`thvroyal/kimi-skills`](https://github.com/thvroyal/kimi-skills) 的第三方提取，不是 Moonshot 官方仓库。
 
@@ -279,8 +268,8 @@ Qwen Code → filesystem / run_shell_command / Skills / MCP
 - **PPTX**：`outline → HTML 1280×720 canvas → export PPTX/PDF/HTML`；converter 待确认。
 - **XLSX**：社区实跑为 `xlsx Skill → pandas/openpyxl → recalc`，不是官方 serializer 承诺。
 - **DOCX**：支持在线 Word/文件编辑；本地 DOCX serializer 待确认。写作工作台以 Markdown 为源。
-- **输入 PDF**：产品支持上传理解；text extraction / page render backend 待确认。
-- **生成 PDF**：写作工作台走 `Markdown → PDF export`；export backend 待确认。
+- **输入 PDF**：text layer 走 `pdftotext → text`；扫描件和页面视觉读取链待确认。
+- **生成 PDF**：`MDX + built-in components → md2pdf → React SSR → Chromium/Playwright → PDF`。KaTeX、Shiki 和 server-side SVG charts 进入同一组件链；Mermaid 在浏览器 capture 前渲染，输出后逐页检查。
 - **GUI**：Computer Use 可直接操作桌面 Office/Numbers，是独立于文件 serializer 的第四条路线。
 
 - [QwenWork](https://help.aliyun.com/zh/qwenwork/qwenwork-intro)
