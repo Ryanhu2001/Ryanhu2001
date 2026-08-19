@@ -37,7 +37,7 @@ kicker: "OFFICE AGENT · SKILL / BACKEND / QA"
 
 | 产品 / harness                    | PPTX                                                                                               | XLSX                                                                                                                          | DOCX                               | PDF                                                                                                  |
 | ------------------------------- | -------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| 豆包 / Super Doubao               | `lark-slides` → SML 2.0 → `lark-cli slides`                                                        | `lark-sheets` → Lark Sheets API                                                                                               | `lark-doc` → Lark Docs API         | `\`                                                                                                  |
+| 豆包 / Super Doubao               | `lark-slides` → SML 2.0 → `lark-cli slides`                                                        | `lark-sheets` → Lark Sheets API                                                                                               | `lark-doc` → Lark Docs API         | 读入口：CDN URL → `curl -L` → local PDF；解析：`\`；生成入口：Python script；serializer：`\`                   |
 | WorkBuddy                       | `PptxGenJS`、`python-pptx`、HTML → PPTX                                                              | `openpyxl` / `pandas`                                                                                                         | `python-docx`                      | 读：`pypdf`/`pdfplumber`/PyMuPDF；写：WeasyPrint/ReportLab                                                |
 | Kimi Web / CLI                  | 第一方 `kimi-slides`：`.pptd` YAML DSL ↔ PPTX；`check` / `screenshot`                                   | 第一方 `xlsx`：`openpyxl` / `pandas` → formulas/styles → `recheck` / `reference-check` / `chart-verify` / `validate` → OpenXML 校验 | Kimi Web：无 DOCX Skill；不能生成可下载 `.docx` | Kimi Web 读：system `<document>` → XML-tagged content → context；写：`\`                                  |
 | QwenWork                        | 读：MarkItDown / thumbnail / raw OOXML；新建：`python-pptx`；编辑：unpack/edit/pack；QA：LibreOffice + Poppler | `openpyxl` / `pandas` → formulas/styles → `recalc.py` → LibreOffice 重算与错误扫描                                                   | `\`                                | 读：`pdftotext` + `pdftoppm` → `media-read` / Qwen3-Omni；写：MDX → `md2pdf` → React SSR → Chromium → PDF |
@@ -104,7 +104,15 @@ Word 文件是交换格式，主要编辑面是云端 Docs block，而不是直�
 
 #### PDF
 
-`\`
+```text
+读入口：CDN URL → curl -L → workspace/local PDF
+内容解析 / OCR / page rendering：\
+
+生成入口：Agent → generate_hkd_invoice.py → Python
+PDF serializer / final PDF：\
+```
+
+读取轨迹只证明 PDF 被下载到本地，没有展示 text extraction、OCR 或逐页渲染；生成轨迹只证明 Agent 写出了 Python 脚本，没有展示脚本内容、所用 PDF library、执行命令或最终 PDF。
 
 ### 2.2 WorkBuddy
 
