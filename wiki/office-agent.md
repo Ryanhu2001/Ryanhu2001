@@ -37,15 +37,17 @@ kicker: "OFFICE AGENT · SKILL / BACKEND / QA"
 
 | 产品 / harness | PPTX | XLSX | DOCX | PDF |
 | --- | --- | --- | --- | --- |
-| 豆包 / Super Doubao | `lark-slides` → SML 2.0 → `lark-cli slides` | `lark-sheets` → Lark Sheets API | `lark-doc` → Lark Docs API | 输入读取与输出 backend：待确认 |
+| 豆包 / Super Doubao | `lark-slides` → SML 2.0 → `lark-cli slides` | `lark-sheets` → Lark Sheets API | `lark-doc` → Lark Docs API | `\` |
 | WorkBuddy | `PptxGenJS`、`python-pptx`、HTML → PPTX | `openpyxl` / `pandas` | `python-docx` | 读：`pypdf`/`pdfplumber`/PyMuPDF；写：WeasyPrint/ReportLab |
-| Kimi Web / CLI | 第一方 `kimi-slides`：`.pptd` YAML DSL ↔ PPTX；`check` / `screenshot` | `openpyxl` + `pandas` + KimiXlsx CLI / OpenXML（第三方提取，待确认） | C# OpenXML SDK / raw OOXML（第三方提取，待确认） | 读：`pdfplumber`；操作：`pikepdf`；写：HTML/CSS → Paged.js → Chromium（第三方提取，待确认） |
-| QwenWork | HTML 1280×720 工作台 → 导出 PPTX/PDF/HTML | `pandas` + `openpyxl` + recalc（待确认） | 在线 Word 可编辑；本地 serializer 待确认 | 读 text layer：`pdftotext`；写：MDX → `md2pdf` → React SSR → Chromium → PDF |
+| Kimi Web / CLI | 第一方 `kimi-slides`：`.pptd` YAML DSL ↔ PPTX；`check` / `screenshot` | `openpyxl` + `pandas` + KimiXlsx CLI / OpenXML（非官方提取） | C# OpenXML SDK / raw OOXML（非官方提取） | 读：`pdfplumber`；操作：`pikepdf`；写：HTML/CSS → Paged.js → Chromium（非官方提取） |
+| QwenWork | 读：MarkItDown / thumbnail / raw OOXML；新建：`python-pptx`；编辑：unpack/edit/pack；QA：LibreOffice + Poppler | `openpyxl` / `pandas` → formulas/styles → `recalc.py` → LibreOffice 重算与错误扫描 | `\` | 读：`pdftotext` + `pdftoppm` → `media-read` / Qwen3-Omni；写：MDX → `md2pdf` → React SSR → Chromium → PDF |
 | ChatGPT Work / artifact skills | `@oai/artifact-tool` presentation object model | `@oai/artifact-tool` Workbook API | `python-docx` + OOXML helpers | API 输入：抽 text + page images；本地 Skill：text extraction + Poppler render；写：ReportLab |
 | Claude Code + `document-skills` | 新建 `PptxGenJS`；已有 deck raw OOXML | `openpyxl` + `pandas` + LibreOffice 重算 | 新建 `docx-js`；已有文档 raw OOXML | API 输入：每页 text + image；Skill：`pypdf`/`pdfplumber` + Poppler；写：ReportLab |
-| Manus | PowerPoint Mode 原生 `.pptx`；内部 engine 待确认 | `openpyxl`；Google Workspace 另走 CLI | `python-docx` 待确认；Google Docs 走 Workspace CLI | `pdftotext` |
+| Manus | PowerPoint Mode → native `.pptx` | `\`；Google Sheets → Workspace CLI | 本地：`\`；Google Docs → Workspace CLI | `pdftotext` |
 | Genspark / GenOffice | 自研 parse/render/edit engine；typed slide tools | Univer + Rust sidecar（calamine / IronCalc） | block tree + dirty OOXML splice | 读/渲染：`pdf.js`；编辑：`pdf-lib` |
-| MuleRun | `PptxGenJS` 动态安装（待确认）；Office Sync | / | / | / |
+| MuleRun | `\` | `\` | `\` | `\` |
+
+`\` 表示目前没有足够证据，不代表产品不支持。
 
 ### 1.2 技术路线
 
@@ -102,13 +104,7 @@ Word 文件是交换格式，主要编辑面是云端 Docs block，而不是直�
 
 #### PDF
 
-```text
-输入 PDF：具体 text extraction / page render backend 待确认
-生成/导出：Markdown / HTML / ReportLab → PDF（待确认）
-输出验收：PyMuPDF → 页面 rasterize → 视觉检查（待确认）
-```
-
-公开的 Lark CLI 中没有与 Slides/Sheets/Docs 同等级的 PDF object model。
+`\`
 
 ### 2.2 WorkBuddy
 
@@ -203,7 +199,7 @@ prompt + optional reference URLs → agent-gw → JPG / PNG → media → .pptd
 | [`powerpoint-fancy-design`](https://github.com/Phlegonlabs/Powerpoint-fancy-design) | Markdown → 1600×900 HTML → PNG → image-based PPTX；视觉一致，但页面元素不可编辑 |
 | [`slide-creator`](https://github.com/kaisersong/slide-creator) | prompt → `BRIEF.json` → HTML → validate/eval → `kai-html-export` → PPTX/PNG；支持像素保真与 native editable mode |
 
-#### 非官方 Office Skills（待确认）
+#### 非官方 Office Skills
 
 下面三条来自 [`thvroyal/kimi-skills`](https://github.com/thvroyal/kimi-skills) 的第三方提取，不是 Moonshot 官方仓库。
 
@@ -239,43 +235,64 @@ prompt + optional reference URLs → agent-gw → JPG / PNG → media → .pptd
 显式 LaTeX：Tectonic → PDF
 ```
 
-该提取里没有确认“逐页渲染 → 多模态模型”的视觉读取链；扫描件和复杂版面怎么读仍待确认。
+扫描件和页面视觉读取：`\`。
 
 - [kimi-pdf/SKILL.md](https://github.com/thvroyal/kimi-skills/blob/main/skills/kimi-pdf/SKILL.md)
 
-### 2.4 Qwen
+### 2.4 QwenWork
 
-必须拆成 **Qwen Code** 和 **QwenWork**。
-
-#### Qwen Code
+#### PPTX
 
 ```text
-Qwen Code → filesystem / run_shell_command / Skills / MCP
-         → 由安装的 Skill 决定 Python、JS、CLI 或自研 backend
+读内容：PPTX → MarkItDown → text
+看全局：PPTX → thumbnail.py → slide overview
+看结构：PPTX → unpack.py → raw OOXML
+
+新建：blank Presentation() → theme / layouts / components.py
+                           → python-pptx → editable PPTX
+编辑：template QA → unpack → edit / clean / pack → PPTX
+
+QA：MarkItDown + view_issues.py
+  → LibreOffice → PDF → pdftoppm → per-slide JPG
+  → visual review → fix → re-verify
 ```
 
-四种格式都没有 core 固定 serializer。
+`view_issues.py` 先查 broken relationships、overflow、越界、重复 slide ID、未引用 media、对比度、字体层级和 palette；页面 JPG 才是最终视觉判断。需要真实图片时走素材旁路：
 
-- **输入 PDF（待确认）**：内置 bridge 把文件交给多模态模型；直接传 PDF、抽 text layer 还是先 rasterize，公开文档未说明。
-- **生成 PDF（待确认）**：由安装的 Skill 或 shell 工具决定，没有 core 固定 backend。
+```text
+prompt / reference → media-generate → qwenwork-router → image → PPTX
+```
 
-- [Tools](https://qwenlm.github.io/qwen-code-docs/en/developers/tools/introduction/)
-- [Skills](https://qwenlm.github.io/qwen-code-docs/en/users/features/skills/)
-- [MCP](https://qwenlm.github.io/qwen-code-docs/en/users/features/mcp/)
+- [MarkItDown](https://github.com/microsoft/markitdown) · [`python-pptx`](https://python-pptx.readthedocs.io/) · [LibreOffice](https://www.libreoffice.org/discover/libreoffice/) · [Poppler](https://poppler.freedesktop.org/)
 
-#### QwenWork
+#### XLSX
 
-- **PPTX**：`outline → HTML 1280×720 canvas → export PPTX/PDF/HTML`；converter 待确认。
-- **XLSX**：社区实跑为 `xlsx Skill → pandas/openpyxl → recalc`，不是官方 serializer 承诺。
-- **DOCX**：支持在线 Word/文件编辑；本地 DOCX serializer 待确认。写作工作台以 Markdown 为源。
-- **输入 PDF**：text layer 走 `pdftotext → text`；扫描件和页面视觉读取链待确认。
-- **生成 PDF**：`MDX + built-in components → md2pdf → React SSR → Chromium/Playwright → PDF`。KaTeX、Shiki 和 server-side SVG charts 进入同一组件链；Mermaid 在浏览器 capture 前渲染，输出后逐页检查。
-- **GUI**：Computer Use 可直接操作桌面 Office/Numbers，是独立于文件 serializer 的第四条路线。
+```text
+openpyxl / pandas → values + styles + Excel formulas → XLSX
+                → scripts/recalc.py → LibreOffice 重算
+                → 扫描 #REF! / #DIV/0! / #VALUE! / #NAME? / #N/A
+```
 
-- [QwenWork](https://help.aliyun.com/zh/qwenwork/qwenwork-intro)
-- [Slides 工作台](https://help.aliyun.com/zh/qwenwork/qw-workbench-slides)
-- [Writing 工作台](https://help.aliyun.com/zh/qwenwork/qw-workbench-writing)
-- [Computer Use](https://help.aliyun.com/zh/qwenwork/qw-computer-use)
+公式必须留在 workbook 中，不能由 Python 算完后硬编码；财务模型用蓝色硬编码输入、黑色公式、绿色跨表链接，假设放在独立单元格并标注来源。
+
+#### DOCX / Word
+
+`\`
+
+#### PDF
+
+```text
+读 text layer：PDF → pdftotext → text
+读页面视觉：PDF → pdftoppm → page images
+                    → media-read → Qwen3-Omni → text / objects / layout
+
+生成：MDX + built-in components → md2pdf → React SSR
+                                → Chromium / Playwright → PDF
+```
+
+`media-read` 适合提取页面里的文字、对象、数量和布局；美学判断仍直接看页面图像。生成链里的 KaTeX、Shiki 和 server-side SVG charts 随 MDX 做组件渲染，Mermaid 在浏览器 capture 前渲染，输出后逐页检查。
+
+- [QwenWork](https://help.aliyun.com/zh/qwenwork/qwenwork-intro) · [Slides 工作台](https://help.aliyun.com/zh/qwenwork/qw-workbench-slides) · [Writing 工作台](https://help.aliyun.com/zh/qwenwork/qw-workbench-writing)
 
 ### 2.5 ChatGPT Work / artifact skills
 
@@ -289,7 +306,7 @@ Presentation Skill → @oai/artifact-tool（JavaScript）
                    → export PPTX → 逐页 render / overflow / font / visual QA
 ```
 
-`@oai/artifact-tool` 是当前 artifact runtime 给 Skill 使用的 JS package，不是 Microsoft Office API。Agent 构造 presentation object model，再导出 PPTX。这里只把它当 backend 名称；对外稳定 API 文档待确认。
+`@oai/artifact-tool` 是当前 artifact runtime 给 Skill 使用的 JS package，不是 Microsoft Office API。Agent 构造 presentation object model，再导出 PPTX。
 
 #### XLSX
 
@@ -384,11 +401,11 @@ Skill 本地读：pypdf / pdfplumber → 文本/表格/结构
 
 ### 2.7 Manus
 
-- **PPTX**：PowerPoint Mode 从第一步就生成 native `.pptx`；charts、tables、slide masters 都是对象。内部 serializer 待确认，不能写成 PptxGenJS。
-- **XLSX（待确认）**：本地 sandbox 轨迹为 `openpyxl → XLSX`；Google Sheets 则走 Google Workspace CLI。
-- **DOCX**：本地默认 serializer 待确认；Google Docs 走 Workspace connector/CLI。
-- **输入 PDF**：产品支持读取；text extraction、page render 或原生多模态输入路径待确认。
-- **生成 PDF**：本地默认 authoring/export backend 待确认。
+- **PPTX**：PowerPoint Mode 从第一步就生成 native `.pptx`；charts、tables、slide masters 都是对象。内部 serializer：`\`。
+- **XLSX**：本地：`\`；Google Sheets 走 Google Workspace CLI。
+- **DOCX**：本地：`\`；Google Docs 走 Workspace connector/CLI。
+- **输入 PDF**：`pdftotext → text`。
+- **生成 PDF**：`\`。
 
 - [Native PowerPoint Mode](https://manus.im/blog/manus-ppt-slides)
 - [Skills](https://manus.im/docs/features/skills)
@@ -433,11 +450,9 @@ DOCX ZIP → block tree → 只重写 dirty paragraph OOXML
 
 MuleRun 提供完整云 VM、shell、浏览器、Skills 和动态依赖安装，不规定单一 Office serializer。
 
-- **PPTX（待确认）**：`install pptxgenjs + icon deps → JS codegen → PPTX`。
-- **XLSX / DOCX**：默认 backend 待确认。
-- **输入 PDF**：text extraction / page render 路径待确认。
-- **生成 PDF**：authoring/export backend 待确认。
-- **Office Sync**：上传 Excel/PPT 后可让 Agent 双向回写源文件；内部 diff/serializer 待确认。
+- **PPTX / XLSX / DOCX**：`\`。
+- **输入 / 生成 PDF**：`\`。
+- **Office Sync**：上传 Excel/PPT 后可让 Agent 双向回写源文件；内部 diff/serializer：`\`。
 
 - [MuleRun Chat / Skills](https://blog.mulerun.com/p/meet-mulerun-chat-one-agent-everything-done/)
 - [Office Sync](https://help.mulerun.com/features/super-agent)
