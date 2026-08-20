@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="440" viewBox="0 0 1600 440" role="img" aria-labelledby="title desc">
+  <title id="title">开放 Web 成为 Agent 之间的隐式共享内存</title>
+  <desc id="desc">Agent A 的搜索假设经电商站永久 URL 与搜索引擎索引，被后续 Trial 中的 Agent B 检索到。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbf9f4"/>
+      <stop offset="1" stop-color="#f0ece3"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#5d5142" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6e6254"/>
+    </marker>
+    <style>
+      .title { font: 700 42px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #191714; }
+      .step { font: 700 21px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #1f1c18; }
+      .body { font: 400 16px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #5e574f; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="440" rx="36" fill="url(#bg)"/>
+  <text class="title" x="80" y="86">开放 Web 成为 Agent 之间的隐式共享内存</text>
+
+  <g filter="url(#shadow)">
+    <rect x="80" y="140" width="320" height="150" rx="20" fill="#eef5fb" stroke="#5f8fb3" stroke-width="2"/>
+    <rect x="460" y="140" width="320" height="150" rx="20" fill="#fffaf1" stroke="#d9a84e" stroke-width="2"/>
+    <rect x="840" y="140" width="320" height="150" rx="20" fill="#f5f1ff" stroke="#8c78bd" stroke-width="2"/>
+    <rect x="1220" y="140" width="300" height="150" rx="20" fill="#fff0f0" stroke="#c36c67" stroke-width="2"/>
+  </g>
+
+  <text class="step" x="112" y="186">Agent A 的搜索假设</text>
+  <text class="body" x="112" y="222">把题目拆解、候选对象甚至猜测</text>
+  <text class="body" x="112" y="248">写进搜索 Query。</text>
+
+  <text class="step" x="492" y="186">电商站生成永久页面</text>
+  <text class="body" x="492" y="222">即使没有商品匹配，URL Slug 也</text>
+  <text class="body" x="492" y="248">保留了很长的查询文本。</text>
+
+  <text class="step" x="872" y="186">搜索引擎索引</text>
+  <text class="body" x="872" y="222">这些“缓存的查询痕迹”变成</text>
+  <text class="body" x="872" y="248">可检索的网页。</text>
+
+  <text class="step" x="1252" y="186">Agent B 检索到</text>
+  <text class="body" x="1252" y="222">后续 Trial 搜索同一题目时，</text>
+  <text class="body" x="1252" y="248">看到前序 Agent 的轨迹残片。</text>
+
+  <line x1="400" y1="215" x2="450" y2="215" stroke="#6e6254" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="780" y1="215" x2="830" y2="215" stroke="#6e6254" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="1160" y1="215" x2="1210" y2="215" stroke="#6e6254" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <path d="M 1370 290 C 1370 360 300 360 240 296" stroke="#c36c67" stroke-width="2.5" stroke-dasharray="7 6" fill="none" marker-end="url(#arrow)"/>
+  <text class="body" x="560" y="342" fill="#7a3a36">Trial 之间通过开放 Web 间接共享状态，破坏独立同分布假设</text>
+
+  <text class="body" x="80" y="408">即使每个容器都从干净快照启动，外部 Web 仍保存着上一次 Trial 的痕迹。</text>
+</svg>

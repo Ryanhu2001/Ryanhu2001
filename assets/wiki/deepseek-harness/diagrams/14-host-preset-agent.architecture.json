@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Host、Preset 与 Agent 的关系",
+    "quality_profile": "showcase",
+    "viewBox": [1560, 760],
+    "repository": {
+      "url": "https://github.com/deepseek-ai/deepseek-harness",
+      "revision": "47f943859bef60e4160492346772ded9b24f765a"
+    },
+    "legend": { "mode": "hidden" }
+  },
+  "components": [
+    {
+      "id": "host",
+      "type": "backend",
+      "label": "Host Composition",
+      "sublabel": "AgentLoop · Session Store · Registries · Sandbox",
+      "pos": [80, 280],
+      "size": [250, 82],
+      "sources": [
+        {
+          "path": "apps/cli/config/agent-presets/standard/agent.cordis.yml",
+          "line": 3,
+          "end_line": 9,
+          "label": "Host 与 Agent 分工"
+        }
+      ]
+    },
+    {
+      "id": "preset",
+      "type": "cloud",
+      "label": "Standard Preset",
+      "sublabel": "同一代 composition 在进程内挂载一次",
+      "pos": [500, 280],
+      "size": [280, 82],
+      "sources": [
+        {
+          "path": "packages/preset/agent-presets/README.md",
+          "line": 5,
+          "end_line": 7,
+          "label": "Standing composition"
+        }
+      ]
+    },
+    {
+      "id": "agentA",
+      "type": "frontend",
+      "label": "Agent A",
+      "sublabel": "加入 Standard 的作用范围",
+      "pos": [960, 125],
+      "size": [230, 74],
+      "sources": [
+        {
+          "path": "packages/preset/agent-presets/src/index.ts",
+          "line": 263,
+          "end_line": 286,
+          "label": "绑定父级作用范围"
+        }
+      ]
+    },
+    {
+      "id": "agentB",
+      "type": "frontend",
+      "label": "Agent B",
+      "sublabel": "加入同一 Standard composition",
+      "pos": [960, 435],
+      "size": [230, 74],
+      "sources": [
+        {
+          "path": "packages/preset/agent-presets/src/index.ts",
+          "line": 263,
+          "end_line": 286,
+          "label": "绑定父级作用范围"
+        }
+      ]
+    },
+    {
+      "id": "sessionA",
+      "type": "database",
+      "label": "Session A",
+      "sublabel": "history · plan · compaction state",
+      "pos": [1290, 125],
+      "size": [220, 74],
+      "sources": [
+        {
+          "path": "apps/cli/config/agent-presets/standard/agent.cordis.yml",
+          "line": 3,
+          "end_line": 6,
+          "label": "状态按 Session / Agent 区分"
+        }
+      ]
+    },
+    {
+      "id": "sessionB",
+      "type": "database",
+      "label": "Session B",
+      "sublabel": "history · plan · compaction state",
+      "pos": [1290, 435],
+      "size": [220, 74],
+      "sources": [
+        {
+          "path": "apps/cli/config/agent-presets/standard/agent.cordis.yml",
+          "line": 3,
+          "end_line": 6,
+          "label": "状态按 Session / Agent 区分"
+        }
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "共享的 Host 能力",
+      "wraps": ["host"],
+      "pad": 30
+    },
+    {
+      "kind": "region",
+      "label": "Preset standing composition",
+      "wraps": ["preset"],
+      "pad": 30
+    },
+    {
+      "kind": "region",
+      "label": "两个独立 Session",
+      "wraps": ["agentA", "agentB", "sessionA", "sessionB"],
+      "pad": 28
+    }
+  ],
+  "connections": [
+    {
+      "id": "hostToPreset",
+      "from": "host",
+      "to": "preset",
+      "label": "提供运行时 Service 实例与 Registry",
+      "variant": "default"
+    },
+    {
+      "id": "presetToAgentA",
+      "from": "preset",
+      "to": "agentA",
+      "label": "绑定作用范围",
+      "variant": "emphasis",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "presetToAgentB",
+      "from": "preset",
+      "to": "agentB",
+      "label": "绑定作用范围",
+      "variant": "emphasis",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "agentAToSessionA",
+      "from": "agentA",
+      "to": "sessionA",
+      "label": "只读写 A 的记录",
+      "variant": "default"
+    },
+    {
+      "id": "agentBToSessionB",
+      "from": "agentB",
+      "to": "sessionB",
+      "label": "只读写 B 的记录",
+      "variant": "default"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "能力查找",
+      "items": [
+        "Agent 先读取自己的注册，再读取 Preset，最后读取全局注册",
+        "另一个 Preset 的注册不会进入这条查找链"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "共享与隔离",
+      "items": [
+        "同一代 Preset 的插件实例与注册只存在一份",
+        "真正属于会话的数据仍按 Session / Agent 分开保存"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "文件更新",
+      "items": [
+        "新 Session 可以加入新的 Preset generation",
+        "已经运行的 Session 继续使用原来的 generation"
+      ]
+    }
+  ]
+}

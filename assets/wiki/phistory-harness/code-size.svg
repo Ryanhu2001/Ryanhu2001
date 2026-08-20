@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 470" font-family="-apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif">
+  <rect width="1040" height="470" fill="#ffffff"/>
+  <text x="520" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#0f172a">8 个开源 harness 的仓库体量对比（约 LOC，对数刻度）</text>
+
+  <!-- gridlines: x = 200 + (log10(v)-5.2)/1.9*740 -->
+  <g stroke="#e2e8f0" stroke-width="1">
+    <line x1="277" y1="60" x2="277" y2="400"/>
+    <line x1="394" y1="60" x2="394" y2="400"/>
+    <line x1="511" y1="60" x2="511" y2="400"/>
+    <line x1="629" y1="60" x2="629" y2="400"/>
+    <line x1="746" y1="60" x2="746" y2="400"/>
+    <line x1="863" y1="60" x2="863" y2="400"/>
+  </g>
+  <g font-size="12" fill="#94a3b8" text-anchor="middle">
+    <text x="277" y="416">25万</text>
+    <text x="394" y="416">50万</text>
+    <text x="511" y="416">100万</text>
+    <text x="629" y="416">200万</text>
+    <text x="746" y="416">400万</text>
+    <text x="863" y="416">800万</text>
+  </g>
+
+  <!-- bars: step 40 from y=70, height 26 -->
+  <g font-size="13">
+    <text x="192" y="87" text-anchor="end" fill="#0f172a">Kimi CLI</text>
+    <rect x="200" y="70" width="84" height="26" rx="3" fill="#16a34a"/>
+    <text x="292" y="87" fill="#475569">26 万 · Python</text>
+
+    <text x="192" y="127" text-anchor="end" fill="#0f172a">Pi（pi-mono）</text>
+    <rect x="200" y="110" width="108" height="26" rx="3" fill="#2563eb"/>
+    <text x="316" y="127" fill="#475569">30 万 · TypeScript</text>
+
+    <text x="192" y="167" text-anchor="end" fill="#0f172a">Grok Build</text>
+    <rect x="200" y="150" width="283" height="26" rx="3" fill="#ea580c"/>
+    <text x="491" y="167" fill="#475569">84.5 万 · Rust</text>
+
+    <text x="192" y="207" text-anchor="end" fill="#0f172a">Codex CLI</text>
+    <rect x="200" y="190" width="388" height="26" rx="3" fill="#ea580c"/>
+    <text x="596" y="207" fill="#475569">157 万 · Rust（129 crates）</text>
+
+    <text x="192" y="247" text-anchor="end" fill="#0f172a">opencode</text>
+    <rect x="200" y="230" width="394" height="26" rx="3" fill="#2563eb"/>
+    <text x="602" y="247" fill="#475569">163 万 · TypeScript</text>
+
+    <text x="192" y="287" text-anchor="end" fill="#0f172a">Oh My Pi</text>
+    <rect x="200" y="270" width="434" height="26" rx="3" fill="#7c3aed"/>
+    <text x="642" y="287" fill="#475569">206 万 · TS + Rust + Python</text>
+
+    <text x="192" y="327" text-anchor="end" fill="#0f172a">Hermes Agent</text>
+    <rect x="200" y="310" width="477" height="26" rx="3" fill="#16a34a"/>
+    <text x="685" y="327" fill="#475569">266 万 · Python</text>
+
+    <text x="192" y="367" text-anchor="end" fill="#0f172a">OpenClaw</text>
+    <rect x="200" y="350" width="694" height="26" rx="3" fill="#2563eb"/>
+    <text x="902" y="367" fill="#475569">961 万 · TypeScript</text>
+  </g>
+
+  <text x="200" y="440" font-size="12" fill="#94a3b8">口径：git ls-files 排除 lockfile 与 node_modules/vendor/dist/target；含生成物与文档，读作"仓库体量"而非纯代码行数。</text>
+  <text x="200" y="459" font-size="12" fill="#94a3b8">MiMo-Code、Kimi Code 已开源（MIT）但未逐行统计，未列入。2026-08-05 时点。</text>
+</svg>

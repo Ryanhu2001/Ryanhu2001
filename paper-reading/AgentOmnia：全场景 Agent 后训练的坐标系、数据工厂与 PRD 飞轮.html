@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<!-- Template: https://github.com/luost26/academic-homepage -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="description" content="把全场景 agent 后训练统一成 Domain × Capability × Atomic Difficulty 坐标、可执行环境/任务/轨迹工厂与 PRD 反馈闭环；同一 Qwen3-30B 底座四基准 macro 22.86%→41.69%，但模块因果与多轮自进化仍未证实。">
+    <meta property="og:title" content="AgentOmnia：全场景 Agent 后训练的坐标系、数据工厂与 PRD 飞轮 - Ryan">
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="把全场景 agent 后训练统一成 Domain × Capability × Atomic Difficulty 坐标、可执行环境/任务/轨迹工厂与 PRD 反馈闭环；同一 Qwen3-30B 底座四基准 macro 22.86%→41.69%，但模块因果与多轮自进化仍未证实。">
+    <meta property="og:url" content="https://ryanhu2001.github.io/Ryanhu2001/paper-reading/AgentOmnia%EF%BC%9A%E5%85%A8%E5%9C%BA%E6%99%AF%20Agent%20%E5%90%8E%E8%AE%AD%E7%BB%83%E7%9A%84%E5%9D%90%E6%A0%87%E7%B3%BB%E3%80%81%E6%95%B0%E6%8D%AE%E5%B7%A5%E5%8E%82%E4%B8%8E%20PRD%20%E9%A3%9E%E8%BD%AE.html">
+    <title>AgentOmnia：全场景 Agent 后训练的坐标系、数据工厂与 PRD 飞轮 - Ryan</title>
+    <link rel="icon" href="/Ryanhu2001/assets/ryan/avatar.jpg" type="image/jpeg">
+
+    <!-- Stylesheets -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/Ryanhu2001/pagefind/pagefind-component-ui.css">
+    
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/blog.css">
+    
+    <link rel="stylesheet" href="/Ryanhu2001/assets/css/global.css">
+</head>
+<body >
+    <a class="sr-only sr-only-focusable skip-link" href="#main-content">Skip to content</a>
+    <nav class="navbar navbar-expand-sm navbar-light fixed-top mb-5 shadow-sm">
+    <div class="container-lg">
+        <a class="navbar-brand" href="/Ryanhu2001/"><strong>Ryan</strong></a>
+        <button class="nav-search-button nav-search-button-compact d-sm-none ml-auto mr-2" type="button" data-toggle="modal" data-target="#siteSearchModal" aria-label="Search site">
+            <i class="fas fa-search" aria-hidden="true"></i>
+        </button>
+        <button class="navbar-toggler" style="font-size: 1em; padding: 0.5em;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-map" aria-hidden="true"></i> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/">Home</a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Ryanhu2001/wiki/">Wiki</a>
+                </li>
+                
+                <li class="nav-item active">
+                    <a class="nav-link" href="/Ryanhu2001/paper-reading/">Paper Reading</a>
+                </li>
+                
+                <li class="nav-item nav-search-item">
+                    <button class="nav-link nav-search-button" type="button" data-toggle="modal" data-target="#siteSearchModal" aria-label="Search site">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <span>Search</span>
+                        <kbd class="d-none d-md-inline">⌘K</kbd>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <main id="main-content" class="container-lg">
+        
+
+
+
+
+<div class="reading-progress" aria-hidden="true">
+    <span></span>
+</div>
+
+<div class="blog-layout-wrapper">
+    <div class="blog-main">
+        <div class="mb-3">
+            <a class="small" href="/Ryanhu2001/paper-reading/">
+                <i class="fas fa-arrow-left"></i> Paper Reading
+            </a>
+        </div>
+
+        <details class="mobile-toc d-lg-none">
+            <summary>目录</summary>
+            <div id="blog-toc-list-mobile" class="mobile-toc-list"></div>
+        </details>
+
+        <article class="bg-white rounded-xl p-4 p-md-5 mb-4 wiki-note-card" data-pagefind-body>
+            <div class="blog-content wiki-note">
+                <h1 id="agentomnia全场景-agent-后训练的坐标系数据工厂与-prd-飞轮">AgentOmnia：全场景 Agent 后训练的坐标系、数据工厂与 PRD 飞轮</h1>
+
+<ul>
+  <li><strong>论文</strong>：<a href="https://arxiv.org/abs/2607.23124">AgentOmnia: Scaling Agentic Models for Full-Scenario Applications</a></li>
+  <li><strong>版本</strong>：arXiv v1，2026-07-28；69 页技术报告</li>
+  <li><strong>作者</strong>：Huawei Cloud Post-Training Team；核心贡献者 Hao Jiang、Gangtao Xin、Yingdi Huang、Guojie Zhu、Jiangshan Zhang、Xinyuan Lin、Yunkun Xu、Chengyu Shen、Wenlong Fei、Jiawei Li、Yujie Fu、Sichen Kang、Tingyu Xie、Yedi Hu、Jingren Zhang、Hongcheng Gao、Jianshu Zeng、Chong Chen 等</li>
+  <li><strong>类型</strong>：agentic post-training / executable data synthesis / full-scenario evaluation / self-evolution</li>
+  <li><strong>关键词</strong>：full-scenario scaling、Domain × Capability × Atomic Difficulty、stateful environment、DAG/program/solver synthesis、privileged guidance、RCRL、PRD</li>
+</ul>
+
+<h2 id="读法不要把它当成一个新算法">读法：不要把它当成一个新算法</h2>
+
+<p>这不是一篇只提出一个 loss、换一个 sampler、然后在一个榜单上报 SOTA 的论文。它试图回答的是一个更工程化的问题：<strong>如何让 agent 的任务空间、可执行环境、训练信号、评测诊断和下一轮数据生产共享同一套坐标与接口</strong>。因此全文应该沿着“坐标系 → 环境/任务/轨迹工厂 → SFT/RL → 失败诊断 → PRD → 下一轮数据”的链路读，而不是把每个模块单独当成贡献。</p>
+
+<p>我先画了一张证据链图，把论文的中间产物和证据强度放在一起：</p>
+
+<p><img src="../assets/paper-reading/agentomnia/agentomnia-evidence-chain.svg" alt="AgentOmnia evidence chain" /></p>
+
+<p><em>自制图解，不是论文原图：实线表示报告中有直接测量的接口，虚线表示只做了一轮的初步闭环。最重要的阅读提醒是，论文最强的证据落在“同一底座经过整套数据工厂和后训练后变好”，而不是某个单独模块已经被隔离证明。</em></p>
+
+<h2 id="一句话判断">一句话判断</h2>
+
+<p>AgentOmnia 的真正创新是把 agent 后训练从“堆更多 tool-call traces”改写成一个<strong>有坐标的、可执行的、可回溯的生产系统</strong>：用 90 个一级领域、10 个能力维度和 8 个原子难度因素定义目标空间；用状态化代码环境、DAG/程序/求解器三条管线生产可验证任务；用 privileged guidance 让 teacher 越过自己的能力边界生成 SFT 轨迹；再用 SFT + 在线 agentic RL + rollback curriculum 训练 Qwen3-30B-A3B。结果很强且覆盖广，但<strong>模块之间没有完整的析因消融，PRD 自进化只有一轮、增益很小</strong>，所以它证明的是“整套 recipe 有效”，还不是“每个环节的因果贡献已被证明”。</p>
+
+<h2 id="先把数字钉住">先把数字钉住</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>论文声称</th>
+      <th style="text-align: right">原文数字</th>
+      <th>我对它的解释</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>可执行环境</td>
+      <td style="text-align: right">5,018 个；255,375 个 tools</td>
+      <td>平均每个环境 50.9 个工具、13.3 个实体、77.3 个属性；这是代码合成后的保留集，不是 5,018 个真实生产系统</td>
+    </tr>
+    <tr>
+      <td>可执行任务</td>
+      <td style="text-align: right">52,361 个</td>
+      <td>DAG 45,855（Standard 43,851 + Challenge 2,004）、Program 2,204、Solver 4,302</td>
+    </tr>
+    <tr>
+      <td>SFT / RL</td>
+      <td style="text-align: right">53K samples / 5K tasks</td>
+      <td>SFT 是验证过的轨迹；RL 在可 reset 的环境上在线 rollout</td>
+    </tr>
+    <tr>
+      <td>主模型提升</td>
+      <td style="text-align: right">OmniaBench challenging 9.16% → 37.11%</td>
+      <td>Pass@1，固定 644-task 子集，+27.95 个百分点</td>
+    </tr>
+    <tr>
+      <td>跨 benchmark</td>
+      <td style="text-align: right">macro 22.86% → 41.69%</td>
+      <td>OmniaBench、τ²-Bench、DeepPlanning、VitaBench 四者等权平均</td>
+    </tr>
+    <tr>
+      <td>覆盖广度</td>
+      <td style="text-align: right">90 个 L1 domain 中 76 个上升</td>
+      <td>12 个不变、2 个下降；没有给置信区间或多次运行方差</td>
+    </tr>
+    <tr>
+      <td>PRD 一轮</td>
+      <td style="text-align: right">121 envs / 804 tasks</td>
+      <td>OmniaBench 37.11% → 38.49%；三个外部 benchmark 平均 43.22% → 44.14%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>四 benchmark macro 的算术也值得自己验一次：</p>
+
+\[\frac{37.11+75.79+16.25+37.62}{4}=41.6925\%,
+\qquad
+\frac{9.16+55.98+5.00+21.28}{4}=22.855\%.\]
+
+<h2 id="1-问题定义为什么需要-full-scenario-scaling">1. 问题定义：为什么需要 “full-scenario scaling”</h2>
+
+<p>作者观察到，agent benchmark 正从单轮问答走向有状态的 web、GUI、企业系统、文档、表格、服务 API 和长时规划；但每个 benchmark 只覆盖局部场景。两个模型可以有相同的总分，却在状态追踪、澄清、工具参数绑定、文件处理或错误恢复上完全不同。于是“总分上涨”没有告诉我们下一轮该造什么数据。</p>
+
+<p>论文把目标域分成三种视角：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Split</th>
+      <th>含义</th>
+      <th>典型任务</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>ToC (To-Consumer)</strong></td>
+      <td>面向消费者的服务和生活流程</td>
+      <td>购物、旅行、预约、支付、个人日程、售后</td>
+    </tr>
+    <tr>
+      <td><strong>ToB (To-Business)</strong></td>
+      <td>组织或行业业务系统</td>
+      <td>财务、采购、制造、物流、库存、CRM、IT 运维</td>
+    </tr>
+    <tr>
+      <td><strong>ToE (To-Employee)</strong></td>
+      <td>跨行业的员工工作</td>
+      <td>邮件、日历、文档、报表、审批、报销、知识管理、数据分析</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>关键转变是：<strong>先定义任务空间，再生成任务</strong>。每一个 task、environment、trajectory、rubric、verifier 都带同一个坐标：</p>
+
+\[Z=(\mathcal D,C,\boldsymbol\delta),\qquad \mathcal D=(s,d_1,d_2),\qquad \boldsymbol\delta\in\{0,1\}^{8}.\]
+
+<p>其中 $s$ 是 ToC/ToB/ToE，$d_1,d_2$ 是两级领域，$C$ 是可以多选的能力集合，$\boldsymbol\delta$ 是可以组合的难度向量。统计时作者再从激活的难度中选一个 primary atom，避免一个任务在互斥柱状图里被重复计数。</p>
+
+<h3 id="三个轴分别测什么">三个轴分别测什么</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>轴</th>
+      <th>规模 / 例子</th>
+      <th>不应混淆的地方</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Domain</td>
+      <td>ToC 22 L1/101 L2；ToB 38/186；ToE 30/67</td>
+      <td>是“在哪种工作里”，不是能力本身</td>
+    </tr>
+    <tr>
+      <td>Capability</td>
+      <td>Task Understanding、Information Gathering、Planning、State Management、Tool Use、Code、Data、Office、Collaboration、Reliability/Safety</td>
+      <td>是“agent 会什么”，一个任务可以多标签</td>
+    </tr>
+    <tr>
+      <td>Atomic Difficulty</td>
+      <td>模糊目标、工具/参数 grounding、结构化信息、长上下文/多 artifact、动态规划、多源不一致、渐进披露、风险/澄清</td>
+      <td>是“在什么条件下难”，不是轨迹长度或 tool-call 数量</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这个分离很有价值：例如“Office &amp; Document Handling”是能力，“Long-context &amp; Multi-artifact Evidence”是测试条件；同一个能力可以在不同领域和不同难度组合里被测。它也让失败可以从“某行业不行”细化为“跨实体证据分散导致 state management 失败”。</p>
+
+<p>但坐标系不是自然常数。领域来自 app store、GDPval/行业分类和员工模板，能力是人工设计，原子难度来自内部数据失败分析，之后再由模型辅助整理和人审。它提供了<strong>索引与诊断语言</strong>，不自动保证每个格子样本均衡，更不保证“90 个领域”代表真实产品流量。Figure 3 的 t-SNE 只能检查语义簇和离群点，不能证明 taxonomy 的外部效度。</p>
+
+<h2 id="2-总体框架四个接口如何闭合">2. 总体框架：四个接口如何闭合</h2>
+
+<p><img src="../assets/paper-reading/agentomnia/source-overview.png" alt="AgentOmnia framework overview" /></p>
+
+<p><em>论文 Figure 2 原图（由官方源码 PDF 渲染为 PNG）：上部是三轴 taxonomy 和 1,431/644 的 OmniaBench，下部把 environment、task、trajectory 接到 SFT/RCRL，右侧把评测失败写成 PRD。图中“外部 signal”还允许业务人员和产品经理直接输入要求。</em></p>
+
+<p>这张图最值得看的是箭头而不是图标：</p>
+
+<ol>
+  <li><strong>Taxonomy → Data</strong>：坐标先规定应该覆盖哪里、需要什么能力、难度怎样组合。</li>
+  <li><strong>Data → Model</strong>：环境和任务不是静态 prompt，而是可 reset、能读写状态、能给规则或 rubric reward 的运行时。</li>
+  <li><strong>Model → Diagnosis</strong>：OmniaBench 的失败按同一坐标聚合，task-level 分析再上升到 capability-level pattern。</li>
+  <li><strong>Diagnosis → PRD → Data</strong>：PRD 把失败原因翻译成新环境、新任务、新轨迹的约束；产品侧也可以用同一格式输入需求。</li>
+</ol>
+
+<p>论文把这四个模块包装成“closed development loop”，但要注意闭环的两种含义：<strong>数据流闭合</strong>（确实可以从失败生成下一批样本）已经展示；<strong>能力自动持续上升</strong>只在一轮小实验里初步展示。</p>
+
+<h2 id="3-数据工厂环境任务轨迹三层分开造">3. 数据工厂：环境、任务、轨迹三层分开造</h2>
+
+<p><img src="../assets/paper-reading/agentomnia/source-synthesis-overview.png" alt="AgentOmnia synthesis framework" /></p>
+
+<p><em>论文 Figure 4 原图：左侧 taxonomy 同时覆盖三种 reasoning structure，中央是环境与任务的双向合成，右侧是 user simulation + capability-aware guidance + trajectory verification。它说明作者把“任务难”拆成 sequential、structural、optimization 三种可操作结构，而不是只拉长上下文。</em></p>
+
+<h3 id="31-environment从-seed-到代码状态机">3.1 Environment：从 seed 到代码状态机</h3>
+
+<p>环境定义为 $E=(\mathcal S,T)$；工具 $t$ 接收状态和参数，返回新状态与 observation：$t(s,x)=(s’,o)$。环境 seed 来自四类来源：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Seed</th>
+      <th style="text-align: right">数量</th>
+      <th>作用</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Query seeds</td>
+      <td style="text-align: right">197K</td>
+      <td>公网页面上的用户意图和需求</td>
+    </tr>
+    <tr>
+      <td>Skill definitions</td>
+      <td style="text-align: right">20K</td>
+      <td>高层能力和使用场景</td>
+    </tr>
+    <tr>
+      <td>MCP specifications</td>
+      <td style="text-align: right">2.3K</td>
+      <td>工具定义与接口描述</td>
+    </tr>
+    <tr>
+      <td>API seeds</td>
+      <td style="text-align: right">1.3K</td>
+      <td>真实 API 的功能和调用样式</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>生成器先做两轮 deep research，写出实体、属性、关系和约束，再编译成 Python state containers；接着从 state schema 生成 query/mutate tools，经 validator 去重、拆分、合并、重写，最后编译成统一返回协议的可调用方法。验证分三层：初始化能否加载，单工具是否按语义改变状态，工具组合是否破坏全局 invariant。多次修复仍失败的环境直接丢弃。</p>
+
+<p><img src="../assets/paper-reading/agentomnia/source-environment-datacard.png" alt="AgentOmnia environment statistics" /></p>
+
+<p><em>论文 Figure 6 原图（由官方源码 PDF 渲染为 PNG）：用来读分布而不是读“有多少”这一个 headline。工具数均值 50.9、实体 13.3、属性 77.3，环境覆盖 ToC 42.2%、ToB 29.8%、ToE 28.0%。这是一座代码化的 synthetic sandbox，稳定性和并发性优于真实 API，但 realism 仍取决于 seed、schema 和 validator 的质量。</em></p>
+
+<p>环境数量的精确统计以正文 Table 5/Figure 6 和上表为准；不要把环境分布百分比误当成任务或评测集的分母。</p>
+
+<h3 id="32-task三种结构覆盖三类推理">3.2 Task：三种结构覆盖三类推理</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>管线</th>
+      <th style="text-align: right">数量</th>
+      <th>生成对象</th>
+      <th>正确性锚点</th>
+      <th>我认为的边界</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>DAG-Standard / Challenge</td>
+      <td style="text-align: right">43,851 / 2,004</td>
+      <td>工具依赖图 + 虚拟中间节点 + 初始状态 + 自然任务描述</td>
+      <td>执行轨迹、终态、task/rubric 一致</td>
+      <td>结构像长链，但未必等于真实工作流；Challenge 只是在既有环境里加深依赖、状态和间接描述</td>
+    </tr>
+    <tr>
+      <td>Program-based</td>
+      <td style="text-align: right">2,204</td>
+      <td>带 loop、branch、数据依赖的 executable solution program</td>
+      <td>程序运行、结构化 ground truth、verifier、rubric</td>
+      <td>程序是参考解，不代表 agent 必须走同一路径；程序生成/修复成本与分布未报告</td>
+    </tr>
+    <tr>
+      <td>Solver-guided</td>
+      <td style="text-align: right">1,848</td>
+      <td>solver-aware schema，LLM 自己求解/验证</td>
+      <td>schema-guided LLM rubric</td>
+      <td>最优性保证弱，允许“等价或更优”答案，但 reference 仍可能错</td>
+    </tr>
+    <tr>
+      <td>Solver-anchored</td>
+      <td style="text-align: right">2,454</td>
+      <td>真实 solver 先产出 trusted artifact，再反推任务与环境</td>
+      <td>solver status、objective、optimal solution、约束 rubric</td>
+      <td>正确性最强，但每个新领域都要先工程化 solver，扩展性换来工程成本</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>DAG 管线的关键细节</strong>是工具依赖不是简单共现：边分为 parameter dependency、entity-anchor dependency、state-transition dependency；虚拟节点只做 COMPUTE/LOGIC/EXTRACT/TRANSFORM/AGGREGATE/VALIDATE/FILTER 七类中间操作，不可被 agent 直接调用。生成后允许辅助 search/read/verify 调用不出现在用户描述中，但核心状态变化必须被描述或逻辑蕴含，且 rubric 不强迫复现 reference tool order。</p>
+
+<p><strong>Program 管线的关键细节</strong>是先联合生成内部 task spec 和 solution program，再从已验证程序重写 public query，移除 tool ID、API signature、显式执行顺序和参数 key 暗示。这是对“训练数据把答案写进 prompt”的正面处理。</p>
+
+<p><strong>Solver 管线提供一个很有用的可信度梯度</strong>：隐式方案更容易扩展却让 LLM 判 optimality，显式方案牺牲领域扩展速度换取真实 solver artifact。论文把两者合并统计，但没有给出各自对最终模型的独立增益。</p>
+
+<h3 id="33-轨迹让-teacher-借到能力但不把答案泄露给-student">3.3 轨迹：让 teacher 借到能力，但不把答案泄露给 student</h3>
+
+<p>用户侧用 persona 模拟 request granularity、信息完整度和不一致/误导细节；teacher 侧按失败类型注入两类 privileged guidance：</p>
+
+<ul>
+  <li><strong>Planning-oriented</strong>：给高层分解、搜索策略、约束检查提示，适合 solver 任务的深度探索。</li>
+  <li><strong>Outcome-oriented</strong>：给目标状态、rubric checklist、完成约束，适合 DAG-Challenge/Program 的执行细节遗漏。</li>
+</ul>
+
+<p>中间 reasoning、action、observation 仍必须通过环境自然生成；teacher 被要求隐式使用 guidance，不显式说出隐藏信息。之后按 task correctness、reasoning continuity、logical consistency、evidence grounding 四道门筛轨迹。</p>
+
+<p><img src="../assets/paper-reading/agentomnia/source-trajectory-guidance.png" alt="Privileged guidance improves verified trajectories" /></p>
+
+<p><em>论文 Figure 14 原图：在完整 verification pipeline 下，DAG-Challenge 的 verified Pass@3 从 48.9% 到 76.9%（+28.0pp），Solver 从 52.1% 到 74.2%（+22.1pp），Program 从 48.2% 到 60.8%（+12.6pp）。它证明 guidance 能提高“造出合格轨迹”的概率，不等于证明 student 一定学到同样的能力。</em></p>
+
+<p>论文还单独检查了 grounding，结果反而暴露了最需要警惕的地方：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Synthesis setting</th>
+      <th style="text-align: right">DAG-Challenge</th>
+      <th style="text-align: right">Solver</th>
+      <th style="text-align: right">Program</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>无 privileged guidance</td>
+      <td style="text-align: right">95.84%</td>
+      <td style="text-align: right">98.00%</td>
+      <td style="text-align: right">98.45%</td>
+    </tr>
+    <tr>
+      <td>有 privileged guidance</td>
+      <td style="text-align: right">94.28%</td>
+      <td style="text-align: right">92.01%</td>
+      <td style="text-align: right">97.00%</td>
+    </tr>
+    <tr>
+      <td>变化</td>
+      <td style="text-align: right">-1.56pp</td>
+      <td style="text-align: right"><strong>-5.99pp</strong></td>
+      <td style="text-align: right">-1.45pp</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>也就是说，guidance 带来的 Pass@3 提升和 evidence grounding 的下降同时存在，Solver 最明显。作者称保留集仍“high grounding”，但这不是无泄漏的证明：grounding 判定标准、抽样规模、judge 的人工校准和对抗性泄漏测试都没有给出。我的读法是：<strong>privileged guidance 是有效的 data-generation scaffold，也是一个潜在的 hidden-state distillation 通道</strong>，两面必须一起报告。</p>
+
+<h2 id="4-后训练sft-负责启动rcrl-负责把难题拉回可学习区">4. 后训练：SFT 负责启动，RCRL 负责把难题拉回可学习区</h2>
+
+<p><img src="../assets/paper-reading/agentomnia/source-post-training.png" alt="AgentOmnia post-training paradigm" /></p>
+
+<p><em>论文 Figure 15 原图：上半段从 enhanced environment 采样“easy to verify, hard to solve”的任务，用 planning/outcome guidance 造 strong trajectories 做 SFT；下半段用 rule/rubric reward 做 full rollout，并对 all-fail 样本使用 golden-prefix 的 prefix-conditioned rollout，再由 trajectory analysis 做 reward refinement 和 data evolution。</em></p>
+
+<h3 id="sft-配方">SFT 配方</h3>
+
+<ol>
+  <li><strong>Format validation</strong>：检查 tool call 可解析、函数名存在、参数符合 schema。</li>
+  <li><strong>Convergence-aware budgeting</strong>：各轨迹来源单独 fine-tune，看 validation curve 到稳定所需的样本量，再按“收敛需求”分配混合预算；最终 53K SFT instances。</li>
+  <li><strong>Context alignment</strong>：多轮轨迹只保留最后一个 user query 对应的 reasoning，去掉早期 assistant turns，模拟 inference-time context。</li>
+</ol>
+
+<p>实现细节相对完整：AdamW、global batch 128、最大 64K tokens、cosine decay、2% warmup、learning rate $2\times10^{-6}\to1\times10^{-6}$；tool-response tokens 被 mask，因为它们由环境提供而不是模型生成。</p>
+
+<h3 id="rl-与-reward">RL 与 reward</h3>
+
+<p>RL 数据从 SFT checkpoint 的 Pass@K 估难度，只采 $[0\%,80\%]$ 区间并均匀分层，保留 10%-20% 与 SFT 的重叠作为防漂移正则，得到 5K tasks。reward 同时有：</p>
+
+<ul>
+  <li>rule-based：schema、字段抽取、精确/模糊匹配；</li>
+  <li>rubric-based：长时行为和任务特定操作逻辑；</li>
+  <li>两类在实验中都变成二值 ${0,1}$，执行失败时 router 可回退到 LLM judge。</li>
+</ul>
+
+<p>作者没有只用 accuracy 选 reward model，而是测五个 RL-specific 维度：advanced-vs-basic rubric reliability、组内 Kendall tau-b 排序、advantage 方向（FPR/FNR）、advantage magnitude、重复评分 consistency。这个设计抓住了一个常被忽略的事实：reward model 只要把组内好坏排序颠倒，哪怕总体 accuracy 看着不错，也会把 policy gradient 推向反方向。</p>
+
+<h3 id="rcrl-的核心机制">RCRL 的核心机制</h3>
+
+<p>标准 GRPO 在足够难的 agent task 上会遇到整组 rollout 全为 0，advantage 没有方向。RCRL 给每个 task 配一条 golden trajectory，并维护已暴露的 prefix turn 数 $P_q$：</p>
+
+\[\mathcal L_{\mathrm{RCRL}}(\theta)=\lambda_{\mathrm{CE}}\mathcal L_{\mathrm{SFT}}(\tau^*_{\le P_q})+\lambda_{\mathrm{RL}}\mathcal L_{\mathrm{GRPO}}(\tau_{&gt;P_q}).\]
+
+<p>首轮若一组平均 reward 为 0，就粗粒度增加 prefix（约 golden trajectory 的 20%）再 rollout；之后根据平均 reward 相对阈值的高低逐轮缩短或延长 prefix：太容易就大步缩短，接近阈值就小步缩短，太难就延长。于是 curriculum 不是按全局 task difficulty 排序，而是<strong>每个 prompt 有自己的可学习区间</strong>。</p>
+
+<p>工程上还做了几件会显著改变结果的选择：去掉 KL 和 entropy regularization；ratio 的分母用 inference engine 的 raw behavior policy；做 expert routing replay；rollout 用 top-p=1；直接拼接 token，修正 training-inference mismatch；asymmetric clipping 为 $\epsilon_{low}=0.2,\epsilon_{high}=0.28$，每批 64 tasks、每题 8 rollouts、temperature 1.0。</p>
+
+<p>RCRL 的直觉很漂亮，但证据链不完整：论文没有把“无 rollback 的 GRPO”“只有 prefix、不做 RL”“有 KL”“无 routing replay”等因素拆开报告。因此不能把 41.69% 的提升全部归因于 rollback curriculum；它更像整套 systems alignment 的合取结果。</p>
+
+<h2 id="5-主结果广度确实涨了但不是全局-sota">5. 主结果：广度确实涨了，但不是全局 SOTA</h2>
+
+<p><img src="../assets/paper-reading/agentomnia/source-results-overview.png" alt="AgentOmnia benchmark overview" /></p>
+
+<p><em>论文 Figure 1 原图：红色 AgentOmnia 在 OmniaBench、τ²-Bench、DeepPlanning、VitaBench 分别为 37.1%、75.8%、16.2%、37.6%，相对 foundation 的增益为 +27.95、+19.81、+11.25、+16.34pp；左侧 macro-average 41.7% 仅是在可比 agentic post-trained 组中最高，不是所有模型最高。</em></p>
+
+<h3 id="四-benchmark-读表">四 benchmark 读表</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Model</th>
+      <th style="text-align: right">OmniaBench (644)</th>
+      <th style="text-align: right">τ²-Bench</th>
+      <th style="text-align: right">DeepPlanning</th>
+      <th style="text-align: right">VitaBench</th>
+      <th style="text-align: right">4-way macro</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Qwen3-30B-A3B foundation</td>
+      <td style="text-align: right">9.16</td>
+      <td style="text-align: right">55.98</td>
+      <td style="text-align: right">5.00</td>
+      <td style="text-align: right">21.28</td>
+      <td style="text-align: right">22.86</td>
+    </tr>
+    <tr>
+      <td><strong>AgentOmnia-30B-A3B</strong></td>
+      <td style="text-align: right"><strong>37.11</strong></td>
+      <td style="text-align: right">75.79</td>
+      <td style="text-align: right">16.25</td>
+      <td style="text-align: right">37.62</td>
+      <td style="text-align: right"><strong>41.69</strong></td>
+    </tr>
+    <tr>
+      <td>Agents-A1</td>
+      <td style="text-align: right">30.28</td>
+      <td style="text-align: right"><strong>78.96</strong></td>
+      <td style="text-align: right">19.17</td>
+      <td style="text-align: right"><strong>37.66</strong></td>
+      <td style="text-align: right">41.52</td>
+    </tr>
+    <tr>
+      <td>Nex-N2-Mini</td>
+      <td style="text-align: right">29.35</td>
+      <td style="text-align: right">75.42</td>
+      <td style="text-align: right"><strong>22.29</strong></td>
+      <td style="text-align: right">33.19</td>
+      <td style="text-align: right">40.06</td>
+    </tr>
+    <tr>
+      <td>Qwen3.6-35B-A3B</td>
+      <td style="text-align: right">37.27</td>
+      <td style="text-align: right">87.27</td>
+      <td style="text-align: right">24.17</td>
+      <td style="text-align: right">31.88</td>
+      <td style="text-align: right">45.15</td>
+    </tr>
+    <tr>
+      <td>GPT-5.5 (xhigh)</td>
+      <td style="text-align: right">57.61</td>
+      <td style="text-align: right">86.94</td>
+      <td style="text-align: right">72.50</td>
+      <td style="text-align: right">57.19</td>
+      <td style="text-align: right">68.56</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这张表要同时读三层：</p>
+
+<ol>
+  <li><strong>相对同底座的提升很大</strong>：四项都涨，说明不是只对 OmniaBench 过拟合。</li>
+  <li><strong>相对同代 agentic baseline 是竞争力而非统治</strong>：Agents-A1 在 τ²/DeepPlanning 更强，Nex-N2-Mini 在 DeepPlanning 更强；AgentOmnia 的优势主要是 OmniaBench 和综合均值的窄领先。</li>
+  <li><strong>不能说“超过所有模型”</strong>：Qwen3.6-35B-A3B、DeepSeek-V4-Pro-Max 和 proprietary frontier 仍然更高；AgentOmnia 超过的是 Qwen3-235B-A22B-Thinking-2507 这一组四项，且比较仍受底座、推理预算和部署配置影响。</li>
+</ol>
+
+<p>评测协议并不完全同质：作者优先使用本地 unified reruns，缺失时保留 leaderboard snapshot/source-reported 值；外部 benchmark 的 user simulator 是 2026 年 6 月快照中的 DeepSeek-V4-Flash、关闭 thinking。这个披露是优点，但也意味着跨行比较不能当成严格 controlled experiment。</p>
+
+<h3 id="细粒度广度76--90-不是每个格子都可靠">细粒度广度：76 / 90 不是“每个格子都可靠”</h3>
+
+<p><img src="../assets/paper-reading/agentomnia/source-domain-scatter.png" alt="OmniaBench level-1 domain scatter" /></p>
+
+<p><em>论文 Figure 17 原图：每个点是一个 L1 domain，横轴 foundation Pass@1，纵轴 AgentOmnia Pass@1，点面积是任务数；ToC 215 题、ToB 323 题、ToE 106 题。大多数点在对角线之上，但左侧大量 foundation≈0 的点会把“提升”与“从零开始”混在一起。</em></p>
+
+<p>按 split 的绝对分数是 ToC 6.51%→34.88%（+28.37pp）、ToB 9.91%→38.08%（+28.17pp）、ToE 12.26%→38.68%（+26.42pp）。按 capability，最大增益是 Reliability &amp; Safety +36.77pp，最小是 Code &amp; Programmatic Operations +25.00pp；按 atomic difficulty，Long-context &amp; Multi-artifact Evidence +47.73pp 最大，Multi-source Inconsistency +21.43pp 最小。</p>
+
+<p>这些分布支持“不是单一类别特化”，但不能直接推出“普遍可靠”：论文没有报告每个点的置信区间、跨 seed 方差、任务级 bootstrap，ToE 的 106 题分散在 30 个 L1 domain 上，很多点样本很小。更关键的是绝对分数仍低：Ambiguous Goal &amp; Contextual Constraints 只有 37.04%，Multi-source Inconsistency 只有 50.00%。失败坐标已经告诉我们下一轮该造什么，但还没有告诉我们真实用户是否会同样受益。</p>
+
+<h2 id="6-prd-自进化可控性有信号递归改进还没被证明">6. PRD 自进化：可控性有信号，递归改进还没被证明</h2>
+
+<p><img src="../assets/paper-reading/agentomnia/source-prd-loop.png" alt="PRD-guided self-evolution loop" /></p>
+
+<p><em>论文 Figure 16 原图：模型先在自动评测或真实执行中失败，diagnosis agent 写 task-level / capability-level report，PRD generator 把失败轨迹、语言风格、工具序列和行业需求变成结构化要求，再分别约束 task synthesizer 与 environment synthesizer，训练出下一版模型。</em></p>
+
+<p>PRD 不是普通 prompt，而是一个带接口合同的中间 artifact。核心规格规定 scenario、required behavior、success condition；可选 guidance 记录失败证据和合成约束，例如“至少三层 tool dependency”“注入多个候选 ID”“模拟资源不可用”“把显式 literal 改成代称”。这使内部评测失败和外部产品经理需求可以进入同一个数据管线。</p>
+
+<h3 id="先验证有没有打到失败分布">先验证“有没有打到失败分布”</h3>
+
+<p><img src="../assets/paper-reading/agentomnia/source-prd-alignment.png" alt="PRD domain alignment" /></p>
+
+<p><em>论文 Figure 18 原图：PRD-guided synthetic data 与失败任务的 L1 domain 分布更接近，$D_{KL}(P_{PRD}|P_{failure})=0.196$；原始 post-training data 对失败分布的 KL 是 0.603。这个实验测的是 target alignment，不是能力提升，且图只展示 top 50 domains。</em></p>
+
+<p>KL 下降说明 diagnosis → PRD → synthesis 的路由确实改变了数据分布；它不能证明分布更像失败就一定更能修复失败，也不能排除 generator 只是复制了 failure labels。把它当“可控性指标”是合适的，把它当“自进化已经成功”则过度解读。</p>
+
+<h3 id="一轮模型结果">一轮模型结果</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Model</th>
+      <th style="text-align: right">OmniaBench</th>
+      <th style="text-align: right">τ²-Bench</th>
+      <th style="text-align: right">DeepPlanning</th>
+      <th style="text-align: right">VitaBench</th>
+      <th style="text-align: right">外部三项平均</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>AgentOmnia</td>
+      <td style="text-align: right">37.11</td>
+      <td style="text-align: right">75.79</td>
+      <td style="text-align: right">16.25</td>
+      <td style="text-align: right">37.62</td>
+      <td style="text-align: right">43.22</td>
+    </tr>
+    <tr>
+      <td>AgentOmnia-evo</td>
+      <td style="text-align: right"><strong>38.49</strong></td>
+      <td style="text-align: right"><strong>77.48</strong></td>
+      <td style="text-align: right"><strong>17.08</strong></td>
+      <td style="text-align: right"><strong>37.87</strong></td>
+      <td style="text-align: right"><strong>44.14</strong></td>
+    </tr>
+    <tr>
+      <td>变化</td>
+      <td style="text-align: right">+1.38</td>
+      <td style="text-align: right">+1.69</td>
+      <td style="text-align: right">+0.83</td>
+      <td style="text-align: right">+0.25</td>
+      <td style="text-align: right">+0.92</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这是一条诚实但很弱的 positive signal：外部 benchmark 没参与 target construction，因而有 transfer 意味；但只有一轮、121 个环境和 804 个任务，没有同规模随机 PRD/control、没有多轮曲线，且细项有回落（例如 VitaBench In-store 48.63→47.75）。论文自己也把它称为 preliminary。</p>
+
+<h2 id="7-heilmeier-式追问到底证明了什么">7. Heilmeier 式追问：到底证明了什么</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>追问</th>
+      <th>我的回答</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>做什么？</strong></td>
+      <td>让 agent 在 ToC/ToB/ToE 的异构、有状态、长时工具任务上得到可扩展且可诊断的后训练，而不是只在局部 benchmark 上涨分。</td>
+    </tr>
+    <tr>
+      <td><strong>新在哪里？</strong></td>
+      <td>不是 DAG、程序、solver、privileged distillation、GRPO 或 PRD 中任何一个单点；新的是把它们放进同一坐标系和闭环，并把环境/任务/轨迹都做成可执行 artifact。</td>
+    </tr>
+    <tr>
+      <td><strong>比已有方法好在哪里？</strong></td>
+      <td>相对同底座 Qwen3-30B，四 benchmark 全涨；相对可比 agentic post-trained baselines，OmniaBench 和四项 macro 领先；taxonomy 还能给出“哪里涨、哪里没涨”。</td>
+    </tr>
+    <tr>
+      <td><strong>证据够不够？</strong></td>
+      <td>足以支持整套 recipe 的工程有效性；不足以分离 SFT、RL、RCRL、privileged guidance、reward calibration 各自的因果贡献。</td>
+    </tr>
+    <tr>
+      <td><strong>代价是什么？</strong></td>
+      <td>5,018 个代码环境、255K 工具、52K 任务、53K SFT + 5K RL，外加 solver、sandbox、异步 judge、轨迹分析和大量修复；这是系统工程，不是轻量技巧。</td>
+    </tr>
+    <tr>
+      <td><strong>什么会推翻它？</strong></td>
+      <td>在新底座、留出领域、真实 API/GUI 或人类专家评测上，提升消失；或完整 factorial ablation 显示主要增益来自 benchmark 对齐/数据规模而不是闭环设计。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="最大的因果疑点整套系统一起变无法知道谁在起作用">最大的因果疑点：整套系统一起变，无法知道谁在起作用</h3>
+
+<p>主结果只比较 foundation 与最终 AgentOmnia。最终模型同时经历了：privileged trajectory synthesis、53K SFT、5K RL、二值 rule/rubric reward、无 KL、asymmetric clipping、routing replay、training-inference correction、RCRL 和 trajectory analysis。没有至少以下对照：</p>
+
+<ol>
+  <li>foundation → SFT-only；</li>
+  <li>SFT → 普通 GRPO（无 rollback）；</li>
+  <li>SFT → RCRL（无 privileged guidance）；</li>
+  <li>有/无 rule reward、rubric reward、reward-model calibration；</li>
+  <li>有/无 taxonomy/PRD conditioning；</li>
+  <li>同数据量的真实 API、非 PRD synthetic、随机采样 control。</li>
+</ol>
+
+<p>因此“AgentOmnia”更像一个<strong>系统级 treatment</strong>。这不削弱它作为工程报告的价值，却要求读者把论文里的“contribution”理解为接口设计和生产管线，而不是已经完成的模块级科学归因。</p>
+
+<h3 id="合成环境的真实性与-verifier-的闭环风险">合成环境的真实性与 verifier 的闭环风险</h3>
+
+<p>代码环境解决了真实 API 的成本、权限、速率限制和不可重复问题，也让 state transition、solver artifact、rubric 能自动检查；但它把风险转移到 seed selection、state schema、tool implementation 和 verifier。论文提到 initialization/tool/environment 三层自修复和 reward-hacking audit，却没有给：</p>
+
+<ul>
+  <li>环境保留率、每层修复次数、失败类型分布；</li>
+  <li>真实应用/真实 API 的 holdout 对比；</li>
+  <li>rubric/judge 与人类专家的一致率、置信区间；</li>
+  <li>对“模型恰好匹配答案但没有证明最优”“伪造价格再声称已验证”等 reward-hacking 案例的定量前后变化。</li>
+</ul>
+
+<p>尤其是 implicit solver-guided 仍让 LLM 产生 ground truth/optimality 判断，explicit solver-anchored 才有真正的 solver artifact。把两者合并在 4,302 个 solver tasks 的 headline 里，会掩盖 correctness guarantee 的异质性。</p>
+
+<h3 id="privileged-guidance-的双刃剑">Privileged guidance 的双刃剑</h3>
+
+<p>Pass@3 的提升很醒目，但 grounding 结果是反方向：DAG 95.84%→94.28%，Solver 98.00%→92.01%，Program 98.45%→97.00%。这说明“teacher 能不能借助隐藏提示做出正确轨迹”和“student 可见证据是否足以支持这条 reasoning”是两个不同指标。Solver 下降近 6pp 不是可以略过的小噪声；它提醒我们把 privileged guidance 当作<strong>受约束的蒸馏通道</strong>，而不是免费的 stronger teacher。</p>
+
+<p>更严格的验证应包含：逐步 evidence attribution、隐藏提示对照、人工 blind review、对抗性 prompt（诱导 teacher 引用不可见状态）、以及 student 只看保留轨迹时的 held-out transfer。当前报告只给总体 pass rate，没有这些切片。</p>
+
+<h3 id="评测广度的统计陷阱">评测广度的统计陷阱</h3>
+
+<p>76/90 domain 上升是好信号，但 scatter 中很多 foundation 点接近 0，提升有“从 0 到可用”的地板效应；点大小差异也很大。ToC/ToB/ToE 的任务数是 215/323/106，不均衡；作者报告的是 task-level micro pass rate，taxonomy 图同时又让人关注 domain-level breadth。没有 bootstrap CI、不同随机 seed、pass@k 曲线或人类效用指标，不能把 37.11% 读成稳定的生产成功率。</p>
+
+<p>此外，OmniaBench 与 AgentOmnia 共享 taxonomy、部分 synthesis methodology，虽然训练任务做了 deduplication，仍可能共享 generator prior；所以 external τ²-Bench、DeepPlanning、VitaBench 的上涨更能支持泛化，但这些 benchmark 也使用固定的 user simulator / adapter / inference budget。作者把 source-reported 与 unified rerun 分开标注，是对这一问题的诚实处理；读者仍应避免跨表直接排位。</p>
+
+<h3 id="prd-不是-magic-self-improvement">PRD 不是 magic self-improvement</h3>
+
+<p>PRD 的价值在于把失败压缩成可读、可审查、可消费的 specification，连接工程团队和数据生成器；它不是模型自己凭空“发现新能力”。当前一轮实验的 +1.38pp（OmniaBench）和 +0.92pp（外部平均）更像证明 protocol 可控、方向正确。要称为 recursive self-improvement，至少还需要：</p>
+
+<ul>
+  <li>多轮迭代曲线，含 held-out domain 和 regression suite；</li>
+  <li>随机 PRD / 人工 PRD / 不带 PRD 的同预算 control；</li>
+  <li>每轮失败分布、数据重复率、能力迁移与遗忘；</li>
+  <li>PRD diagnosis 的人类校准和跨模型一致性。</li>
+</ul>
+
+<h2 id="8-我会如何复现与改进这个实验">8. 我会如何复现与改进这个实验</h2>
+
+<p>若目标是研究而不是复刻 Huawei 的全部基础设施，我会把最小可复现版本拆成四个可独立验收的阶段：</p>
+
+<ol>
+  <li><strong>先做坐标与 held-out split</strong>：固定 Domain/Capability/Difficulty schema，按领域留出一部分任务，防止 taxonomy 与 benchmark 共用生成先验。</li>
+  <li><strong>只用一个小型状态化环境</strong>：同时实现 DAG、program、solver 三种 task，所有成功标准先用 deterministic state assertions，再叠 rubric judge。</li>
+  <li><strong>做 factorial post-training</strong>：foundation、SFT、SFT+GRPO、SFT+RCRL、privileged/no-privileged 五个条件，报告 pass@1、pass@k、trajectory length、tool errors、grounding 和成本。</li>
+  <li><strong>最后接 PRD</strong>：diagnosis 报告必须链接到失败轨迹中的证据；PRD 生成后先做分布对齐，再用新领域和 regression suite 验证，不把 KL 下降当成能力提升。</li>
+</ol>
+
+<p>这套顺序也给 agent 数据管线一个很实用的原则：<strong>先让“任务为什么算成功”可执行，再让“怎么生成更多任务”规模化；先把失败归因到坐标和组件，再谈自动自进化。</strong></p>
+
+<h2 id="对我的价值">对我的价值</h2>
+
+<p>AgentOmnia 对 paper-reading / agent harness 的直接启发，不是照抄 5,018 个环境，而是把一篇笔记也当成一个可审计 artifact：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>AgentOmnia 概念</th>
+      <th>可迁移到阅读管线的做法</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Taxonomy coordinate</td>
+      <td>每篇论文同时标注问题域、能力/方法、难度或证据类型，避免只按标题归档</td>
+    </tr>
+    <tr>
+      <td>Executable task + rubric</td>
+      <td>关键数字必须能回到页码、表格或原图；结论和证据分栏</td>
+    </tr>
+    <tr>
+      <td>Privileged guidance</td>
+      <td>可以用外部检索辅助理解，但最终笔记要区分论文可见证据与我的推断</td>
+    </tr>
+    <tr>
+      <td>Trajectory analysis</td>
+      <td>失败阅读不是“没看懂”，而是记录卡在哪个 section、哪个定义或哪个对照</td>
+    </tr>
+    <tr>
+      <td>PRD loop</td>
+      <td>把“最大疑点”转成下一轮复现/查证的具体任务，而不是泛泛写 limitations</td>
+    </tr>
+    <tr>
+      <td>RCRL</td>
+      <td>难点先用可验证的中间 prefix 拆开，再逐步减少脚手架；但要有 no-scaffold regression</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="最后一句">最后一句</h2>
+
+<p>AgentOmnia 把 agent 后训练最难的一件事说清楚了：<strong>规模不是把轨迹数量乘大，而是把任务空间、状态、正确性、训练和失败诊断放进同一条可执行管线。</strong> 这篇报告已经有很强的工程证据——同一底座跨四个 benchmark 广泛提升——但“PRD 驱动的递归自我改进”和各组件的独立因果，仍然是下一篇实验而不是本文已经证明的结论。</p>
+
+            </div>
+        </article>
+
+        
+        
+        
+        
+    </div>
+
+    <aside class="blog-toc-sidebar">
+        <nav id="blog-toc" class="blog-toc-nav" aria-label="Table of contents">
+            <div class="blog-toc-header">
+                <div class="blog-toc-title">On This Page</div>
+                <button
+                    id="blog-toc-toggle"
+                    class="blog-toc-toggle"
+                    type="button"
+                    aria-controls="blog-toc-list"
+                    aria-expanded="true"
+                    aria-label="收起目录"
+                    title="收起目录"
+                >
+                    <svg class="blog-toc-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="blog-toc-list" class="blog-toc-list"></div>
+        </nav>
+    </aside>
+</div>
+
+    </main>
+    <footer class="footer border-top py-2 mt-5 bg-white small">
+    <div class="container-lg">
+        <div class="row my-3">
+            <div class="col-6">
+                <div class="text-muted">
+                    <i>Last updated: Aug 2026</i>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="text-right text-muted">
+                    Built with <a href="https://github.com/luost26/academic-homepage" target="_blank"><i class="fas fa-pencil-ruler"></i> academic-homepage</a> · Visual refresh by Kimi-K3.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <pagefind-config
+        bundle-path="/Ryanhu2001/pagefind/"
+        base-url="/Ryanhu2001/"
+        excerpt-length="30"
+        lang="zh-CN"></pagefind-config>
+    <div class="modal fade site-search-modal" id="siteSearchModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="siteSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 mb-0" id="siteSearchModalLabel">Search</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <pagefind-searchbox placeholder="搜索 wiki、论文笔记、关键词..." show-sub-results="true" hide-shortcut="true"></pagefind-searchbox>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous"></script>
+    <script type="module" src="/Ryanhu2001/pagefind/pagefind-component-ui.js"></script>
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tocbot@4.36.8/dist/tocbot.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            renderMathInElement(document.body, {
+              delimiters: [
+                  {left: '$$', right: '$$', display: true},
+                  {left: '\\[', right: '\\]', display: true},
+                  {left: '$', right: '$', display: false},
+                  {left: '\\(', right: '\\)', display: false}
+              ],
+              throwOnError : false
+            });
+            Prism.highlightAll();
+            
+
+            var siteSearchModal = document.getElementById("siteSearchModal");
+            var siteSearchBox = siteSearchModal ? siteSearchModal.querySelector("pagefind-searchbox") : null;
+            function focusSiteSearch() {
+                window.setTimeout(function() {
+                    if (siteSearchBox && typeof siteSearchBox.focus === "function") {
+                        siteSearchBox.focus();
+                    }
+                }, 80);
+            }
+            if (siteSearchModal && window.jQuery) {
+                window.jQuery(siteSearchModal).on("shown.bs.modal", focusSiteSearch);
+            }
+            document.addEventListener("keydown", function(event) {
+                var key = String(event.key || "").toLowerCase();
+                var isSearchShortcut = key === "k" && (event.metaKey || event.ctrlKey);
+                var isModalOpen = siteSearchModal && siteSearchModal.classList.contains("show");
+                var target = event.target;
+                var isTyping = target && (
+                    target.tagName === "INPUT" ||
+                    target.tagName === "TEXTAREA" ||
+                    target.isContentEditable
+                );
+                if (!isSearchShortcut || (isTyping && isModalOpen) || !siteSearchModal || !window.jQuery) return;
+                event.preventDefault();
+                window.jQuery(siteSearchModal).modal("show");
+            });
+        });
+    </script>
+    
+    <script src="/Ryanhu2001/assets/js/blog.js"></script>
+    
+    <script src="/Ryanhu2001/assets/js/common.js"></script>
+</body>
+</html>

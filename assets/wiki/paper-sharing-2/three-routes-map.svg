@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="700" viewBox="0 0 1600 700" role="img" aria-labelledby="title desc">
+  <title id="title">智能体环境合成的三条技术路线</title>
+  <desc id="desc">模型模拟、程序合成、真实挖掘加自进化三条路线在环境本质、保真度与扩展方式上的对比。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbf9f4"/>
+      <stop offset="1" stop-color="#f0ece3"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#5d5142" flood-opacity="0.12"/>
+    </filter>
+    <style>
+      .title { font: 700 44px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #191714; }
+      .subtitle { font: 400 22px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #655e55; }
+      .route { font: 700 26px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #1f1c18; }
+      .paper { font: 700 17px "SF Mono", Menlo, monospace; letter-spacing: 0.04em; }
+      .body { font: 400 17px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #5e574f; }
+      .kv { font: 600 16px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #453f38; }
+      .foot { font: 500 18px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #655e55; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="700" rx="36" fill="url(#bg)"/>
+  <text class="title" x="80" y="86">同一个痛点，三条路线：环境从哪里来？</text>
+  <text class="subtitle" x="82" y="126">痛点：环境贵、任务少、不可控——三篇论文分别用模拟、合成、挖掘来回答</text>
+
+  <g filter="url(#shadow)">
+    <rect x="80" y="170" width="440" height="380" rx="24" fill="#f5f1ff" stroke="#8c78bd" stroke-width="2.5"/>
+    <rect x="580" y="170" width="440" height="380" rx="24" fill="#eef7f2" stroke="#5b9670" stroke-width="2.5"/>
+    <rect x="1080" y="170" width="440" height="380" rx="24" fill="#fffaf1" stroke="#d9a84e" stroke-width="2.5"/>
+  </g>
+
+  <text class="paper" x="112" y="212" fill="#6a5a96">QWEN-AGENTWORLD</text>
+  <text class="route" x="112" y="252">路线一 · 模型模拟</text>
+  <text class="body" x="112" y="292">用语言世界模型（LWM）学会环境</text>
+  <text class="body" x="112" y="320">动力学：给定历史与动作，直接生成</text>
+  <text class="body" x="112" y="348">下一个环境观测。推理即环境。</text>
+  <text class="kv" x="112" y="396">保真度：中（可能幻觉）</text>
+  <text class="kv" x="112" y="428">扩展速度：极快</text>
+  <text class="kv" x="112" y="460">可控性：极高，corner-case 随手造</text>
+  <text class="kv" x="112" y="492">验证：LLM 五维 Rubric + 部分规则</text>
+
+  <text class="paper" x="612" y="212" fill="#3e7d55">CLI-UNIVERSE</text>
+  <text class="route" x="612" y="252">路线二 · 程序合成</text>
+  <text class="body" x="612" y="292">结构化分类法先定义任务蓝图，再落成</text>
+  <text class="body" x="612" y="320">Docker 真实环境，最后多阶段可执行</text>
+  <text class="body" x="612" y="348">过滤——三分之二的候选被丢弃。</text>
+  <text class="kv" x="612" y="396">保真度：极高（100% 可执行验证）</text>
+  <text class="kv" x="612" y="428">扩展速度：慢，逐个构建 + 验证</text>
+  <text class="kv" x="612" y="460">数据效率：极高，6k 轨迹超 SOTA</text>
+  <text class="kv" x="612" y="492">验证：Fail-to-Pass 双向检查</text>
+
+  <text class="paper" x="1112" y="212" fill="#b8860b">AGENT-WORLD</text>
+  <text class="route" x="1112" y="252">路线三 · 真实挖掘 + 自进化</text>
+  <text class="body" x="1112" y="292">从 MCP / 工具文档 / PRD 挖掘真实</text>
+  <text class="body" x="1112" y="320">数据库与工具，合成可验证任务；训练</text>
+  <text class="body" x="1112" y="348">诊断反馈驱动下一轮环境扩展。</text>
+  <text class="kv" x="1112" y="396">保真度：高（真实数据 + 工具）</text>
+  <text class="kv" x="1112" y="428">规模：1,978 环境 · 19,822 工具</text>
+  <text class="kv" x="1112" y="460">自进化：原生支持，闭环扩展</text>
+  <text class="kv" x="1112" y="492">验证：可执行奖励 + 难度进化</text>
+
+  <text class="foot" x="80" y="612">三条路线不是互斥选项：模拟解决 Scale，合成解决质量，挖掘 + 自进化解决覆盖与持续性——</text>
+  <text class="foot" x="80" y="644">融合它们（用 LWM 探索、用程序验证精选）是第五部分讨论的开放问题。</text>
+</svg>

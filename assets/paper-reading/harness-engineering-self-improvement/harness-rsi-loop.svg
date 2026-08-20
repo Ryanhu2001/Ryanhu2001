@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="700" viewBox="0 0 1120 700" role="img" aria-labelledby="title desc">
+  <title id="title">Harness engineering path to recursive self-improvement</title>
+  <desc id="desc">A hand-drawn map of how harness design connects base models, workflows, persistent artifacts, evaluators, and self-improvement loops.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#253036"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfaf7; }
+      .title { font: 700 30px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111; }
+      .subtitle { font: 500 15px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #5a625f; }
+      .box { fill: #fff; stroke: #283238; stroke-width: 1.5; rx: 16; }
+      .model { fill: #eef5ff; stroke: #3a5f90; stroke-width: 1.5; rx: 16; }
+      .harness { fill: #eef8ef; stroke: #3d704a; stroke-width: 1.5; rx: 16; }
+      .artifact { fill: #fff2df; stroke: #9b6518; stroke-width: 1.5; rx: 16; }
+      .risk { fill: #f8eef8; stroke: #7b4f86; stroke-width: 1.5; rx: 16; }
+      .label { font: 700 16px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #162025; }
+      .small { font: 500 13px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #394246; }
+      .metric { font: 800 24px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #162025; }
+      .mono { font: 600 13px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #253036; }
+      .line { stroke: #253036; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .loop { stroke: #3d704a; stroke-width: 2; fill: none; marker-end: url(#arrow); stroke-dasharray: 7 6; }
+      .guard { stroke: #7b4f86; stroke-width: 2; fill: none; marker-end: url(#arrow); stroke-dasharray: 5 5; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1120" height="700"/>
+  <text class="title" x="54" y="58">Harness engineering as the near-term RSI surface</text>
+  <text class="subtitle" x="55" y="86">The model may not rewrite weights first. It can improve the machinery around itself.</text>
+
+  <rect class="model" x="70" y="155" width="220" height="130"/>
+  <text class="label" x="110" y="190">Base model</text>
+  <text class="small" x="110" y="222">reasoning, coding, tool use</text>
+  <text class="small" x="110" y="248">core intelligence still matters</text>
+
+  <rect class="harness" x="380" y="120" width="310" height="210"/>
+  <text class="label" x="425" y="155">Harness runtime</text>
+  <text class="small" x="425" y="190">workflow loop: plan, act, test, repair</text>
+  <text class="small" x="425" y="218">context engineering and memory policy</text>
+  <text class="small" x="425" y="246">tool permissions and process manager</text>
+  <text class="small" x="425" y="274">sub-agents and backend jobs</text>
+  <text class="small" x="425" y="302">evaluation and regression gates</text>
+
+  <rect class="artifact" x="780" y="155" width="250" height="130"/>
+  <text class="label" x="820" y="190">Persistent artifacts</text>
+  <text class="small" x="820" y="222">files, logs, diffs, traces</text>
+  <text class="small" x="820" y="248">snapshots, failures, results</text>
+
+  <path class="line" d="M290 220 H380"/>
+  <path class="line" d="M690 220 H780"/>
+  <path class="loop" d="M905 285 C850 385 610 398 545 330"/>
+
+  <rect class="box" x="95" y="420" width="250" height="145"/>
+  <text class="label" x="130" y="455">Optimization ladder</text>
+  <text class="small" x="130" y="486">prompts</text>
+  <text class="small" x="130" y="512">structured context</text>
+  <text class="small" x="130" y="538">workflow</text>
+  <text class="small" x="230" y="486">harness code</text>
+  <text class="small" x="230" y="512">optimizer code</text>
+
+  <rect class="box" x="435" y="420" width="250" height="145"/>
+  <text class="label" x="470" y="455">Search families</text>
+  <text class="small" x="470" y="486">ACE, MCE, Meta-Harness</text>
+  <text class="small" x="470" y="512">Self-Harness</text>
+  <text class="small" x="470" y="538">AlphaEvolve, DGM, SIA</text>
+
+  <rect class="risk" x="775" y="420" width="270" height="145"/>
+  <text class="label" x="812" y="455">Boundary conditions</text>
+  <text class="small" x="812" y="486">held-out evals and trace audits</text>
+  <text class="small" x="812" y="512">permission layer outside the loop</text>
+  <text class="small" x="812" y="538">human taste at decision points</text>
+
+  <path class="line" d="M535 330 C535 370 500 390 345 443"/>
+  <path class="line" d="M560 330 C560 365 560 390 560 420"/>
+  <path class="guard" d="M690 276 C780 335 895 348 910 420"/>
+
+  <text class="subtitle" x="100" y="630">Reading frame: harnesses make long-horizon agent work inspectable and improvable, but fuzzy evaluators and reward hacking decide the ceiling.</text>
+</svg>

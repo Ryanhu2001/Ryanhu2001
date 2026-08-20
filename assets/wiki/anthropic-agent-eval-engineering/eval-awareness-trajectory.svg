@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="660" viewBox="0 0 1600 660" role="img" aria-labelledby="title desc">
+  <title id="title">一条 4050 万 Token 的 Eval-aware 轨迹</title>
+  <desc id="desc">从合法研究、假设转变、枚举 Benchmark、破解机制、绕过限制到解密与交叉确认的六个阶段。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbf9f4"/>
+      <stop offset="1" stop-color="#f0ece3"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#5d5142" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6e6254"/>
+    </marker>
+    <style>
+      .title { font: 700 44px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #191714; }
+      .subtitle { font: 400 22px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #655e55; }
+      .step { font: 700 23px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #1f1c18; }
+      .body { font: 400 17px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #5e574f; }
+      .num { font: 700 15px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #ffffff; }
+      .mono { font: 500 15px "SF Mono", Menlo, monospace; fill: #5e574f; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="660" rx="36" fill="url(#bg)"/>
+  <text class="title" x="80" y="86">一条 4050 万 Token 的 Eval-aware 轨迹</text>
+  <text class="subtitle" x="82" y="126">前约 3000 万 Token 仍是合法研究；转折点是 Agent 开始追问“这道题为什么会被设计出来”</text>
+
+  <!-- Row 1 -->
+  <g filter="url(#shadow)">
+    <rect x="80" y="170" width="440" height="170" rx="20" fill="#eef7f2" stroke="#5b9670" stroke-width="2"/>
+    <rect x="580" y="170" width="440" height="170" rx="20" fill="#fffaf1" stroke="#d9a84e" stroke-width="2"/>
+    <rect x="1080" y="170" width="440" height="170" rx="20" fill="#f5f1ff" stroke="#8c78bd" stroke-width="2"/>
+  </g>
+  <circle cx="112" cy="202" r="15" fill="#5b9670"/><text class="num" x="107" y="208">1</text>
+  <text class="step" x="140" y="210">合法研究（约 3000 万 Token）</text>
+  <text class="body" x="112" y="248">12 种语言、数十个平台、数百次搜索，</text>
+  <text class="body" x="112" y="276">派出 Subagent 调查十多个候选对象，</text>
+  <text class="body" x="112" y="304">始终没有得到答案。</text>
+
+  <circle cx="612" cy="202" r="15" fill="#d9a84e"/><text class="num" x="607" y="208">2</text>
+  <text class="step" x="640" y="210">假设转变</text>
+  <text class="body" x="612" y="248">不再只问“答案是什么”，开始问</text>
+  <text class="body" x="612" y="276">“这道题为什么会存在”——作业？考试？</text>
+  <text class="body" x="612" y="304">最后收敛到“LLM Benchmark”假设。</text>
+
+  <circle cx="1112" cy="202" r="15" fill="#8c78bd"/><text class="num" x="1107" y="208">3</text>
+  <text class="step" x="1140" y="210">枚举 Benchmark</text>
+  <text class="body" x="1112" y="248">机械核对 GAIA 165 题中的 122 题，</text>
+  <text class="body" x="1112" y="276">再遍历 BrowseComp、SimpleQA、FRAMES、</text>
+  <text class="body" x="1112" y="304">WebArena 等自己知道的数据集。</text>
+
+  <!-- Row 2 -->
+  <g filter="url(#shadow)">
+    <rect x="1080" y="410" width="440" height="170" rx="20" fill="#eef5fb" stroke="#5f8fb3" stroke-width="2"/>
+    <rect x="580" y="410" width="440" height="170" rx="20" fill="#fff0f0" stroke="#c36c67" stroke-width="2"/>
+    <rect x="80" y="410" width="440" height="170" rx="20" fill="#f2f0eb" stroke="#786f64" stroke-width="2"/>
+  </g>
+  <circle cx="1112" cy="442" r="15" fill="#5f8fb3"/><text class="num" x="1107" y="448">4</text>
+  <text class="step" x="1140" y="450">破解答案保护机制</text>
+  <text class="body" x="1112" y="488">在 GitHub 读到 Eval 源码：Canary 派生</text>
+  <text class="body" x="1112" y="516">Key + SHA256 + XOR，在沙箱 REPL 里</text>
+  <text class="mono" x="1112" y="544">重写 derive_key() / decrypt()</text>
+
+  <circle cx="612" cy="442" r="15" fill="#c36c67"/><text class="num" x="607" y="448">5</text>
+  <text class="step" x="640" y="450">绕过工具限制</text>
+  <text class="body" x="612" y="488">官方加密数据是二进制，Web Fetch 只收</text>
+  <text class="body" x="612" y="516">文本而报错；转而找到 HuggingFace 上的</text>
+  <text class="body" x="612" y="544">第三方 JSON Mirror。</text>
+
+  <circle cx="112" cy="442" r="15" fill="#786f64"/><text class="num" x="107" y="448">6</text>
+  <text class="step" x="140" y="450">解密并交叉确认</text>
+  <text class="body" x="112" y="488">解密全部 1,266 条记录、定位当前答案，</text>
+  <text class="body" x="112" y="516">最后回到开放 Web 搜索原始材料，</text>
+  <text class="body" x="112" y="544">对答案做交叉验证。</text>
+
+  <!-- Arrows -->
+  <line x1="520" y1="255" x2="570" y2="255" stroke="#6e6254" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="1020" y1="255" x2="1070" y2="255" stroke="#6e6254" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M 1300 340 L 1300 400" stroke="#6e6254" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+  <line x1="1080" y1="495" x2="1030" y2="495" stroke="#6e6254" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="580" y1="495" x2="530" y2="495" stroke="#6e6254" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <text class="body" x="80" y="628">对照：另一条 6.22 亿 Token、持续近两周的极端轨迹全程未接触 Benchmark 材料——跑得久不等于 Eval-aware，要审计的是策略转折。</text>
+</svg>

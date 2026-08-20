@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="640" viewBox="0 0 1600 640" role="img" aria-labelledby="title desc">
+  <title id="title">世界模型的两种应用范式</title>
+  <desc id="desc">Decoupled 把世界模型当独立环境模拟器；Unified 让同一个模型既选动作又预测状态。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbf9f4"/>
+      <stop offset="1" stop-color="#f0ece3"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#5d5142" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrowB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#5f8fb3"/>
+    </marker>
+    <marker id="arrowP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8c78bd"/>
+    </marker>
+    <style>
+      .title { font: 700 44px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #191714; }
+      .subtitle { font: 400 22px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #655e55; }
+      .panel { font: 700 26px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; }
+      .node { font: 600 19px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #1f1c18; }
+      .sub { font: 400 15px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #5e574f; }
+      .body { font: 400 16px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #5e574f; }
+      .hl { font: 600 16px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="640" rx="36" fill="url(#bg)"/>
+  <text class="title" x="80" y="86">世界模型的两种用法：环境模拟器 vs 智能体基础模型</text>
+  <text class="subtitle" x="82" y="126">同一个 LWM，可以站在环境一侧陪练，也可以并入策略模型本身</text>
+
+  <!-- Left: Decoupled -->
+  <g filter="url(#shadow)">
+    <rect x="80" y="166" width="700" height="400" rx="24" fill="#f4f8fb" stroke="#5f8fb3" stroke-width="2"/>
+  </g>
+  <text class="panel" x="116" y="216" fill="#3d6f93">范式一 · Decoupled（环境模拟器）</text>
+  <text class="body" x="116" y="246">策略与世界模型是两个模型；init_state 仍需提前合成</text>
+
+  <rect x="116" y="276" width="280" height="66" rx="12" fill="#ffffff" stroke="#5f8fb3" stroke-width="1.5"/>
+  <text class="node" x="140" y="304">Agent（被训练）</text>
+  <text class="sub" x="140" y="326">根据任务与观测生成 action</text>
+
+  <rect x="464" y="276" width="280" height="66" rx="12" fill="#ffffff" stroke="#5f8fb3" stroke-width="1.5"/>
+  <text class="node" x="488" y="304">WorldModel（陪练）</text>
+  <text class="sub" x="488" y="326">按 history + action 生成 observation</text>
+
+  <path d="M 396 292 C 420 280 440 280 454 292" stroke="#5f8fb3" stroke-width="3" fill="none" marker-end="url(#arrowB)"/>
+  <path d="M 464 330 C 440 344 420 344 406 332" stroke="#5f8fb3" stroke-width="3" fill="none" marker-end="url(#arrowB)"/>
+  <text class="sub" x="400" y="264">action</text>
+  <text class="sub" x="382" y="368">observation</text>
+
+  <rect x="116" y="396" width="628" height="60" rx="12" fill="#ffffff" stroke="#5f8fb3" stroke-width="1.5"/>
+  <text class="node" x="140" y="422">循环至 done → Verifier 判成败给 reward → RL 更新 Agent</text>
+  <text class="sub" x="140" y="444">环境侧可控扰动：api error、rate limit 等 corner-case 随手注入</text>
+  <path d="M 430 342 L 430 386" stroke="#5f8fb3" stroke-width="2.5" stroke-dasharray="6 5" fill="none" marker-end="url(#arrowB)"/>
+
+  <text class="hl" x="116" y="502" fill="#3d6f93">战绩：可控 Sim RL 在 WideSearch 上 50.3%，反超真实搜索引擎训练的 45.6%</text>
+  <text class="body" x="116" y="532">——完全在虚构环境中训练的搜索智能体，泛化到了真实搜索任务。</text>
+
+  <!-- Right: Unified -->
+  <g filter="url(#shadow)">
+    <rect x="820" y="166" width="700" height="400" rx="24" fill="#f7f4fd" stroke="#8c78bd" stroke-width="2"/>
+  </g>
+  <text class="panel" x="856" y="216" fill="#6a5a96">范式二 · Unified（智能体基础模型）</text>
+  <text class="body" x="856" y="246">选动作的智能体与预测状态的世界模型是同一个模型</text>
+
+  <rect x="856" y="276" width="628" height="80" rx="12" fill="#ffffff" stroke="#8c78bd" stroke-width="1.5"/>
+  <text class="node" x="880" y="308">Step 1 · LWM RL Warmup</text>
+  <text class="sub" x="880" y="332">单轮、非智能体任务：训练模型预测下一环境状态的能力</text>
+
+  <rect x="856" y="396" width="628" height="80" rx="12" fill="#ffffff" stroke="#8c78bd" stroke-width="1.5"/>
+  <text class="node" x="880" y="428">Step 2 · Agentic RL</text>
+  <text class="sub" x="880" y="452">多轮、工具调用的智能体任务：预测能力迁移为决策能力</text>
+
+  <path d="M 1170 356 L 1170 386" stroke="#8c78bd" stroke-width="3" fill="none" marker-end="url(#arrowP)"/>
+
+  <text class="hl" x="856" y="512" fill="#6a5a96">战绩：仅加 LWM 预热，7 个基准全涨——最大 +12.79（WideSearch），</text>
+  <text class="body" x="856" y="542">领域外的 Claw-Eval / BFCL v4 也分别 +11.28 / +8.96，说明学到的是可迁移能力。</text>
+
+  <text class="body" x="80" y="612">“预测能力可以迁移到决策能力”——这是 Qwen-AgentWorld 超出“造环境”本身的关键发现。</text>
+</svg>
