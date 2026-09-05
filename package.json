@@ -2,7 +2,7 @@
   "name": "ryan-personal-wiki",
   "private": true,
   "scripts": {
-    "build": "npm run check:deepseek-share && npm run check:figures:gate && bundle exec jekyll build && python3 scripts/check_deepseek_harness_share.py --rendered-root _site && pagefind --site _site",
+    "build": "npm run check:deepseek-share && npm run check:figures:gate && bundle exec jekyll build && python3 scripts/check_deepseek_harness_share.py --rendered-root _site && node scripts/build_papermod.mjs && pagefind --site _site && node scripts/check_papermod.mjs",
     "build:site": "bundle exec jekyll build",
     "build:search": "pagefind --site _site",
     "check:deepseek-share": "python3 scripts/check_deepseek_harness_share.py",

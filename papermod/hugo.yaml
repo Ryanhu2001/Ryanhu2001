@@ -1,0 +1,81 @@
+baseURL: "https://ryanhu2001.github.io/Ryanhu2001/"
+title: Ryan
+locale: en-US
+defaultContentLanguage: en
+hasCJKLanguage: false
+timeZone: Asia/Shanghai
+theme: PaperMod
+buildDrafts: false
+buildFuture: false
+enableRobotsTXT: true
+disableKinds: [section, taxonomy, term, RSS, sitemap]
+
+pagination:
+  pagerSize: 10
+
+params:
+  env: production
+  description: "Notes on machine learning."
+  author: Ryan
+  defaultTheme: auto
+  disableThemeToggle: false
+  mainSections: [concept]
+  DateFormat: "January 2, 2006"
+  ShowReadingTime: true
+  ShowCodeCopyButtons: true
+  ShowShareButtons: false
+  ShowPostNavLinks: false
+  ShowBreadCrumbs: false
+  ShowToc: true
+  TocOpen: false
+  disableSpecial1stPost: true
+  hideFooter: false
+  homeInfoParams:
+    Title: Ryan
+    Content: "It comes down to taste."
+  socialIcons:
+    - name: github
+      title: GitHub
+      url: "https://github.com/Ryanhu2001"
+  assets:
+    disableHLJS: true
+    theme_color: "#2e3440"
+    favicon: "favicon.svg"
+
+menu:
+  main:
+    - name: Home
+      url: ""
+      weight: 10
+    - name: Wiki
+      url: "wiki/"
+      weight: 20
+    - name: GitHub
+      url: "https://github.com/Ryanhu2001"
+      weight: 30
+
+markup:
+  goldmark:
+    extensions:
+      passthrough:
+        enable: true
+        delimiters:
+          block: [['\[', '\]'], ['$$', '$$']]
+          inline: [['\(', '\)']]
+    renderer:
+      unsafe: false
+  highlight:
+    noClasses: false
+    style: nord
+    lineNos: false
+  tableOfContents:
+    startLevel: 2
+    endLevel: 3
+
+outputs:
+  home: [HTML]
+  section: [HTML]
+
+privacy:
+  googleAnalytics:
+    disable: true

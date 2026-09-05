@@ -1,0 +1,6 @@
+/* Let wide equations scroll without changing PaperMod's article layout. */
+.post-content .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-block: 0.125em;
+}

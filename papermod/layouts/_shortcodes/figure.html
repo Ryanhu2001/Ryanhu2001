@@ -1,0 +1,15 @@
+{{- /* Upstream PaperMod figure structure, with baseURL-safe local image paths. */ -}}
+{{- $src := .Get "src" -}}
+{{- if hasPrefix $src "assets/" }}{{ $src = $src | relURL }}{{ end -}}
+<figure{{ if or (.Get "class") (eq (.Get "align") "center") }} class="{{ if eq (.Get "align") "center" }}align-center {{ end }}{{ with .Get "class" }}{{ . }}{{ end }}"{{ end }}>
+    {{- if .Get "link" -}}
+        <a href="{{ .Get "link" }}"{{ with .Get "target" }} target="{{ . }}"{{ end }}{{ with .Get "rel" }} rel="{{ . }}"{{ end }}>
+    {{- end }}
+    <img loading="lazy" decoding="async" src="{{ $src }}{{ if eq (.Get "align") "center" }}#center{{ end }}"
+         alt="{{ with .Get "alt" }}{{ . }}{{ else }}{{ .Get "caption" | markdownify | plainify }}{{ end }}"
+         {{ with .Get "width" }}width="{{ . }}"{{ end }} {{ with .Get "height" }}height="{{ . }}"{{ end }}>
+    {{- if .Get "link" }}</a>{{ end -}}
+    {{- if or (.Get "caption") (.Get "title") }}
+    <figcaption>{{ with .Get "title" }}{{ . }}{{ end }}{{ with .Get "caption" }}<p>{{ . | markdownify }}</p>{{ end }}</figcaption>
+    {{- end }}
+</figure>

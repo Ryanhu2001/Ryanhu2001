@@ -17,6 +17,12 @@ permalink: /wiki/
     <div class="col-lg-10 mx-auto">
         <div class="bg-white shadow-sm rounded-xl p-4 p-md-5">
             <h1 class="mb-2">Wiki</h1>
+            <p class="mb-4">
+                Featured notes:
+                <a href="{{ '/wiki/Linear%20Attention.html' | relative_url }}">Linear Attention</a> ·
+                <a href="{{ '/wiki/kv-cache/' | relative_url }}">KV Cache</a> ·
+                <a href="{{ '/wiki/rotary-position-embeddings/' | relative_url }}">Rotary Position Embeddings</a>
+            </p>
             <div class="paper-reading-meta mb-4">
                 {{ wiki_count }} notes · selected from my Obsidian vault
             </div>

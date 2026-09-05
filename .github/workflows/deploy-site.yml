@@ -15,6 +15,8 @@ on:
       - "_news/**"
       - "scripts/**"
       - "assets/**"
+      - "papermod/**"
+      - "diagrams/**"
       - "Gemfile"
       - "Gemfile.lock"
       - "package.json"
@@ -48,9 +50,17 @@ jobs:
           cache: "npm"
 
       - run: npm ci
-      - run: npm run check:figures:gate
-      - run: bundle exec jekyll build
-      - run: npm run build:search
+      - name: Install pinned Hugo
+        env:
+          HUGO_VERSION: "0.165.0"
+          HUGO_SHA256: "5c3a37a5450b3e386e5b75a87a790fea2d04a796d75e171216c80ef48a32b432"
+        run: |
+          mkdir -p "${RUNNER_TEMP}/hugo-bin"
+          curl --fail --location --retry 3 --output "${RUNNER_TEMP}/hugo.tar.gz" "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_linux-amd64.tar.gz"
+          printf '%s  %s\n' "${HUGO_SHA256}" "${RUNNER_TEMP}/hugo.tar.gz" | sha256sum --check
+          tar -xzf "${RUNNER_TEMP}/hugo.tar.gz" -C "${RUNNER_TEMP}/hugo-bin" hugo
+          echo "${RUNNER_TEMP}/hugo-bin" >> "${GITHUB_PATH}"
+      - run: npm run build
       - run: touch _site/.nojekyll
 
       - name: Deploy to gh-pages

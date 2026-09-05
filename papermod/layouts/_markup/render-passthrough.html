@@ -1,0 +1,9 @@
+{{- $options := dict "output" "htmlAndMathml" "displayMode" (eq .Type "block") -}}
+{{- with try (transform.ToMath .Inner $options) -}}
+  {{- with .Err -}}
+    {{- errorf "Math rendering failed at %s: %s" $.Position . -}}
+  {{- else -}}
+    {{- .Value -}}
+    {{- $.Page.Store.Set "hasMath" true -}}
+  {{- end -}}
+{{- end -}}

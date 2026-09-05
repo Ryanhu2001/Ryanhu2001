@@ -11,6 +11,9 @@ _site/
 .obsidian/graph.json
 .trash/
 node_modules/
+papermod/public/
+papermod/resources/
+papermod/.hugo_build.lock
 vendor/
 assets/ryan/3194f61b0f7f765d1f954a939560855c.jpg
 assets/ryan/*_副本.*

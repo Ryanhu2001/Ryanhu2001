@@ -1,0 +1,10 @@
+{{- if not hugo.IsProduction }}
+<meta name="robots" content="noindex, nofollow">
+{{- end }}
+{{- $renderedContent := .Content -}}
+{{- if or (.Store.Get "hasMath") .IsNode }}
+<link rel="stylesheet" href="{{ "vendor/katex-0.16.21/katex.min.css" | relURL }}">
+{{- with resources.Get "css/math.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}">
+{{- end }}
+{{- end }}

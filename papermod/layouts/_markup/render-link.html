@@ -1,0 +1,3 @@
+{{- $href := .Destination -}}
+{{- if hasPrefix $href "assets/" }}{{ $href = $href | relURL }}{{ end -}}
+<a href="{{ $href }}"{{ with .Title }} title="{{ . }}"{{ end }}>{{ .Text | safeHTML }}</a>
