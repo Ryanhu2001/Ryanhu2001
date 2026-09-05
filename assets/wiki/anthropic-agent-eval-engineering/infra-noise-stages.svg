@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="560" viewBox="0 0 1600 560" role="img" aria-labelledby="title desc">
+  <title id="title">资源余量的两个阶段</title>
+  <desc id="desc">从 1x 到 3x 主要修复基础设施稳定性，从 3x 到 Uncapped 开始改变 Agent 可用策略。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbf9f4"/>
+      <stop offset="1" stop-color="#f0ece3"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#5d5142" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6e6254"/>
+    </marker>
+    <style>
+      .title { font: 700 44px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #191714; }
+      .subtitle { font: 400 22px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #655e55; }
+      .step { font: 700 24px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #1f1c18; }
+      .body { font: 400 17px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #5e574f; }
+      .big { font: 700 34px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; }
+      .tag { font: 700 16px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #6e6254; letter-spacing: 0.06em; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="560" rx="36" fill="url(#bg)"/>
+  <text class="title" x="80" y="86">资源余量的两个阶段：先修稳定性，再改变可用策略</text>
+  <text class="subtitle" x="82" y="126">Terminal-Bench 2.0 · 固定模型 / Harness / Task，只改资源执行方式，六组配置</text>
+
+  <g filter="url(#shadow)">
+    <rect x="80" y="170" width="440" height="250" rx="20" fill="#fff0f0" stroke="#c36c67" stroke-width="2"/>
+    <rect x="580" y="170" width="440" height="250" rx="20" fill="#fffaf1" stroke="#d9a84e" stroke-width="2"/>
+    <rect x="1080" y="170" width="440" height="250" rx="20" fill="#eef7f2" stroke="#5b9670" stroke-width="2"/>
+  </g>
+
+  <text class="tag" x="112" y="208">STRICT 1x</text>
+  <text class="step" x="112" y="244">资源太紧</text>
+  <text class="big" x="112" y="296" fill="#c36c67">Infra Error 5.8%</text>
+  <text class="body" x="112" y="336">保证值 = 硬上限，没有任何 Headroom，</text>
+  <text class="body" x="112" y="364">瞬时内存峰值直接被 OOM Kill。</text>
+
+  <text class="tag" x="612" y="208">1x → 3x</text>
+  <text class="step" x="612" y="244">修复稳定性</text>
+  <text class="big" x="612" y="296" fill="#b8860b">Error 降至 2.1%</text>
+  <text class="body" x="612" y="336">下降显著（p &lt; 0.001），但任务成功率</text>
+  <text class="body" x="612" y="364">仍在噪声内波动（p = 0.40）——被救回的</text>
+  <text class="body" x="612" y="392">多是本来就走错路的 Trial。</text>
+
+  <text class="tag" x="1112" y="208">3x → UNCAPPED</text>
+  <text class="step" x="1112" y="244">策略被改变</text>
+  <text class="big" x="1112" y="296" fill="#3e7d55">成功率 +4pp</text>
+  <text class="body" x="1112" y="336">Error 仅再降 1.6pp（最终约 0.5%），增益来自</text>
+  <text class="body" x="1112" y="364">大型依赖、昂贵子进程与暴力搜索变得可行；</text>
+  <text class="body" x="1112" y="392">1x → Uncapped 总差达 6pp（p &lt; 0.01）。</text>
+
+  <line x1="520" y1="295" x2="570" y2="295" stroke="#6e6254" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="1020" y1="295" x2="1070" y2="295" stroke="#6e6254" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <text class="body" x="80" y="472">交叉验证：SWE-bench 227 题 × 10 Samples，RAM 从 1x 提到 5x 带来 +1.54pp——效应更小，方向一致。</text>
+  <text class="body" x="80" y="504">结论：Benchmark 测量的对象随资源配置改变——紧资源奖励精简实现，宽资源奖励重型工具链。</text>
+</svg>

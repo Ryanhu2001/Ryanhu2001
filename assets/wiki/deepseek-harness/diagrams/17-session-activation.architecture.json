@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "子会话与当前运行实例",
+    "quality_profile": "showcase",
+    "viewBox": [1540, 650],
+    "legend": { "mode": "hidden" }
+  },
+  "components": [
+    { "id": "childSession", "type": "database", "label": "子会话", "sublabel": "Child Session：稳定身份", "tag": "可持久化", "pos": [40, 255], "size": [210, 78] },
+    { "id": "running", "type": "backend", "label": "正在运行", "sublabel": "Activation：Agent + 消息队列", "tag": "至多一个", "pos": [340, 255], "size": [220, 78] },
+    { "id": "waiting", "type": "messagebus", "label": "等待新消息", "sublabel": "Activation 仍在内存", "tag": "可以唤醒", "pos": [650, 255], "size": [220, 78] },
+    { "id": "cold", "type": "external", "label": "当前没有运行实例", "sublabel": "Session 可以恢复", "tag": "未驻留", "pos": [960, 255], "size": [210, 78] },
+    { "id": "retained", "type": "database", "label": "已持久化的身份与历史", "sublabel": "完成落盘后可跨进程恢复", "tag": "Persistence", "pos": [1260, 255], "size": [230, 78] }
+  ],
+  "connections": [
+    { "id": "spawnActivation", "from": "childSession", "to": "running", "label": "创建运行实例", "variant": "emphasis" },
+    { "id": "waitAfterTurn", "from": "running", "to": "waiting", "label": "本轮结束", "variant": "default" },
+    { "id": "disposeActivation", "from": "waiting", "to": "cold", "label": "释放运行实例", "variant": "dashed" },
+    { "id": "surviveProcess", "from": "cold", "to": "retained", "label": "只保留 Session", "variant": "default" },
+    { "id": "wakeActivation", "from": "waiting", "to": "running", "label": "新消息唤醒同一个实例", "variant": "emphasis", "fromSide": "top", "toSide": "top", "via": [[760, 145], [450, 145]], "labelAt": [605, 125] },
+    { "id": "coldResume", "from": "cold", "to": "running", "label": "从历史恢复新实例", "variant": "emphasis", "fromSide": "bottom", "toSide": "bottom", "via": [[1065, 455], [450, 455]], "labelAt": [760, 435] }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "会话可以跨进程保留",
+      "items": [
+        "Child Session 有稳定身份与独立历史",
+        "已持久化后，当前没有运行实例时仍然可以恢复"
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "运行实例只存在于当前进程",
+      "items": [
+        "一个 Session 至多有一个 Activation",
+        "interrupt 停止当前执行，不删除 Session"
+      ]
+    }
+  ]
+}

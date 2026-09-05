@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Agent Eval 五层系统</title>
+  <desc id="desc">从任务定义、Agent Harness、环境工具、轨迹与结果、Grader 到生产反馈的完整 Agent Eval 系统，以及五类常见失真。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbf9f4"/>
+      <stop offset="1" stop-color="#f0ece3"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#5d5142" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6e6254"/>
+    </marker>
+    <style>
+      .title { font: 700 50px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #191714; }
+      .subtitle { font: 400 23px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #655e55; }
+      .step { font: 700 24px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #1f1c18; }
+      .body { font: 400 18px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #5e574f; }
+      .small { font: 500 16px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #665f56; }
+      .failure-title { font: 700 19px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #6a302d; }
+      .failure-body { font: 400 15px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; fill: #78514d; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="900" rx="36" fill="url(#bg)"/>
+  <text class="title" x="80" y="92">Agent Eval 不是一个分数，而是一套测量系统</text>
+  <text class="subtitle" x="82" y="134">观测成绩同时由模型、Harness、环境、任务、Grader、采样和基础设施共同产生</text>
+
+  <g filter="url(#shadow)">
+    <rect x="74" y="210" width="214" height="226" rx="24" fill="#fffaf1" stroke="#d9a84e" stroke-width="2"/>
+    <rect x="322" y="210" width="214" height="226" rx="24" fill="#f5f1ff" stroke="#8c78bd" stroke-width="2"/>
+    <rect x="570" y="210" width="214" height="226" rx="24" fill="#eef7f2" stroke="#5b9670" stroke-width="2"/>
+    <rect x="818" y="210" width="214" height="226" rx="24" fill="#eef5fb" stroke="#5f8fb3" stroke-width="2"/>
+    <rect x="1066" y="210" width="214" height="226" rx="24" fill="#fff0f0" stroke="#c36c67" stroke-width="2"/>
+    <rect x="1314" y="210" width="214" height="226" rx="24" fill="#f2f0eb" stroke="#786f64" stroke-width="2"/>
+  </g>
+
+  <g>
+    <circle cx="108" cy="249" r="16" fill="#d9a84e"/><text class="small" x="103" y="255" fill="#fff">1</text>
+    <text class="step" x="98" y="300">任务与成功标准</text>
+    <text class="body" x="98" y="338">输入、边界、Outcome</text>
+    <text class="body" x="98" y="368">Capability / Regression</text>
+    <text class="body" x="98" y="398">真实失败是否被覆盖</text>
+
+    <circle cx="356" cy="249" r="16" fill="#8c78bd"/><text class="small" x="351" y="255" fill="#fff">2</text>
+    <text class="step" x="346" y="300">Agent Harness</text>
+    <text class="body" x="346" y="338">Prompt、工具编排</text>
+    <text class="body" x="346" y="368">Memory、Compaction</text>
+    <text class="body" x="346" y="398">停止条件与重试策略</text>
+
+    <circle cx="604" cy="249" r="16" fill="#5b9670"/><text class="small" x="599" y="255" fill="#fff">3</text>
+    <text class="step" x="594" y="300">环境与工具</text>
+    <text class="body" x="594" y="338">API、数据库、Sandbox</text>
+    <text class="body" x="594" y="368">资源、延迟、网络</text>
+    <text class="body" x="594" y="398">接口抽象与控制层级</text>
+
+    <circle cx="852" cy="249" r="16" fill="#5f8fb3"/><text class="small" x="847" y="255" fill="#fff">4</text>
+    <text class="step" x="842" y="300">轨迹与最终状态</text>
+    <text class="body" x="842" y="338">Tool calls、Reasoning</text>
+    <text class="body" x="842" y="368">Trajectory / Transcript</text>
+    <text class="body" x="842" y="398">真实世界状态是否改变</text>
+
+    <circle cx="1100" cy="249" r="16" fill="#c36c67"/><text class="small" x="1095" y="255" fill="#fff">5</text>
+    <text class="step" x="1090" y="300">Grader</text>
+    <text class="body" x="1090" y="338">规则、测试、状态检查</text>
+    <text class="body" x="1090" y="368">LLM Rubric、人工校准</text>
+    <text class="body" x="1090" y="398">多维评分与否决条件</text>
+
+    <circle cx="1348" cy="249" r="16" fill="#786f64"/><text class="small" x="1343" y="255" fill="#fff">6</text>
+    <text class="step" x="1338" y="300">指标与生产反馈</text>
+    <text class="body" x="1338" y="338">pass@k / pass^k</text>
+    <text class="body" x="1338" y="368">成本、延迟、失败类型</text>
+    <text class="body" x="1338" y="398">监控、A/B、用户报告</text>
+  </g>
+
+  <g stroke="#6e6254" stroke-width="3" fill="none" marker-end="url(#arrow)">
+    <path d="M 290 323 H 315"/>
+    <path d="M 538 323 H 563"/>
+    <path d="M 786 323 H 811"/>
+    <path d="M 1034 323 H 1059"/>
+    <path d="M 1282 323 H 1307"/>
+    <path d="M 1424 442 C 1424 505, 1120 510, 870 505 C 560 500, 188 490, 180 440" stroke-dasharray="10 9"/>
+  </g>
+  <text class="small" x="590" y="489">生产失败回流为新任务、回归测试和 Grader 校准样本</text>
+
+  <text class="step" x="80" y="572">五类最常见的评测失真</text>
+  <g>
+    <rect x="78" y="606" width="272" height="174" rx="20" fill="#fff3f1" stroke="#d6a09b"/>
+    <text class="failure-title" x="102" y="646">① 目标定义错误</text>
+    <text class="failure-body" x="102" y="680">测了“说完成”，没测真实状态</text>
+    <text class="failure-body" x="102" y="707">任务过干净，缺少真实边界条件</text>
+    <text class="failure-body" x="102" y="734">Capability 被误当成 Reliability</text>
+
+    <rect x="372" y="606" width="272" height="174" rx="20" fill="#fff3f1" stroke="#d6a09b"/>
+    <text class="failure-title" x="396" y="646">② Grader 偏差</text>
+    <text class="failure-body" x="396" y="680">自评过于宽松，Rubric 漂移</text>
+    <text class="failure-body" x="396" y="707">只看最终答案，忽略危险轨迹</text>
+    <text class="failure-body" x="396" y="734">LLM Judge 未经人工校准</text>
+
+    <rect x="666" y="606" width="272" height="174" rx="20" fill="#fff3f1" stroke="#d6a09b"/>
+    <text class="failure-title" x="690" y="646">③ 系统混杂变量</text>
+    <text class="failure-body" x="690" y="680">Harness、工具、资源改变成绩</text>
+    <text class="failure-body" x="690" y="707">网络、并发、超时制造假差异</text>
+    <text class="failure-body" x="690" y="734">把系统能力误记成模型能力</text>
+
+    <rect x="960" y="606" width="272" height="174" rx="20" fill="#fff3f1" stroke="#d6a09b"/>
+    <text class="failure-title" x="984" y="646">④ Benchmark 被攻破</text>
+    <text class="failure-body" x="984" y="680">训练污染、答案泄漏、Eval awareness</text>
+    <text class="failure-body" x="984" y="707">Agent 绕过预设路径寻找捷径</text>
+    <text class="failure-body" x="984" y="734">静态测试逐渐失去区分度</text>
+
+    <rect x="1254" y="606" width="272" height="174" rx="20" fill="#fff3f1" stroke="#d6a09b"/>
+    <text class="failure-title" x="1278" y="646">⑤ 线上分布缺口</text>
+    <text class="failure-body" x="1278" y="680">离线全绿，真实用户仍感到退化</text>
+    <text class="failure-body" x="1278" y="707">长会话与组合故障难以复现</text>
+    <text class="failure-body" x="1278" y="734">监控、反馈与回归集没有闭环</text>
+  </g>
+
+  <text class="subtitle" x="80" y="842">核心原则：先固定“测量系统”，再讨论模型分数；把生产失败持续转化为新的 Eval 资产。</text>
+</svg>

@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "完整历史如何变成较短的 Messages",
+    "quality_profile": "showcase",
+    "viewBox": [1500, 650],
+    "legend": { "mode": "hidden" }
+  },
+  "components": [
+    { "id": "sessionLog", "type": "database", "label": "完整事件记录", "sublabel": "SessionEvent：A · B · C · D · E · F · G", "tag": "只追加", "pos": [70, 120], "size": [220, 78] },
+    { "id": "compaction", "type": "messagebus", "label": "Compaction 事实", "sublabel": "log-only：start · summary · end", "tag": "继续追加", "pos": [70, 410], "size": [220, 78] },
+    { "id": "derive", "type": "backend", "label": "重新生成消息", "sublabel": "deriveMessages", "pos": [470, 120], "size": [210, 78] },
+    { "id": "replace", "type": "backend", "label": "模型可见替换消息", "sublabel": "user/message + SurfaceOp.replace", "pos": [470, 410], "size": [230, 78] },
+    { "id": "surface", "type": "frontend", "label": "派生后的 Messages", "sublabel": "摘要 + F + G", "tag": "由 Surface 生成", "pos": [880, 265], "size": [230, 82] },
+    { "id": "model", "type": "external", "label": "模型请求", "sublabel": "其中的 conversation history", "pos": [1260, 265], "size": [190, 82] }
+  ],
+  "connections": [
+    { "id": "foldEvents", "from": "sessionLog", "to": "derive", "label": "读取全部事件", "variant": "emphasis" },
+    { "id": "emitReplacement", "from": "compaction", "to": "replace", "label": "另追加 replacement message", "variant": "dashed" },
+    { "id": "applyReplacement", "from": "replace", "to": "derive", "label": "应用替换操作", "variant": "default", "fromSide": "top", "toSide": "bottom" },
+    { "id": "buildSurface", "from": "derive", "to": "surface", "label": "生成较短历史", "variant": "emphasis" },
+    { "id": "sendRequest", "from": "surface", "to": "model", "label": "作为 Messages 字段", "variant": "default" }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "原始记录不删除",
+      "items": [
+        "A 到 G 仍留在只追加日志",
+        "compaction/summary 只记录摘要事实，不直接进入 Messages"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "只改变模型可见历史",
+      "items": [
+        "replacement user/message 在 Surface 中遮蔽旧区间",
+        "模型历史只保留摘要与近期消息"
+      ]
+    }
+  ]
+}
