@@ -1,20 +1,11 @@
-# Codex profile card
+# Profile activity card
 
-Ryan's GitHub profile uses the generated desktop and mobile SVG cards in this directory.
+The profile README displays aggregate WakaTime activity for the seven complete days before today, using Asia/Shanghai dates. The SVG has desktop and mobile layouts. Daily totals come from the official summaries API, and language shares are calculated from summed language durations over the same date range. This measures recorded editor and AI coding activity, not Codex token usage or subscription allowance. Recently installed trackers cannot reconstruct every untracked activity.
 
-The updater reads `account/usage/read` and `account/rateLimits/read` from the locally installed Codex app-server. It needs Python 3, a ChatGPT-backed Codex login and an authenticated GitHub CLI. It does not start a conversation or consume a reset.
+Run `python3 .github/profile/update_wakatime.py` to render locally, or add `--publish` to publish. The script reads the existing API key from `~/.wakatime.cfg`; the key is never included in generated files or GitHub settings. The WakaTime account can remain private.
 
-```sh
-python3 .github/profile/update_profile.py
-python3 .github/profile/update_profile.py --publish
-```
+Only `wakatime.json`, `wakatime.svg`, and `wakatime-mobile.svg` are published by the daily updater. The JSON contains dates, durations, active-day counts and language aggregates. It excludes credentials, account identifiers, projects, paths, machines and conversation content. Missing or invalid data causes the update to stop. Publishing uses the latest remote tree, a non-forced commit, `[skip deploy]`, and a read-back check.
 
-The first command generates a local preview. The second publishes only `stats.json`, `codex.svg` and `codex-mobile.svg` to `Ryanhu2001/Ryanhu2001` using one non-forced commit based on the latest default branch. Concurrent edits cause a safe failure instead of an overwrite. Other repository files and the blog are not modified. Refresh commits contain `[skip deploy]` to avoid a blog rebuild.
+The local Codex daily automation runs at 09:00 Asia/Shanghai. The Mac must be online with the WakaTime configuration and GitHub CLI authentication available. Old Codex assets and their updater remain as a rollback reference; the daily job no longer calls that updater.
 
-Only aggregate token counts, daily totals, streaks, quota percentages, reset times and snapshot dates are published. Credentials, account identifiers, conversations, project names, raw session files and credit information are never included in the public payload.
-
-The lifetime count and streaks are the account service's reported values. The seven-day count ends on the latest returned daily bucket, which can lag behind today; its cutoff is printed on the card. Heatmap cells before the returned history and after the latest bucket are unknown, not zero. Missing dates within that range mean no recorded usage. A daily refresh is a snapshot, not a live quota display. Unavailable or expired quota windows are labelled unavailable. Missing core usage keeps the previous published card.
-
-The Codex task schedules a daily refresh at 09:00 Asia/Shanghai on Ryan's Mac. The Mac and Codex scheduler must be available and both accounts must remain signed in. GitHub's image cache can delay visible updates.
-
-Official protocol reference: https://learn.chatgpt.com/docs/app-server
+GitHub's native repository and pinned-repository sections are controlled by GitHub and cannot be removed by this README.

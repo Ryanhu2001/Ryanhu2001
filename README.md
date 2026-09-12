@@ -1,8 +1,4 @@
-<p align="center">
-  <a href="https://github.com/Ryanhu2001">
-    <picture>
-      <source media="(max-width: 600px)" srcset="https://raw.githubusercontent.com/Ryanhu2001/Ryanhu2001/refs/heads/main/.github/profile/codex-mobile.svg">
-      <img src="https://raw.githubusercontent.com/Ryanhu2001/Ryanhu2001/refs/heads/main/.github/profile/codex.svg" alt="Ryan — Codex usage: total tokens, consecutive days, recent activity and allowance. Updated daily." width="100%">
-    </picture>
-  </a>
-</p>
+<picture>
+  <source media="(max-width: 600px)" srcset="https://raw.githubusercontent.com/Ryanhu2001/Ryanhu2001/refs/heads/main/.github/profile/wakatime-mobile.svg">
+  <img width="900" src="https://raw.githubusercontent.com/Ryanhu2001/Ryanhu2001/refs/heads/main/.github/profile/wakatime.svg" alt="Ryan — WakaTime: recent coding activity, daily average, active days and languages. Updated daily.">
+</picture>

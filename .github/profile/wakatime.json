@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "source": "WakaTime",
+  "timezone": "Asia/Shanghai",
+  "updatedAt": "2026-09-12T18:13:03+08:00",
+  "start": "2026-09-05",
+  "end": "2026-09-11",
+  "totalSeconds": 19615.478,
+  "dailyAverageSeconds": 2802.211,
+  "activeDays": 7,
+  "daily": [
+    {
+      "date": "2026-09-05",
+      "seconds": 1606.736
+    },
+    {
+      "date": "2026-09-06",
+      "seconds": 1234.155
+    },
+    {
+      "date": "2026-09-07",
+      "seconds": 2781.79
+    },
+    {
+      "date": "2026-09-08",
+      "seconds": 8643.753
+    },
+    {
+      "date": "2026-09-09",
+      "seconds": 2085.231
+    },
+    {
+      "date": "2026-09-10",
+      "seconds": 427.477
+    },
+    {
+      "date": "2026-09-11",
+      "seconds": 2836.336
+    }
+  ],
+  "languages": [
+    {
+      "name": "Python",
+      "seconds": 7164.808,
+      "percent": 36.53
+    },
+    {
+      "name": "Markdown",
+      "seconds": 6995.052,
+      "percent": 35.66
+    },
+    {
+      "name": "JavaScript",
+      "seconds": 2380.899,
+      "percent": 12.14
+    },
+    {
+      "name": "Other",
+      "seconds": 1726.709,
+      "percent": 8.8
+    },
+    {
+      "name": "Text",
+      "seconds": 735.969,
+      "percent": 3.75
+    },
+    {
+      "name": "JSON",
+      "seconds": 517.839,
+      "percent": 2.64
+    },
+    {
+      "name": "YAML",
+      "seconds": 42.463,
+      "percent": 0.22
+    },
+    {
+      "name": "Git Config",
+      "seconds": 38.137,
+      "percent": 0.19
+    },
+    {
+      "name": "CSV",
+      "seconds": 13.602,
+      "percent": 0.07
+    }
+  ]
+}
