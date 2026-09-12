@@ -138,12 +138,12 @@ def recent_total(data):
 
 
 def render(data, mobile=False):
-    width, height = (480, 650) if mobile else (900, 602)
+    width, height = (480, 545) if mobile else (900, 497)
     pad = 26 if mobile else 40
     right = width - pad
     accent, muted, white = '#80d9ee', '#8b98a7', '#edf4fa'
     elements = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc">',
-                '<title id="title">Ryan · Building with Codex</title>']
+                '<title id="title">Ryan · Codex usage</title>']
     total, start, end = recent_total(data)
     summary = data['summary']
     elements += [f'<desc id="desc">{summary["lifetimeTokens"]:,} lifetime tokens; {summary["currentStreakDays"]} consecutive days; {total:,} tokens from {start} through {end}. Account usage snapshot, not live.</desc>',
@@ -159,14 +159,9 @@ def render(data, mobile=False):
     def line(y):
         elements.append(f'<path d="M{pad} {y}H{right}" stroke="#25313f"/>')
 
-    text(pad, 39, 'RYAN / BUILD LOG', 11, accent, 500, spacing=2, mono=True)
-    text(right, 39, 'CODEX', 11, muted, 500, 'end', spacing=2, mono=True)
-    text(pad, 96 if mobile else 103, 'Building with Codex.', 33 if mobile else 43, white, 600, spacing=-1.4)
-    text(pad, 123 if mobile else 133, 'Small steps. Long sessions.', 13 if mobile else 15)
-    if not mobile:
-        elements.append('<g transform="translate(793 103)" fill="none" stroke="#80d9ee"><circle r="35" opacity=".12"/><ellipse rx="41" ry="16" transform="rotate(-35)" opacity=".4"/><circle cx="30" cy="-22" r="3" fill="#80d9ee" stroke="none"/></g>')
-        text(793, 111, '>_', 24, accent, 500, 'middle', mono=True)
-    stat_label, stat_value, stat_sub = (177, 219, 242) if mobile else (188, 236, 261)
+    text(pad, 39, 'CODEX', 11, accent, 500, spacing=2, mono=True)
+    text(right, 39, 'RYAN', 11, muted, 500, 'end', spacing=2, mono=True)
+    stat_label, stat_value, stat_sub = (72, 114, 137) if mobile else (83, 131, 156)
     step = (width - pad * 2) / 3
     stats = [('TOTAL TOKENS', compact(summary['lifetimeTokens']), 'all time'),
              ('DAY STREAK', str(summary['currentStreakDays']) if summary['currentStreakDays'] is not None else '—', 'consecutive days'),
@@ -176,10 +171,10 @@ def render(data, mobile=False):
         text(x, stat_label, label, 9 if mobile else 10, muted, spacing=1, mono=True)
         text(x, stat_value, value, 31 if mobile else 40, accent if i == 1 else white, 550, spacing=-1, mono=True)
         text(x, stat_sub, caption, 10 if mobile else 12)
-    line(271 if mobile else 288)
-    text(pad, 304 if mobile else 320, 'TOKEN ACTIVITY', 11, white, 500, spacing=1.5, mono=True)
+    line(166 if mobile else 183)
+    text(pad, 199 if mobile else 215, 'TOKEN ACTIVITY', 11, white, 500, spacing=1.5, mono=True)
     weeks = 13 if mobile else 26
-    text(right, 304 if mobile else 320, f'{weeks} WEEKS', 10, muted, anchor='end', mono=True)
+    text(right, 199 if mobile else 215, f'{weeks} WEEKS', 10, muted, anchor='end', mono=True)
     # Align columns to Sunday. Dates beyond the latest returned bucket are unknown.
     sunday = end - dt.timedelta(days=(end.weekday() + 1) % 7)
     first = sunday - dt.timedelta(weeks=weeks-1)
@@ -189,7 +184,7 @@ def render(data, mobile=False):
     x0 = pad + 30
     pitch = (width - pad * 2 - 30) / weeks
     cell = min(19 if mobile else 21, pitch - 6)
-    y0 = 347 if mobile else 361
+    y0 = 242 if mobile else 256
     ypitch = 22 if mobile else 17
     cell_h = 16 if mobile else 12
     for row, label in ((1, 'M'), (3, 'W'), (5, 'F')):
@@ -214,10 +209,10 @@ def render(data, mobile=False):
                 color = ['#22546b', '#3687a2', '#60b9ce', '#a0e6ef'][level]
                 label = f'{date}: {count:,} tokens'
             elements.append(f'<rect x="{x:.2f}" y="{y0 + row*ypitch}" width="{cell:.2f}" height="{cell_h}" rx="3" fill="{color}"><title>{label}</title></rect>')
-    legend_y = 512 if mobile else 497
+    legend_y = 407 if mobile else 392
     text(pad, legend_y, f'DAILY DATA THROUGH {end:%b %d, %Y}'.upper(), 9, muted, mono=True)
     text(right, legend_y, 'LOW → HIGH', 9, accent, anchor='end', mono=True)
-    quota_y = 548 if mobile else 532
+    quota_y = 443 if mobile else 427
     quota = data.get('quota')
     if quota:
         minutes = quota['windowDurationMins']
