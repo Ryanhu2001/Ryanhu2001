@@ -2,24 +2,24 @@
   "schemaVersion": 1,
   "source": "WakaTime",
   "timezone": "Asia/Shanghai",
-  "updatedAt": "2026-09-12T18:13:03+08:00",
+  "updatedAt": "2026-09-12T18:15:27+08:00",
   "start": "2026-09-05",
   "end": "2026-09-11",
-  "totalSeconds": 19615.478,
-  "dailyAverageSeconds": 2802.211,
+  "totalSeconds": 57032.984,
+  "dailyAverageSeconds": 8147.569,
   "activeDays": 7,
   "daily": [
     {
       "date": "2026-09-05",
-      "seconds": 1606.736
+      "seconds": 2480.608
     },
     {
       "date": "2026-09-06",
-      "seconds": 1234.155
+      "seconds": 6999.982
     },
     {
       "date": "2026-09-07",
-      "seconds": 2781.79
+      "seconds": 3276.076
     },
     {
       "date": "2026-09-08",
@@ -31,58 +31,58 @@
     },
     {
       "date": "2026-09-10",
-      "seconds": 427.477
+      "seconds": 22968.974
     },
     {
       "date": "2026-09-11",
-      "seconds": 2836.336
+      "seconds": 10578.36
     }
   ],
   "languages": [
     {
-      "name": "Python",
-      "seconds": 7164.808,
-      "percent": 36.53
-    },
-    {
       "name": "Markdown",
-      "seconds": 6995.052,
-      "percent": 35.66
+      "seconds": 24740.954,
+      "percent": 43.38
     },
     {
-      "name": "JavaScript",
-      "seconds": 2380.899,
-      "percent": 12.14
-    },
-    {
-      "name": "Other",
-      "seconds": 1726.709,
-      "percent": 8.8
-    },
-    {
-      "name": "Text",
-      "seconds": 735.969,
-      "percent": 3.75
+      "name": "Python",
+      "seconds": 23826.616,
+      "percent": 41.78
     },
     {
       "name": "JSON",
-      "seconds": 517.839,
-      "percent": 2.64
+      "seconds": 3384.214,
+      "percent": 5.93
+    },
+    {
+      "name": "JavaScript",
+      "seconds": 2115.298,
+      "percent": 3.71
+    },
+    {
+      "name": "Other",
+      "seconds": 1757.332,
+      "percent": 3.08
+    },
+    {
+      "name": "Text",
+      "seconds": 1027.877,
+      "percent": 1.8
+    },
+    {
+      "name": "Git Config",
+      "seconds": 124.628,
+      "percent": 0.22
     },
     {
       "name": "YAML",
       "seconds": 42.463,
-      "percent": 0.22
-    },
-    {
-      "name": "Git Config",
-      "seconds": 38.137,
-      "percent": 0.19
+      "percent": 0.07
     },
     {
       "name": "CSV",
       "seconds": 13.602,
-      "percent": 0.07
+      "percent": 0.02
     }
   ]
 }
