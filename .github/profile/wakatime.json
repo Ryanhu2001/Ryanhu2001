@@ -2,17 +2,13 @@
   "schemaVersion": 1,
   "source": "WakaTime",
   "timezone": "Asia/Shanghai",
-  "updatedAt": "2026-09-13T09:02:18+08:00",
-  "start": "2026-09-06",
-  "end": "2026-09-12",
-  "totalSeconds": 90534.805,
-  "dailyAverageSeconds": 12933.544,
+  "updatedAt": "2026-09-14T09:01:55+08:00",
+  "start": "2026-09-07",
+  "end": "2026-09-13",
+  "totalSeconds": 132703.418,
+  "dailyAverageSeconds": 18957.631,
   "activeDays": 7,
   "daily": [
-    {
-      "date": "2026-09-06",
-      "seconds": 6999.982
-    },
     {
       "date": "2026-09-07",
       "seconds": 3276.076
@@ -36,82 +32,101 @@
     {
       "date": "2026-09-12",
       "seconds": 35982.429
+    },
+    {
+      "date": "2026-09-13",
+      "seconds": 49168.595
     }
   ],
   "languages": [
     {
       "name": "Python",
-      "seconds": 39198.741,
-      "percent": 43.3
+      "seconds": 62142.698,
+      "percent": 46.83
     },
     {
       "name": "Markdown",
-      "seconds": 37021.495,
-      "percent": 40.89
+      "seconds": 39677.333,
+      "percent": 29.9
     },
     {
       "name": "JSON",
-      "seconds": 4475.445,
-      "percent": 4.94
-    },
-    {
-      "name": "JavaScript",
-      "seconds": 3257.764,
-      "percent": 3.6
-    },
-    {
-      "name": "Other",
-      "seconds": 2049.963,
-      "percent": 2.26
+      "seconds": 10130.286,
+      "percent": 7.63
     },
     {
       "name": "Bash",
-      "seconds": 1457.937,
-      "percent": 1.61
+      "seconds": 7531.175,
+      "percent": 5.68
+    },
+    {
+      "name": "JavaScript",
+      "seconds": 3216.02,
+      "percent": 2.42
+    },
+    {
+      "name": "Other",
+      "seconds": 3154.955,
+      "percent": 2.38
     },
     {
       "name": "Text",
-      "seconds": 1135.804,
-      "percent": 1.25
+      "seconds": 1228.707,
+      "percent": 0.93
     },
     {
       "name": "HTML",
-      "seconds": 854.158,
-      "percent": 0.94
+      "seconds": 1214.437,
+      "percent": 0.92
     },
     {
-      "name": "R",
-      "seconds": 249.831,
-      "percent": 0.28
+      "name": "C",
+      "seconds": 1068.253,
+      "percent": 0.8
     },
     {
       "name": "Docker",
-      "seconds": 233.931,
-      "percent": 0.26
+      "seconds": 704.904,
+      "percent": 0.53
+    },
+    {
+      "name": "C++",
+      "seconds": 657.789,
+      "percent": 0.5
     },
     {
       "name": "TOML",
-      "seconds": 175.259,
-      "percent": 0.19
+      "seconds": 468.578,
+      "percent": 0.35
+    },
+    {
+      "name": "R",
+      "seconds": 413.109,
+      "percent": 0.31
     },
     {
       "name": "YAML",
-      "seconds": 128.574,
-      "percent": 0.14
+      "seconds": 382.801,
+      "percent": 0.29
     },
     {
       "name": "Git Config",
-      "seconds": 124.628,
-      "percent": 0.14
+      "seconds": 360.227,
+      "percent": 0.27
     },
     {
       "name": "INI",
-      "seconds": 98.619,
-      "percent": 0.11
+      "seconds": 173.063,
+      "percent": 0.13
     },
     {
       "name": "CSV",
-      "seconds": 30.326,
+      "seconds": 76.193,
+      "percent": 0.06
+    },
+    {
+      "name": "Checksums",
+      "seconds": 35.882,
       "percent": 0.03
     },
     {
@@ -123,6 +138,26 @@
       "name": "CSS",
       "seconds": 20.939,
       "percent": 0.02
+    },
+    {
+      "name": "Objective-C",
+      "seconds": 9.787,
+      "percent": 0.01
+    },
+    {
+      "name": "SQL",
+      "seconds": 8.839,
+      "percent": 0.01
+    },
+    {
+      "name": "XML",
+      "seconds": 5.813,
+      "percent": 0.0
+    },
+    {
+      "name": "TSV",
+      "seconds": 0.239,
+      "percent": 0.0
     }
   ]
 }
