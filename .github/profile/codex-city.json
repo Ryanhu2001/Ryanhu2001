@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "Codex account/usage/read dailyUsageBuckets",
-  "updatedAt": "2026-09-18T03:45:06+00:00",
+  "updatedAt": "2026-09-18T03:49:00+00:00",
   "metric": "service-reported tokens; no input/output/cache breakdown provided",
   "dateBasis": "service startDate values, without timezone conversion",
   "coverage": {
