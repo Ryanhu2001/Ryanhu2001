@@ -1,21 +1,51 @@
-# Profile activity card
+# Profile activity visuals
 
-The profile README displays aggregate WakaTime activity for the seven complete days before today, using Asia/Shanghai dates. The SVG has desktop and mobile layouts. Daily totals come from the official summaries API, and language shares are calculated from summed language durations over the same date range. This measures recorded editor and AI coding activity, not Codex token usage or subscription allowance. Recently installed trackers cannot reconstruct every untracked activity.
+The profile displays exactly two visuals: a mint Codex NightView calendar followed
+by a GitHub contribution snake. WakaTime and the older flat Codex card are no longer
+displayed. Their files remain as rollback references; WakaTime's daily job is paused.
 
-Run `python3 .github/profile/update_wakatime.py` to render locally, or add `--publish` to publish. The script reads the existing API key from `~/.wakatime.cfg`; the key is never included in generated files or GitHub settings. The WakaTime account can remain private.
+## Codex NightView
 
-Only `wakatime.json`, `wakatime.svg`, and `wakatime-mobile.svg` are published by the daily updater. The JSON contains dates, durations, active-day counts and language aggregates. It excludes credentials, account identifiers, projects, paths, machines and conversation content. Missing or invalid data causes the update to stop. Publishing uses the latest remote tree, a non-forced commit, `[skip deploy]`, and a read-back check.
+The projection, logarithmic columns and face shading adapt the NightView renderer
+from [github-profile-3d-contrib v0.9.3](https://github.com/yoshi389111/github-profile-3d-contrib).
+See `codex-city-NOTICE.md` for attribution and the MIT license. The palette is mint
+on the original midnight background. The GitHub-specific language and repository
+panels are replaced with actual daily-token and recent-token-share charts.
 
-The local Codex daily automation runs at 09:00 Asia/Shanghai. The Mac must be online with the WakaTime configuration and GitHub CLI authentication available. Old Codex assets and their updater remain as a rollback reference; the daily job no longer calls that updater.
+Desktop shows a 53-week calendar; mobile uses 13 weeks for readability. Headline
+totals cover all returned records. Each bar represents a returned daily token value,
+with the upstream logarithmic mapping applied in millions of tokens. A shared fit
+factor keeps larger future peaks within the canvas. Color increases with usage.
+Missing dates have outlined tiles; returned zeros are shown separately. The radar
+shows each of the latest seven calendar dates, omitting missing observations rather
+than drawing them as zero. The donut partitions returned tokens into the latest
+seven days and earlier dates.
 
-GitHub's native repository and pinned-repository sections are controlled by GitHub and cannot be removed by this README.
+Run `python3 .github/profile/update_codex_city.py` to read the existing local Codex
+login and render both sizes. Add `--publish` to update only `codex-city.json`,
+`codex-city.svg`, and `codex-city-mobile.svg`. The updater makes no model inference
+calls and does not read or reset quota limits.
 
-## Codex token city
+Values come from the official app-server `account/usage/read` response's
+`dailyUsageBuckets`, preserving `startDate` without timezone conversion. These
+buckets have no input/output/cache breakdown, and complete all-device coverage is
+not established. Only dates, token counts, coverage and collection time are exported.
+No conversations, thread metadata, projects, paths, credentials, account identifiers
+or quota data are published. Invalid, duplicate, stale or unavailable data stops
+publication. The publisher updates an explicit three-file allowlist against the
+latest remote tree, rejects concurrent non-fast-forward changes and reads all three
+files back after publishing.
 
-The second card shows a 13-week calendar of recorded Codex token usage. Run `python3 .github/profile/update_codex_city.py` to read the existing local Codex login and render both sizes; add `--publish` to update only `codex-city.json`, `codex-city.svg`, and `codex-city-mobile.svg`. The updater makes no model inference calls and does not read or reset quota limits. It is separate from the retired flat-card `update_profile.py`.
+The signed-in Mac refreshes this card daily at 09:30 Asia/Shanghai and must be online.
+The updater never changes the README, the snake or the blog.
 
-Daily values come from the official app-server `account/usage/read` response's `dailyUsageBuckets`, using `startDate` without timezone conversion. The service does not provide an input/output/cache breakdown in these buckets. The card labels these as recorded tokens and does not claim complete coverage of all devices. Missing dates remain unknown; returned zero values are shown separately. Height uses a square-root scale relative to the displayed peak, and color increases with usage. The seven-day statistic ends at the latest returned date; an incomplete seven-day window is labeled with its returned-day count.
+## GitHub contribution snake
 
-Only dates, token counts, coverage and the collection timestamp are exported. Thread metadata, messages, project names, machine details, account identifiers, credentials and quota data are excluded. Empty, malformed, duplicate, future or stale buckets stop publication. The publisher updates an explicit three-file allowlist, preserves the latest remote tree, rejects concurrent non-fast-forward changes and reads all three files back after publishing.
+`.github/workflows/profile-snake.yml` uses pinned `Platane/snk` v3.5.0 to generate
+dark and light mint animations daily at 09:23 Asia/Shanghai on GitHub Actions. It
+can also be started manually. It stages only `github-snake-dark.svg` and
+`github-snake.svg`; commits contain `[skip deploy]`.
 
-The automatic refresh runs from the signed-in Mac because GitHub Actions does not have this Codex account's local login. The Mac must be online. GitHub contribution-city generation remains available as a manual workflow.
+The snake uses GitHub's contribution calendar, including qualifying commits and
+other contribution types. It is not a count of every local git commit. The README
+uses the dark mint palette to match NightView; a light variant is also generated.

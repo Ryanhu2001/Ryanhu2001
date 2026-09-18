@@ -124,116 +124,150 @@ def compact(value):
 
 
 def render(data, mobile=False):
-    daily = {dt.date.fromisoformat(b['startDate']): b['tokens'] for b in data['dailyUsageBuckets']}
-    end = max(daily)
-    start = end - dt.timedelta(days=end.weekday(), weeks=12)
-    visible = {date: tokens for date, tokens in daily.items() if start <= date <= end}
-    peak = max(visible.values())
-    peak_date = max(visible, key=visible.get)
-    total = sum(visible.values())
-    active = sum(tokens > 0 for tokens in visible.values())
-    recent_start = end - dt.timedelta(days=6)
-    recent = sum(tokens for date, tokens in visible.items() if date >= recent_start)
-    recent_days = sum(recent_start <= date <= end for date in visible)
-    first_visible = min(visible)
-    gap_count = sum(first_visible <= dt.date.fromisoformat(d) <= end
-                    for d in data['coverage']['missingDates'])
-    width, height = (480, 580) if mobile else (900, 680)
-    pad = 26 if mobile else 38
-    out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc">',
-           '<title id="title">Ryan — Codex token city</title>',
-           f'<desc id="desc">Daily account-reported Codex tokens. {total:,} recorded tokens in the displayed 13-week calendar ending {end}; {len(visible)} returned days, {gap_count} missing dates within returned history. Building height uses a square-root scale. Missing dates are outlined, never assumed to be zero. All-device completeness is not established.</desc>',
-           '<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#131e29"/><stop offset="1" stop-color="#090e15"/></linearGradient><radialGradient id="halo"><stop stop-color="#74d9d3" stop-opacity=".09"/><stop offset="1" stop-color="#74d9d3" stop-opacity="0"/></radialGradient></defs>',
-           '<style>text{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.tower{transform-box:fill-box;transform-origin:center bottom;animation:rise .8s cubic-bezier(.2,.7,.2,1) both}@keyframes rise{from{transform:scaleY(.04);opacity:.15}to{transform:scaleY(1);opacity:1}}@media(prefers-reduced-motion:reduce){.tower{animation:none}}</style>',
-           f'<rect x=".5" y=".5" width="{width-1}" height="{height-1}" rx="22" fill="url(#bg)" stroke="#2a3641"/>']
+    """Adapt the upstream NightView calendar projection to recorded Codex tokens.
 
-    def text(x, y, value, size=11, color='#8c9ba8', weight=400, anchor='start', extra=''):
+    Geometry, logarithmic columns and face shading follow
+    yoshi389111/github-profile-3d-contrib v0.9.3 (MIT); see codex-city-NOTICE.md.
+    GitHub-specific language/repository charts are replaced with token metrics.
+    """
+    daily = {dt.date.fromisoformat(b['startDate']): b['tokens'] for b in data['dailyUsageBuckets']}
+    first, end = min(daily), max(daily)
+    weeks = 13 if mobile else 53
+    start = end - dt.timedelta(days=(end.weekday()+1) % 7, weeks=weeks-1)
+    visible = {date: count for date, count in daily.items() if start <= date <= end}
+    total = sum(daily.values())
+    active = sum(value > 0 for value in daily.values())
+    peak = max(daily.values())
+    recent_dates = [end-dt.timedelta(days=6-i) for i in range(7)]
+    recent_values = [daily.get(date) for date in recent_dates]
+    recent = sum(value or 0 for value in recent_values)
+    recent_days = sum(value is not None for value in recent_values)
+    width, height = (480, 610) if mobile else (1280, 890)
+    out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc">',
+           '<title id="title">Ryan — Codex NightView, mint edition</title>',
+           f'<desc id="desc">{total:,} account-reported Codex tokens across {len(daily)} returned dates, {first} to {end}. A {weeks}-week isometric calendar adapted from GitHub Profile 3D Contrib NightView. Heights use the original logarithmic mapping with tokens measured in millions. Missing dates are unknown, not zero. All-device coverage is not established.</desc>',
+           '<style>text{font-family:Ubuntu,Helvetica,Arial,sans-serif}.tower{transform-box:fill-box;transform-origin:center bottom;animation:grow 2.2s ease-out both}@keyframes grow{from{transform:scaleY(.025)}to{transform:scaleY(1)}}@media(prefers-reduced-motion:reduce){.tower{animation:none}}</style>',
+           f'<rect width="{width}" height="{height}" fill="#00000f"/>']
+    mint, fg, weak = '#a6e3df', '#eeeeff', '#9199aa'
+
+    def text(x, y, value, size=16, color=weak, weight=400, anchor='start', extra=''):
         out.append(f'<text x="{x}" y="{y}" font-size="{size}" fill="{color}" font-weight="{weight}" text-anchor="{anchor}" {extra}>{html.escape(str(value))}</text>')
 
     def polygon(points, fill, extra=''):
-        coords = ' '.join(f'{x:.2f},{y:.2f}' for x, y in points)
+        coords = ' '.join(f'{x:.2f},{y:.2f}' for x,y in points)
         out.append(f'<polygon points="{coords}" fill="{fill}" {extra}/>')
 
-    text(pad, 37, 'CODEX / TOKEN CITY', 12, '#a6e3df', 600, extra='letter-spacing="1.1"')
-    text(width-pad, 37, 'RYAN', 10, anchor='end', extra='letter-spacing="1.5"')
-    text(pad, 60, f'{first_visible:%b %d} — {end:%b %d, %Y}', 11)
-    if not mobile:
-        text(width-pad, 60, '13-WEEK CALENDAR', 10, anchor='end')
-    stats = [('RECORDED TOKENS', compact(total)),
-             ('LAST 7 DAYS' if recent_days == 7 else f'7 DAYS / {recent_days} RECORDED', compact(recent)),
-             ('ACTIVE DAYS', str(active)), ('PEAK DAY', compact(peak))]
-    for i, (label, value) in enumerate(stats):
-        x = pad + (i % 2) * 222 if mobile else pad + i * 211
-        y = 91 + (i // 2) * 63 if mobile else 100
-        text(x, y, label, 9, extra='letter-spacing=".8"')
-        text(x, y+33, value, 29 if mobile else 33, '#a6e3df' if i == 0 else '#e9f1f6', 600)
-    divider = 207 if mobile else 165
-    out.append(f'<path d="M{pad} {divider}H{width-pad}" stroke="#2a3641"/>')
-    text(pad, divider+24, 'ONE BUILDING / ONE DAY', 9 if mobile else 10, '#b2c3ce', extra='letter-spacing=".8"')
-    if not mobile:
-        text(width-pad, divider+24, f'PEAK {peak_date:%b %d} · {compact(peak)}', 10, anchor='end')
+    def darken(color, amount):
+        rgb = [int(color[i:i+2],16) for i in (1,3,5)]
+        return '#' + ''.join(f'{round(v * .7**amount):02x}' for v in rgb)
 
-    # Draw back-to-front so each daily column occludes the correct neighbors.
-    out.append('<g transform="translate(-28 107) scale(.60)">' if mobile else '<g>')
-    out.append('<ellipse cx="450" cy="456" rx="340" ry="180" fill="url(#halo)"/>')
-    ox, oy, dx, dy = 348, 317, 31, 14
-
-    def point(week, weekday):
-        return ox+(week-weekday)*dx, oy+(week+weekday)*dy
-
-    polygon([point(-.75, -.75), point(12.75, -.75), point(12.75, 6.75), point(-.75, 6.75)],
-            '#101c27', 'stroke="#2a414e" stroke-width="1"')
-    for week, weekday in sorted(((w, d) for w in range(13) for d in range(7)), key=lambda p:(sum(p), p[0])):
-        date = start + dt.timedelta(days=week*7+weekday)
+    if mobile:
+        text(22,32,'CODEX · NIGHT VIEW',15,mint,600,extra='letter-spacing="1"')
+        text(22,55,f'{first:%b %d} — {end:%b %d, %Y}',12)
+        text(22,101,compact(total),33,mint,600)
+        text(22,122,'recorded tokens',12,fg)
+        text(270,101,compact(recent),33,fg,600)
+        text(270,122,'last 7 days' if recent_days == 7 else f'7 days / {recent_days} returned',12)
+        text(22,159,f'{active} active days · peak {compact(peak)} tokens',12)
+        text(22,181,'LATEST 13 WEEKS',10,weak,extra='letter-spacing="1"')
+        out.append('<g transform="translate(0 107)">')
+        dx = width/24
+        plot_height = 400
+        height_factor = .55
+    else:
+        text(35,43,'CODEX · NIGHT VIEW',23,mint,600,extra='letter-spacing="1.5"')
+        text(width-25,29,f'{first:%Y-%m-%d} / {end:%Y-%m-%d}',16,anchor='end')
+        text(35,73,f'{len(daily)} dates returned · {len(data["coverage"]["missingDates"])} missing within returned history',15)
+        out.append('<g>')
+        dx = width/64
+        plot_height = 850
+        height_factor = 1
+    # Match the upstream 30-degree, Sunday-first, long diagonal calendar.
+    dy = dx*math.tan(math.pi/6)
+    dxx, dyy = dx*.9, dy*.9
+    offset_x, offset_y = dx*7, plot_height-(weeks+7)*dy
+    palette = ['#112333','#235369','#367b8c','#64afb6','#a6e3df']
+    for offset in range(weeks*7):
+        date = start+dt.timedelta(days=offset)
+        week, weekday = divmod(offset,7)
+        x = offset_x+(week-weekday)*dx
+        y = offset_y+(week+weekday)*dy
         count = visible.get(date)
-        cx, cy = point(week, weekday)
-        a, b = 26.5, 11.9
-        footprint = [(cx-a, cy), (cx, cy-b), (cx+a, cy), (cx, cy+b)]
+        points = [(x,y),(x+dxx,y-dyy),(x+2*dxx,y),(x+dxx,y+dyy)]
         if count is None:
             label = 'not yet returned' if date > end else 'no returned record'
             out.append(f'<g data-date="{date}" data-state="missing"><title>{date}: {label}</title>')
-            polygon(footprint, '#101a24', 'stroke="#30414d" stroke-width=".8" stroke-dasharray="2 3"')
+            polygon(points,'#081322','stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"')
             out.append('</g>')
             continue
-        if count == 0:
-            out.append(f'<g data-date="{date}" data-state="zero"><title>{date}: 0 recorded tokens</title>')
-            polygon(footprint, '#233b47', 'stroke="#345260" stroke-width=".7"')
-            out.append('</g>')
-            continue
-        ratio = math.sqrt(count/peak)
-        h = 4 + ratio*124
-        palette = [('#294754','#416978','#648f9b'), ('#355f69','#568791','#82b2ba'),
-                   ('#487b80','#6fa7aa','#a7d6d7'), ('#5c9495','#8fc9c7','#d2fff1')]
-        left, right, roof = palette[min(3, int(ratio*4))]
-        out.append(f'<g class="tower" data-date="{date}" data-state="recorded" style="animation-delay:{week*.03+weekday*.014:.3f}s"><title>{date}: {count:,} recorded tokens</title>')
-        polygon([(cx-a,cy-h),(cx,cy+b-h),(cx,cy+b),(cx-a,cy)], left,
-                'stroke="#8dd1cc" stroke-opacity=".12" stroke-width=".6"')
-        polygon([(cx,cy+b-h),(cx+a,cy-h),(cx+a,cy),(cx,cy+b)], right,
-                'stroke="#d2fff1" stroke-opacity=".13" stroke-width=".6"')
-        for level in range(18, int(h)-8, 18):
-            out.append(f'<path d="M{cx+4:.2f} {cy+b-h+level:.2f}L{cx+a-4:.2f} {cy-h+level+2:.2f}" stroke="#ddfff7" stroke-width="1.6" opacity=".18"/>')
-        polygon([(cx-a,cy-h),(cx,cy-b-h),(cx+a,cy-h),(cx,cy+b-h)], roof,
-                'stroke="#e0fff9" stroke-opacity=".24" stroke-width=".8"')
+        level = 0 if count == 0 else min(4, 1+int(math.sqrt(count/max(1,peak))*3.999))
+        raw_peak = math.log10(peak/1_000_000/20+1)*144+3
+        # A shared fit factor preserves the logarithmic ordering at larger future peaks.
+        h = (math.log10(count/1_000_000/20+1)*144+3)*height_factor*min(1,310/raw_peak)
+        roof = palette[level]
+        state = 'zero' if count == 0 else 'recorded'
+        out.append(f'<g class="{"tower" if count else "base"}" data-date="{date}" data-state="{state}"><title>{date}: {count:,} recorded tokens</title>')
+        polygon([(x,y-h),(x+dxx,y+dyy-h),(x+dxx,y+dyy),(x,y)],darken(roof,.5))
+        polygon([(x+dxx,y+dyy-h),(x+2*dxx,y-h),(x+2*dxx,y),(x+dxx,y+dyy)],darken(roof,1))
+        polygon([(x,y-h),(x+dxx,y-dyy-h),(x+2*dxx,y-h),(x+dxx,y+dyy-h)],roof)
         out.append('</g>')
-    for week in range(0, 13, 3):
-        cx, cy = point(week, 6)
-        label = start + dt.timedelta(weeks=week)
-        text(cx-5, cy+35, label.strftime('%b %d'), 10, anchor='middle')
     out.append('</g>')
-    legend_y = 505 if mobile else 628
-    text(pad, legend_y, 'LOW', 9)
-    for i, fill in enumerate(('#648f9b','#82b2ba','#a7d6d7','#d2fff1')):
-        out.append(f'<rect x="{pad+32+i*16}" y="{legend_y-9}" width="11" height="11" rx="2" fill="{fill}"/>')
-    text(pad+102, legend_y, 'HIGH', 9)
-    out.append(f'<rect x="{pad+157}" y="{legend_y-9}" width="11" height="11" rx="2" fill="none" stroke="#687e8c" stroke-dasharray="2 2"/>')
-    text(pad+176, legend_y, 'NO RECORD', 9)
-    text(width-pad, legend_y, 'SQRT HEIGHT', 9, anchor='end')
-    text(pad, legend_y+24, f'{len(visible)} recorded days · {gap_count} '+('gap' if gap_count == 1 else 'gaps')+' in returned history', 9)
-    text(pad, legend_y+42, 'Account-reported tokens · dates as returned' if mobile else
-         'Account-reported tokens · dates as returned · missing records are not zero', 8 if mobile else 9)
-    svg = '\n'.join(out) + '\n</svg>\n'
-    root = ET.fromstring(svg)
-    assert root.tag == '{http://www.w3.org/2000/svg}svg'
+
+    if not mobile:
+        # NightView's upper-right radar position, now showing actual daily tokens.
+        cx, cy, radius = 974, 272, 153
+        text(cx,66,'RECENT 7 DAYS',17,mint,600,'middle',extra='letter-spacing="1"')
+        maximum = max((v or 0) for v in recent_values)
+        tick = max(1, math.ceil(maximum/4/1_000_000))*1_000_000
+        scale = tick*4
+
+        def radial(i, amount):
+            angle = -math.pi/2+i*2*math.pi/7
+            return cx+math.cos(angle)*radius*amount, cy+math.sin(angle)*radius*amount
+
+        for step in range(1,5):
+            polygon([radial(i,step/4) for i in range(7)],'none',
+                    'stroke="#777d8a" stroke-width=".7" stroke-dasharray="4 5"')
+            text(cx+7,cy-radius*step/4+4,compact(tick*step),11)
+        for i,date in enumerate(recent_dates):
+            px,py = radial(i,1)
+            out.append(f'<path d="M{cx} {cy}L{px:.2f} {py:.2f}" stroke="#5b6476" stroke-width=".7" stroke-dasharray="4 5"/>')
+            lx,ly = radial(i,1.18)
+            text(lx,ly+5,date.strftime('%b %d'),15,fg,anchor='middle')
+        if recent_days == 7:
+            polygon([radial(i,(value or 0)/scale) for i,value in enumerate(recent_values)],mint,
+                    f'fill-opacity=".38" stroke="{mint}" stroke-width="3"')
+        else:
+            for i,value in enumerate(recent_values):
+                if value is not None:
+                    px,py = radial(i,value/scale)
+                    out.append(f'<circle cx="{px:.2f}" cy="{py:.2f}" r="4" fill="{mint}"/>')
+        text(cx,479,'tokens / day' if recent_days == 7 else f'{recent_days}/7 dates returned',14,weak,anchor='middle')
+
+        # NightView's lower-left donut: a real partition of the returned history.
+        cx, cy, radius = 190, 658, 101
+        share = recent/total if total else 0
+        circumference = 2*math.pi*radius
+        out.append(f'<circle cx="{cx}" cy="{cy}" r="{radius}" fill="none" stroke="#173345" stroke-width="29"/>')
+        if share:
+            out.append(f'<circle cx="{cx}" cy="{cy}" r="{radius}" fill="none" stroke="{mint}" stroke-width="29" stroke-dasharray="{share*circumference:.3f} {circumference:.3f}" transform="rotate(-90 {cx} {cy})"/>')
+        text(cx,cy-4,compact(recent),29,mint,600,'middle')
+        text(cx,cy+24,'last 7 days' if recent_days == 7 else f'{recent_days}/7 dates returned',14,fg,anchor='middle')
+        text(335,640,f'{share*100:.1f}% recent',18,mint)
+        text(335,671,f'{(1-share)*100:.1f}% earlier',18,'#6e98a8')
+        text(335,703,'of recorded tokens',14)
+        text(380,833,compact(total),32,mint,600,'end')
+        text(391,833,'tokens',24,fg)
+        text(602,833,str(active),29,mint,600,'end')
+        text(614,833,'active days',21,fg)
+        text(810,833,'peak '+compact(peak),19,fg)
+        text(24,866,'NightView · mint  /  token heights: logarithmic  /  outlined tiles: no returned record',13)
+    else:
+        text(22,552,'LOG HEIGHT · MINT NIGHT VIEW',10,weak,extra='letter-spacing=".6"')
+        text(22,575,'Outlined tiles: no returned record',11)
+        text(22,594,'Account-reported tokens · dates as returned',10)
+    svg = '\n'.join(out)+'\n</svg>\n'
+    ET.fromstring(svg)
     assert 'NaN' not in svg and 'Infinity' not in svg
     return svg
 
