@@ -1,61 +1,61 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="480" height="638" viewBox="0 0 480 638" role="img" aria-labelledby="title desc">
 <title id="title">Ryan · WakaTime</title>
-<desc id="desc">Coding activity from 2026-09-10 through 2026-09-16: 54h 41m; 7 active days. Updated daily.</desc>
+<desc id="desc">Coding activity from 2026-09-11 through 2026-09-17: 57h 57m; 7 active days. Updated daily.</desc>
 <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#111e29"/><stop offset="1" stop-color="#090e16"/></linearGradient><linearGradient id="bar" x2="0" y2="1"><stop stop-color="#92ecea"/><stop offset="1" stop-color="#367688"/></linearGradient></defs>
 <rect x=".5" y=".5" width="479" height="637" rx="20" fill="url(#bg)" stroke="#293744"/>
 <text x="28" y="37" fill="#edf3f8" font-size="12" font-weight="600" text-anchor="start" font-family="SFMono-Regular, Menlo, Consolas, monospace">RYAN</text>
 <text x="452" y="37" fill="#84dfe4" font-size="10" font-weight="400" text-anchor="end" font-family="SFMono-Regular, Menlo, Consolas, monospace">WAKATIME</text>
 <text x="28.0" y="80" fill="#899ba9" font-size="9" font-weight="400" text-anchor="start" font-family="SFMono-Regular, Menlo, Consolas, monospace">LAST 7 DAYS</text>
-<text x="28.0" y="122" fill="#84dfe4" font-size="25" font-weight="500" text-anchor="start" font-family="SFMono-Regular, Menlo, Consolas, monospace">54h 41m</text>
+<text x="28.0" y="122" fill="#84dfe4" font-size="25" font-weight="500" text-anchor="start" font-family="SFMono-Regular, Menlo, Consolas, monospace">57h 57m</text>
 <text x="169.33333333333334" y="80" fill="#899ba9" font-size="9" font-weight="400" text-anchor="start" font-family="SFMono-Regular, Menlo, Consolas, monospace">DAILY AVG</text>
-<text x="169.33333333333334" y="122" fill="#edf3f8" font-size="25" font-weight="500" text-anchor="start" font-family="SFMono-Regular, Menlo, Consolas, monospace">7h 48m</text>
+<text x="169.33333333333334" y="122" fill="#edf3f8" font-size="25" font-weight="500" text-anchor="start" font-family="SFMono-Regular, Menlo, Consolas, monospace">8h 16m</text>
 <text x="310.6666666666667" y="80" fill="#899ba9" font-size="9" font-weight="400" text-anchor="start" font-family="SFMono-Regular, Menlo, Consolas, monospace">ACTIVE DAYS</text>
 <text x="310.6666666666667" y="122" fill="#edf3f8" font-size="25" font-weight="500" text-anchor="start" font-family="SFMono-Regular, Menlo, Consolas, monospace">7 / 7</text>
 <rect x="28.00" y="150.00" width="424.00" height="1.00" rx="0" fill="#293744"/>
 <text x="28" y="183" fill="#edf3f8" font-size="10" font-weight="400" text-anchor="start" font-family="SFMono-Regular, Menlo, Consolas, monospace">DAILY ACTIVITY</text>
-<rect x="48.29" y="278.76" width="20.00" height="39.24" rx="4" fill="url(#bar)"/>
-<text x="58.285714285714285" y="266.75963089854406" fill="#899ba9" font-size="8" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">6h 22m</text>
-<text x="58.285714285714285" y="341" fill="#899ba9" font-size="9" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">Thu</text>
-<rect x="108.86" y="299.93" width="20.00" height="18.07" rx="4" fill="url(#bar)"/>
-<text x="118.85714285714286" y="287.92784967721775" fill="#899ba9" font-size="8" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">2h 56m</text>
-<text x="118.85714285714286" y="341" fill="#899ba9" font-size="9" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">Fri</text>
-<rect x="169.43" y="256.53" width="20.00" height="61.47" rx="4" fill="url(#bar)"/>
-<text x="179.42857142857142" y="244.5273458393513" fill="#899ba9" font-size="8" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">9h 59m</text>
-<text x="179.42857142857142" y="341" fill="#899ba9" font-size="9" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">Sat</text>
-<rect x="230.00" y="234.00" width="20.00" height="84.00" rx="4" fill="url(#bar)"/>
-<text x="240.0" y="222.0" fill="#899ba9" font-size="8" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">13h 39m</text>
-<text x="240.0" y="341" fill="#899ba9" font-size="9" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">Sun</text>
-<rect x="290.57" y="262.80" width="20.00" height="55.20" rx="4" fill="url(#bar)"/>
-<text x="300.57142857142856" y="250.79963269237203" fill="#899ba9" font-size="8" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">8h 58m</text>
-<text x="300.57142857142856" y="341" fill="#899ba9" font-size="9" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">Mon</text>
-<rect x="351.14" y="286.07" width="20.00" height="31.93" rx="4" fill="url(#bar)"/>
-<text x="361.1428571428571" y="274.07345184461747" fill="#899ba9" font-size="8" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">5h 11m</text>
-<text x="361.1428571428571" y="341" fill="#899ba9" font-size="9" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">Tue</text>
-<rect x="411.71" y="271.58" width="20.00" height="46.42" rx="4" fill="url(#bar)"/>
-<text x="421.7142857142857" y="259.580668229385" fill="#899ba9" font-size="8" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">7h 32m</text>
-<text x="421.7142857142857" y="341" fill="#899ba9" font-size="9" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">Wed</text>
+<rect x="48.29" y="299.93" width="20.00" height="18.07" rx="4" fill="url(#bar)"/>
+<text x="58.285714285714285" y="287.92784967721775" fill="#899ba9" font-size="8" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">2h 56m</text>
+<text x="58.285714285714285" y="341" fill="#899ba9" font-size="9" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">Fri</text>
+<rect x="108.86" y="256.53" width="20.00" height="61.47" rx="4" fill="url(#bar)"/>
+<text x="118.85714285714286" y="244.5273458393513" fill="#899ba9" font-size="8" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">9h 59m</text>
+<text x="118.85714285714286" y="341" fill="#899ba9" font-size="9" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">Sat</text>
+<rect x="169.43" y="234.00" width="20.00" height="84.00" rx="4" fill="url(#bar)"/>
+<text x="179.42857142857142" y="222.0" fill="#899ba9" font-size="8" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">13h 39m</text>
+<text x="179.42857142857142" y="341" fill="#899ba9" font-size="9" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">Sun</text>
+<rect x="230.00" y="262.05" width="20.00" height="55.95" rx="4" fill="url(#bar)"/>
+<text x="240.0" y="250.04504956873387" fill="#899ba9" font-size="8" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">9h 05m</text>
+<text x="240.0" y="341" fill="#899ba9" font-size="9" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">Mon</text>
+<rect x="290.57" y="286.07" width="20.00" height="31.93" rx="4" fill="url(#bar)"/>
+<text x="300.57142857142856" y="274.07345184461747" fill="#899ba9" font-size="8" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">5h 11m</text>
+<text x="300.57142857142856" y="341" fill="#899ba9" font-size="9" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">Tue</text>
+<rect x="351.14" y="266.15" width="20.00" height="51.85" rx="4" fill="url(#bar)"/>
+<text x="361.1428571428571" y="254.1487351021521" fill="#899ba9" font-size="8" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">8h 25m</text>
+<text x="361.1428571428571" y="341" fill="#899ba9" font-size="9" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">Wed</text>
+<rect x="411.71" y="264.81" width="20.00" height="53.19" rx="4" fill="url(#bar)"/>
+<text x="421.7142857142857" y="252.8143850764904" fill="#899ba9" font-size="8" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">8h 38m</text>
+<text x="421.7142857142857" y="341" fill="#899ba9" font-size="9" font-weight="400" text-anchor="middle" font-family="SFMono-Regular, Menlo, Consolas, monospace">Thu</text>
 <text x="28" y="393" fill="#edf3f8" font-size="10" font-weight="400" text-anchor="start" font-family="SFMono-Regular, Menlo, Consolas, monospace">LANGUAGES</text>
 <text x="28" y="422" fill="#edf3f8" font-size="11" font-weight="400" text-anchor="start" font-family="SFMono-Regular, Menlo, Consolas, monospace">Python</text>
-<text x="452" y="422" fill="#899ba9" font-size="10" font-weight="400" text-anchor="end" font-family="SFMono-Regular, Menlo, Consolas, monospace">45.9%</text>
+<text x="452" y="422" fill="#899ba9" font-size="10" font-weight="400" text-anchor="end" font-family="SFMono-Regular, Menlo, Consolas, monospace">46.4%</text>
 <rect x="28.00" y="430.00" width="424.00" height="3.00" rx="1.5" fill="#253340"/>
-<rect x="28.00" y="430.00" width="194.40" height="3.00" rx="1.5" fill="#8ae3e3"/>
+<rect x="28.00" y="430.00" width="196.61" height="3.00" rx="1.5" fill="#8ae3e3"/>
 <text x="28" y="454" fill="#edf3f8" font-size="11" font-weight="400" text-anchor="start" font-family="SFMono-Regular, Menlo, Consolas, monospace">Markdown</text>
-<text x="452" y="454" fill="#899ba9" font-size="10" font-weight="400" text-anchor="end" font-family="SFMono-Regular, Menlo, Consolas, monospace">25.7%</text>
+<text x="452" y="454" fill="#899ba9" font-size="10" font-weight="400" text-anchor="end" font-family="SFMono-Regular, Menlo, Consolas, monospace">25.4%</text>
 <rect x="28.00" y="462.00" width="424.00" height="3.00" rx="1.5" fill="#253340"/>
-<rect x="28.00" y="462.00" width="108.88" height="3.00" rx="1.5" fill="#82b9ee"/>
+<rect x="28.00" y="462.00" width="107.48" height="3.00" rx="1.5" fill="#82b9ee"/>
 <text x="28" y="486" fill="#edf3f8" font-size="11" font-weight="400" text-anchor="start" font-family="SFMono-Regular, Menlo, Consolas, monospace">Bash</text>
-<text x="452" y="486" fill="#899ba9" font-size="10" font-weight="400" text-anchor="end" font-family="SFMono-Regular, Menlo, Consolas, monospace">8.2%</text>
+<text x="452" y="486" fill="#899ba9" font-size="10" font-weight="400" text-anchor="end" font-family="SFMono-Regular, Menlo, Consolas, monospace">8.3%</text>
 <rect x="28.00" y="494.00" width="424.00" height="3.00" rx="1.5" fill="#253340"/>
-<rect x="28.00" y="494.00" width="34.98" height="3.00" rx="1.5" fill="#b09cde"/>
+<rect x="28.00" y="494.00" width="35.32" height="3.00" rx="1.5" fill="#b09cde"/>
 <text x="28" y="518" fill="#edf3f8" font-size="11" font-weight="400" text-anchor="start" font-family="SFMono-Regular, Menlo, Consolas, monospace">JSON</text>
-<text x="452" y="518" fill="#899ba9" font-size="10" font-weight="400" text-anchor="end" font-family="SFMono-Regular, Menlo, Consolas, monospace">7.8%</text>
+<text x="452" y="518" fill="#899ba9" font-size="10" font-weight="400" text-anchor="end" font-family="SFMono-Regular, Menlo, Consolas, monospace">7.0%</text>
 <rect x="28.00" y="526.00" width="424.00" height="3.00" rx="1.5" fill="#253340"/>
-<rect x="28.00" y="526.00" width="33.11" height="3.00" rx="1.5" fill="#d5b887"/>
+<rect x="28.00" y="526.00" width="29.68" height="3.00" rx="1.5" fill="#d5b887"/>
 <text x="28" y="550" fill="#edf3f8" font-size="11" font-weight="400" text-anchor="start" font-family="SFMono-Regular, Menlo, Consolas, monospace">Remaining</text>
-<text x="452" y="550" fill="#899ba9" font-size="10" font-weight="400" text-anchor="end" font-family="SFMono-Regular, Menlo, Consolas, monospace">12.4%</text>
+<text x="452" y="550" fill="#899ba9" font-size="10" font-weight="400" text-anchor="end" font-family="SFMono-Regular, Menlo, Consolas, monospace">13.0%</text>
 <rect x="28.00" y="558.00" width="424.00" height="3.00" rx="1.5" fill="#253340"/>
-<rect x="28.00" y="558.00" width="52.62" height="3.00" rx="1.5" fill="#81929d"/>
+<rect x="28.00" y="558.00" width="54.95" height="3.00" rx="1.5" fill="#81929d"/>
 <rect x="28.00" y="586.00" width="424.00" height="1.00" rx="0" fill="#293744"/>
-<text x="28" y="612" fill="#899ba9" font-size="9" font-weight="400" text-anchor="start" font-family="SFMono-Regular, Menlo, Consolas, monospace">09.10 — 09.16</text>
-<text x="452" y="612" fill="#899ba9" font-size="9" font-weight="400" text-anchor="end" font-family="SFMono-Regular, Menlo, Consolas, monospace">UPDATED 09.17 · UTC+8</text>
+<text x="28" y="612" fill="#899ba9" font-size="9" font-weight="400" text-anchor="start" font-family="SFMono-Regular, Menlo, Consolas, monospace">09.11 — 09.17</text>
+<text x="452" y="612" fill="#899ba9" font-size="9" font-weight="400" text-anchor="end" font-family="SFMono-Regular, Menlo, Consolas, monospace">UPDATED 09.18 · UTC+8</text>
 </svg>
