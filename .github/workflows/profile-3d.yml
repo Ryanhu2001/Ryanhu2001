@@ -1,9 +1,8 @@
 name: Update 3D contribution city
 
 on:
-  schedule:
-    # Daily at 09:23 Asia/Shanghai (01:23 UTC).
-    - cron: "23 1 * * *"
+  # Retained for manual regeneration of the previous GitHub contribution image.
+  # The displayed Codex city is refreshed from the signed-in local Codex account.
   workflow_dispatch:
 
 permissions:

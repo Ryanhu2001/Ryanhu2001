@@ -4,5 +4,8 @@
 </picture>
 
 <p>
-  <img width="900" src="https://raw.githubusercontent.com/Ryanhu2001/Ryanhu2001/refs/heads/main/.github/profile/contributions-3d.svg" alt="Ryan — a 3D city of GitHub contributions over the past year, in midnight blue and mint. Updated daily.">
+  <picture>
+    <source media="(max-width: 600px)" srcset="https://raw.githubusercontent.com/Ryanhu2001/Ryanhu2001/refs/heads/main/.github/profile/codex-city-mobile.svg">
+    <img width="900" src="https://raw.githubusercontent.com/Ryanhu2001/Ryanhu2001/refs/heads/main/.github/profile/codex-city.svg" alt="Ryan — a 3D city of recorded daily Codex token usage. Missing dates are unreported, not zero. Updated daily.">
+  </picture>
 </p>
