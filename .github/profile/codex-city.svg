@@ -1,1236 +1,1238 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="890" viewBox="0 0 1280 890" role="img" aria-labelledby="title desc">
 <title id="title">Ryan — Codex NightView, mint edition</title>
-<desc id="desc">7,024,969,328 account-reported Codex tokens across 56 returned dates, 2026-07-25 to 2026-09-19. A 53-week isometric calendar adapted from GitHub Profile 3D Contrib NightView. Heights use the original logarithmic mapping with tokens measured in millions. Missing dates are unknown, not zero. All-device coverage is not established.</desc>
+<desc id="desc">7,033,343,897 account-reported Codex tokens across 57 returned dates, 2026-07-25 to 2026-09-20. A 53-week isometric calendar adapted from GitHub Profile 3D Contrib NightView. Heights use the original logarithmic mapping with tokens measured in millions. Missing dates are unknown, not zero. All-device coverage is not established.</desc>
 <style>text{font-family:Ubuntu,Helvetica,Arial,sans-serif}.tower{transform-box:fill-box;transform-origin:center bottom;animation:grow 2.2s ease-out both}@keyframes grow{from{transform:scaleY(.025)}to{transform:scaleY(1)}}@media(prefers-reduced-motion:reduce){.tower{animation:none}}</style>
 <rect width="1280" height="890" fill="#00000f"/>
 <text x="35" y="43" font-size="23" fill="#a6e3df" font-weight="600" text-anchor="start" letter-spacing="1.5">CODEX · NIGHT VIEW</text>
-<text x="1255" y="29" font-size="16" fill="#9199aa" font-weight="400" text-anchor="end" >2026-07-25 / 2026-09-19</text>
-<text x="35" y="73" font-size="15" fill="#9199aa" font-weight="400" text-anchor="start" >56 dates returned · 1 missing within returned history</text>
+<text x="1255" y="29" font-size="16" fill="#9199aa" font-weight="400" text-anchor="end" >2026-07-25 / 2026-09-20</text>
+<text x="35" y="73" font-size="15" fill="#9199aa" font-weight="400" text-anchor="start" >57 dates returned · 1 missing within returned history</text>
 <g>
-<g data-date="2025-09-14" data-state="missing"><title>2025-09-14: no returned record</title>
+<g data-date="2025-09-21" data-state="missing"><title>2025-09-21: no returned record</title>
 <polygon points="140.00,157.18 158.00,146.79 176.00,157.18 158.00,167.57" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-09-15" data-state="missing"><title>2025-09-15: no returned record</title>
+<g data-date="2025-09-22" data-state="missing"><title>2025-09-22: no returned record</title>
 <polygon points="120.00,168.73 138.00,158.33 156.00,168.73 138.00,179.12" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-09-16" data-state="missing"><title>2025-09-16: no returned record</title>
+<g data-date="2025-09-23" data-state="missing"><title>2025-09-23: no returned record</title>
 <polygon points="100.00,180.27 118.00,169.88 136.00,180.27 118.00,190.67" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-09-17" data-state="missing"><title>2025-09-17: no returned record</title>
+<g data-date="2025-09-24" data-state="missing"><title>2025-09-24: no returned record</title>
 <polygon points="80.00,191.82 98.00,181.43 116.00,191.82 98.00,202.21" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-09-18" data-state="missing"><title>2025-09-18: no returned record</title>
+<g data-date="2025-09-25" data-state="missing"><title>2025-09-25: no returned record</title>
 <polygon points="60.00,203.37 78.00,192.98 96.00,203.37 78.00,213.76" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-09-19" data-state="missing"><title>2025-09-19: no returned record</title>
+<g data-date="2025-09-26" data-state="missing"><title>2025-09-26: no returned record</title>
 <polygon points="40.00,214.91 58.00,204.52 76.00,214.91 58.00,225.31" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-09-20" data-state="missing"><title>2025-09-20: no returned record</title>
+<g data-date="2025-09-27" data-state="missing"><title>2025-09-27: no returned record</title>
 <polygon points="20.00,226.46 38.00,216.07 56.00,226.46 38.00,236.85" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-09-21" data-state="missing"><title>2025-09-21: no returned record</title>
+<g data-date="2025-09-28" data-state="missing"><title>2025-09-28: no returned record</title>
 <polygon points="160.00,168.73 178.00,158.33 196.00,168.73 178.00,179.12" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-09-22" data-state="missing"><title>2025-09-22: no returned record</title>
+<g data-date="2025-09-29" data-state="missing"><title>2025-09-29: no returned record</title>
 <polygon points="140.00,180.27 158.00,169.88 176.00,180.27 158.00,190.67" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-09-23" data-state="missing"><title>2025-09-23: no returned record</title>
+<g data-date="2025-09-30" data-state="missing"><title>2025-09-30: no returned record</title>
 <polygon points="120.00,191.82 138.00,181.43 156.00,191.82 138.00,202.21" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-09-24" data-state="missing"><title>2025-09-24: no returned record</title>
+<g data-date="2025-10-01" data-state="missing"><title>2025-10-01: no returned record</title>
 <polygon points="100.00,203.37 118.00,192.98 136.00,203.37 118.00,213.76" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-09-25" data-state="missing"><title>2025-09-25: no returned record</title>
+<g data-date="2025-10-02" data-state="missing"><title>2025-10-02: no returned record</title>
 <polygon points="80.00,214.91 98.00,204.52 116.00,214.91 98.00,225.31" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-09-26" data-state="missing"><title>2025-09-26: no returned record</title>
+<g data-date="2025-10-03" data-state="missing"><title>2025-10-03: no returned record</title>
 <polygon points="60.00,226.46 78.00,216.07 96.00,226.46 78.00,236.85" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-09-27" data-state="missing"><title>2025-09-27: no returned record</title>
+<g data-date="2025-10-04" data-state="missing"><title>2025-10-04: no returned record</title>
 <polygon points="40.00,238.01 58.00,227.62 76.00,238.01 58.00,248.40" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-09-28" data-state="missing"><title>2025-09-28: no returned record</title>
+<g data-date="2025-10-05" data-state="missing"><title>2025-10-05: no returned record</title>
 <polygon points="180.00,180.27 198.00,169.88 216.00,180.27 198.00,190.67" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-09-29" data-state="missing"><title>2025-09-29: no returned record</title>
+<g data-date="2025-10-06" data-state="missing"><title>2025-10-06: no returned record</title>
 <polygon points="160.00,191.82 178.00,181.43 196.00,191.82 178.00,202.21" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-09-30" data-state="missing"><title>2025-09-30: no returned record</title>
+<g data-date="2025-10-07" data-state="missing"><title>2025-10-07: no returned record</title>
 <polygon points="140.00,203.37 158.00,192.98 176.00,203.37 158.00,213.76" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-01" data-state="missing"><title>2025-10-01: no returned record</title>
+<g data-date="2025-10-08" data-state="missing"><title>2025-10-08: no returned record</title>
 <polygon points="120.00,214.91 138.00,204.52 156.00,214.91 138.00,225.31" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-02" data-state="missing"><title>2025-10-02: no returned record</title>
+<g data-date="2025-10-09" data-state="missing"><title>2025-10-09: no returned record</title>
 <polygon points="100.00,226.46 118.00,216.07 136.00,226.46 118.00,236.85" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-03" data-state="missing"><title>2025-10-03: no returned record</title>
+<g data-date="2025-10-10" data-state="missing"><title>2025-10-10: no returned record</title>
 <polygon points="80.00,238.01 98.00,227.62 116.00,238.01 98.00,248.40" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-04" data-state="missing"><title>2025-10-04: no returned record</title>
+<g data-date="2025-10-11" data-state="missing"><title>2025-10-11: no returned record</title>
 <polygon points="60.00,249.56 78.00,239.16 96.00,249.56 78.00,259.95" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-05" data-state="missing"><title>2025-10-05: no returned record</title>
+<g data-date="2025-10-12" data-state="missing"><title>2025-10-12: no returned record</title>
 <polygon points="200.00,191.82 218.00,181.43 236.00,191.82 218.00,202.21" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-06" data-state="missing"><title>2025-10-06: no returned record</title>
+<g data-date="2025-10-13" data-state="missing"><title>2025-10-13: no returned record</title>
 <polygon points="180.00,203.37 198.00,192.98 216.00,203.37 198.00,213.76" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-07" data-state="missing"><title>2025-10-07: no returned record</title>
+<g data-date="2025-10-14" data-state="missing"><title>2025-10-14: no returned record</title>
 <polygon points="160.00,214.91 178.00,204.52 196.00,214.91 178.00,225.31" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-08" data-state="missing"><title>2025-10-08: no returned record</title>
+<g data-date="2025-10-15" data-state="missing"><title>2025-10-15: no returned record</title>
 <polygon points="140.00,226.46 158.00,216.07 176.00,226.46 158.00,236.85" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-09" data-state="missing"><title>2025-10-09: no returned record</title>
+<g data-date="2025-10-16" data-state="missing"><title>2025-10-16: no returned record</title>
 <polygon points="120.00,238.01 138.00,227.62 156.00,238.01 138.00,248.40" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-10" data-state="missing"><title>2025-10-10: no returned record</title>
+<g data-date="2025-10-17" data-state="missing"><title>2025-10-17: no returned record</title>
 <polygon points="100.00,249.56 118.00,239.16 136.00,249.56 118.00,259.95" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-11" data-state="missing"><title>2025-10-11: no returned record</title>
+<g data-date="2025-10-18" data-state="missing"><title>2025-10-18: no returned record</title>
 <polygon points="80.00,261.10 98.00,250.71 116.00,261.10 98.00,271.50" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-12" data-state="missing"><title>2025-10-12: no returned record</title>
+<g data-date="2025-10-19" data-state="missing"><title>2025-10-19: no returned record</title>
 <polygon points="220.00,203.37 238.00,192.98 256.00,203.37 238.00,213.76" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-13" data-state="missing"><title>2025-10-13: no returned record</title>
+<g data-date="2025-10-20" data-state="missing"><title>2025-10-20: no returned record</title>
 <polygon points="200.00,214.91 218.00,204.52 236.00,214.91 218.00,225.31" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-14" data-state="missing"><title>2025-10-14: no returned record</title>
+<g data-date="2025-10-21" data-state="missing"><title>2025-10-21: no returned record</title>
 <polygon points="180.00,226.46 198.00,216.07 216.00,226.46 198.00,236.85" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-15" data-state="missing"><title>2025-10-15: no returned record</title>
+<g data-date="2025-10-22" data-state="missing"><title>2025-10-22: no returned record</title>
 <polygon points="160.00,238.01 178.00,227.62 196.00,238.01 178.00,248.40" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-16" data-state="missing"><title>2025-10-16: no returned record</title>
+<g data-date="2025-10-23" data-state="missing"><title>2025-10-23: no returned record</title>
 <polygon points="140.00,249.56 158.00,239.16 176.00,249.56 158.00,259.95" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-17" data-state="missing"><title>2025-10-17: no returned record</title>
+<g data-date="2025-10-24" data-state="missing"><title>2025-10-24: no returned record</title>
 <polygon points="120.00,261.10 138.00,250.71 156.00,261.10 138.00,271.50" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-18" data-state="missing"><title>2025-10-18: no returned record</title>
+<g data-date="2025-10-25" data-state="missing"><title>2025-10-25: no returned record</title>
 <polygon points="100.00,272.65 118.00,262.26 136.00,272.65 118.00,283.04" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-19" data-state="missing"><title>2025-10-19: no returned record</title>
+<g data-date="2025-10-26" data-state="missing"><title>2025-10-26: no returned record</title>
 <polygon points="240.00,214.91 258.00,204.52 276.00,214.91 258.00,225.31" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-20" data-state="missing"><title>2025-10-20: no returned record</title>
+<g data-date="2025-10-27" data-state="missing"><title>2025-10-27: no returned record</title>
 <polygon points="220.00,226.46 238.00,216.07 256.00,226.46 238.00,236.85" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-21" data-state="missing"><title>2025-10-21: no returned record</title>
+<g data-date="2025-10-28" data-state="missing"><title>2025-10-28: no returned record</title>
 <polygon points="200.00,238.01 218.00,227.62 236.00,238.01 218.00,248.40" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-22" data-state="missing"><title>2025-10-22: no returned record</title>
+<g data-date="2025-10-29" data-state="missing"><title>2025-10-29: no returned record</title>
 <polygon points="180.00,249.56 198.00,239.16 216.00,249.56 198.00,259.95" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-23" data-state="missing"><title>2025-10-23: no returned record</title>
+<g data-date="2025-10-30" data-state="missing"><title>2025-10-30: no returned record</title>
 <polygon points="160.00,261.10 178.00,250.71 196.00,261.10 178.00,271.50" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-24" data-state="missing"><title>2025-10-24: no returned record</title>
+<g data-date="2025-10-31" data-state="missing"><title>2025-10-31: no returned record</title>
 <polygon points="140.00,272.65 158.00,262.26 176.00,272.65 158.00,283.04" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-25" data-state="missing"><title>2025-10-25: no returned record</title>
+<g data-date="2025-11-01" data-state="missing"><title>2025-11-01: no returned record</title>
 <polygon points="120.00,284.20 138.00,273.80 156.00,284.20 138.00,294.59" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-26" data-state="missing"><title>2025-10-26: no returned record</title>
+<g data-date="2025-11-02" data-state="missing"><title>2025-11-02: no returned record</title>
 <polygon points="260.00,226.46 278.00,216.07 296.00,226.46 278.00,236.85" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-27" data-state="missing"><title>2025-10-27: no returned record</title>
+<g data-date="2025-11-03" data-state="missing"><title>2025-11-03: no returned record</title>
 <polygon points="240.00,238.01 258.00,227.62 276.00,238.01 258.00,248.40" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-28" data-state="missing"><title>2025-10-28: no returned record</title>
+<g data-date="2025-11-04" data-state="missing"><title>2025-11-04: no returned record</title>
 <polygon points="220.00,249.56 238.00,239.16 256.00,249.56 238.00,259.95" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-29" data-state="missing"><title>2025-10-29: no returned record</title>
+<g data-date="2025-11-05" data-state="missing"><title>2025-11-05: no returned record</title>
 <polygon points="200.00,261.10 218.00,250.71 236.00,261.10 218.00,271.50" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-30" data-state="missing"><title>2025-10-30: no returned record</title>
+<g data-date="2025-11-06" data-state="missing"><title>2025-11-06: no returned record</title>
 <polygon points="180.00,272.65 198.00,262.26 216.00,272.65 198.00,283.04" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-10-31" data-state="missing"><title>2025-10-31: no returned record</title>
+<g data-date="2025-11-07" data-state="missing"><title>2025-11-07: no returned record</title>
 <polygon points="160.00,284.20 178.00,273.80 196.00,284.20 178.00,294.59" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-01" data-state="missing"><title>2025-11-01: no returned record</title>
+<g data-date="2025-11-08" data-state="missing"><title>2025-11-08: no returned record</title>
 <polygon points="140.00,295.74 158.00,285.35 176.00,295.74 158.00,306.14" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-02" data-state="missing"><title>2025-11-02: no returned record</title>
+<g data-date="2025-11-09" data-state="missing"><title>2025-11-09: no returned record</title>
 <polygon points="280.00,238.01 298.00,227.62 316.00,238.01 298.00,248.40" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-03" data-state="missing"><title>2025-11-03: no returned record</title>
+<g data-date="2025-11-10" data-state="missing"><title>2025-11-10: no returned record</title>
 <polygon points="260.00,249.56 278.00,239.16 296.00,249.56 278.00,259.95" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-04" data-state="missing"><title>2025-11-04: no returned record</title>
+<g data-date="2025-11-11" data-state="missing"><title>2025-11-11: no returned record</title>
 <polygon points="240.00,261.10 258.00,250.71 276.00,261.10 258.00,271.50" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-05" data-state="missing"><title>2025-11-05: no returned record</title>
+<g data-date="2025-11-12" data-state="missing"><title>2025-11-12: no returned record</title>
 <polygon points="220.00,272.65 238.00,262.26 256.00,272.65 238.00,283.04" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-06" data-state="missing"><title>2025-11-06: no returned record</title>
+<g data-date="2025-11-13" data-state="missing"><title>2025-11-13: no returned record</title>
 <polygon points="200.00,284.20 218.00,273.80 236.00,284.20 218.00,294.59" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-07" data-state="missing"><title>2025-11-07: no returned record</title>
+<g data-date="2025-11-14" data-state="missing"><title>2025-11-14: no returned record</title>
 <polygon points="180.00,295.74 198.00,285.35 216.00,295.74 198.00,306.14" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-08" data-state="missing"><title>2025-11-08: no returned record</title>
+<g data-date="2025-11-15" data-state="missing"><title>2025-11-15: no returned record</title>
 <polygon points="160.00,307.29 178.00,296.90 196.00,307.29 178.00,317.68" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-09" data-state="missing"><title>2025-11-09: no returned record</title>
+<g data-date="2025-11-16" data-state="missing"><title>2025-11-16: no returned record</title>
 <polygon points="300.00,249.56 318.00,239.16 336.00,249.56 318.00,259.95" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-10" data-state="missing"><title>2025-11-10: no returned record</title>
+<g data-date="2025-11-17" data-state="missing"><title>2025-11-17: no returned record</title>
 <polygon points="280.00,261.10 298.00,250.71 316.00,261.10 298.00,271.50" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-11" data-state="missing"><title>2025-11-11: no returned record</title>
+<g data-date="2025-11-18" data-state="missing"><title>2025-11-18: no returned record</title>
 <polygon points="260.00,272.65 278.00,262.26 296.00,272.65 278.00,283.04" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-12" data-state="missing"><title>2025-11-12: no returned record</title>
+<g data-date="2025-11-19" data-state="missing"><title>2025-11-19: no returned record</title>
 <polygon points="240.00,284.20 258.00,273.80 276.00,284.20 258.00,294.59" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-13" data-state="missing"><title>2025-11-13: no returned record</title>
+<g data-date="2025-11-20" data-state="missing"><title>2025-11-20: no returned record</title>
 <polygon points="220.00,295.74 238.00,285.35 256.00,295.74 238.00,306.14" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-14" data-state="missing"><title>2025-11-14: no returned record</title>
+<g data-date="2025-11-21" data-state="missing"><title>2025-11-21: no returned record</title>
 <polygon points="200.00,307.29 218.00,296.90 236.00,307.29 218.00,317.68" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-15" data-state="missing"><title>2025-11-15: no returned record</title>
+<g data-date="2025-11-22" data-state="missing"><title>2025-11-22: no returned record</title>
 <polygon points="180.00,318.84 198.00,308.45 216.00,318.84 198.00,329.23" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-16" data-state="missing"><title>2025-11-16: no returned record</title>
+<g data-date="2025-11-23" data-state="missing"><title>2025-11-23: no returned record</title>
 <polygon points="320.00,261.10 338.00,250.71 356.00,261.10 338.00,271.50" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-17" data-state="missing"><title>2025-11-17: no returned record</title>
+<g data-date="2025-11-24" data-state="missing"><title>2025-11-24: no returned record</title>
 <polygon points="300.00,272.65 318.00,262.26 336.00,272.65 318.00,283.04" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-18" data-state="missing"><title>2025-11-18: no returned record</title>
+<g data-date="2025-11-25" data-state="missing"><title>2025-11-25: no returned record</title>
 <polygon points="280.00,284.20 298.00,273.80 316.00,284.20 298.00,294.59" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-19" data-state="missing"><title>2025-11-19: no returned record</title>
+<g data-date="2025-11-26" data-state="missing"><title>2025-11-26: no returned record</title>
 <polygon points="260.00,295.74 278.00,285.35 296.00,295.74 278.00,306.14" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-20" data-state="missing"><title>2025-11-20: no returned record</title>
+<g data-date="2025-11-27" data-state="missing"><title>2025-11-27: no returned record</title>
 <polygon points="240.00,307.29 258.00,296.90 276.00,307.29 258.00,317.68" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-21" data-state="missing"><title>2025-11-21: no returned record</title>
+<g data-date="2025-11-28" data-state="missing"><title>2025-11-28: no returned record</title>
 <polygon points="220.00,318.84 238.00,308.45 256.00,318.84 238.00,329.23" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-22" data-state="missing"><title>2025-11-22: no returned record</title>
+<g data-date="2025-11-29" data-state="missing"><title>2025-11-29: no returned record</title>
 <polygon points="200.00,330.38 218.00,319.99 236.00,330.38 218.00,340.78" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-23" data-state="missing"><title>2025-11-23: no returned record</title>
+<g data-date="2025-11-30" data-state="missing"><title>2025-11-30: no returned record</title>
 <polygon points="340.00,272.65 358.00,262.26 376.00,272.65 358.00,283.04" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-24" data-state="missing"><title>2025-11-24: no returned record</title>
+<g data-date="2025-12-01" data-state="missing"><title>2025-12-01: no returned record</title>
 <polygon points="320.00,284.20 338.00,273.80 356.00,284.20 338.00,294.59" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-25" data-state="missing"><title>2025-11-25: no returned record</title>
+<g data-date="2025-12-02" data-state="missing"><title>2025-12-02: no returned record</title>
 <polygon points="300.00,295.74 318.00,285.35 336.00,295.74 318.00,306.14" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-26" data-state="missing"><title>2025-11-26: no returned record</title>
+<g data-date="2025-12-03" data-state="missing"><title>2025-12-03: no returned record</title>
 <polygon points="280.00,307.29 298.00,296.90 316.00,307.29 298.00,317.68" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-27" data-state="missing"><title>2025-11-27: no returned record</title>
+<g data-date="2025-12-04" data-state="missing"><title>2025-12-04: no returned record</title>
 <polygon points="260.00,318.84 278.00,308.45 296.00,318.84 278.00,329.23" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-28" data-state="missing"><title>2025-11-28: no returned record</title>
+<g data-date="2025-12-05" data-state="missing"><title>2025-12-05: no returned record</title>
 <polygon points="240.00,330.38 258.00,319.99 276.00,330.38 258.00,340.78" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-29" data-state="missing"><title>2025-11-29: no returned record</title>
+<g data-date="2025-12-06" data-state="missing"><title>2025-12-06: no returned record</title>
 <polygon points="220.00,341.93 238.00,331.54 256.00,341.93 238.00,352.32" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-11-30" data-state="missing"><title>2025-11-30: no returned record</title>
+<g data-date="2025-12-07" data-state="missing"><title>2025-12-07: no returned record</title>
 <polygon points="360.00,284.20 378.00,273.80 396.00,284.20 378.00,294.59" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-01" data-state="missing"><title>2025-12-01: no returned record</title>
+<g data-date="2025-12-08" data-state="missing"><title>2025-12-08: no returned record</title>
 <polygon points="340.00,295.74 358.00,285.35 376.00,295.74 358.00,306.14" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-02" data-state="missing"><title>2025-12-02: no returned record</title>
+<g data-date="2025-12-09" data-state="missing"><title>2025-12-09: no returned record</title>
 <polygon points="320.00,307.29 338.00,296.90 356.00,307.29 338.00,317.68" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-03" data-state="missing"><title>2025-12-03: no returned record</title>
+<g data-date="2025-12-10" data-state="missing"><title>2025-12-10: no returned record</title>
 <polygon points="300.00,318.84 318.00,308.45 336.00,318.84 318.00,329.23" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-04" data-state="missing"><title>2025-12-04: no returned record</title>
+<g data-date="2025-12-11" data-state="missing"><title>2025-12-11: no returned record</title>
 <polygon points="280.00,330.38 298.00,319.99 316.00,330.38 298.00,340.78" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-05" data-state="missing"><title>2025-12-05: no returned record</title>
+<g data-date="2025-12-12" data-state="missing"><title>2025-12-12: no returned record</title>
 <polygon points="260.00,341.93 278.00,331.54 296.00,341.93 278.00,352.32" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-06" data-state="missing"><title>2025-12-06: no returned record</title>
+<g data-date="2025-12-13" data-state="missing"><title>2025-12-13: no returned record</title>
 <polygon points="240.00,353.48 258.00,343.09 276.00,353.48 258.00,363.87" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-07" data-state="missing"><title>2025-12-07: no returned record</title>
+<g data-date="2025-12-14" data-state="missing"><title>2025-12-14: no returned record</title>
 <polygon points="380.00,295.74 398.00,285.35 416.00,295.74 398.00,306.14" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-08" data-state="missing"><title>2025-12-08: no returned record</title>
+<g data-date="2025-12-15" data-state="missing"><title>2025-12-15: no returned record</title>
 <polygon points="360.00,307.29 378.00,296.90 396.00,307.29 378.00,317.68" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-09" data-state="missing"><title>2025-12-09: no returned record</title>
+<g data-date="2025-12-16" data-state="missing"><title>2025-12-16: no returned record</title>
 <polygon points="340.00,318.84 358.00,308.45 376.00,318.84 358.00,329.23" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-10" data-state="missing"><title>2025-12-10: no returned record</title>
+<g data-date="2025-12-17" data-state="missing"><title>2025-12-17: no returned record</title>
 <polygon points="320.00,330.38 338.00,319.99 356.00,330.38 338.00,340.78" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-11" data-state="missing"><title>2025-12-11: no returned record</title>
+<g data-date="2025-12-18" data-state="missing"><title>2025-12-18: no returned record</title>
 <polygon points="300.00,341.93 318.00,331.54 336.00,341.93 318.00,352.32" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-12" data-state="missing"><title>2025-12-12: no returned record</title>
+<g data-date="2025-12-19" data-state="missing"><title>2025-12-19: no returned record</title>
 <polygon points="280.00,353.48 298.00,343.09 316.00,353.48 298.00,363.87" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-13" data-state="missing"><title>2025-12-13: no returned record</title>
+<g data-date="2025-12-20" data-state="missing"><title>2025-12-20: no returned record</title>
 <polygon points="260.00,365.03 278.00,354.63 296.00,365.03 278.00,375.42" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-14" data-state="missing"><title>2025-12-14: no returned record</title>
+<g data-date="2025-12-21" data-state="missing"><title>2025-12-21: no returned record</title>
 <polygon points="400.00,307.29 418.00,296.90 436.00,307.29 418.00,317.68" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-15" data-state="missing"><title>2025-12-15: no returned record</title>
+<g data-date="2025-12-22" data-state="missing"><title>2025-12-22: no returned record</title>
 <polygon points="380.00,318.84 398.00,308.45 416.00,318.84 398.00,329.23" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-16" data-state="missing"><title>2025-12-16: no returned record</title>
+<g data-date="2025-12-23" data-state="missing"><title>2025-12-23: no returned record</title>
 <polygon points="360.00,330.38 378.00,319.99 396.00,330.38 378.00,340.78" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-17" data-state="missing"><title>2025-12-17: no returned record</title>
+<g data-date="2025-12-24" data-state="missing"><title>2025-12-24: no returned record</title>
 <polygon points="340.00,341.93 358.00,331.54 376.00,341.93 358.00,352.32" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-18" data-state="missing"><title>2025-12-18: no returned record</title>
+<g data-date="2025-12-25" data-state="missing"><title>2025-12-25: no returned record</title>
 <polygon points="320.00,353.48 338.00,343.09 356.00,353.48 338.00,363.87" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-19" data-state="missing"><title>2025-12-19: no returned record</title>
+<g data-date="2025-12-26" data-state="missing"><title>2025-12-26: no returned record</title>
 <polygon points="300.00,365.03 318.00,354.63 336.00,365.03 318.00,375.42" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-20" data-state="missing"><title>2025-12-20: no returned record</title>
+<g data-date="2025-12-27" data-state="missing"><title>2025-12-27: no returned record</title>
 <polygon points="280.00,376.57 298.00,366.18 316.00,376.57 298.00,386.97" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-21" data-state="missing"><title>2025-12-21: no returned record</title>
+<g data-date="2025-12-28" data-state="missing"><title>2025-12-28: no returned record</title>
 <polygon points="420.00,318.84 438.00,308.45 456.00,318.84 438.00,329.23" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-22" data-state="missing"><title>2025-12-22: no returned record</title>
+<g data-date="2025-12-29" data-state="missing"><title>2025-12-29: no returned record</title>
 <polygon points="400.00,330.38 418.00,319.99 436.00,330.38 418.00,340.78" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-23" data-state="missing"><title>2025-12-23: no returned record</title>
+<g data-date="2025-12-30" data-state="missing"><title>2025-12-30: no returned record</title>
 <polygon points="380.00,341.93 398.00,331.54 416.00,341.93 398.00,352.32" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-24" data-state="missing"><title>2025-12-24: no returned record</title>
+<g data-date="2025-12-31" data-state="missing"><title>2025-12-31: no returned record</title>
 <polygon points="360.00,353.48 378.00,343.09 396.00,353.48 378.00,363.87" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-25" data-state="missing"><title>2025-12-25: no returned record</title>
+<g data-date="2026-01-01" data-state="missing"><title>2026-01-01: no returned record</title>
 <polygon points="340.00,365.03 358.00,354.63 376.00,365.03 358.00,375.42" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-26" data-state="missing"><title>2025-12-26: no returned record</title>
+<g data-date="2026-01-02" data-state="missing"><title>2026-01-02: no returned record</title>
 <polygon points="320.00,376.57 338.00,366.18 356.00,376.57 338.00,386.97" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-27" data-state="missing"><title>2025-12-27: no returned record</title>
+<g data-date="2026-01-03" data-state="missing"><title>2026-01-03: no returned record</title>
 <polygon points="300.00,388.12 318.00,377.73 336.00,388.12 318.00,398.51" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-28" data-state="missing"><title>2025-12-28: no returned record</title>
+<g data-date="2026-01-04" data-state="missing"><title>2026-01-04: no returned record</title>
 <polygon points="440.00,330.38 458.00,319.99 476.00,330.38 458.00,340.78" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-29" data-state="missing"><title>2025-12-29: no returned record</title>
+<g data-date="2026-01-05" data-state="missing"><title>2026-01-05: no returned record</title>
 <polygon points="420.00,341.93 438.00,331.54 456.00,341.93 438.00,352.32" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-30" data-state="missing"><title>2025-12-30: no returned record</title>
+<g data-date="2026-01-06" data-state="missing"><title>2026-01-06: no returned record</title>
 <polygon points="400.00,353.48 418.00,343.09 436.00,353.48 418.00,363.87" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2025-12-31" data-state="missing"><title>2025-12-31: no returned record</title>
+<g data-date="2026-01-07" data-state="missing"><title>2026-01-07: no returned record</title>
 <polygon points="380.00,365.03 398.00,354.63 416.00,365.03 398.00,375.42" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-01" data-state="missing"><title>2026-01-01: no returned record</title>
+<g data-date="2026-01-08" data-state="missing"><title>2026-01-08: no returned record</title>
 <polygon points="360.00,376.57 378.00,366.18 396.00,376.57 378.00,386.97" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-02" data-state="missing"><title>2026-01-02: no returned record</title>
+<g data-date="2026-01-09" data-state="missing"><title>2026-01-09: no returned record</title>
 <polygon points="340.00,388.12 358.00,377.73 376.00,388.12 358.00,398.51" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-03" data-state="missing"><title>2026-01-03: no returned record</title>
+<g data-date="2026-01-10" data-state="missing"><title>2026-01-10: no returned record</title>
 <polygon points="320.00,399.67 338.00,389.27 356.00,399.67 338.00,410.06" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-04" data-state="missing"><title>2026-01-04: no returned record</title>
+<g data-date="2026-01-11" data-state="missing"><title>2026-01-11: no returned record</title>
 <polygon points="460.00,341.93 478.00,331.54 496.00,341.93 478.00,352.32" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-05" data-state="missing"><title>2026-01-05: no returned record</title>
+<g data-date="2026-01-12" data-state="missing"><title>2026-01-12: no returned record</title>
 <polygon points="440.00,353.48 458.00,343.09 476.00,353.48 458.00,363.87" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-06" data-state="missing"><title>2026-01-06: no returned record</title>
+<g data-date="2026-01-13" data-state="missing"><title>2026-01-13: no returned record</title>
 <polygon points="420.00,365.03 438.00,354.63 456.00,365.03 438.00,375.42" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-07" data-state="missing"><title>2026-01-07: no returned record</title>
+<g data-date="2026-01-14" data-state="missing"><title>2026-01-14: no returned record</title>
 <polygon points="400.00,376.57 418.00,366.18 436.00,376.57 418.00,386.97" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-08" data-state="missing"><title>2026-01-08: no returned record</title>
+<g data-date="2026-01-15" data-state="missing"><title>2026-01-15: no returned record</title>
 <polygon points="380.00,388.12 398.00,377.73 416.00,388.12 398.00,398.51" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-09" data-state="missing"><title>2026-01-09: no returned record</title>
+<g data-date="2026-01-16" data-state="missing"><title>2026-01-16: no returned record</title>
 <polygon points="360.00,399.67 378.00,389.27 396.00,399.67 378.00,410.06" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-10" data-state="missing"><title>2026-01-10: no returned record</title>
+<g data-date="2026-01-17" data-state="missing"><title>2026-01-17: no returned record</title>
 <polygon points="340.00,411.21 358.00,400.82 376.00,411.21 358.00,421.61" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-11" data-state="missing"><title>2026-01-11: no returned record</title>
+<g data-date="2026-01-18" data-state="missing"><title>2026-01-18: no returned record</title>
 <polygon points="480.00,353.48 498.00,343.09 516.00,353.48 498.00,363.87" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-12" data-state="missing"><title>2026-01-12: no returned record</title>
+<g data-date="2026-01-19" data-state="missing"><title>2026-01-19: no returned record</title>
 <polygon points="460.00,365.03 478.00,354.63 496.00,365.03 478.00,375.42" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-13" data-state="missing"><title>2026-01-13: no returned record</title>
+<g data-date="2026-01-20" data-state="missing"><title>2026-01-20: no returned record</title>
 <polygon points="440.00,376.57 458.00,366.18 476.00,376.57 458.00,386.97" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-14" data-state="missing"><title>2026-01-14: no returned record</title>
+<g data-date="2026-01-21" data-state="missing"><title>2026-01-21: no returned record</title>
 <polygon points="420.00,388.12 438.00,377.73 456.00,388.12 438.00,398.51" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-15" data-state="missing"><title>2026-01-15: no returned record</title>
+<g data-date="2026-01-22" data-state="missing"><title>2026-01-22: no returned record</title>
 <polygon points="400.00,399.67 418.00,389.27 436.00,399.67 418.00,410.06" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-16" data-state="missing"><title>2026-01-16: no returned record</title>
+<g data-date="2026-01-23" data-state="missing"><title>2026-01-23: no returned record</title>
 <polygon points="380.00,411.21 398.00,400.82 416.00,411.21 398.00,421.61" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-17" data-state="missing"><title>2026-01-17: no returned record</title>
+<g data-date="2026-01-24" data-state="missing"><title>2026-01-24: no returned record</title>
 <polygon points="360.00,422.76 378.00,412.37 396.00,422.76 378.00,433.15" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-18" data-state="missing"><title>2026-01-18: no returned record</title>
+<g data-date="2026-01-25" data-state="missing"><title>2026-01-25: no returned record</title>
 <polygon points="500.00,365.03 518.00,354.63 536.00,365.03 518.00,375.42" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-19" data-state="missing"><title>2026-01-19: no returned record</title>
+<g data-date="2026-01-26" data-state="missing"><title>2026-01-26: no returned record</title>
 <polygon points="480.00,376.57 498.00,366.18 516.00,376.57 498.00,386.97" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-20" data-state="missing"><title>2026-01-20: no returned record</title>
+<g data-date="2026-01-27" data-state="missing"><title>2026-01-27: no returned record</title>
 <polygon points="460.00,388.12 478.00,377.73 496.00,388.12 478.00,398.51" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-21" data-state="missing"><title>2026-01-21: no returned record</title>
+<g data-date="2026-01-28" data-state="missing"><title>2026-01-28: no returned record</title>
 <polygon points="440.00,399.67 458.00,389.27 476.00,399.67 458.00,410.06" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-22" data-state="missing"><title>2026-01-22: no returned record</title>
+<g data-date="2026-01-29" data-state="missing"><title>2026-01-29: no returned record</title>
 <polygon points="420.00,411.21 438.00,400.82 456.00,411.21 438.00,421.61" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-23" data-state="missing"><title>2026-01-23: no returned record</title>
+<g data-date="2026-01-30" data-state="missing"><title>2026-01-30: no returned record</title>
 <polygon points="400.00,422.76 418.00,412.37 436.00,422.76 418.00,433.15" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-24" data-state="missing"><title>2026-01-24: no returned record</title>
+<g data-date="2026-01-31" data-state="missing"><title>2026-01-31: no returned record</title>
 <polygon points="380.00,434.31 398.00,423.92 416.00,434.31 398.00,444.70" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-25" data-state="missing"><title>2026-01-25: no returned record</title>
+<g data-date="2026-02-01" data-state="missing"><title>2026-02-01: no returned record</title>
 <polygon points="520.00,376.57 538.00,366.18 556.00,376.57 538.00,386.97" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-26" data-state="missing"><title>2026-01-26: no returned record</title>
+<g data-date="2026-02-02" data-state="missing"><title>2026-02-02: no returned record</title>
 <polygon points="500.00,388.12 518.00,377.73 536.00,388.12 518.00,398.51" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-27" data-state="missing"><title>2026-01-27: no returned record</title>
+<g data-date="2026-02-03" data-state="missing"><title>2026-02-03: no returned record</title>
 <polygon points="480.00,399.67 498.00,389.27 516.00,399.67 498.00,410.06" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-28" data-state="missing"><title>2026-01-28: no returned record</title>
+<g data-date="2026-02-04" data-state="missing"><title>2026-02-04: no returned record</title>
 <polygon points="460.00,411.21 478.00,400.82 496.00,411.21 478.00,421.61" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-29" data-state="missing"><title>2026-01-29: no returned record</title>
+<g data-date="2026-02-05" data-state="missing"><title>2026-02-05: no returned record</title>
 <polygon points="440.00,422.76 458.00,412.37 476.00,422.76 458.00,433.15" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-30" data-state="missing"><title>2026-01-30: no returned record</title>
+<g data-date="2026-02-06" data-state="missing"><title>2026-02-06: no returned record</title>
 <polygon points="420.00,434.31 438.00,423.92 456.00,434.31 438.00,444.70" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-01-31" data-state="missing"><title>2026-01-31: no returned record</title>
+<g data-date="2026-02-07" data-state="missing"><title>2026-02-07: no returned record</title>
 <polygon points="400.00,445.85 418.00,435.46 436.00,445.85 418.00,456.25" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-01" data-state="missing"><title>2026-02-01: no returned record</title>
+<g data-date="2026-02-08" data-state="missing"><title>2026-02-08: no returned record</title>
 <polygon points="540.00,388.12 558.00,377.73 576.00,388.12 558.00,398.51" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-02" data-state="missing"><title>2026-02-02: no returned record</title>
+<g data-date="2026-02-09" data-state="missing"><title>2026-02-09: no returned record</title>
 <polygon points="520.00,399.67 538.00,389.27 556.00,399.67 538.00,410.06" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-03" data-state="missing"><title>2026-02-03: no returned record</title>
+<g data-date="2026-02-10" data-state="missing"><title>2026-02-10: no returned record</title>
 <polygon points="500.00,411.21 518.00,400.82 536.00,411.21 518.00,421.61" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-04" data-state="missing"><title>2026-02-04: no returned record</title>
+<g data-date="2026-02-11" data-state="missing"><title>2026-02-11: no returned record</title>
 <polygon points="480.00,422.76 498.00,412.37 516.00,422.76 498.00,433.15" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-05" data-state="missing"><title>2026-02-05: no returned record</title>
+<g data-date="2026-02-12" data-state="missing"><title>2026-02-12: no returned record</title>
 <polygon points="460.00,434.31 478.00,423.92 496.00,434.31 478.00,444.70" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-06" data-state="missing"><title>2026-02-06: no returned record</title>
+<g data-date="2026-02-13" data-state="missing"><title>2026-02-13: no returned record</title>
 <polygon points="440.00,445.85 458.00,435.46 476.00,445.85 458.00,456.25" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-07" data-state="missing"><title>2026-02-07: no returned record</title>
+<g data-date="2026-02-14" data-state="missing"><title>2026-02-14: no returned record</title>
 <polygon points="420.00,457.40 438.00,447.01 456.00,457.40 438.00,467.79" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-08" data-state="missing"><title>2026-02-08: no returned record</title>
+<g data-date="2026-02-15" data-state="missing"><title>2026-02-15: no returned record</title>
 <polygon points="560.00,399.67 578.00,389.27 596.00,399.67 578.00,410.06" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-09" data-state="missing"><title>2026-02-09: no returned record</title>
+<g data-date="2026-02-16" data-state="missing"><title>2026-02-16: no returned record</title>
 <polygon points="540.00,411.21 558.00,400.82 576.00,411.21 558.00,421.61" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-10" data-state="missing"><title>2026-02-10: no returned record</title>
+<g data-date="2026-02-17" data-state="missing"><title>2026-02-17: no returned record</title>
 <polygon points="520.00,422.76 538.00,412.37 556.00,422.76 538.00,433.15" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-11" data-state="missing"><title>2026-02-11: no returned record</title>
+<g data-date="2026-02-18" data-state="missing"><title>2026-02-18: no returned record</title>
 <polygon points="500.00,434.31 518.00,423.92 536.00,434.31 518.00,444.70" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-12" data-state="missing"><title>2026-02-12: no returned record</title>
+<g data-date="2026-02-19" data-state="missing"><title>2026-02-19: no returned record</title>
 <polygon points="480.00,445.85 498.00,435.46 516.00,445.85 498.00,456.25" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-13" data-state="missing"><title>2026-02-13: no returned record</title>
+<g data-date="2026-02-20" data-state="missing"><title>2026-02-20: no returned record</title>
 <polygon points="460.00,457.40 478.00,447.01 496.00,457.40 478.00,467.79" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-14" data-state="missing"><title>2026-02-14: no returned record</title>
+<g data-date="2026-02-21" data-state="missing"><title>2026-02-21: no returned record</title>
 <polygon points="440.00,468.95 458.00,458.56 476.00,468.95 458.00,479.34" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-15" data-state="missing"><title>2026-02-15: no returned record</title>
+<g data-date="2026-02-22" data-state="missing"><title>2026-02-22: no returned record</title>
 <polygon points="580.00,411.21 598.00,400.82 616.00,411.21 598.00,421.61" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-16" data-state="missing"><title>2026-02-16: no returned record</title>
+<g data-date="2026-02-23" data-state="missing"><title>2026-02-23: no returned record</title>
 <polygon points="560.00,422.76 578.00,412.37 596.00,422.76 578.00,433.15" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-17" data-state="missing"><title>2026-02-17: no returned record</title>
+<g data-date="2026-02-24" data-state="missing"><title>2026-02-24: no returned record</title>
 <polygon points="540.00,434.31 558.00,423.92 576.00,434.31 558.00,444.70" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-18" data-state="missing"><title>2026-02-18: no returned record</title>
+<g data-date="2026-02-25" data-state="missing"><title>2026-02-25: no returned record</title>
 <polygon points="520.00,445.85 538.00,435.46 556.00,445.85 538.00,456.25" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-19" data-state="missing"><title>2026-02-19: no returned record</title>
+<g data-date="2026-02-26" data-state="missing"><title>2026-02-26: no returned record</title>
 <polygon points="500.00,457.40 518.00,447.01 536.00,457.40 518.00,467.79" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-20" data-state="missing"><title>2026-02-20: no returned record</title>
+<g data-date="2026-02-27" data-state="missing"><title>2026-02-27: no returned record</title>
 <polygon points="480.00,468.95 498.00,458.56 516.00,468.95 498.00,479.34" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-21" data-state="missing"><title>2026-02-21: no returned record</title>
+<g data-date="2026-02-28" data-state="missing"><title>2026-02-28: no returned record</title>
 <polygon points="460.00,480.50 478.00,470.10 496.00,480.50 478.00,490.89" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-22" data-state="missing"><title>2026-02-22: no returned record</title>
+<g data-date="2026-03-01" data-state="missing"><title>2026-03-01: no returned record</title>
 <polygon points="600.00,422.76 618.00,412.37 636.00,422.76 618.00,433.15" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-23" data-state="missing"><title>2026-02-23: no returned record</title>
+<g data-date="2026-03-02" data-state="missing"><title>2026-03-02: no returned record</title>
 <polygon points="580.00,434.31 598.00,423.92 616.00,434.31 598.00,444.70" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-24" data-state="missing"><title>2026-02-24: no returned record</title>
+<g data-date="2026-03-03" data-state="missing"><title>2026-03-03: no returned record</title>
 <polygon points="560.00,445.85 578.00,435.46 596.00,445.85 578.00,456.25" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-25" data-state="missing"><title>2026-02-25: no returned record</title>
+<g data-date="2026-03-04" data-state="missing"><title>2026-03-04: no returned record</title>
 <polygon points="540.00,457.40 558.00,447.01 576.00,457.40 558.00,467.79" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-26" data-state="missing"><title>2026-02-26: no returned record</title>
+<g data-date="2026-03-05" data-state="missing"><title>2026-03-05: no returned record</title>
 <polygon points="520.00,468.95 538.00,458.56 556.00,468.95 538.00,479.34" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-27" data-state="missing"><title>2026-02-27: no returned record</title>
+<g data-date="2026-03-06" data-state="missing"><title>2026-03-06: no returned record</title>
 <polygon points="500.00,480.50 518.00,470.10 536.00,480.50 518.00,490.89" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-02-28" data-state="missing"><title>2026-02-28: no returned record</title>
+<g data-date="2026-03-07" data-state="missing"><title>2026-03-07: no returned record</title>
 <polygon points="480.00,492.04 498.00,481.65 516.00,492.04 498.00,502.44" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-01" data-state="missing"><title>2026-03-01: no returned record</title>
+<g data-date="2026-03-08" data-state="missing"><title>2026-03-08: no returned record</title>
 <polygon points="620.00,434.31 638.00,423.92 656.00,434.31 638.00,444.70" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-02" data-state="missing"><title>2026-03-02: no returned record</title>
+<g data-date="2026-03-09" data-state="missing"><title>2026-03-09: no returned record</title>
 <polygon points="600.00,445.85 618.00,435.46 636.00,445.85 618.00,456.25" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-03" data-state="missing"><title>2026-03-03: no returned record</title>
+<g data-date="2026-03-10" data-state="missing"><title>2026-03-10: no returned record</title>
 <polygon points="580.00,457.40 598.00,447.01 616.00,457.40 598.00,467.79" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-04" data-state="missing"><title>2026-03-04: no returned record</title>
+<g data-date="2026-03-11" data-state="missing"><title>2026-03-11: no returned record</title>
 <polygon points="560.00,468.95 578.00,458.56 596.00,468.95 578.00,479.34" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-05" data-state="missing"><title>2026-03-05: no returned record</title>
+<g data-date="2026-03-12" data-state="missing"><title>2026-03-12: no returned record</title>
 <polygon points="540.00,480.50 558.00,470.10 576.00,480.50 558.00,490.89" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-06" data-state="missing"><title>2026-03-06: no returned record</title>
+<g data-date="2026-03-13" data-state="missing"><title>2026-03-13: no returned record</title>
 <polygon points="520.00,492.04 538.00,481.65 556.00,492.04 538.00,502.44" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-07" data-state="missing"><title>2026-03-07: no returned record</title>
+<g data-date="2026-03-14" data-state="missing"><title>2026-03-14: no returned record</title>
 <polygon points="500.00,503.59 518.00,493.20 536.00,503.59 518.00,513.98" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-08" data-state="missing"><title>2026-03-08: no returned record</title>
+<g data-date="2026-03-15" data-state="missing"><title>2026-03-15: no returned record</title>
 <polygon points="640.00,445.85 658.00,435.46 676.00,445.85 658.00,456.25" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-09" data-state="missing"><title>2026-03-09: no returned record</title>
+<g data-date="2026-03-16" data-state="missing"><title>2026-03-16: no returned record</title>
 <polygon points="620.00,457.40 638.00,447.01 656.00,457.40 638.00,467.79" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-10" data-state="missing"><title>2026-03-10: no returned record</title>
+<g data-date="2026-03-17" data-state="missing"><title>2026-03-17: no returned record</title>
 <polygon points="600.00,468.95 618.00,458.56 636.00,468.95 618.00,479.34" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-11" data-state="missing"><title>2026-03-11: no returned record</title>
+<g data-date="2026-03-18" data-state="missing"><title>2026-03-18: no returned record</title>
 <polygon points="580.00,480.50 598.00,470.10 616.00,480.50 598.00,490.89" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-12" data-state="missing"><title>2026-03-12: no returned record</title>
+<g data-date="2026-03-19" data-state="missing"><title>2026-03-19: no returned record</title>
 <polygon points="560.00,492.04 578.00,481.65 596.00,492.04 578.00,502.44" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-13" data-state="missing"><title>2026-03-13: no returned record</title>
+<g data-date="2026-03-20" data-state="missing"><title>2026-03-20: no returned record</title>
 <polygon points="540.00,503.59 558.00,493.20 576.00,503.59 558.00,513.98" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-14" data-state="missing"><title>2026-03-14: no returned record</title>
+<g data-date="2026-03-21" data-state="missing"><title>2026-03-21: no returned record</title>
 <polygon points="520.00,515.14 538.00,504.74 556.00,515.14 538.00,525.53" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-15" data-state="missing"><title>2026-03-15: no returned record</title>
+<g data-date="2026-03-22" data-state="missing"><title>2026-03-22: no returned record</title>
 <polygon points="660.00,457.40 678.00,447.01 696.00,457.40 678.00,467.79" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-16" data-state="missing"><title>2026-03-16: no returned record</title>
+<g data-date="2026-03-23" data-state="missing"><title>2026-03-23: no returned record</title>
 <polygon points="640.00,468.95 658.00,458.56 676.00,468.95 658.00,479.34" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-17" data-state="missing"><title>2026-03-17: no returned record</title>
+<g data-date="2026-03-24" data-state="missing"><title>2026-03-24: no returned record</title>
 <polygon points="620.00,480.50 638.00,470.10 656.00,480.50 638.00,490.89" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-18" data-state="missing"><title>2026-03-18: no returned record</title>
+<g data-date="2026-03-25" data-state="missing"><title>2026-03-25: no returned record</title>
 <polygon points="600.00,492.04 618.00,481.65 636.00,492.04 618.00,502.44" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-19" data-state="missing"><title>2026-03-19: no returned record</title>
+<g data-date="2026-03-26" data-state="missing"><title>2026-03-26: no returned record</title>
 <polygon points="580.00,503.59 598.00,493.20 616.00,503.59 598.00,513.98" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-20" data-state="missing"><title>2026-03-20: no returned record</title>
+<g data-date="2026-03-27" data-state="missing"><title>2026-03-27: no returned record</title>
 <polygon points="560.00,515.14 578.00,504.74 596.00,515.14 578.00,525.53" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-21" data-state="missing"><title>2026-03-21: no returned record</title>
+<g data-date="2026-03-28" data-state="missing"><title>2026-03-28: no returned record</title>
 <polygon points="540.00,526.68 558.00,516.29 576.00,526.68 558.00,537.08" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-22" data-state="missing"><title>2026-03-22: no returned record</title>
+<g data-date="2026-03-29" data-state="missing"><title>2026-03-29: no returned record</title>
 <polygon points="680.00,468.95 698.00,458.56 716.00,468.95 698.00,479.34" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-23" data-state="missing"><title>2026-03-23: no returned record</title>
+<g data-date="2026-03-30" data-state="missing"><title>2026-03-30: no returned record</title>
 <polygon points="660.00,480.50 678.00,470.10 696.00,480.50 678.00,490.89" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-24" data-state="missing"><title>2026-03-24: no returned record</title>
+<g data-date="2026-03-31" data-state="missing"><title>2026-03-31: no returned record</title>
 <polygon points="640.00,492.04 658.00,481.65 676.00,492.04 658.00,502.44" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-25" data-state="missing"><title>2026-03-25: no returned record</title>
+<g data-date="2026-04-01" data-state="missing"><title>2026-04-01: no returned record</title>
 <polygon points="620.00,503.59 638.00,493.20 656.00,503.59 638.00,513.98" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-26" data-state="missing"><title>2026-03-26: no returned record</title>
+<g data-date="2026-04-02" data-state="missing"><title>2026-04-02: no returned record</title>
 <polygon points="600.00,515.14 618.00,504.74 636.00,515.14 618.00,525.53" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-27" data-state="missing"><title>2026-03-27: no returned record</title>
+<g data-date="2026-04-03" data-state="missing"><title>2026-04-03: no returned record</title>
 <polygon points="580.00,526.68 598.00,516.29 616.00,526.68 598.00,537.08" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-28" data-state="missing"><title>2026-03-28: no returned record</title>
+<g data-date="2026-04-04" data-state="missing"><title>2026-04-04: no returned record</title>
 <polygon points="560.00,538.23 578.00,527.84 596.00,538.23 578.00,548.62" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-29" data-state="missing"><title>2026-03-29: no returned record</title>
+<g data-date="2026-04-05" data-state="missing"><title>2026-04-05: no returned record</title>
 <polygon points="700.00,480.50 718.00,470.10 736.00,480.50 718.00,490.89" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-30" data-state="missing"><title>2026-03-30: no returned record</title>
+<g data-date="2026-04-06" data-state="missing"><title>2026-04-06: no returned record</title>
 <polygon points="680.00,492.04 698.00,481.65 716.00,492.04 698.00,502.44" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-03-31" data-state="missing"><title>2026-03-31: no returned record</title>
+<g data-date="2026-04-07" data-state="missing"><title>2026-04-07: no returned record</title>
 <polygon points="660.00,503.59 678.00,493.20 696.00,503.59 678.00,513.98" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-01" data-state="missing"><title>2026-04-01: no returned record</title>
+<g data-date="2026-04-08" data-state="missing"><title>2026-04-08: no returned record</title>
 <polygon points="640.00,515.14 658.00,504.74 676.00,515.14 658.00,525.53" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-02" data-state="missing"><title>2026-04-02: no returned record</title>
+<g data-date="2026-04-09" data-state="missing"><title>2026-04-09: no returned record</title>
 <polygon points="620.00,526.68 638.00,516.29 656.00,526.68 638.00,537.08" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-03" data-state="missing"><title>2026-04-03: no returned record</title>
+<g data-date="2026-04-10" data-state="missing"><title>2026-04-10: no returned record</title>
 <polygon points="600.00,538.23 618.00,527.84 636.00,538.23 618.00,548.62" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-04" data-state="missing"><title>2026-04-04: no returned record</title>
+<g data-date="2026-04-11" data-state="missing"><title>2026-04-11: no returned record</title>
 <polygon points="580.00,549.78 598.00,539.39 616.00,549.78 598.00,560.17" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-05" data-state="missing"><title>2026-04-05: no returned record</title>
+<g data-date="2026-04-12" data-state="missing"><title>2026-04-12: no returned record</title>
 <polygon points="720.00,492.04 738.00,481.65 756.00,492.04 738.00,502.44" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-06" data-state="missing"><title>2026-04-06: no returned record</title>
+<g data-date="2026-04-13" data-state="missing"><title>2026-04-13: no returned record</title>
 <polygon points="700.00,503.59 718.00,493.20 736.00,503.59 718.00,513.98" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-07" data-state="missing"><title>2026-04-07: no returned record</title>
+<g data-date="2026-04-14" data-state="missing"><title>2026-04-14: no returned record</title>
 <polygon points="680.00,515.14 698.00,504.74 716.00,515.14 698.00,525.53" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-08" data-state="missing"><title>2026-04-08: no returned record</title>
+<g data-date="2026-04-15" data-state="missing"><title>2026-04-15: no returned record</title>
 <polygon points="660.00,526.68 678.00,516.29 696.00,526.68 678.00,537.08" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-09" data-state="missing"><title>2026-04-09: no returned record</title>
+<g data-date="2026-04-16" data-state="missing"><title>2026-04-16: no returned record</title>
 <polygon points="640.00,538.23 658.00,527.84 676.00,538.23 658.00,548.62" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-10" data-state="missing"><title>2026-04-10: no returned record</title>
+<g data-date="2026-04-17" data-state="missing"><title>2026-04-17: no returned record</title>
 <polygon points="620.00,549.78 638.00,539.39 656.00,549.78 638.00,560.17" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-11" data-state="missing"><title>2026-04-11: no returned record</title>
+<g data-date="2026-04-18" data-state="missing"><title>2026-04-18: no returned record</title>
 <polygon points="600.00,561.32 618.00,550.93 636.00,561.32 618.00,571.72" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-12" data-state="missing"><title>2026-04-12: no returned record</title>
+<g data-date="2026-04-19" data-state="missing"><title>2026-04-19: no returned record</title>
 <polygon points="740.00,503.59 758.00,493.20 776.00,503.59 758.00,513.98" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-13" data-state="missing"><title>2026-04-13: no returned record</title>
+<g data-date="2026-04-20" data-state="missing"><title>2026-04-20: no returned record</title>
 <polygon points="720.00,515.14 738.00,504.74 756.00,515.14 738.00,525.53" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-14" data-state="missing"><title>2026-04-14: no returned record</title>
+<g data-date="2026-04-21" data-state="missing"><title>2026-04-21: no returned record</title>
 <polygon points="700.00,526.68 718.00,516.29 736.00,526.68 718.00,537.08" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-15" data-state="missing"><title>2026-04-15: no returned record</title>
+<g data-date="2026-04-22" data-state="missing"><title>2026-04-22: no returned record</title>
 <polygon points="680.00,538.23 698.00,527.84 716.00,538.23 698.00,548.62" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-16" data-state="missing"><title>2026-04-16: no returned record</title>
+<g data-date="2026-04-23" data-state="missing"><title>2026-04-23: no returned record</title>
 <polygon points="660.00,549.78 678.00,539.39 696.00,549.78 678.00,560.17" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-17" data-state="missing"><title>2026-04-17: no returned record</title>
+<g data-date="2026-04-24" data-state="missing"><title>2026-04-24: no returned record</title>
 <polygon points="640.00,561.32 658.00,550.93 676.00,561.32 658.00,571.72" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-18" data-state="missing"><title>2026-04-18: no returned record</title>
+<g data-date="2026-04-25" data-state="missing"><title>2026-04-25: no returned record</title>
 <polygon points="620.00,572.87 638.00,562.48 656.00,572.87 638.00,583.26" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-19" data-state="missing"><title>2026-04-19: no returned record</title>
+<g data-date="2026-04-26" data-state="missing"><title>2026-04-26: no returned record</title>
 <polygon points="760.00,515.14 778.00,504.74 796.00,515.14 778.00,525.53" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-20" data-state="missing"><title>2026-04-20: no returned record</title>
+<g data-date="2026-04-27" data-state="missing"><title>2026-04-27: no returned record</title>
 <polygon points="740.00,526.68 758.00,516.29 776.00,526.68 758.00,537.08" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-21" data-state="missing"><title>2026-04-21: no returned record</title>
+<g data-date="2026-04-28" data-state="missing"><title>2026-04-28: no returned record</title>
 <polygon points="720.00,538.23 738.00,527.84 756.00,538.23 738.00,548.62" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-22" data-state="missing"><title>2026-04-22: no returned record</title>
+<g data-date="2026-04-29" data-state="missing"><title>2026-04-29: no returned record</title>
 <polygon points="700.00,549.78 718.00,539.39 736.00,549.78 718.00,560.17" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-23" data-state="missing"><title>2026-04-23: no returned record</title>
+<g data-date="2026-04-30" data-state="missing"><title>2026-04-30: no returned record</title>
 <polygon points="680.00,561.32 698.00,550.93 716.00,561.32 698.00,571.72" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-24" data-state="missing"><title>2026-04-24: no returned record</title>
+<g data-date="2026-05-01" data-state="missing"><title>2026-05-01: no returned record</title>
 <polygon points="660.00,572.87 678.00,562.48 696.00,572.87 678.00,583.26" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-25" data-state="missing"><title>2026-04-25: no returned record</title>
+<g data-date="2026-05-02" data-state="missing"><title>2026-05-02: no returned record</title>
 <polygon points="640.00,584.42 658.00,574.03 676.00,584.42 658.00,594.81" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-26" data-state="missing"><title>2026-04-26: no returned record</title>
+<g data-date="2026-05-03" data-state="missing"><title>2026-05-03: no returned record</title>
 <polygon points="780.00,526.68 798.00,516.29 816.00,526.68 798.00,537.08" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-27" data-state="missing"><title>2026-04-27: no returned record</title>
+<g data-date="2026-05-04" data-state="missing"><title>2026-05-04: no returned record</title>
 <polygon points="760.00,538.23 778.00,527.84 796.00,538.23 778.00,548.62" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-28" data-state="missing"><title>2026-04-28: no returned record</title>
+<g data-date="2026-05-05" data-state="missing"><title>2026-05-05: no returned record</title>
 <polygon points="740.00,549.78 758.00,539.39 776.00,549.78 758.00,560.17" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-29" data-state="missing"><title>2026-04-29: no returned record</title>
+<g data-date="2026-05-06" data-state="missing"><title>2026-05-06: no returned record</title>
 <polygon points="720.00,561.32 738.00,550.93 756.00,561.32 738.00,571.72" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-04-30" data-state="missing"><title>2026-04-30: no returned record</title>
+<g data-date="2026-05-07" data-state="missing"><title>2026-05-07: no returned record</title>
 <polygon points="700.00,572.87 718.00,562.48 736.00,572.87 718.00,583.26" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-01" data-state="missing"><title>2026-05-01: no returned record</title>
+<g data-date="2026-05-08" data-state="missing"><title>2026-05-08: no returned record</title>
 <polygon points="680.00,584.42 698.00,574.03 716.00,584.42 698.00,594.81" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-02" data-state="missing"><title>2026-05-02: no returned record</title>
+<g data-date="2026-05-09" data-state="missing"><title>2026-05-09: no returned record</title>
 <polygon points="660.00,595.97 678.00,585.57 696.00,595.97 678.00,606.36" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-03" data-state="missing"><title>2026-05-03: no returned record</title>
+<g data-date="2026-05-10" data-state="missing"><title>2026-05-10: no returned record</title>
 <polygon points="800.00,538.23 818.00,527.84 836.00,538.23 818.00,548.62" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-04" data-state="missing"><title>2026-05-04: no returned record</title>
+<g data-date="2026-05-11" data-state="missing"><title>2026-05-11: no returned record</title>
 <polygon points="780.00,549.78 798.00,539.39 816.00,549.78 798.00,560.17" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-05" data-state="missing"><title>2026-05-05: no returned record</title>
+<g data-date="2026-05-12" data-state="missing"><title>2026-05-12: no returned record</title>
 <polygon points="760.00,561.32 778.00,550.93 796.00,561.32 778.00,571.72" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-06" data-state="missing"><title>2026-05-06: no returned record</title>
+<g data-date="2026-05-13" data-state="missing"><title>2026-05-13: no returned record</title>
 <polygon points="740.00,572.87 758.00,562.48 776.00,572.87 758.00,583.26" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-07" data-state="missing"><title>2026-05-07: no returned record</title>
+<g data-date="2026-05-14" data-state="missing"><title>2026-05-14: no returned record</title>
 <polygon points="720.00,584.42 738.00,574.03 756.00,584.42 738.00,594.81" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-08" data-state="missing"><title>2026-05-08: no returned record</title>
+<g data-date="2026-05-15" data-state="missing"><title>2026-05-15: no returned record</title>
 <polygon points="700.00,595.97 718.00,585.57 736.00,595.97 718.00,606.36" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-09" data-state="missing"><title>2026-05-09: no returned record</title>
+<g data-date="2026-05-16" data-state="missing"><title>2026-05-16: no returned record</title>
 <polygon points="680.00,607.51 698.00,597.12 716.00,607.51 698.00,617.91" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-10" data-state="missing"><title>2026-05-10: no returned record</title>
+<g data-date="2026-05-17" data-state="missing"><title>2026-05-17: no returned record</title>
 <polygon points="820.00,549.78 838.00,539.39 856.00,549.78 838.00,560.17" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-11" data-state="missing"><title>2026-05-11: no returned record</title>
+<g data-date="2026-05-18" data-state="missing"><title>2026-05-18: no returned record</title>
 <polygon points="800.00,561.32 818.00,550.93 836.00,561.32 818.00,571.72" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-12" data-state="missing"><title>2026-05-12: no returned record</title>
+<g data-date="2026-05-19" data-state="missing"><title>2026-05-19: no returned record</title>
 <polygon points="780.00,572.87 798.00,562.48 816.00,572.87 798.00,583.26" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-13" data-state="missing"><title>2026-05-13: no returned record</title>
+<g data-date="2026-05-20" data-state="missing"><title>2026-05-20: no returned record</title>
 <polygon points="760.00,584.42 778.00,574.03 796.00,584.42 778.00,594.81" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-14" data-state="missing"><title>2026-05-14: no returned record</title>
+<g data-date="2026-05-21" data-state="missing"><title>2026-05-21: no returned record</title>
 <polygon points="740.00,595.97 758.00,585.57 776.00,595.97 758.00,606.36" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-15" data-state="missing"><title>2026-05-15: no returned record</title>
+<g data-date="2026-05-22" data-state="missing"><title>2026-05-22: no returned record</title>
 <polygon points="720.00,607.51 738.00,597.12 756.00,607.51 738.00,617.91" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-16" data-state="missing"><title>2026-05-16: no returned record</title>
+<g data-date="2026-05-23" data-state="missing"><title>2026-05-23: no returned record</title>
 <polygon points="700.00,619.06 718.00,608.67 736.00,619.06 718.00,629.45" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-17" data-state="missing"><title>2026-05-17: no returned record</title>
+<g data-date="2026-05-24" data-state="missing"><title>2026-05-24: no returned record</title>
 <polygon points="840.00,561.32 858.00,550.93 876.00,561.32 858.00,571.72" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-18" data-state="missing"><title>2026-05-18: no returned record</title>
+<g data-date="2026-05-25" data-state="missing"><title>2026-05-25: no returned record</title>
 <polygon points="820.00,572.87 838.00,562.48 856.00,572.87 838.00,583.26" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-19" data-state="missing"><title>2026-05-19: no returned record</title>
+<g data-date="2026-05-26" data-state="missing"><title>2026-05-26: no returned record</title>
 <polygon points="800.00,584.42 818.00,574.03 836.00,584.42 818.00,594.81" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-20" data-state="missing"><title>2026-05-20: no returned record</title>
+<g data-date="2026-05-27" data-state="missing"><title>2026-05-27: no returned record</title>
 <polygon points="780.00,595.97 798.00,585.57 816.00,595.97 798.00,606.36" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-21" data-state="missing"><title>2026-05-21: no returned record</title>
+<g data-date="2026-05-28" data-state="missing"><title>2026-05-28: no returned record</title>
 <polygon points="760.00,607.51 778.00,597.12 796.00,607.51 778.00,617.91" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-22" data-state="missing"><title>2026-05-22: no returned record</title>
+<g data-date="2026-05-29" data-state="missing"><title>2026-05-29: no returned record</title>
 <polygon points="740.00,619.06 758.00,608.67 776.00,619.06 758.00,629.45" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-23" data-state="missing"><title>2026-05-23: no returned record</title>
+<g data-date="2026-05-30" data-state="missing"><title>2026-05-30: no returned record</title>
 <polygon points="720.00,630.61 738.00,620.21 756.00,630.61 738.00,641.00" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-24" data-state="missing"><title>2026-05-24: no returned record</title>
+<g data-date="2026-05-31" data-state="missing"><title>2026-05-31: no returned record</title>
 <polygon points="860.00,572.87 878.00,562.48 896.00,572.87 878.00,583.26" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-25" data-state="missing"><title>2026-05-25: no returned record</title>
+<g data-date="2026-06-01" data-state="missing"><title>2026-06-01: no returned record</title>
 <polygon points="840.00,584.42 858.00,574.03 876.00,584.42 858.00,594.81" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-26" data-state="missing"><title>2026-05-26: no returned record</title>
+<g data-date="2026-06-02" data-state="missing"><title>2026-06-02: no returned record</title>
 <polygon points="820.00,595.97 838.00,585.57 856.00,595.97 838.00,606.36" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-27" data-state="missing"><title>2026-05-27: no returned record</title>
+<g data-date="2026-06-03" data-state="missing"><title>2026-06-03: no returned record</title>
 <polygon points="800.00,607.51 818.00,597.12 836.00,607.51 818.00,617.91" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-28" data-state="missing"><title>2026-05-28: no returned record</title>
+<g data-date="2026-06-04" data-state="missing"><title>2026-06-04: no returned record</title>
 <polygon points="780.00,619.06 798.00,608.67 816.00,619.06 798.00,629.45" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-29" data-state="missing"><title>2026-05-29: no returned record</title>
+<g data-date="2026-06-05" data-state="missing"><title>2026-06-05: no returned record</title>
 <polygon points="760.00,630.61 778.00,620.21 796.00,630.61 778.00,641.00" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-30" data-state="missing"><title>2026-05-30: no returned record</title>
+<g data-date="2026-06-06" data-state="missing"><title>2026-06-06: no returned record</title>
 <polygon points="740.00,642.15 758.00,631.76 776.00,642.15 758.00,652.55" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-05-31" data-state="missing"><title>2026-05-31: no returned record</title>
+<g data-date="2026-06-07" data-state="missing"><title>2026-06-07: no returned record</title>
 <polygon points="880.00,584.42 898.00,574.03 916.00,584.42 898.00,594.81" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-01" data-state="missing"><title>2026-06-01: no returned record</title>
+<g data-date="2026-06-08" data-state="missing"><title>2026-06-08: no returned record</title>
 <polygon points="860.00,595.97 878.00,585.57 896.00,595.97 878.00,606.36" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-02" data-state="missing"><title>2026-06-02: no returned record</title>
+<g data-date="2026-06-09" data-state="missing"><title>2026-06-09: no returned record</title>
 <polygon points="840.00,607.51 858.00,597.12 876.00,607.51 858.00,617.91" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-03" data-state="missing"><title>2026-06-03: no returned record</title>
+<g data-date="2026-06-10" data-state="missing"><title>2026-06-10: no returned record</title>
 <polygon points="820.00,619.06 838.00,608.67 856.00,619.06 838.00,629.45" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-04" data-state="missing"><title>2026-06-04: no returned record</title>
+<g data-date="2026-06-11" data-state="missing"><title>2026-06-11: no returned record</title>
 <polygon points="800.00,630.61 818.00,620.21 836.00,630.61 818.00,641.00" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-05" data-state="missing"><title>2026-06-05: no returned record</title>
+<g data-date="2026-06-12" data-state="missing"><title>2026-06-12: no returned record</title>
 <polygon points="780.00,642.15 798.00,631.76 816.00,642.15 798.00,652.55" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-06" data-state="missing"><title>2026-06-06: no returned record</title>
+<g data-date="2026-06-13" data-state="missing"><title>2026-06-13: no returned record</title>
 <polygon points="760.00,653.70 778.00,643.31 796.00,653.70 778.00,664.09" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-07" data-state="missing"><title>2026-06-07: no returned record</title>
+<g data-date="2026-06-14" data-state="missing"><title>2026-06-14: no returned record</title>
 <polygon points="900.00,595.97 918.00,585.57 936.00,595.97 918.00,606.36" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-08" data-state="missing"><title>2026-06-08: no returned record</title>
+<g data-date="2026-06-15" data-state="missing"><title>2026-06-15: no returned record</title>
 <polygon points="880.00,607.51 898.00,597.12 916.00,607.51 898.00,617.91" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-09" data-state="missing"><title>2026-06-09: no returned record</title>
+<g data-date="2026-06-16" data-state="missing"><title>2026-06-16: no returned record</title>
 <polygon points="860.00,619.06 878.00,608.67 896.00,619.06 878.00,629.45" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-10" data-state="missing"><title>2026-06-10: no returned record</title>
+<g data-date="2026-06-17" data-state="missing"><title>2026-06-17: no returned record</title>
 <polygon points="840.00,630.61 858.00,620.21 876.00,630.61 858.00,641.00" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-11" data-state="missing"><title>2026-06-11: no returned record</title>
+<g data-date="2026-06-18" data-state="missing"><title>2026-06-18: no returned record</title>
 <polygon points="820.00,642.15 838.00,631.76 856.00,642.15 838.00,652.55" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-12" data-state="missing"><title>2026-06-12: no returned record</title>
+<g data-date="2026-06-19" data-state="missing"><title>2026-06-19: no returned record</title>
 <polygon points="800.00,653.70 818.00,643.31 836.00,653.70 818.00,664.09" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-13" data-state="missing"><title>2026-06-13: no returned record</title>
+<g data-date="2026-06-20" data-state="missing"><title>2026-06-20: no returned record</title>
 <polygon points="780.00,665.25 798.00,654.86 816.00,665.25 798.00,675.64" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-14" data-state="missing"><title>2026-06-14: no returned record</title>
+<g data-date="2026-06-21" data-state="missing"><title>2026-06-21: no returned record</title>
 <polygon points="920.00,607.51 938.00,597.12 956.00,607.51 938.00,617.91" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-15" data-state="missing"><title>2026-06-15: no returned record</title>
+<g data-date="2026-06-22" data-state="missing"><title>2026-06-22: no returned record</title>
 <polygon points="900.00,619.06 918.00,608.67 936.00,619.06 918.00,629.45" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-16" data-state="missing"><title>2026-06-16: no returned record</title>
+<g data-date="2026-06-23" data-state="missing"><title>2026-06-23: no returned record</title>
 <polygon points="880.00,630.61 898.00,620.21 916.00,630.61 898.00,641.00" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-17" data-state="missing"><title>2026-06-17: no returned record</title>
+<g data-date="2026-06-24" data-state="missing"><title>2026-06-24: no returned record</title>
 <polygon points="860.00,642.15 878.00,631.76 896.00,642.15 878.00,652.55" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-18" data-state="missing"><title>2026-06-18: no returned record</title>
+<g data-date="2026-06-25" data-state="missing"><title>2026-06-25: no returned record</title>
 <polygon points="840.00,653.70 858.00,643.31 876.00,653.70 858.00,664.09" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-19" data-state="missing"><title>2026-06-19: no returned record</title>
+<g data-date="2026-06-26" data-state="missing"><title>2026-06-26: no returned record</title>
 <polygon points="820.00,665.25 838.00,654.86 856.00,665.25 838.00,675.64" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-20" data-state="missing"><title>2026-06-20: no returned record</title>
+<g data-date="2026-06-27" data-state="missing"><title>2026-06-27: no returned record</title>
 <polygon points="800.00,676.79 818.00,666.40 836.00,676.79 818.00,687.19" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-21" data-state="missing"><title>2026-06-21: no returned record</title>
+<g data-date="2026-06-28" data-state="missing"><title>2026-06-28: no returned record</title>
 <polygon points="940.00,619.06 958.00,608.67 976.00,619.06 958.00,629.45" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-22" data-state="missing"><title>2026-06-22: no returned record</title>
+<g data-date="2026-06-29" data-state="missing"><title>2026-06-29: no returned record</title>
 <polygon points="920.00,630.61 938.00,620.21 956.00,630.61 938.00,641.00" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-23" data-state="missing"><title>2026-06-23: no returned record</title>
+<g data-date="2026-06-30" data-state="missing"><title>2026-06-30: no returned record</title>
 <polygon points="900.00,642.15 918.00,631.76 936.00,642.15 918.00,652.55" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-24" data-state="missing"><title>2026-06-24: no returned record</title>
+<g data-date="2026-07-01" data-state="missing"><title>2026-07-01: no returned record</title>
 <polygon points="880.00,653.70 898.00,643.31 916.00,653.70 898.00,664.09" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-25" data-state="missing"><title>2026-06-25: no returned record</title>
+<g data-date="2026-07-02" data-state="missing"><title>2026-07-02: no returned record</title>
 <polygon points="860.00,665.25 878.00,654.86 896.00,665.25 878.00,675.64" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-26" data-state="missing"><title>2026-06-26: no returned record</title>
+<g data-date="2026-07-03" data-state="missing"><title>2026-07-03: no returned record</title>
 <polygon points="840.00,676.79 858.00,666.40 876.00,676.79 858.00,687.19" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-27" data-state="missing"><title>2026-06-27: no returned record</title>
+<g data-date="2026-07-04" data-state="missing"><title>2026-07-04: no returned record</title>
 <polygon points="820.00,688.34 838.00,677.95 856.00,688.34 838.00,698.73" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-28" data-state="missing"><title>2026-06-28: no returned record</title>
+<g data-date="2026-07-05" data-state="missing"><title>2026-07-05: no returned record</title>
 <polygon points="960.00,630.61 978.00,620.21 996.00,630.61 978.00,641.00" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-29" data-state="missing"><title>2026-06-29: no returned record</title>
+<g data-date="2026-07-06" data-state="missing"><title>2026-07-06: no returned record</title>
 <polygon points="940.00,642.15 958.00,631.76 976.00,642.15 958.00,652.55" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-06-30" data-state="missing"><title>2026-06-30: no returned record</title>
+<g data-date="2026-07-07" data-state="missing"><title>2026-07-07: no returned record</title>
 <polygon points="920.00,653.70 938.00,643.31 956.00,653.70 938.00,664.09" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-07-01" data-state="missing"><title>2026-07-01: no returned record</title>
+<g data-date="2026-07-08" data-state="missing"><title>2026-07-08: no returned record</title>
 <polygon points="900.00,665.25 918.00,654.86 936.00,665.25 918.00,675.64" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-07-02" data-state="missing"><title>2026-07-02: no returned record</title>
+<g data-date="2026-07-09" data-state="missing"><title>2026-07-09: no returned record</title>
 <polygon points="880.00,676.79 898.00,666.40 916.00,676.79 898.00,687.19" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-07-03" data-state="missing"><title>2026-07-03: no returned record</title>
+<g data-date="2026-07-10" data-state="missing"><title>2026-07-10: no returned record</title>
 <polygon points="860.00,688.34 878.00,677.95 896.00,688.34 878.00,698.73" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-07-04" data-state="missing"><title>2026-07-04: no returned record</title>
+<g data-date="2026-07-11" data-state="missing"><title>2026-07-11: no returned record</title>
 <polygon points="840.00,699.89 858.00,689.50 876.00,699.89 858.00,710.28" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-07-05" data-state="missing"><title>2026-07-05: no returned record</title>
+<g data-date="2026-07-12" data-state="missing"><title>2026-07-12: no returned record</title>
 <polygon points="980.00,642.15 998.00,631.76 1016.00,642.15 998.00,652.55" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-07-06" data-state="missing"><title>2026-07-06: no returned record</title>
+<g data-date="2026-07-13" data-state="missing"><title>2026-07-13: no returned record</title>
 <polygon points="960.00,653.70 978.00,643.31 996.00,653.70 978.00,664.09" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-07-07" data-state="missing"><title>2026-07-07: no returned record</title>
+<g data-date="2026-07-14" data-state="missing"><title>2026-07-14: no returned record</title>
 <polygon points="940.00,665.25 958.00,654.86 976.00,665.25 958.00,675.64" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-07-08" data-state="missing"><title>2026-07-08: no returned record</title>
+<g data-date="2026-07-15" data-state="missing"><title>2026-07-15: no returned record</title>
 <polygon points="920.00,676.79 938.00,666.40 956.00,676.79 938.00,687.19" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-07-09" data-state="missing"><title>2026-07-09: no returned record</title>
+<g data-date="2026-07-16" data-state="missing"><title>2026-07-16: no returned record</title>
 <polygon points="900.00,688.34 918.00,677.95 936.00,688.34 918.00,698.73" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-07-10" data-state="missing"><title>2026-07-10: no returned record</title>
+<g data-date="2026-07-17" data-state="missing"><title>2026-07-17: no returned record</title>
 <polygon points="880.00,699.89 898.00,689.50 916.00,699.89 898.00,710.28" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-07-11" data-state="missing"><title>2026-07-11: no returned record</title>
+<g data-date="2026-07-18" data-state="missing"><title>2026-07-18: no returned record</title>
 <polygon points="860.00,711.44 878.00,701.04 896.00,711.44 878.00,721.83" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-07-12" data-state="missing"><title>2026-07-12: no returned record</title>
+<g data-date="2026-07-19" data-state="missing"><title>2026-07-19: no returned record</title>
 <polygon points="1000.00,653.70 1018.00,643.31 1036.00,653.70 1018.00,664.09" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-07-13" data-state="missing"><title>2026-07-13: no returned record</title>
+<g data-date="2026-07-20" data-state="missing"><title>2026-07-20: no returned record</title>
 <polygon points="980.00,665.25 998.00,654.86 1016.00,665.25 998.00,675.64" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-07-14" data-state="missing"><title>2026-07-14: no returned record</title>
+<g data-date="2026-07-21" data-state="missing"><title>2026-07-21: no returned record</title>
 <polygon points="960.00,676.79 978.00,666.40 996.00,676.79 978.00,687.19" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-07-15" data-state="missing"><title>2026-07-15: no returned record</title>
+<g data-date="2026-07-22" data-state="missing"><title>2026-07-22: no returned record</title>
 <polygon points="940.00,688.34 958.00,677.95 976.00,688.34 958.00,698.73" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-07-16" data-state="missing"><title>2026-07-16: no returned record</title>
+<g data-date="2026-07-23" data-state="missing"><title>2026-07-23: no returned record</title>
 <polygon points="920.00,699.89 938.00,689.50 956.00,699.89 938.00,710.28" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-07-17" data-state="missing"><title>2026-07-17: no returned record</title>
+<g data-date="2026-07-24" data-state="missing"><title>2026-07-24: no returned record</title>
 <polygon points="900.00,711.44 918.00,701.04 936.00,711.44 918.00,721.83" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
-<g data-date="2026-07-18" data-state="missing"><title>2026-07-18: no returned record</title>
-<polygon points="880.00,722.98 898.00,712.59 916.00,722.98 898.00,733.38" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
-</g>
-<g data-date="2026-07-19" data-state="missing"><title>2026-07-19: no returned record</title>
-<polygon points="1020.00,665.25 1038.00,654.86 1056.00,665.25 1038.00,675.64" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
-</g>
-<g data-date="2026-07-20" data-state="missing"><title>2026-07-20: no returned record</title>
-<polygon points="1000.00,676.79 1018.00,666.40 1036.00,676.79 1018.00,687.19" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
-</g>
-<g data-date="2026-07-21" data-state="missing"><title>2026-07-21: no returned record</title>
-<polygon points="980.00,688.34 998.00,677.95 1016.00,688.34 998.00,698.73" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
-</g>
-<g data-date="2026-07-22" data-state="missing"><title>2026-07-22: no returned record</title>
-<polygon points="960.00,699.89 978.00,689.50 996.00,699.89 978.00,710.28" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
-</g>
-<g data-date="2026-07-23" data-state="missing"><title>2026-07-23: no returned record</title>
-<polygon points="940.00,711.44 958.00,701.04 976.00,711.44 958.00,721.83" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
-</g>
-<g data-date="2026-07-24" data-state="missing"><title>2026-07-24: no returned record</title>
-<polygon points="920.00,722.98 938.00,712.59 956.00,722.98 938.00,733.38" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
-</g>
 <g class="tower" data-date="2026-07-25" data-state="recorded"><title>2026-07-25: 100,761 recorded tokens</title>
-<polygon points="900.00,731.22 918.00,741.61 918.00,744.92 900.00,734.53" fill="#1d4558" />
-<polygon points="918.00,741.61 936.00,731.22 936.00,734.53 918.00,744.92" fill="#183a4a" />
-<polygon points="900.00,731.22 918.00,720.82 936.00,731.22 918.00,741.61" fill="#235369" />
+<polygon points="880.00,719.67 898.00,730.06 898.00,733.38 880.00,722.98" fill="#1d4558" />
+<polygon points="898.00,730.06 916.00,719.67 916.00,722.98 898.00,733.38" fill="#183a4a" />
+<polygon points="880.00,719.67 898.00,709.28 916.00,719.67 898.00,730.06" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-07-26" data-state="recorded"><title>2026-07-26: 7,270,728 recorded tokens</title>
-<polygon points="1040.00,654.40 1058.00,664.80 1058.00,687.19 1040.00,676.79" fill="#1d4558" />
-<polygon points="1058.00,664.80 1076.00,654.40 1076.00,676.79 1058.00,687.19" fill="#183a4a" />
-<polygon points="1040.00,654.40 1058.00,644.01 1076.00,654.40 1058.00,664.80" fill="#235369" />
+<polygon points="1020.00,642.86 1038.00,653.25 1038.00,675.64 1020.00,665.25" fill="#1d4558" />
+<polygon points="1038.00,653.25 1056.00,642.86 1056.00,665.25 1038.00,675.64" fill="#183a4a" />
+<polygon points="1020.00,642.86 1038.00,632.46 1056.00,642.86 1038.00,653.25" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-07-27" data-state="recorded"><title>2026-07-27: 45,373,319 recorded tokens</title>
-<polygon points="1020.00,611.27 1038.00,621.66 1038.00,698.73 1020.00,688.34" fill="#2d6775" />
-<polygon points="1038.00,621.66 1056.00,611.27 1056.00,688.34 1038.00,698.73" fill="#265662" />
-<polygon points="1020.00,611.27 1038.00,600.88 1056.00,611.27 1038.00,621.66" fill="#367b8c" />
+<polygon points="1000.00,599.73 1018.00,610.12 1018.00,687.19 1000.00,676.79" fill="#2d6775" />
+<polygon points="1018.00,610.12 1036.00,599.73 1036.00,676.79 1018.00,687.19" fill="#265662" />
+<polygon points="1000.00,599.73 1018.00,589.33 1036.00,599.73 1018.00,610.12" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-07-28" data-state="recorded"><title>2026-07-28: 10,080,150 recorded tokens</title>
-<polygon points="1000.00,671.36 1018.00,681.76 1018.00,710.28 1000.00,699.89" fill="#1d4558" />
-<polygon points="1018.00,681.76 1036.00,671.36 1036.00,699.89 1018.00,710.28" fill="#183a4a" />
-<polygon points="1000.00,671.36 1018.00,660.97 1036.00,671.36 1018.00,681.76" fill="#235369" />
+<polygon points="980.00,659.82 998.00,670.21 998.00,698.73 980.00,688.34" fill="#1d4558" />
+<polygon points="998.00,670.21 1016.00,659.82 1016.00,688.34 998.00,698.73" fill="#183a4a" />
+<polygon points="980.00,659.82 998.00,649.43 1016.00,659.82 998.00,670.21" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-07-29" data-state="recorded"><title>2026-07-29: 33,475,150 recorded tokens</title>
-<polygon points="980.00,646.93 998.00,657.32 998.00,721.83 980.00,711.44" fill="#1d4558" />
-<polygon points="998.00,657.32 1016.00,646.93 1016.00,711.44 998.00,721.83" fill="#183a4a" />
-<polygon points="980.00,646.93 998.00,636.54 1016.00,646.93 998.00,657.32" fill="#235369" />
+<polygon points="960.00,635.38 978.00,645.78 978.00,710.28 960.00,699.89" fill="#1d4558" />
+<polygon points="978.00,645.78 996.00,635.38 996.00,699.89 978.00,710.28" fill="#183a4a" />
+<polygon points="960.00,635.38 978.00,624.99 996.00,635.38 978.00,645.78" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-07-30" data-state="recorded"><title>2026-07-30: 22,882,839 recorded tokens</title>
-<polygon points="960.00,672.28 978.00,682.67 978.00,733.38 960.00,722.98" fill="#1d4558" />
-<polygon points="978.00,682.67 996.00,672.28 996.00,722.98 978.00,733.38" fill="#183a4a" />
-<polygon points="960.00,672.28 978.00,661.89 996.00,672.28 978.00,682.67" fill="#235369" />
+<polygon points="940.00,660.74 958.00,671.13 958.00,721.83 940.00,711.44" fill="#1d4558" />
+<polygon points="958.00,671.13 976.00,660.74 976.00,711.44 958.00,721.83" fill="#183a4a" />
+<polygon points="940.00,660.74 958.00,650.34 976.00,660.74 958.00,671.13" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-07-31" data-state="recorded"><title>2026-07-31: 38,457,755 recorded tokens</title>
-<polygon points="940.00,664.45 958.00,674.85 958.00,744.92 940.00,734.53" fill="#1d4558" />
-<polygon points="958.00,674.85 976.00,664.45 976.00,734.53 958.00,744.92" fill="#183a4a" />
-<polygon points="940.00,664.45 958.00,654.06 976.00,664.45 958.00,674.85" fill="#235369" />
+<polygon points="920.00,652.91 938.00,663.30 938.00,733.38 920.00,722.98" fill="#1d4558" />
+<polygon points="938.00,663.30 956.00,652.91 956.00,722.98 938.00,733.38" fill="#183a4a" />
+<polygon points="920.00,652.91 938.00,642.51 956.00,652.91 938.00,663.30" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-01" data-state="recorded"><title>2026-08-01: 17,537,785 recorded tokens</title>
-<polygon points="920.00,703.70 938.00,714.09 938.00,756.47 920.00,746.08" fill="#1d4558" />
-<polygon points="938.00,714.09 956.00,703.70 956.00,746.08 938.00,756.47" fill="#183a4a" />
-<polygon points="920.00,703.70 938.00,693.31 956.00,703.70 938.00,714.09" fill="#235369" />
+<polygon points="900.00,692.15 918.00,702.55 918.00,744.92 900.00,734.53" fill="#1d4558" />
+<polygon points="918.00,702.55 936.00,692.15 936.00,734.53 918.00,744.92" fill="#183a4a" />
+<polygon points="900.00,692.15 918.00,681.76 936.00,692.15 918.00,702.55" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-02" data-state="recorded"><title>2026-08-02: 955,005 recorded tokens</title>
-<polygon points="1060.00,682.42 1078.00,692.82 1078.00,698.73 1060.00,688.34" fill="#1d4558" />
-<polygon points="1078.00,692.82 1096.00,682.42 1096.00,688.34 1078.00,698.73" fill="#183a4a" />
-<polygon points="1060.00,682.42 1078.00,672.03 1096.00,682.42 1078.00,692.82" fill="#235369" />
+<polygon points="1040.00,670.88 1058.00,681.27 1058.00,687.19 1040.00,676.79" fill="#1d4558" />
+<polygon points="1058.00,681.27 1076.00,670.88 1076.00,676.79 1058.00,687.19" fill="#183a4a" />
+<polygon points="1040.00,670.88 1058.00,660.49 1076.00,670.88 1058.00,681.27" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-03" data-state="recorded"><title>2026-08-03: 16,517,046 recorded tokens</title>
-<polygon points="1040.00,659.24 1058.00,669.63 1058.00,710.28 1040.00,699.89" fill="#1d4558" />
-<polygon points="1058.00,669.63 1076.00,659.24 1076.00,699.89 1058.00,710.28" fill="#183a4a" />
-<polygon points="1040.00,659.24 1058.00,648.85 1076.00,659.24 1058.00,669.63" fill="#235369" />
+<polygon points="1020.00,647.69 1038.00,658.08 1038.00,698.73 1020.00,688.34" fill="#1d4558" />
+<polygon points="1038.00,658.08 1056.00,647.69 1056.00,688.34 1038.00,698.73" fill="#183a4a" />
+<polygon points="1020.00,647.69 1038.00,637.30 1056.00,647.69 1038.00,658.08" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-04" data-state="recorded"><title>2026-08-04: 76,632,886 recorded tokens</title>
-<polygon points="1020.00,609.93 1038.00,620.32 1038.00,721.83 1020.00,711.44" fill="#2d6775" />
-<polygon points="1038.00,620.32 1056.00,609.93 1056.00,711.44 1038.00,721.83" fill="#265662" />
-<polygon points="1020.00,609.93 1038.00,599.53 1056.00,609.93 1038.00,620.32" fill="#367b8c" />
+<polygon points="1000.00,598.38 1018.00,608.77 1018.00,710.28 1000.00,699.89" fill="#2d6775" />
+<polygon points="1018.00,608.77 1036.00,598.38 1036.00,699.89 1018.00,710.28" fill="#265662" />
+<polygon points="1000.00,598.38 1018.00,587.99 1036.00,598.38 1018.00,608.77" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-08-05" data-state="recorded"><title>2026-08-05: 18,157,871 recorded tokens</title>
-<polygon points="1000.00,679.58 1018.00,689.98 1018.00,733.38 1000.00,722.98" fill="#1d4558" />
-<polygon points="1018.00,689.98 1036.00,679.58 1036.00,722.98 1018.00,733.38" fill="#183a4a" />
-<polygon points="1000.00,679.58 1018.00,669.19 1036.00,679.58 1018.00,689.98" fill="#235369" />
+<polygon points="980.00,668.04 998.00,678.43 998.00,721.83 980.00,711.44" fill="#1d4558" />
+<polygon points="998.00,678.43 1016.00,668.04 1016.00,711.44 998.00,721.83" fill="#183a4a" />
+<polygon points="980.00,668.04 998.00,657.64 1016.00,668.04 998.00,678.43" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-06" data-state="recorded"><title>2026-08-06: 12,772,866 recorded tokens</title>
-<polygon points="980.00,700.64 998.00,711.04 998.00,744.92 980.00,734.53" fill="#1d4558" />
-<polygon points="998.00,711.04 1016.00,700.64 1016.00,734.53 998.00,744.92" fill="#183a4a" />
-<polygon points="980.00,700.64 998.00,690.25 1016.00,700.64 998.00,711.04" fill="#235369" />
+<polygon points="960.00,689.10 978.00,699.49 978.00,733.38 960.00,722.98" fill="#1d4558" />
+<polygon points="978.00,699.49 996.00,689.10 996.00,722.98 978.00,733.38" fill="#183a4a" />
+<polygon points="960.00,689.10 978.00,678.70 996.00,689.10 978.00,699.49" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-07" data-state="recorded"><title>2026-08-07: 34,393,661 recorded tokens</title>
-<polygon points="960.00,680.51 978.00,690.90 978.00,756.47 960.00,746.08" fill="#1d4558" />
-<polygon points="978.00,690.90 996.00,680.51 996.00,746.08 978.00,756.47" fill="#183a4a" />
-<polygon points="960.00,680.51 978.00,670.11 996.00,680.51 978.00,690.90" fill="#235369" />
+<polygon points="940.00,668.96 958.00,679.35 958.00,744.92 940.00,734.53" fill="#1d4558" />
+<polygon points="958.00,679.35 976.00,668.96 976.00,734.53 958.00,744.92" fill="#183a4a" />
+<polygon points="940.00,668.96 958.00,658.57 976.00,668.96 958.00,679.35" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-08" data-state="recorded"><title>2026-08-08: 1,982,976 recorded tokens</title>
-<polygon points="940.00,748.71 958.00,759.10 958.00,768.02 940.00,757.62" fill="#1d4558" />
-<polygon points="958.00,759.10 976.00,748.71 976.00,757.62 958.00,768.02" fill="#183a4a" />
-<polygon points="940.00,748.71 958.00,738.32 976.00,748.71 958.00,759.10" fill="#235369" />
+<polygon points="920.00,737.16 938.00,747.56 938.00,756.47 920.00,746.08" fill="#1d4558" />
+<polygon points="938.00,747.56 956.00,737.16 956.00,746.08 938.00,756.47" fill="#183a4a" />
+<polygon points="920.00,737.16 938.00,726.77 956.00,737.16 938.00,747.56" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-09" data-state="recorded"><title>2026-08-09: 235,234 recorded tokens</title>
-<polygon points="1080.00,696.16 1098.00,706.55 1098.00,710.28 1080.00,699.89" fill="#1d4558" />
-<polygon points="1098.00,706.55 1116.00,696.16 1116.00,699.89 1098.00,710.28" fill="#183a4a" />
-<polygon points="1080.00,696.16 1098.00,685.77 1116.00,696.16 1098.00,706.55" fill="#235369" />
+<polygon points="1060.00,684.61 1078.00,695.00 1078.00,698.73 1060.00,688.34" fill="#1d4558" />
+<polygon points="1078.00,695.00 1096.00,684.61 1096.00,688.34 1078.00,698.73" fill="#183a4a" />
+<polygon points="1060.00,684.61 1078.00,674.22 1096.00,684.61 1078.00,695.00" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-10" data-state="recorded"><title>2026-08-10: 1,574,298 recorded tokens</title>
-<polygon points="1060.00,703.70 1078.00,714.09 1078.00,721.83 1060.00,711.44" fill="#1d4558" />
-<polygon points="1078.00,714.09 1096.00,703.70 1096.00,711.44 1078.00,721.83" fill="#183a4a" />
-<polygon points="1060.00,703.70 1078.00,693.31 1096.00,703.70 1078.00,714.09" fill="#235369" />
+<polygon points="1040.00,692.15 1058.00,702.54 1058.00,710.28 1040.00,699.89" fill="#1d4558" />
+<polygon points="1058.00,702.54 1076.00,692.15 1076.00,699.89 1058.00,710.28" fill="#183a4a" />
+<polygon points="1040.00,692.15 1058.00,681.76 1076.00,692.15 1058.00,702.54" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-11" data-state="recorded"><title>2026-08-11: 14,878,656 recorded tokens</title>
-<polygon points="1040.00,685.20 1058.00,695.59 1058.00,733.38 1040.00,722.98" fill="#1d4558" />
-<polygon points="1058.00,695.59 1076.00,685.20 1076.00,722.98 1058.00,733.38" fill="#183a4a" />
-<polygon points="1040.00,685.20 1058.00,674.81 1076.00,685.20 1058.00,695.59" fill="#235369" />
+<polygon points="1020.00,673.66 1038.00,684.05 1038.00,721.83 1020.00,711.44" fill="#1d4558" />
+<polygon points="1038.00,684.05 1056.00,673.66 1056.00,711.44 1038.00,721.83" fill="#183a4a" />
+<polygon points="1020.00,673.66 1038.00,663.26 1056.00,673.66 1038.00,684.05" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-12" data-state="recorded"><title>2026-08-12: 13,872,958 recorded tokens</title>
-<polygon points="1020.00,698.58 1038.00,708.97 1038.00,744.92 1020.00,734.53" fill="#1d4558" />
-<polygon points="1038.00,708.97 1056.00,698.58 1056.00,734.53 1038.00,744.92" fill="#183a4a" />
-<polygon points="1020.00,698.58 1038.00,688.19 1056.00,698.58 1038.00,708.97" fill="#235369" />
+<polygon points="1000.00,687.03 1018.00,697.42 1018.00,733.38 1000.00,722.98" fill="#1d4558" />
+<polygon points="1018.00,697.42 1036.00,687.03 1036.00,722.98 1018.00,733.38" fill="#183a4a" />
+<polygon points="1000.00,687.03 1018.00,676.64 1036.00,687.03 1018.00,697.42" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-13" data-state="recorded"><title>2026-08-13: 25,994,245 recorded tokens</title>
-<polygon points="1000.00,691.00 1018.00,701.39 1018.00,756.47 1000.00,746.08" fill="#1d4558" />
-<polygon points="1018.00,701.39 1036.00,691.00 1036.00,746.08 1018.00,756.47" fill="#183a4a" />
-<polygon points="1000.00,691.00 1018.00,680.60 1036.00,691.00 1018.00,701.39" fill="#235369" />
+<polygon points="980.00,679.45 998.00,689.84 998.00,744.92 980.00,734.53" fill="#1d4558" />
+<polygon points="998.00,689.84 1016.00,679.45 1016.00,734.53 998.00,744.92" fill="#183a4a" />
+<polygon points="980.00,679.45 998.00,669.06 1016.00,679.45 998.00,689.84" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-14" data-state="recorded"><title>2026-08-14: 76,804,996 recorded tokens</title>
-<polygon points="980.00,656.00 998.00,666.40 998.00,768.02 980.00,757.62" fill="#2d6775" />
-<polygon points="998.00,666.40 1016.00,656.00 1016.00,757.62 998.00,768.02" fill="#265662" />
-<polygon points="980.00,656.00 998.00,645.61 1016.00,656.00 998.00,666.40" fill="#367b8c" />
+<polygon points="960.00,644.46 978.00,654.85 978.00,756.47 960.00,746.08" fill="#2d6775" />
+<polygon points="978.00,654.85 996.00,644.46 996.00,746.08 978.00,756.47" fill="#265662" />
+<polygon points="960.00,644.46 978.00,634.06 996.00,644.46 978.00,654.85" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-08-15" data-state="recorded"><title>2026-08-15: 4,107,832 recorded tokens</title>
-<polygon points="960.00,754.49 978.00,764.88 978.00,779.56 960.00,769.17" fill="#1d4558" />
-<polygon points="978.00,764.88 996.00,754.49 996.00,769.17 978.00,779.56" fill="#183a4a" />
-<polygon points="960.00,754.49 978.00,744.10 996.00,754.49 978.00,764.88" fill="#235369" />
+<polygon points="940.00,742.94 958.00,753.33 958.00,768.02 940.00,757.62" fill="#1d4558" />
+<polygon points="958.00,753.33 976.00,742.94 976.00,757.62 958.00,768.02" fill="#183a4a" />
+<polygon points="940.00,742.94 958.00,732.55 976.00,742.94 958.00,753.33" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-16" data-state="recorded"><title>2026-08-16: 35,247,639 recorded tokens</title>
-<polygon points="1100.00,644.89 1118.00,655.28 1118.00,721.83 1100.00,711.44" fill="#1d4558" />
-<polygon points="1118.00,655.28 1136.00,644.89 1136.00,711.44 1118.00,721.83" fill="#183a4a" />
-<polygon points="1100.00,644.89 1118.00,634.50 1136.00,644.89 1118.00,655.28" fill="#235369" />
+<polygon points="1080.00,633.34 1098.00,643.74 1098.00,710.28 1080.00,699.89" fill="#1d4558" />
+<polygon points="1098.00,643.74 1116.00,633.34 1116.00,699.89 1098.00,710.28" fill="#183a4a" />
+<polygon points="1080.00,633.34 1098.00,622.95 1116.00,633.34 1098.00,643.74" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-17" data-state="recorded"><title>2026-08-17: 13,861,653 recorded tokens</title>
-<polygon points="1080.00,687.05 1098.00,697.45 1098.00,733.38 1080.00,722.98" fill="#1d4558" />
-<polygon points="1098.00,697.45 1116.00,687.05 1116.00,722.98 1098.00,733.38" fill="#183a4a" />
-<polygon points="1080.00,687.05 1098.00,676.66 1116.00,687.05 1098.00,697.45" fill="#235369" />
+<polygon points="1060.00,675.51 1078.00,685.90 1078.00,721.83 1060.00,711.44" fill="#1d4558" />
+<polygon points="1078.00,685.90 1096.00,675.51 1096.00,711.44 1078.00,721.83" fill="#183a4a" />
+<polygon points="1060.00,675.51 1078.00,665.11 1096.00,675.51 1078.00,685.90" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-18" data-state="recorded"><title>2026-08-18: 3,090,974 recorded tokens</title>
-<polygon points="1060.00,722.54 1078.00,732.93 1078.00,744.92 1060.00,734.53" fill="#1d4558" />
-<polygon points="1078.00,732.93 1096.00,722.54 1096.00,734.53 1078.00,744.92" fill="#183a4a" />
-<polygon points="1060.00,722.54 1078.00,712.15 1096.00,722.54 1078.00,732.93" fill="#235369" />
+<polygon points="1040.00,711.00 1058.00,721.39 1058.00,733.38 1040.00,722.98" fill="#1d4558" />
+<polygon points="1058.00,721.39 1076.00,711.00 1076.00,722.98 1058.00,733.38" fill="#183a4a" />
+<polygon points="1040.00,711.00 1058.00,700.60 1076.00,711.00 1058.00,721.39" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-19" data-state="recorded"><title>2026-08-19: 63,507 recorded tokens</title>
-<polygon points="1040.00,742.88 1058.00,753.27 1058.00,756.47 1040.00,746.08" fill="#1d4558" />
-<polygon points="1058.00,753.27 1076.00,742.88 1076.00,746.08 1058.00,756.47" fill="#183a4a" />
-<polygon points="1040.00,742.88 1058.00,732.49 1076.00,742.88 1058.00,753.27" fill="#235369" />
+<polygon points="1020.00,731.33 1038.00,741.72 1038.00,744.92 1020.00,734.53" fill="#1d4558" />
+<polygon points="1038.00,741.72 1056.00,731.33 1056.00,734.53 1038.00,744.92" fill="#183a4a" />
+<polygon points="1020.00,731.33 1038.00,720.94 1056.00,731.33 1038.00,741.72" fill="#235369" />
 </g>
 <g data-date="2026-08-20" data-state="missing"><title>2026-08-20: no returned record</title>
-<polygon points="1020.00,757.62 1038.00,747.23 1056.00,757.62 1038.00,768.02" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
+<polygon points="1000.00,746.08 1018.00,735.68 1036.00,746.08 1018.00,756.47" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
 <g class="tower" data-date="2026-08-21" data-state="recorded"><title>2026-08-21: 16,240,059 recorded tokens</title>
-<polygon points="1000.00,729.00 1018.00,739.39 1018.00,779.56 1000.00,769.17" fill="#1d4558" />
-<polygon points="1018.00,739.39 1036.00,729.00 1036.00,769.17 1018.00,779.56" fill="#183a4a" />
-<polygon points="1000.00,729.00 1018.00,718.60 1036.00,729.00 1018.00,739.39" fill="#235369" />
+<polygon points="980.00,717.45 998.00,727.84 998.00,768.02 980.00,757.62" fill="#1d4558" />
+<polygon points="998.00,727.84 1016.00,717.45 1016.00,757.62 998.00,768.02" fill="#183a4a" />
+<polygon points="980.00,717.45 998.00,707.06 1016.00,717.45 998.00,727.84" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-22" data-state="recorded"><title>2026-08-22: 2,346,658 recorded tokens</title>
-<polygon points="980.00,770.78 998.00,781.17 998.00,791.11 980.00,780.72" fill="#1d4558" />
-<polygon points="998.00,781.17 1016.00,770.78 1016.00,780.72 998.00,791.11" fill="#183a4a" />
-<polygon points="980.00,770.78 998.00,760.39 1016.00,770.78 998.00,781.17" fill="#235369" />
+<polygon points="960.00,759.23 978.00,769.62 978.00,779.56 960.00,769.17" fill="#1d4558" />
+<polygon points="978.00,769.62 996.00,759.23 996.00,769.17 978.00,779.56" fill="#183a4a" />
+<polygon points="960.00,759.23 978.00,748.84 996.00,759.23 978.00,769.62" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-23" data-state="recorded"><title>2026-08-23: 54,409 recorded tokens</title>
-<polygon points="1120.00,719.81 1138.00,730.21 1138.00,733.38 1120.00,722.98" fill="#1d4558" />
-<polygon points="1138.00,730.21 1156.00,719.81 1156.00,722.98 1138.00,733.38" fill="#183a4a" />
-<polygon points="1120.00,719.81 1138.00,709.42 1156.00,719.81 1138.00,730.21" fill="#235369" />
+<polygon points="1100.00,708.27 1118.00,718.66 1118.00,721.83 1100.00,711.44" fill="#1d4558" />
+<polygon points="1118.00,718.66 1136.00,708.27 1136.00,711.44 1118.00,721.83" fill="#183a4a" />
+<polygon points="1100.00,708.27 1118.00,697.87 1136.00,708.27 1118.00,718.66" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-24" data-state="recorded"><title>2026-08-24: 86,904,443 recorded tokens</title>
-<polygon points="1100.00,626.70 1118.00,637.10 1118.00,744.92 1100.00,734.53" fill="#2d6775" />
-<polygon points="1118.00,637.10 1136.00,626.70 1136.00,734.53 1118.00,744.92" fill="#265662" />
-<polygon points="1100.00,626.70 1118.00,616.31 1136.00,626.70 1118.00,637.10" fill="#367b8c" />
+<polygon points="1080.00,615.16 1098.00,625.55 1098.00,733.38 1080.00,722.98" fill="#2d6775" />
+<polygon points="1098.00,625.55 1116.00,615.16 1116.00,722.98 1098.00,733.38" fill="#265662" />
+<polygon points="1080.00,615.16 1098.00,604.76 1116.00,615.16 1098.00,625.55" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-08-25" data-state="recorded"><title>2026-08-25: 15,201,371 recorded tokens</title>
-<polygon points="1080.00,707.72 1098.00,718.11 1098.00,756.47 1080.00,746.08" fill="#1d4558" />
-<polygon points="1098.00,718.11 1116.00,707.72 1116.00,746.08 1098.00,756.47" fill="#183a4a" />
-<polygon points="1080.00,707.72 1098.00,697.33 1116.00,707.72 1098.00,718.11" fill="#235369" />
+<polygon points="1060.00,696.17 1078.00,706.57 1078.00,744.92 1060.00,734.53" fill="#1d4558" />
+<polygon points="1078.00,706.57 1096.00,696.17 1096.00,734.53 1078.00,744.92" fill="#183a4a" />
+<polygon points="1060.00,696.17 1078.00,685.78 1096.00,696.17 1078.00,706.57" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-26" data-state="recorded"><title>2026-08-26: 526,636,583 recorded tokens</title>
-<polygon points="1060.00,547.74 1078.00,558.14 1078.00,768.02 1060.00,757.62" fill="#8bbebb" />
-<polygon points="1078.00,558.14 1096.00,547.74 1096.00,757.62 1078.00,768.02" fill="#749f9c" />
-<polygon points="1060.00,547.74 1078.00,537.35 1096.00,547.74 1078.00,558.14" fill="#a6e3df" />
+<polygon points="1040.00,536.20 1058.00,546.59 1058.00,756.47 1040.00,746.08" fill="#8bbebb" />
+<polygon points="1058.00,546.59 1076.00,536.20 1076.00,746.08 1058.00,756.47" fill="#749f9c" />
+<polygon points="1040.00,536.20 1058.00,525.80 1076.00,536.20 1058.00,546.59" fill="#a6e3df" />
 </g>
 <g class="tower" data-date="2026-08-27" data-state="recorded"><title>2026-08-27: 570,090,098 recorded tokens</title>
-<polygon points="1040.00,554.51 1058.00,564.90 1058.00,779.56 1040.00,769.17" fill="#8bbebb" />
-<polygon points="1058.00,564.90 1076.00,554.51 1076.00,769.17 1058.00,779.56" fill="#749f9c" />
-<polygon points="1040.00,554.51 1058.00,544.11 1076.00,554.51 1058.00,564.90" fill="#a6e3df" />
+<polygon points="1020.00,542.96 1038.00,553.35 1038.00,768.02 1020.00,757.62" fill="#8bbebb" />
+<polygon points="1038.00,553.35 1056.00,542.96 1056.00,757.62 1038.00,768.02" fill="#749f9c" />
+<polygon points="1020.00,542.96 1038.00,532.57 1056.00,542.96 1038.00,553.35" fill="#a6e3df" />
 </g>
 <g class="tower" data-date="2026-08-28" data-state="recorded"><title>2026-08-28: 358,427,602 recorded tokens</title>
-<polygon points="1020.00,593.84 1038.00,604.23 1038.00,791.11 1020.00,780.72" fill="#549298" />
-<polygon points="1038.00,604.23 1056.00,593.84 1056.00,780.72 1038.00,791.11" fill="#467a7f" />
-<polygon points="1020.00,593.84 1038.00,583.44 1056.00,593.84 1038.00,604.23" fill="#64afb6" />
+<polygon points="1000.00,582.29 1018.00,592.68 1018.00,779.56 1000.00,769.17" fill="#549298" />
+<polygon points="1018.00,592.68 1036.00,582.29 1036.00,769.17 1018.00,779.56" fill="#467a7f" />
+<polygon points="1000.00,582.29 1018.00,571.90 1036.00,582.29 1018.00,592.68" fill="#64afb6" />
 </g>
 <g class="tower" data-date="2026-08-29" data-state="recorded"><title>2026-08-29: 248,188,647 recorded tokens</title>
-<polygon points="1000.00,626.92 1018.00,637.31 1018.00,802.66 1000.00,792.26" fill="#549298" />
-<polygon points="1018.00,637.31 1036.00,626.92 1036.00,792.26 1018.00,802.66" fill="#467a7f" />
-<polygon points="1000.00,626.92 1018.00,616.53 1036.00,626.92 1018.00,637.31" fill="#64afb6" />
+<polygon points="980.00,615.37 998.00,625.76 998.00,791.11 980.00,780.72" fill="#549298" />
+<polygon points="998.00,625.76 1016.00,615.37 1016.00,780.72 998.00,791.11" fill="#467a7f" />
+<polygon points="980.00,615.37 998.00,604.98 1016.00,615.37 998.00,625.76" fill="#64afb6" />
 </g>
 <g class="tower" data-date="2026-08-30" data-state="recorded"><title>2026-08-30: 127,166,351 recorded tokens</title>
-<polygon points="1140.00,606.71 1158.00,617.11 1158.00,744.92 1140.00,734.53" fill="#2d6775" />
-<polygon points="1158.00,617.11 1176.00,606.71 1176.00,734.53 1158.00,744.92" fill="#265662" />
-<polygon points="1140.00,606.71 1158.00,596.32 1176.00,606.71 1158.00,617.11" fill="#367b8c" />
+<polygon points="1120.00,595.17 1138.00,605.56 1138.00,733.38 1120.00,722.98" fill="#2d6775" />
+<polygon points="1138.00,605.56 1156.00,595.17 1156.00,722.98 1138.00,733.38" fill="#265662" />
+<polygon points="1120.00,595.17 1138.00,584.77 1156.00,595.17 1138.00,605.56" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-08-31" data-state="recorded"><title>2026-08-31: 444,224,139 recorded tokens</title>
-<polygon points="1120.00,546.42 1138.00,556.81 1138.00,756.47 1120.00,746.08" fill="#8bbebb" />
-<polygon points="1138.00,556.81 1156.00,546.42 1156.00,746.08 1138.00,756.47" fill="#749f9c" />
-<polygon points="1120.00,546.42 1138.00,536.02 1156.00,546.42 1138.00,556.81" fill="#a6e3df" />
+<polygon points="1100.00,534.87 1118.00,545.26 1118.00,744.92 1100.00,734.53" fill="#8bbebb" />
+<polygon points="1118.00,545.26 1136.00,534.87 1136.00,734.53 1118.00,744.92" fill="#749f9c" />
+<polygon points="1100.00,534.87 1118.00,524.48 1136.00,534.87 1118.00,545.26" fill="#a6e3df" />
 </g>
 <g class="tower" data-date="2026-09-01" data-state="recorded"><title>2026-09-01: 686,332,696 recorded tokens</title>
-<polygon points="1100.00,531.71 1118.00,542.11 1118.00,768.02 1100.00,757.62" fill="#8bbebb" />
-<polygon points="1118.00,542.11 1136.00,531.71 1136.00,757.62 1118.00,768.02" fill="#749f9c" />
-<polygon points="1100.00,531.71 1118.00,521.32 1136.00,531.71 1118.00,542.11" fill="#a6e3df" />
+<polygon points="1080.00,520.17 1098.00,530.56 1098.00,756.47 1080.00,746.08" fill="#8bbebb" />
+<polygon points="1098.00,530.56 1116.00,520.17 1116.00,746.08 1098.00,756.47" fill="#749f9c" />
+<polygon points="1080.00,520.17 1098.00,509.78 1116.00,520.17 1098.00,530.56" fill="#a6e3df" />
 </g>
 <g class="tower" data-date="2026-09-02" data-state="recorded"><title>2026-09-02: 503,970,763 recorded tokens</title>
-<polygon points="1080.00,561.94 1098.00,572.33 1098.00,779.56 1080.00,769.17" fill="#8bbebb" />
-<polygon points="1098.00,572.33 1116.00,561.94 1116.00,769.17 1098.00,779.56" fill="#749f9c" />
-<polygon points="1080.00,561.94 1098.00,551.55 1116.00,561.94 1098.00,572.33" fill="#a6e3df" />
+<polygon points="1060.00,550.39 1078.00,560.78 1078.00,768.02 1060.00,757.62" fill="#8bbebb" />
+<polygon points="1078.00,560.78 1096.00,550.39 1096.00,757.62 1078.00,768.02" fill="#749f9c" />
+<polygon points="1060.00,550.39 1078.00,540.00 1096.00,550.39 1078.00,560.78" fill="#a6e3df" />
 </g>
 <g class="tower" data-date="2026-09-03" data-state="recorded"><title>2026-09-03: 343,917,797 recorded tokens</title>
-<polygon points="1060.00,596.28 1078.00,606.67 1078.00,791.11 1060.00,780.72" fill="#549298" />
-<polygon points="1078.00,606.67 1096.00,596.28 1096.00,780.72 1078.00,791.11" fill="#467a7f" />
-<polygon points="1060.00,596.28 1078.00,585.89 1096.00,596.28 1078.00,606.67" fill="#64afb6" />
+<polygon points="1040.00,584.73 1058.00,595.13 1058.00,779.56 1040.00,769.17" fill="#549298" />
+<polygon points="1058.00,595.13 1076.00,584.73 1076.00,769.17 1058.00,779.56" fill="#467a7f" />
+<polygon points="1040.00,584.73 1058.00,574.34 1076.00,584.73 1058.00,595.13" fill="#64afb6" />
 </g>
 <g class="tower" data-date="2026-09-04" data-state="recorded"><title>2026-09-04: 493,552,082 recorded tokens</title>
-<polygon points="1040.00,586.29 1058.00,596.68 1058.00,802.66 1040.00,792.26" fill="#8bbebb" />
-<polygon points="1058.00,596.68 1076.00,586.29 1076.00,792.26 1058.00,802.66" fill="#749f9c" />
-<polygon points="1040.00,586.29 1058.00,575.90 1076.00,586.29 1058.00,596.68" fill="#a6e3df" />
+<polygon points="1020.00,574.74 1038.00,585.13 1038.00,791.11 1020.00,780.72" fill="#8bbebb" />
+<polygon points="1038.00,585.13 1056.00,574.74 1056.00,780.72 1038.00,791.11" fill="#749f9c" />
+<polygon points="1020.00,574.74 1038.00,564.35 1056.00,574.74 1038.00,585.13" fill="#a6e3df" />
 </g>
 <g class="tower" data-date="2026-09-05" data-state="recorded"><title>2026-09-05: 337,063,112 recorded tokens</title>
-<polygon points="1020.00,620.57 1038.00,630.96 1038.00,814.20 1020.00,803.81" fill="#549298" />
-<polygon points="1038.00,630.96 1056.00,620.57 1056.00,803.81 1038.00,814.20" fill="#467a7f" />
-<polygon points="1020.00,620.57 1038.00,610.17 1056.00,620.57 1038.00,630.96" fill="#64afb6" />
+<polygon points="1000.00,609.02 1018.00,619.41 1018.00,802.66 1000.00,792.26" fill="#549298" />
+<polygon points="1018.00,619.41 1036.00,609.02 1036.00,792.26 1018.00,802.66" fill="#467a7f" />
+<polygon points="1000.00,609.02 1018.00,598.63 1036.00,609.02 1018.00,619.41" fill="#64afb6" />
 </g>
 <g class="tower" data-date="2026-09-06" data-state="recorded"><title>2026-09-06: 162,154,895 recorded tokens</title>
-<polygon points="1160.00,604.92 1178.00,615.31 1178.00,756.47 1160.00,746.08" fill="#2d6775" />
-<polygon points="1178.00,615.31 1196.00,604.92 1196.00,746.08 1178.00,756.47" fill="#265662" />
-<polygon points="1160.00,604.92 1178.00,594.53 1196.00,604.92 1178.00,615.31" fill="#367b8c" />
+<polygon points="1140.00,593.37 1158.00,603.77 1158.00,744.92 1140.00,734.53" fill="#2d6775" />
+<polygon points="1158.00,603.77 1176.00,593.37 1176.00,734.53 1158.00,744.92" fill="#265662" />
+<polygon points="1140.00,593.37 1158.00,582.98 1176.00,593.37 1158.00,603.77" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-09-07" data-state="recorded"><title>2026-09-07: 62,488,260 recorded tokens</title>
-<polygon points="1140.00,666.01 1158.00,676.40 1158.00,768.02 1140.00,757.62" fill="#2d6775" />
-<polygon points="1158.00,676.40 1176.00,666.01 1176.00,757.62 1158.00,768.02" fill="#265662" />
-<polygon points="1140.00,666.01 1158.00,655.62 1176.00,666.01 1158.00,676.40" fill="#367b8c" />
+<polygon points="1120.00,654.46 1138.00,664.86 1138.00,756.47 1120.00,746.08" fill="#2d6775" />
+<polygon points="1138.00,664.86 1156.00,654.46 1156.00,746.08 1138.00,756.47" fill="#265662" />
+<polygon points="1120.00,654.46 1138.00,644.07 1156.00,654.46 1138.00,664.86" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-09-08" data-state="recorded"><title>2026-09-08: 223,139,277 recorded tokens</title>
-<polygon points="1120.00,609.96 1138.00,620.35 1138.00,779.56 1120.00,769.17" fill="#549298" />
-<polygon points="1138.00,620.35 1156.00,609.96 1156.00,769.17 1138.00,779.56" fill="#467a7f" />
-<polygon points="1120.00,609.96 1138.00,599.56 1156.00,609.96 1138.00,620.35" fill="#64afb6" />
+<polygon points="1100.00,598.41 1118.00,608.80 1118.00,768.02 1100.00,757.62" fill="#549298" />
+<polygon points="1118.00,608.80 1136.00,598.41 1136.00,757.62 1118.00,768.02" fill="#467a7f" />
+<polygon points="1100.00,598.41 1118.00,588.02 1136.00,598.41 1118.00,608.80" fill="#64afb6" />
 </g>
 <g class="tower" data-date="2026-09-09" data-state="recorded"><title>2026-09-09: 202,061,446 recorded tokens</title>
-<polygon points="1100.00,627.17 1118.00,637.57 1118.00,791.11 1100.00,780.72" fill="#549298" />
-<polygon points="1118.00,637.57 1136.00,627.17 1136.00,780.72 1118.00,791.11" fill="#467a7f" />
-<polygon points="1100.00,627.17 1118.00,616.78 1136.00,627.17 1118.00,637.57" fill="#64afb6" />
+<polygon points="1080.00,615.63 1098.00,626.02 1098.00,779.56 1080.00,769.17" fill="#549298" />
+<polygon points="1098.00,626.02 1116.00,615.63 1116.00,769.17 1098.00,779.56" fill="#467a7f" />
+<polygon points="1080.00,615.63 1098.00,605.23 1116.00,615.63 1098.00,626.02" fill="#64afb6" />
 </g>
 <g class="tower" data-date="2026-09-10" data-state="recorded"><title>2026-09-10: 105,360,464 recorded tokens</title>
-<polygon points="1080.00,674.48 1098.00,684.87 1098.00,802.66 1080.00,792.26" fill="#2d6775" />
-<polygon points="1098.00,684.87 1116.00,674.48 1116.00,792.26 1098.00,802.66" fill="#265662" />
-<polygon points="1080.00,674.48 1098.00,664.09 1116.00,674.48 1098.00,684.87" fill="#367b8c" />
+<polygon points="1060.00,662.93 1078.00,673.32 1078.00,791.11 1060.00,780.72" fill="#2d6775" />
+<polygon points="1078.00,673.32 1096.00,662.93 1096.00,780.72 1078.00,791.11" fill="#265662" />
+<polygon points="1060.00,662.93 1078.00,652.54 1096.00,662.93 1078.00,673.32" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-09-11" data-state="recorded"><title>2026-09-11: 170,561,997 recorded tokens</title>
-<polygon points="1060.00,659.84 1078.00,670.23 1078.00,814.20 1060.00,803.81" fill="#2d6775" />
-<polygon points="1078.00,670.23 1096.00,659.84 1096.00,803.81 1078.00,814.20" fill="#265662" />
-<polygon points="1060.00,659.84 1078.00,649.44 1096.00,659.84 1078.00,670.23" fill="#367b8c" />
+<polygon points="1040.00,648.29 1058.00,658.68 1058.00,802.66 1040.00,792.26" fill="#2d6775" />
+<polygon points="1058.00,658.68 1076.00,648.29 1076.00,792.26 1058.00,802.66" fill="#265662" />
+<polygon points="1040.00,648.29 1058.00,637.90 1076.00,648.29 1058.00,658.68" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-09-12" data-state="recorded"><title>2026-09-12: 117,707,742 recorded tokens</title>
-<polygon points="1040.00,691.70 1058.00,702.09 1058.00,825.75 1040.00,815.36" fill="#2d6775" />
-<polygon points="1058.00,702.09 1076.00,691.70 1076.00,815.36 1058.00,825.75" fill="#265662" />
-<polygon points="1040.00,691.70 1058.00,681.30 1076.00,691.70 1058.00,702.09" fill="#367b8c" />
+<polygon points="1020.00,680.15 1038.00,690.54 1038.00,814.20 1020.00,803.81" fill="#2d6775" />
+<polygon points="1038.00,690.54 1056.00,680.15 1056.00,803.81 1038.00,814.20" fill="#265662" />
+<polygon points="1020.00,680.15 1038.00,669.76 1056.00,680.15 1038.00,690.54" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-09-13" data-state="recorded"><title>2026-09-13: 88,651,487 recorded tokens</title>
-<polygon points="1180.00,648.78 1198.00,659.18 1198.00,768.02 1180.00,757.62" fill="#2d6775" />
-<polygon points="1198.00,659.18 1216.00,648.78 1216.00,757.62 1198.00,768.02" fill="#265662" />
-<polygon points="1180.00,648.78 1198.00,638.39 1216.00,648.78 1198.00,659.18" fill="#367b8c" />
+<polygon points="1160.00,637.24 1178.00,647.63 1178.00,756.47 1160.00,746.08" fill="#2d6775" />
+<polygon points="1178.00,647.63 1196.00,637.24 1196.00,746.08 1178.00,756.47" fill="#265662" />
+<polygon points="1160.00,637.24 1178.00,626.84 1196.00,637.24 1178.00,647.63" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-09-14" data-state="recorded"><title>2026-09-14: 121,879,671 recorded tokens</title>
-<polygon points="1160.00,643.64 1178.00,654.04 1178.00,779.56 1160.00,769.17" fill="#2d6775" />
-<polygon points="1178.00,654.04 1196.00,643.64 1196.00,769.17 1178.00,779.56" fill="#265662" />
-<polygon points="1160.00,643.64 1178.00,633.25 1196.00,643.64 1178.00,654.04" fill="#367b8c" />
+<polygon points="1140.00,632.10 1158.00,642.49 1158.00,768.02 1140.00,757.62" fill="#2d6775" />
+<polygon points="1158.00,642.49 1176.00,632.10 1176.00,757.62 1158.00,768.02" fill="#265662" />
+<polygon points="1140.00,632.10 1158.00,621.70 1176.00,632.10 1158.00,642.49" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-09-15" data-state="recorded"><title>2026-09-15: 48,320,389 recorded tokens</title>
-<polygon points="1140.00,700.89 1158.00,711.28 1158.00,791.11 1140.00,780.72" fill="#2d6775" />
-<polygon points="1158.00,711.28 1176.00,700.89 1176.00,780.72 1158.00,791.11" fill="#265662" />
-<polygon points="1140.00,700.89 1158.00,690.50 1176.00,700.89 1158.00,711.28" fill="#367b8c" />
+<polygon points="1120.00,689.34 1138.00,699.74 1138.00,779.56 1120.00,769.17" fill="#2d6775" />
+<polygon points="1138.00,699.74 1156.00,689.34 1156.00,769.17 1138.00,779.56" fill="#265662" />
+<polygon points="1120.00,689.34 1138.00,678.95 1156.00,689.34 1138.00,699.74" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-09-16" data-state="recorded"><title>2026-09-16: 120,021,884 recorded tokens</title>
-<polygon points="1120.00,667.56 1138.00,677.95 1138.00,802.66 1120.00,792.26" fill="#2d6775" />
-<polygon points="1138.00,677.95 1156.00,667.56 1156.00,792.26 1138.00,802.66" fill="#265662" />
-<polygon points="1120.00,667.56 1138.00,657.17 1156.00,667.56 1138.00,677.95" fill="#367b8c" />
+<polygon points="1100.00,656.01 1118.00,666.41 1118.00,791.11 1100.00,780.72" fill="#2d6775" />
+<polygon points="1118.00,666.41 1136.00,656.01 1136.00,780.72 1118.00,791.11" fill="#265662" />
+<polygon points="1100.00,656.01 1118.00,645.62 1136.00,656.01 1118.00,666.41" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-09-17" data-state="recorded"><title>2026-09-17: 173,120,402 recorded tokens</title>
-<polygon points="1100.00,659.00 1118.00,669.39 1118.00,814.20 1100.00,803.81" fill="#549298" />
-<polygon points="1118.00,669.39 1136.00,659.00 1136.00,803.81 1118.00,814.20" fill="#467a7f" />
-<polygon points="1100.00,659.00 1118.00,648.61 1136.00,659.00 1118.00,669.39" fill="#64afb6" />
+<polygon points="1080.00,647.45 1098.00,657.85 1098.00,802.66 1080.00,792.26" fill="#549298" />
+<polygon points="1098.00,657.85 1116.00,647.45 1116.00,792.26 1098.00,802.66" fill="#467a7f" />
+<polygon points="1080.00,647.45 1098.00,637.06 1116.00,647.45 1098.00,657.85" fill="#64afb6" />
 </g>
 <g class="tower" data-date="2026-09-18" data-state="recorded"><title>2026-09-18: 57,439,522 recorded tokens</title>
-<polygon points="1080.00,727.70 1098.00,738.09 1098.00,825.75 1080.00,815.36" fill="#2d6775" />
-<polygon points="1098.00,738.09 1116.00,727.70 1116.00,815.36 1098.00,825.75" fill="#265662" />
-<polygon points="1080.00,727.70 1098.00,717.30 1116.00,727.70 1098.00,738.09" fill="#367b8c" />
+<polygon points="1060.00,716.15 1078.00,726.54 1078.00,814.20 1060.00,803.81" fill="#2d6775" />
+<polygon points="1078.00,726.54 1096.00,716.15 1096.00,803.81 1078.00,814.20" fill="#265662" />
+<polygon points="1060.00,716.15 1078.00,705.76 1096.00,716.15 1078.00,726.54" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-09-19" data-state="recorded"><title>2026-09-19: 85,422,292 recorded tokens</title>
-<polygon points="1060.00,719.95 1078.00,730.34 1078.00,837.30 1060.00,826.91" fill="#2d6775" />
-<polygon points="1078.00,730.34 1096.00,719.95 1096.00,826.91 1078.00,837.30" fill="#265662" />
-<polygon points="1060.00,719.95 1078.00,709.56 1096.00,719.95 1078.00,730.34" fill="#367b8c" />
+<polygon points="1040.00,708.41 1058.00,718.80 1058.00,825.75 1040.00,815.36" fill="#2d6775" />
+<polygon points="1058.00,718.80 1076.00,708.41 1076.00,815.36 1058.00,825.75" fill="#265662" />
+<polygon points="1040.00,708.41 1058.00,698.01 1076.00,708.41 1058.00,718.80" fill="#367b8c" />
+</g>
+<g class="tower" data-date="2026-09-20" data-state="recorded"><title>2026-09-20: 8,374,569 recorded tokens</title>
+<polygon points="1180.00,732.75 1198.00,743.14 1198.00,768.02 1180.00,757.62" fill="#1d4558" />
+<polygon points="1198.00,743.14 1216.00,732.75 1216.00,757.62 1198.00,768.02" fill="#183a4a" />
+<polygon points="1180.00,732.75 1198.00,722.36 1216.00,732.75 1198.00,743.14" fill="#235369" />
+</g>
+<g data-date="2026-09-21" data-state="missing"><title>2026-09-21: not yet returned</title>
+<polygon points="1160.00,769.17 1178.00,758.78 1196.00,769.17 1178.00,779.56" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
+</g>
+<g data-date="2026-09-22" data-state="missing"><title>2026-09-22: not yet returned</title>
+<polygon points="1140.00,780.72 1158.00,770.33 1176.00,780.72 1158.00,791.11" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
+</g>
+<g data-date="2026-09-23" data-state="missing"><title>2026-09-23: not yet returned</title>
+<polygon points="1120.00,792.26 1138.00,781.87 1156.00,792.26 1138.00,802.66" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
+</g>
+<g data-date="2026-09-24" data-state="missing"><title>2026-09-24: not yet returned</title>
+<polygon points="1100.00,803.81 1118.00,793.42 1136.00,803.81 1118.00,814.20" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
+</g>
+<g data-date="2026-09-25" data-state="missing"><title>2026-09-25: not yet returned</title>
+<polygon points="1080.00,815.36 1098.00,804.97 1116.00,815.36 1098.00,825.75" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
+</g>
+<g data-date="2026-09-26" data-state="missing"><title>2026-09-26: not yet returned</title>
+<polygon points="1060.00,826.91 1078.00,816.51 1096.00,826.91 1078.00,837.30" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
 </g>
 </g>
 <text x="974" y="66" font-size="17" fill="#a6e3df" font-weight="600" text-anchor="middle" letter-spacing="1">RECENT 7 DAYS</text>
@@ -1243,31 +1245,31 @@
 <polygon points="974.00,119.00 1093.62,176.61 1123.16,306.05 1040.38,409.85 907.62,409.85 824.84,306.05 854.38,176.61" fill="none" stroke="#777d8a" stroke-width=".7" stroke-dasharray="4 5"/>
 <text x="981" y="123.0" font-size="11" fill="#9199aa" font-weight="400" text-anchor="start" >176M</text>
 <path d="M974 272L974.00 119.00" stroke="#5b6476" stroke-width=".7" stroke-dasharray="4 5"/>
-<text x="974.0" y="96.46000000000001" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Sep 13</text>
+<text x="974.0" y="96.46000000000001" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Sep 14</text>
 <path d="M974 272L1093.62 176.61" stroke="#5b6476" stroke-width=".7" stroke-dasharray="4 5"/>
-<text x="1115.151855844778" y="164.43515117242424" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Sep 14</text>
+<text x="1115.151855844778" y="164.43515117242424" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Sep 15</text>
 <path d="M974 272L1123.16 306.05" stroke="#5b6476" stroke-width=".7" stroke-dasharray="4 5"/>
-<text x="1150.0134852653064" y="317.173929416473" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Sep 15</text>
+<text x="1150.0134852653064" y="317.173929416473" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Sep 16</text>
 <path d="M974 272L1040.38 409.85" stroke="#5b6476" stroke-width=".7" stroke-dasharray="4 5"/>
-<text x="1052.333370260284" y="439.6609194111028" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Sep 16</text>
+<text x="1052.333370260284" y="439.6609194111028" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Sep 17</text>
 <path d="M974 272L907.62 409.85" stroke="#5b6476" stroke-width=".7" stroke-dasharray="4 5"/>
-<text x="895.6666297397161" y="439.6609194111028" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Sep 17</text>
+<text x="895.6666297397161" y="439.6609194111028" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Sep 18</text>
 <path d="M974 272L824.84 306.05" stroke="#5b6476" stroke-width=".7" stroke-dasharray="4 5"/>
-<text x="797.9865147346936" y="317.173929416473" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Sep 18</text>
+<text x="797.9865147346936" y="317.173929416473" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Sep 19</text>
 <path d="M974 272L854.38 176.61" stroke="#5b6476" stroke-width=".7" stroke-dasharray="4 5"/>
-<text x="832.8481441552219" y="164.43515117242427" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Sep 19</text>
-<polygon points="974.00,194.93 1056.84,205.94 1014.95,281.35 1019.27,366.00 908.70,407.59 925.32,283.11 915.94,225.70" fill="#a6e3df" fill-opacity=".38" stroke="#a6e3df" stroke-width="3"/>
+<text x="832.8481441552219" y="164.43515117242427" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Sep 20</text>
+<polygon points="974.00,166.05 1006.84,245.81 1075.72,295.22 1039.30,407.59 952.33,316.99 901.60,288.52 968.31,267.46" fill="#a6e3df" fill-opacity=".38" stroke="#a6e3df" stroke-width="3"/>
 <text x="974" y="479" font-size="14" fill="#9199aa" font-weight="400" text-anchor="middle" >tokens / day</text>
 <circle cx="190" cy="658" r="101" fill="none" stroke="#173345" stroke-width="29"/>
-<circle cx="190" cy="658" r="101" fill="none" stroke="#a6e3df" stroke-width="29" stroke-dasharray="62.770 634.602" transform="rotate(-90 190 658)"/>
-<text x="190" y="654" font-size="29" fill="#a6e3df" font-weight="600" text-anchor="middle" >694.86M</text>
+<circle cx="190" cy="658" r="101" fill="none" stroke="#a6e3df" stroke-width="29" stroke-dasharray="55.452 634.602" transform="rotate(-90 190 658)"/>
+<text x="190" y="654" font-size="29" fill="#a6e3df" font-weight="600" text-anchor="middle" >614.58M</text>
 <text x="190" y="682" font-size="14" fill="#eeeeff" font-weight="400" text-anchor="middle" >last 7 days</text>
-<text x="335" y="640" font-size="18" fill="#a6e3df" font-weight="400" text-anchor="start" >9.9% recent</text>
-<text x="335" y="671" font-size="18" fill="#6e98a8" font-weight="400" text-anchor="start" >90.1% earlier</text>
+<text x="335" y="640" font-size="18" fill="#a6e3df" font-weight="400" text-anchor="start" >8.7% recent</text>
+<text x="335" y="671" font-size="18" fill="#6e98a8" font-weight="400" text-anchor="start" >91.3% earlier</text>
 <text x="335" y="703" font-size="14" fill="#9199aa" font-weight="400" text-anchor="start" >of recorded tokens</text>
-<text x="380" y="833" font-size="32" fill="#a6e3df" font-weight="600" text-anchor="end" >7.02B</text>
+<text x="380" y="833" font-size="32" fill="#a6e3df" font-weight="600" text-anchor="end" >7.03B</text>
 <text x="391" y="833" font-size="24" fill="#eeeeff" font-weight="400" text-anchor="start" >tokens</text>
-<text x="602" y="833" font-size="29" fill="#a6e3df" font-weight="600" text-anchor="end" >56</text>
+<text x="602" y="833" font-size="29" fill="#a6e3df" font-weight="600" text-anchor="end" >57</text>
 <text x="614" y="833" font-size="21" fill="#eeeeff" font-weight="400" text-anchor="start" >active days</text>
 <text x="810" y="833" font-size="19" fill="#eeeeff" font-weight="400" text-anchor="start" >peak 686.33M</text>
 <text x="24" y="866" font-size="13" fill="#9199aa" font-weight="400" text-anchor="start" >NightView · mint  /  token heights: logarithmic  /  outlined tiles: no returned record</text>
