@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
   "source": "Codex account/usage/read dailyUsageBuckets",
-  "updatedAt": "2026-10-11T01:29:32+00:00",
+  "updatedAt": "2026-10-12T01:27:04+00:00",
   "metric": "service-reported tokens; no input/output/cache breakdown provided",
   "dateBasis": "service startDate values, without timezone conversion",
   "coverage": {
     "firstReturnedDate": "2026-07-25",
-    "through": "2026-10-10",
-    "returnedDays": 77,
+    "through": "2026-10-11",
+    "returnedDays": 78,
     "missingDates": [
       "2026-08-20"
     ],
     "allDevicesComplete": "not established"
   },
-  "recordedTokens": 10252306685,
+  "recordedTokens": 10296999257,
   "matchesAccountSummary": true,
   "dailyUsageBuckets": [
     {
@@ -322,7 +322,11 @@
     },
     {
       "startDate": "2026-10-10",
-      "tokens": 240134056
+      "tokens": 253421844
+    },
+    {
+      "startDate": "2026-10-11",
+      "tokens": 31404784
     }
   ]
 }
