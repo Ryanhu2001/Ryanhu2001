@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="890" viewBox="0 0 1280 890" role="img" aria-labelledby="title desc">
 <title id="title">Ryan — Codex NightView, mint edition</title>
-<desc id="desc">14,534,097,468 account-reported Codex tokens across 86 returned dates, 2026-07-25 to 2026-10-19. A 53-week isometric calendar adapted from GitHub Profile 3D Contrib NightView. Heights use the original logarithmic mapping with tokens measured in millions. Missing dates are unknown, not zero. All-device coverage is not established.</desc>
+<desc id="desc">16,750,469,297 account-reported Codex tokens across 87 returned dates, 2026-07-25 to 2026-10-20. A 53-week isometric calendar adapted from GitHub Profile 3D Contrib NightView. Heights use the original logarithmic mapping with tokens measured in millions. Missing dates are unknown, not zero. All-device coverage is not established.</desc>
 <style>text{font-family:Ubuntu,Helvetica,Arial,sans-serif}.tower{transform-box:fill-box;transform-origin:center bottom;animation:grow 2.2s ease-out both}@keyframes grow{from{transform:scaleY(.025)}to{transform:scaleY(1)}}@media(prefers-reduced-motion:reduce){.tower{animation:none}}</style>
 <rect width="1280" height="890" fill="#00000f"/>
 <text x="35" y="43" font-size="23" fill="#a6e3df" font-weight="600" text-anchor="start" letter-spacing="1.5">CODEX · NIGHT VIEW</text>
-<text x="1255" y="29" font-size="16" fill="#9199aa" font-weight="400" text-anchor="end" >2026-07-25 / 2026-10-19</text>
-<text x="35" y="73" font-size="15" fill="#9199aa" font-weight="400" text-anchor="start" >86 dates returned · 1 missing within returned history</text>
+<text x="1255" y="29" font-size="16" fill="#9199aa" font-weight="400" text-anchor="end" >2026-07-25 / 2026-10-20</text>
+<text x="35" y="73" font-size="15" fill="#9199aa" font-weight="400" text-anchor="start" >87 dates returned · 1 missing within returned history</text>
 <g>
 <g data-date="2025-10-19" data-state="missing"><title>2025-10-19: no returned record</title>
 <polygon points="140.00,157.18 158.00,146.79 176.00,157.18 158.00,167.57" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
@@ -895,9 +895,9 @@
 <polygon points="940.00,601.50 958.00,591.11 976.00,601.50 958.00,611.90" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-04" data-state="recorded"><title>2026-08-04: 76,632,886 recorded tokens</title>
-<polygon points="920.00,552.19 938.00,562.58 938.00,664.09 920.00,653.70" fill="#2d6775" />
-<polygon points="938.00,562.58 956.00,552.19 956.00,653.70 938.00,664.09" fill="#265662" />
-<polygon points="920.00,552.19 938.00,541.80 956.00,552.19 938.00,562.58" fill="#367b8c" />
+<polygon points="920.00,552.19 938.00,562.58 938.00,664.09 920.00,653.70" fill="#1d4558" />
+<polygon points="938.00,562.58 956.00,552.19 956.00,653.70 938.00,664.09" fill="#183a4a" />
+<polygon points="920.00,552.19 938.00,541.80 956.00,552.19 938.00,562.58" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-05" data-state="recorded"><title>2026-08-05: 18,157,871 recorded tokens</title>
 <polygon points="900.00,621.85 918.00,632.24 918.00,675.64 900.00,665.25" fill="#1d4558" />
@@ -945,9 +945,9 @@
 <polygon points="900.00,633.26 918.00,622.87 936.00,633.26 918.00,643.65" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-14" data-state="recorded"><title>2026-08-14: 76,804,996 recorded tokens</title>
-<polygon points="880.00,598.27 898.00,608.66 898.00,710.28 880.00,699.89" fill="#2d6775" />
-<polygon points="898.00,608.66 916.00,598.27 916.00,699.89 898.00,710.28" fill="#265662" />
-<polygon points="880.00,598.27 898.00,587.88 916.00,598.27 898.00,608.66" fill="#367b8c" />
+<polygon points="880.00,598.27 898.00,608.66 898.00,710.28 880.00,699.89" fill="#1d4558" />
+<polygon points="898.00,608.66 916.00,598.27 916.00,699.89 898.00,710.28" fill="#183a4a" />
+<polygon points="880.00,598.27 898.00,587.88 916.00,598.27 898.00,608.66" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-15" data-state="recorded"><title>2026-08-15: 4,107,832 recorded tokens</title>
 <polygon points="860.00,696.75 878.00,707.15 878.00,721.83 860.00,711.44" fill="#1d4558" />
@@ -993,9 +993,9 @@
 <polygon points="1020.00,662.08 1038.00,651.69 1056.00,662.08 1038.00,672.47" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-24" data-state="recorded"><title>2026-08-24: 86,904,443 recorded tokens</title>
-<polygon points="1000.00,568.97 1018.00,579.36 1018.00,687.19 1000.00,676.79" fill="#2d6775" />
-<polygon points="1018.00,579.36 1036.00,568.97 1036.00,676.79 1018.00,687.19" fill="#265662" />
-<polygon points="1000.00,568.97 1018.00,558.58 1036.00,568.97 1018.00,579.36" fill="#367b8c" />
+<polygon points="1000.00,568.97 1018.00,579.36 1018.00,687.19 1000.00,676.79" fill="#1d4558" />
+<polygon points="1018.00,579.36 1036.00,568.97 1036.00,676.79 1018.00,687.19" fill="#183a4a" />
+<polygon points="1000.00,568.97 1018.00,558.58 1036.00,568.97 1018.00,579.36" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-08-25" data-state="recorded"><title>2026-08-25: 15,201,371 recorded tokens</title>
 <polygon points="980.00,649.99 998.00,660.38 998.00,698.73 980.00,688.34" fill="#1d4558" />
@@ -1013,9 +1013,9 @@
 <polygon points="940.00,496.77 958.00,486.38 976.00,496.77 958.00,507.16" fill="#64afb6" />
 </g>
 <g class="tower" data-date="2026-08-28" data-state="recorded"><title>2026-08-28: 358,427,602 recorded tokens</title>
-<polygon points="920.00,536.10 938.00,546.49 938.00,733.38 920.00,722.98" fill="#549298" />
-<polygon points="938.00,546.49 956.00,536.10 956.00,722.98 938.00,733.38" fill="#467a7f" />
-<polygon points="920.00,536.10 938.00,525.71 956.00,536.10 938.00,546.49" fill="#64afb6" />
+<polygon points="920.00,536.10 938.00,546.49 938.00,733.38 920.00,722.98" fill="#2d6775" />
+<polygon points="938.00,546.49 956.00,536.10 956.00,722.98 938.00,733.38" fill="#265662" />
+<polygon points="920.00,536.10 938.00,525.71 956.00,536.10 938.00,546.49" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-08-29" data-state="recorded"><title>2026-08-29: 248,188,647 recorded tokens</title>
 <polygon points="900.00,569.18 918.00,579.58 918.00,744.92 900.00,734.53" fill="#2d6775" />
@@ -1033,9 +1033,9 @@
 <polygon points="1020.00,488.68 1038.00,478.29 1056.00,488.68 1038.00,499.07" fill="#64afb6" />
 </g>
 <g class="tower" data-date="2026-09-01" data-state="recorded"><title>2026-09-01: 686,332,696 recorded tokens</title>
-<polygon points="1000.00,473.98 1018.00,484.37 1018.00,710.28 1000.00,699.89" fill="#8bbebb" />
-<polygon points="1018.00,484.37 1036.00,473.98 1036.00,699.89 1018.00,710.28" fill="#749f9c" />
-<polygon points="1000.00,473.98 1018.00,463.59 1036.00,473.98 1018.00,484.37" fill="#a6e3df" />
+<polygon points="1000.00,473.98 1018.00,484.37 1018.00,710.28 1000.00,699.89" fill="#549298" />
+<polygon points="1018.00,484.37 1036.00,473.98 1036.00,699.89 1018.00,710.28" fill="#467a7f" />
+<polygon points="1000.00,473.98 1018.00,463.59 1036.00,473.98 1018.00,484.37" fill="#64afb6" />
 </g>
 <g class="tower" data-date="2026-09-02" data-state="recorded"><title>2026-09-02: 503,970,763 recorded tokens</title>
 <polygon points="980.00,504.20 998.00,514.60 998.00,721.83 980.00,711.44" fill="#549298" />
@@ -1043,9 +1043,9 @@
 <polygon points="980.00,504.20 998.00,493.81 1016.00,504.20 998.00,514.60" fill="#64afb6" />
 </g>
 <g class="tower" data-date="2026-09-03" data-state="recorded"><title>2026-09-03: 343,917,797 recorded tokens</title>
-<polygon points="960.00,538.55 978.00,548.94 978.00,733.38 960.00,722.98" fill="#549298" />
-<polygon points="978.00,548.94 996.00,538.55 996.00,722.98 978.00,733.38" fill="#467a7f" />
-<polygon points="960.00,538.55 978.00,528.15 996.00,538.55 978.00,548.94" fill="#64afb6" />
+<polygon points="960.00,538.55 978.00,548.94 978.00,733.38 960.00,722.98" fill="#2d6775" />
+<polygon points="978.00,548.94 996.00,538.55 996.00,722.98 978.00,733.38" fill="#265662" />
+<polygon points="960.00,538.55 978.00,528.15 996.00,538.55 978.00,548.94" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-09-04" data-state="recorded"><title>2026-09-04: 493,552,082 recorded tokens</title>
 <polygon points="940.00,528.55 958.00,538.95 958.00,744.92 940.00,734.53" fill="#549298" />
@@ -1053,9 +1053,9 @@
 <polygon points="940.00,528.55 958.00,518.16 976.00,528.55 958.00,538.95" fill="#64afb6" />
 </g>
 <g class="tower" data-date="2026-09-05" data-state="recorded"><title>2026-09-05: 337,063,112 recorded tokens</title>
-<polygon points="920.00,562.83 938.00,573.22 938.00,756.47 920.00,746.08" fill="#549298" />
-<polygon points="938.00,573.22 956.00,562.83 956.00,746.08 938.00,756.47" fill="#467a7f" />
-<polygon points="920.00,562.83 938.00,552.44 956.00,562.83 938.00,573.22" fill="#64afb6" />
+<polygon points="920.00,562.83 938.00,573.22 938.00,756.47 920.00,746.08" fill="#2d6775" />
+<polygon points="938.00,573.22 956.00,562.83 956.00,746.08 938.00,756.47" fill="#265662" />
+<polygon points="920.00,562.83 938.00,552.44 956.00,562.83 938.00,573.22" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-09-06" data-state="recorded"><title>2026-09-06: 162,154,895 recorded tokens</title>
 <polygon points="1060.00,547.19 1078.00,557.58 1078.00,698.73 1060.00,688.34" fill="#2d6775" />
@@ -1078,9 +1078,9 @@
 <polygon points="1000.00,569.44 1018.00,559.05 1036.00,569.44 1018.00,579.83" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-09-10" data-state="recorded"><title>2026-09-10: 105,360,464 recorded tokens</title>
-<polygon points="980.00,616.74 998.00,627.14 998.00,744.92 980.00,734.53" fill="#2d6775" />
-<polygon points="998.00,627.14 1016.00,616.74 1016.00,734.53 998.00,744.92" fill="#265662" />
-<polygon points="980.00,616.74 998.00,606.35 1016.00,616.74 998.00,627.14" fill="#367b8c" />
+<polygon points="980.00,616.74 998.00,627.14 998.00,744.92 980.00,734.53" fill="#1d4558" />
+<polygon points="998.00,627.14 1016.00,616.74 1016.00,734.53 998.00,744.92" fill="#183a4a" />
+<polygon points="980.00,616.74 998.00,606.35 1016.00,616.74 998.00,627.14" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-09-11" data-state="recorded"><title>2026-09-11: 170,561,997 recorded tokens</title>
 <polygon points="960.00,602.10 978.00,612.49 978.00,756.47 960.00,746.08" fill="#2d6775" />
@@ -1093,9 +1093,9 @@
 <polygon points="940.00,633.96 958.00,623.57 976.00,633.96 958.00,644.35" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-09-13" data-state="recorded"><title>2026-09-13: 88,651,487 recorded tokens</title>
-<polygon points="1080.00,591.05 1098.00,601.44 1098.00,710.28 1080.00,699.89" fill="#2d6775" />
-<polygon points="1098.00,601.44 1116.00,591.05 1116.00,699.89 1098.00,710.28" fill="#265662" />
-<polygon points="1080.00,591.05 1098.00,580.66 1116.00,591.05 1098.00,601.44" fill="#367b8c" />
+<polygon points="1080.00,591.05 1098.00,601.44 1098.00,710.28 1080.00,699.89" fill="#1d4558" />
+<polygon points="1098.00,601.44 1116.00,591.05 1116.00,699.89 1098.00,710.28" fill="#183a4a" />
+<polygon points="1080.00,591.05 1098.00,580.66 1116.00,591.05 1098.00,601.44" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-09-14" data-state="recorded"><title>2026-09-14: 121,879,671 recorded tokens</title>
 <polygon points="1060.00,585.91 1078.00,596.30 1078.00,721.83 1060.00,711.44" fill="#2d6775" />
@@ -1123,9 +1123,9 @@
 <polygon points="980.00,669.96 998.00,659.57 1016.00,669.96 998.00,680.35" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-09-19" data-state="recorded"><title>2026-09-19: 85,422,292 recorded tokens</title>
-<polygon points="960.00,662.22 978.00,672.61 978.00,779.56 960.00,769.17" fill="#2d6775" />
-<polygon points="978.00,672.61 996.00,662.22 996.00,769.17 978.00,779.56" fill="#265662" />
-<polygon points="960.00,662.22 978.00,651.82 996.00,662.22 978.00,672.61" fill="#367b8c" />
+<polygon points="960.00,662.22 978.00,672.61 978.00,779.56 960.00,769.17" fill="#1d4558" />
+<polygon points="978.00,672.61 996.00,662.22 996.00,769.17 978.00,779.56" fill="#183a4a" />
+<polygon points="960.00,662.22 978.00,651.82 996.00,662.22 978.00,672.61" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-09-20" data-state="recorded"><title>2026-09-20: 8,374,569 recorded tokens</title>
 <polygon points="1100.00,686.56 1118.00,696.95 1118.00,721.83 1100.00,711.44" fill="#1d4558" />
@@ -1158,14 +1158,14 @@
 <polygon points="1000.00,702.64 1018.00,692.24 1036.00,702.64 1018.00,713.03" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-09-26" data-state="recorded"><title>2026-09-26: 269,475,593 recorded tokens</title>
-<polygon points="980.00,610.59 998.00,620.99 998.00,791.11 980.00,780.72" fill="#549298" />
-<polygon points="998.00,620.99 1016.00,610.59 1016.00,780.72 998.00,791.11" fill="#467a7f" />
-<polygon points="980.00,610.59 998.00,600.20 1016.00,610.59 998.00,620.99" fill="#64afb6" />
+<polygon points="980.00,610.59 998.00,620.99 998.00,791.11 980.00,780.72" fill="#2d6775" />
+<polygon points="998.00,620.99 1016.00,610.59 1016.00,780.72 998.00,791.11" fill="#265662" />
+<polygon points="980.00,610.59 998.00,600.20 1016.00,610.59 998.00,620.99" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-09-27" data-state="recorded"><title>2026-09-27: 293,048,154 recorded tokens</title>
-<polygon points="1120.00,547.96 1138.00,558.36 1138.00,733.38 1120.00,722.98" fill="#549298" />
-<polygon points="1138.00,558.36 1156.00,547.96 1156.00,722.98 1138.00,733.38" fill="#467a7f" />
-<polygon points="1120.00,547.96 1138.00,537.57 1156.00,547.96 1138.00,558.36" fill="#64afb6" />
+<polygon points="1120.00,547.96 1138.00,558.36 1138.00,733.38 1120.00,722.98" fill="#2d6775" />
+<polygon points="1138.00,558.36 1156.00,547.96 1156.00,722.98 1138.00,733.38" fill="#265662" />
+<polygon points="1120.00,547.96 1138.00,537.57 1156.00,547.96 1138.00,558.36" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-09-28" data-state="recorded"><title>2026-09-28: 154,245,262 recorded tokens</title>
 <polygon points="1100.00,596.15 1118.00,606.54 1118.00,744.92 1100.00,734.53" fill="#2d6775" />
@@ -1178,19 +1178,19 @@
 <polygon points="1080.00,706.57 1098.00,696.18 1116.00,706.57 1098.00,716.96" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-09-30" data-state="recorded"><title>2026-09-30: 107,916,777 recorded tokens</title>
-<polygon points="1060.00,638.57 1078.00,648.97 1078.00,768.02 1060.00,757.62" fill="#2d6775" />
-<polygon points="1078.00,648.97 1096.00,638.57 1096.00,757.62 1078.00,768.02" fill="#265662" />
-<polygon points="1060.00,638.57 1078.00,628.18 1096.00,638.57 1078.00,648.97" fill="#367b8c" />
+<polygon points="1060.00,638.57 1078.00,648.97 1078.00,768.02 1060.00,757.62" fill="#1d4558" />
+<polygon points="1078.00,648.97 1096.00,638.57 1096.00,757.62 1078.00,768.02" fill="#183a4a" />
+<polygon points="1060.00,638.57 1078.00,628.18 1096.00,638.57 1078.00,648.97" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-10-01" data-state="recorded"><title>2026-10-01: 75,746,066 recorded tokens</title>
-<polygon points="1040.00,668.24 1058.00,678.63 1058.00,779.56 1040.00,769.17" fill="#2d6775" />
-<polygon points="1058.00,678.63 1076.00,668.24 1076.00,769.17 1058.00,779.56" fill="#265662" />
-<polygon points="1040.00,668.24 1058.00,657.85 1076.00,668.24 1058.00,678.63" fill="#367b8c" />
+<polygon points="1040.00,668.24 1058.00,678.63 1058.00,779.56 1040.00,769.17" fill="#1d4558" />
+<polygon points="1058.00,678.63 1076.00,668.24 1076.00,769.17 1058.00,779.56" fill="#183a4a" />
+<polygon points="1040.00,668.24 1058.00,657.85 1076.00,668.24 1058.00,678.63" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-10-02" data-state="recorded"><title>2026-10-02: 64,005,753 recorded tokens</title>
-<polygon points="1020.00,687.97 1038.00,698.36 1038.00,791.11 1020.00,780.72" fill="#2d6775" />
-<polygon points="1038.00,698.36 1056.00,687.97 1056.00,780.72 1038.00,791.11" fill="#265662" />
-<polygon points="1020.00,687.97 1038.00,677.57 1056.00,687.97 1038.00,698.36" fill="#367b8c" />
+<polygon points="1020.00,687.97 1038.00,698.36 1038.00,791.11 1020.00,780.72" fill="#1d4558" />
+<polygon points="1038.00,698.36 1056.00,687.97 1056.00,780.72 1038.00,791.11" fill="#183a4a" />
+<polygon points="1020.00,687.97 1038.00,677.57 1056.00,687.97 1038.00,698.36" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-10-03" data-state="recorded"><title>2026-10-03: 61,623,549 recorded tokens</title>
 <polygon points="1000.00,701.31 1018.00,711.70 1018.00,802.66 1000.00,792.26" fill="#1d4558" />
@@ -1203,9 +1203,9 @@
 <polygon points="1140.00,577.37 1158.00,566.98 1176.00,577.37 1158.00,587.76" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-10-05" data-state="recorded"><title>2026-10-05: 312,569,675 recorded tokens</title>
-<polygon points="1120.00,567.27 1138.00,577.67 1138.00,756.47 1120.00,746.08" fill="#549298" />
-<polygon points="1138.00,577.67 1156.00,567.27 1156.00,746.08 1138.00,756.47" fill="#467a7f" />
-<polygon points="1120.00,567.27 1138.00,556.88 1156.00,567.27 1138.00,577.67" fill="#64afb6" />
+<polygon points="1120.00,567.27 1138.00,577.67 1138.00,756.47 1120.00,746.08" fill="#2d6775" />
+<polygon points="1138.00,577.67 1156.00,567.27 1156.00,746.08 1138.00,756.47" fill="#265662" />
+<polygon points="1120.00,567.27 1138.00,556.88 1156.00,567.27 1138.00,577.67" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-10-06" data-state="recorded"><title>2026-10-06: 180,981,096 recorded tokens</title>
 <polygon points="1100.00,610.32 1118.00,620.71 1118.00,768.02 1100.00,757.62" fill="#2d6775" />
@@ -1218,9 +1218,9 @@
 <polygon points="1080.00,685.62 1098.00,675.23 1116.00,685.62 1098.00,696.01" fill="#235369" />
 </g>
 <g class="tower" data-date="2026-10-08" data-state="recorded"><title>2026-10-08: 298,300,068 recorded tokens</title>
-<polygon points="1060.00,604.66 1078.00,615.05 1078.00,791.11 1060.00,780.72" fill="#549298" />
-<polygon points="1078.00,615.05 1096.00,604.66 1096.00,780.72 1078.00,791.11" fill="#467a7f" />
-<polygon points="1060.00,604.66 1078.00,594.27 1096.00,604.66 1078.00,615.05" fill="#64afb6" />
+<polygon points="1060.00,604.66 1078.00,615.05 1078.00,791.11 1060.00,780.72" fill="#2d6775" />
+<polygon points="1078.00,615.05 1096.00,604.66 1096.00,780.72 1078.00,791.11" fill="#265662" />
+<polygon points="1060.00,604.66 1078.00,594.27 1096.00,604.66 1078.00,615.05" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-10-09" data-state="recorded"><title>2026-10-09: 228,234,853 recorded tokens</title>
 <polygon points="1040.00,631.75 1058.00,642.15 1058.00,802.66 1040.00,792.26" fill="#2d6775" />
@@ -1238,14 +1238,14 @@
 <polygon points="1160.00,604.62 1178.00,594.23 1196.00,604.62 1178.00,615.02" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-10-12" data-state="recorded"><title>2026-10-12: 436,997,100 recorded tokens</title>
-<polygon points="1140.00,558.94 1158.00,569.34 1158.00,768.02 1140.00,757.62" fill="#549298" />
-<polygon points="1158.00,569.34 1176.00,558.94 1176.00,757.62 1158.00,768.02" fill="#467a7f" />
-<polygon points="1140.00,558.94 1158.00,548.55 1176.00,558.94 1158.00,569.34" fill="#64afb6" />
+<polygon points="1140.00,558.94 1158.00,569.34 1158.00,768.02 1140.00,757.62" fill="#2d6775" />
+<polygon points="1158.00,569.34 1176.00,558.94 1176.00,757.62 1158.00,768.02" fill="#265662" />
+<polygon points="1140.00,558.94 1158.00,548.55 1176.00,558.94 1158.00,569.34" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-10-13" data-state="recorded"><title>2026-10-13: 269,804,837 recorded tokens</title>
-<polygon points="1120.00,598.98 1138.00,609.37 1138.00,779.56 1120.00,769.17" fill="#549298" />
-<polygon points="1138.00,609.37 1156.00,598.98 1156.00,769.17 1138.00,779.56" fill="#467a7f" />
-<polygon points="1120.00,598.98 1138.00,588.58 1156.00,598.98 1138.00,609.37" fill="#64afb6" />
+<polygon points="1120.00,598.98 1138.00,609.37 1138.00,779.56 1120.00,769.17" fill="#2d6775" />
+<polygon points="1138.00,609.37 1156.00,598.98 1156.00,769.17 1138.00,779.56" fill="#265662" />
+<polygon points="1120.00,598.98 1138.00,588.58 1156.00,598.98 1138.00,609.37" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-10-14" data-state="recorded"><title>2026-10-14: 115,448,207 recorded tokens</title>
 <polygon points="1100.00,658.09 1118.00,668.48 1118.00,791.11 1100.00,780.72" fill="#2d6775" />
@@ -1258,9 +1258,9 @@
 <polygon points="1080.00,542.48 1098.00,532.09 1116.00,542.48 1098.00,552.88" fill="#a6e3df" />
 </g>
 <g class="tower" data-date="2026-10-16" data-state="recorded"><title>2026-10-16: 715,446,826 recorded tokens</title>
-<polygon points="1060.00,575.38 1078.00,585.77 1078.00,814.20 1060.00,803.81" fill="#8bbebb" />
-<polygon points="1078.00,585.77 1096.00,575.38 1096.00,803.81 1078.00,814.20" fill="#749f9c" />
-<polygon points="1060.00,575.38 1078.00,564.98 1096.00,575.38 1078.00,585.77" fill="#a6e3df" />
+<polygon points="1060.00,575.38 1078.00,585.77 1078.00,814.20 1060.00,803.81" fill="#549298" />
+<polygon points="1078.00,585.77 1096.00,575.38 1096.00,803.81 1078.00,814.20" fill="#467a7f" />
+<polygon points="1060.00,575.38 1078.00,564.98 1096.00,575.38 1078.00,585.77" fill="#64afb6" />
 </g>
 <g class="tower" data-date="2026-10-17" data-state="recorded"><title>2026-10-17: 208,322,016 recorded tokens</title>
 <polygon points="1040.00,660.08 1058.00,670.47 1058.00,825.75 1040.00,815.36" fill="#2d6775" />
@@ -1268,17 +1268,19 @@
 <polygon points="1040.00,660.08 1058.00,649.68 1076.00,660.08 1058.00,670.47" fill="#367b8c" />
 </g>
 <g class="tower" data-date="2026-10-18" data-state="recorded"><title>2026-10-18: 416,998,029 recorded tokens</title>
-<polygon points="1180.00,561.74 1198.00,572.14 1198.00,768.02 1180.00,757.62" fill="#549298" />
-<polygon points="1198.00,572.14 1216.00,561.74 1216.00,757.62 1198.00,768.02" fill="#467a7f" />
-<polygon points="1180.00,561.74 1198.00,551.35 1216.00,561.74 1198.00,572.14" fill="#64afb6" />
+<polygon points="1180.00,561.74 1198.00,572.14 1198.00,768.02 1180.00,757.62" fill="#2d6775" />
+<polygon points="1198.00,572.14 1216.00,561.74 1216.00,757.62 1198.00,768.02" fill="#265662" />
+<polygon points="1180.00,561.74 1198.00,551.35 1216.00,561.74 1198.00,572.14" fill="#367b8c" />
 </g>
-<g class="tower" data-date="2026-10-19" data-state="recorded"><title>2026-10-19: 927,823,253 recorded tokens</title>
-<polygon points="1160.00,524.87 1178.00,535.26 1178.00,779.56 1160.00,769.17" fill="#8bbebb" />
-<polygon points="1178.00,535.26 1196.00,524.87 1196.00,769.17 1178.00,779.56" fill="#749f9c" />
-<polygon points="1160.00,524.87 1178.00,514.48 1196.00,524.87 1178.00,535.26" fill="#a6e3df" />
+<g class="tower" data-date="2026-10-19" data-state="recorded"><title>2026-10-19: 1,388,579,012 recorded tokens</title>
+<polygon points="1160.00,500.09 1178.00,510.49 1178.00,779.56 1160.00,769.17" fill="#8bbebb" />
+<polygon points="1178.00,510.49 1196.00,500.09 1196.00,769.17 1178.00,779.56" fill="#749f9c" />
+<polygon points="1160.00,500.09 1178.00,489.70 1196.00,500.09 1178.00,510.49" fill="#a6e3df" />
 </g>
-<g data-date="2026-10-20" data-state="missing"><title>2026-10-20: not yet returned</title>
-<polygon points="1140.00,780.72 1158.00,770.33 1176.00,780.72 1158.00,791.11" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
+<g class="tower" data-date="2026-10-20" data-state="recorded"><title>2026-10-20: 1,755,616,070 recorded tokens</title>
+<polygon points="1140.00,497.16 1158.00,507.55 1158.00,791.11 1140.00,780.72" fill="#8bbebb" />
+<polygon points="1158.00,507.55 1176.00,497.16 1176.00,780.72 1158.00,791.11" fill="#749f9c" />
+<polygon points="1140.00,497.16 1158.00,486.77 1176.00,497.16 1158.00,507.55" fill="#a6e3df" />
 </g>
 <g data-date="2026-10-21" data-state="missing"><title>2026-10-21: not yet returned</title>
 <polygon points="1120.00,792.26 1138.00,781.87 1156.00,792.26 1138.00,802.66" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
@@ -1295,40 +1297,40 @@
 </g>
 <text x="974" y="66" font-size="17" fill="#a6e3df" font-weight="600" text-anchor="middle" letter-spacing="1">RECENT 7 DAYS</text>
 <polygon points="974.00,233.75 1003.91,248.15 1011.29,280.51 990.60,306.46 957.40,306.46 936.71,280.51 944.09,248.15" fill="none" stroke="#777d8a" stroke-width=".7" stroke-dasharray="4 5"/>
-<text x="981" y="237.75" font-size="11" fill="#9199aa" font-weight="400" text-anchor="start" >254M</text>
+<text x="981" y="237.75" font-size="11" fill="#9199aa" font-weight="400" text-anchor="start" >439M</text>
 <polygon points="974.00,195.50 1033.81,224.30 1048.58,289.02 1007.19,340.92 940.81,340.92 899.42,289.02 914.19,224.30" fill="none" stroke="#777d8a" stroke-width=".7" stroke-dasharray="4 5"/>
-<text x="981" y="199.5" font-size="11" fill="#9199aa" font-weight="400" text-anchor="start" >508M</text>
+<text x="981" y="199.5" font-size="11" fill="#9199aa" font-weight="400" text-anchor="start" >878M</text>
 <polygon points="974.00,157.25 1063.72,200.45 1085.87,297.53 1023.79,375.39 924.21,375.39 862.13,297.53 884.28,200.45" fill="none" stroke="#777d8a" stroke-width=".7" stroke-dasharray="4 5"/>
-<text x="981" y="161.25" font-size="11" fill="#9199aa" font-weight="400" text-anchor="start" >762M</text>
+<text x="981" y="161.25" font-size="11" fill="#9199aa" font-weight="400" text-anchor="start" >1.32B</text>
 <polygon points="974.00,119.00 1093.62,176.61 1123.16,306.05 1040.38,409.85 907.62,409.85 824.84,306.05 854.38,176.61" fill="none" stroke="#777d8a" stroke-width=".7" stroke-dasharray="4 5"/>
-<text x="981" y="123.0" font-size="11" fill="#9199aa" font-weight="400" text-anchor="start" >1.02B</text>
+<text x="981" y="123.0" font-size="11" fill="#9199aa" font-weight="400" text-anchor="start" >1.76B</text>
 <path d="M974 272L974.00 119.00" stroke="#5b6476" stroke-width=".7" stroke-dasharray="4 5"/>
-<text x="974.0" y="96.46000000000001" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Oct 13</text>
+<text x="974.0" y="96.46000000000001" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Oct 14</text>
 <path d="M974 272L1093.62 176.61" stroke="#5b6476" stroke-width=".7" stroke-dasharray="4 5"/>
-<text x="1115.151855844778" y="164.43515117242424" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Oct 14</text>
+<text x="1115.151855844778" y="164.43515117242424" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Oct 15</text>
 <path d="M974 272L1123.16 306.05" stroke="#5b6476" stroke-width=".7" stroke-dasharray="4 5"/>
-<text x="1150.0134852653064" y="317.173929416473" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Oct 15</text>
+<text x="1150.0134852653064" y="317.173929416473" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Oct 16</text>
 <path d="M974 272L1040.38 409.85" stroke="#5b6476" stroke-width=".7" stroke-dasharray="4 5"/>
-<text x="1052.333370260284" y="439.6609194111028" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Oct 16</text>
+<text x="1052.333370260284" y="439.6609194111028" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Oct 17</text>
 <path d="M974 272L907.62 409.85" stroke="#5b6476" stroke-width=".7" stroke-dasharray="4 5"/>
-<text x="895.6666297397161" y="439.6609194111028" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Oct 17</text>
+<text x="895.6666297397161" y="439.6609194111028" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Oct 18</text>
 <path d="M974 272L824.84 306.05" stroke="#5b6476" stroke-width=".7" stroke-dasharray="4 5"/>
-<text x="797.9865147346936" y="317.173929416473" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Oct 18</text>
+<text x="797.9865147346936" y="317.173929416473" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Oct 19</text>
 <path d="M974 272L854.38 176.61" stroke="#5b6476" stroke-width=".7" stroke-dasharray="4 5"/>
-<text x="832.8481441552219" y="164.43515117242427" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Oct 19</text>
-<polygon points="974.00,231.37 987.59,261.16 1122.96,306.00 1020.75,369.07 960.39,300.26 912.78,285.97 864.76,184.89" fill="#a6e3df" fill-opacity=".38" stroke="#a6e3df" stroke-width="3"/>
+<text x="832.8481441552219" y="164.43515117242427" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Oct 20</text>
+<polygon points="974.00,261.94 1043.12,216.88 1034.77,285.87 981.88,288.35 958.24,304.73 856.05,298.92 854.41,176.63" fill="#a6e3df" fill-opacity=".38" stroke="#a6e3df" stroke-width="3"/>
 <text x="974" y="479" font-size="14" fill="#9199aa" font-weight="400" text-anchor="middle" >tokens / day</text>
 <circle cx="190" cy="658" r="101" fill="none" stroke="#173345" stroke-width="29"/>
-<circle cx="190" cy="658" r="101" fill="none" stroke="#a6e3df" stroke-width="29" stroke-dasharray="160.177 634.602" transform="rotate(-90 190 658)"/>
-<text x="190" y="654" font-size="29" fill="#a6e3df" font-weight="600" text-anchor="middle" >3.67B</text>
+<circle cx="190" cy="658" r="101" fill="none" stroke="#a6e3df" stroke-width="29" stroke-dasharray="212.730 634.602" transform="rotate(-90 190 658)"/>
+<text x="190" y="654" font-size="29" fill="#a6e3df" font-weight="600" text-anchor="middle" >5.62B</text>
 <text x="190" y="682" font-size="14" fill="#eeeeff" font-weight="400" text-anchor="middle" >last 7 days</text>
-<text x="335" y="640" font-size="18" fill="#a6e3df" font-weight="400" text-anchor="start" >25.2% recent</text>
-<text x="335" y="671" font-size="18" fill="#6e98a8" font-weight="400" text-anchor="start" >74.8% earlier</text>
+<text x="335" y="640" font-size="18" fill="#a6e3df" font-weight="400" text-anchor="start" >33.5% recent</text>
+<text x="335" y="671" font-size="18" fill="#6e98a8" font-weight="400" text-anchor="start" >66.5% earlier</text>
 <text x="335" y="703" font-size="14" fill="#9199aa" font-weight="400" text-anchor="start" >of recorded tokens</text>
-<text x="380" y="833" font-size="32" fill="#a6e3df" font-weight="600" text-anchor="end" >14.53B</text>
+<text x="380" y="833" font-size="32" fill="#a6e3df" font-weight="600" text-anchor="end" >16.75B</text>
 <text x="391" y="833" font-size="24" fill="#eeeeff" font-weight="400" text-anchor="start" >tokens</text>
-<text x="602" y="833" font-size="29" fill="#a6e3df" font-weight="600" text-anchor="end" >86</text>
+<text x="602" y="833" font-size="29" fill="#a6e3df" font-weight="600" text-anchor="end" >87</text>
 <text x="614" y="833" font-size="21" fill="#eeeeff" font-weight="400" text-anchor="start" >active days</text>
-<text x="810" y="833" font-size="19" fill="#eeeeff" font-weight="400" text-anchor="start" >peak 1.01B</text>
+<text x="810" y="833" font-size="19" fill="#eeeeff" font-weight="400" text-anchor="start" >peak 1.76B</text>
 <text x="24" y="866" font-size="13" fill="#9199aa" font-weight="400" text-anchor="start" >NightView · mint  /  token heights: logarithmic  /  outlined tiles: no returned record</text>
 </svg>
