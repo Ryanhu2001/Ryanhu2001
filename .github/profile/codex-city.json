@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
   "source": "Codex account/usage/read dailyUsageBuckets",
-  "updatedAt": "2026-10-31T01:29:37+00:00",
+  "updatedAt": "2026-11-01T01:34:51+00:00",
   "metric": "service-reported tokens; no input/output/cache breakdown provided",
   "dateBasis": "service startDate values, without timezone conversion",
   "coverage": {
     "firstReturnedDate": "2026-07-25",
-    "through": "2026-10-30",
-    "returnedDays": 97,
+    "through": "2026-10-31",
+    "returnedDays": 98,
     "missingDates": [
       "2026-08-20"
     ],
     "allDevicesComplete": "not established"
   },
-  "recordedTokens": 26333305058,
+  "recordedTokens": 25993510522,
   "matchesAccountSummary": true,
   "dailyUsageBuckets": [
     {
@@ -194,95 +194,95 @@
     },
     {
       "startDate": "2026-09-08",
-      "tokens": 223139277
+      "tokens": 222762768
     },
     {
       "startDate": "2026-09-09",
-      "tokens": 202061446
+      "tokens": 201205156
     },
     {
       "startDate": "2026-09-10",
-      "tokens": 105360464
+      "tokens": 104777198
     },
     {
       "startDate": "2026-09-11",
-      "tokens": 170561997
+      "tokens": 170200066
     },
     {
       "startDate": "2026-09-12",
-      "tokens": 117707742
+      "tokens": 116882134
     },
     {
       "startDate": "2026-09-13",
-      "tokens": 88651487
+      "tokens": 88106795
     },
     {
       "startDate": "2026-09-14",
-      "tokens": 121879671
+      "tokens": 120590858
     },
     {
       "startDate": "2026-09-15",
-      "tokens": 48320389
+      "tokens": 47382330
     },
     {
       "startDate": "2026-09-16",
-      "tokens": 120021884
+      "tokens": 118628363
     },
     {
       "startDate": "2026-09-17",
-      "tokens": 173120402
+      "tokens": 171855623
     },
     {
       "startDate": "2026-09-18",
-      "tokens": 57439522
+      "tokens": 56871365
     },
     {
       "startDate": "2026-09-19",
-      "tokens": 85422292
+      "tokens": 84606905
     },
     {
       "startDate": "2026-09-20",
-      "tokens": 8374569
+      "tokens": 8265629
     },
     {
       "startDate": "2026-09-21",
-      "tokens": 160089880
+      "tokens": 158370537
     },
     {
       "startDate": "2026-09-22",
-      "tokens": 212721780
+      "tokens": 211111204
     },
     {
       "startDate": "2026-09-23",
-      "tokens": 181577021
+      "tokens": 180478591
     },
     {
       "startDate": "2026-09-24",
-      "tokens": 59408006
+      "tokens": 59034494
     },
     {
       "startDate": "2026-09-25",
-      "tokens": 35239529
+      "tokens": 34321266
     },
     {
       "startDate": "2026-09-26",
-      "tokens": 269475593
+      "tokens": 268360610
     },
     {
       "startDate": "2026-09-27",
-      "tokens": 293048154
+      "tokens": 292877640
     },
     {
       "startDate": "2026-09-28",
-      "tokens": 154245262
+      "tokens": 152539319
     },
     {
       "startDate": "2026-09-29",
-      "tokens": 15856237
+      "tokens": 15439330
     },
     {
       "startDate": "2026-09-30",
-      "tokens": 85422076
+      "tokens": 81292341
     },
     {
       "startDate": "2026-10-01",
@@ -294,115 +294,119 @@
     },
     {
       "startDate": "2026-10-03",
-      "tokens": 35842432
+      "tokens": 34659994
     },
     {
       "startDate": "2026-10-04",
-      "tokens": 191709611
+      "tokens": 187848021
     },
     {
       "startDate": "2026-10-05",
-      "tokens": 306645518
+      "tokens": 304788176
     },
     {
       "startDate": "2026-10-06",
-      "tokens": 166835347
+      "tokens": 164464180
     },
     {
       "startDate": "2026-10-07",
-      "tokens": 30232643
+      "tokens": 26606844
     },
     {
       "startDate": "2026-10-08",
-      "tokens": 272709407
+      "tokens": 264348164
     },
     {
       "startDate": "2026-10-09",
-      "tokens": 216267173
+      "tokens": 209399119
     },
     {
       "startDate": "2026-10-10",
-      "tokens": 227483761
+      "tokens": 213543112
     },
     {
       "startDate": "2026-10-11",
-      "tokens": 153101554
+      "tokens": 138853553
     },
     {
       "startDate": "2026-10-12",
-      "tokens": 410991273
+      "tokens": 392738761
     },
     {
       "startDate": "2026-10-13",
-      "tokens": 233616871
+      "tokens": 210484220
     },
     {
       "startDate": "2026-10-14",
-      "tokens": 85717048
+      "tokens": 67694323
     },
     {
       "startDate": "2026-10-15",
-      "tokens": 984501467
+      "tokens": 964731560
     },
     {
       "startDate": "2026-10-16",
-      "tokens": 688165583
+      "tokens": 660016323
     },
     {
       "startDate": "2026-10-17",
-      "tokens": 199200943
+      "tokens": 188894668
     },
     {
       "startDate": "2026-10-18",
-      "tokens": 409408732
+      "tokens": 392542638
     },
     {
       "startDate": "2026-10-19",
-      "tokens": 1381726045
+      "tokens": 1361993688
     },
     {
       "startDate": "2026-10-20",
-      "tokens": 2220184193
+      "tokens": 2199091394
     },
     {
       "startDate": "2026-10-21",
-      "tokens": 1864481331
+      "tokens": 1838333031
     },
     {
       "startDate": "2026-10-22",
-      "tokens": 1844423162
+      "tokens": 1815905828
     },
     {
       "startDate": "2026-10-23",
-      "tokens": 1359750551
+      "tokens": 1323491822
     },
     {
       "startDate": "2026-10-24",
-      "tokens": 1200140557
+      "tokens": 1160681456
     },
     {
       "startDate": "2026-10-25",
-      "tokens": 751519310
+      "tokens": 723264346
     },
     {
       "startDate": "2026-10-26",
-      "tokens": 364121567
+      "tokens": 344916653
     },
     {
       "startDate": "2026-10-27",
-      "tokens": 1473615754
+      "tokens": 1442428542
     },
     {
       "startDate": "2026-10-28",
-      "tokens": 260585340
+      "tokens": 246657206
     },
     {
       "startDate": "2026-10-29",
-      "tokens": 262455138
+      "tokens": 246929694
     },
     {
       "startDate": "2026-10-30",
-      "tokens": 156334608
+      "tokens": 294141646
+    },
+    {
+      "startDate": "2026-10-31",
+      "tokens": 15707579
     }
   ]
 }
