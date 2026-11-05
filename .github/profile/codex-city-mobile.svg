@@ -1,15 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="480" height="610" viewBox="0 0 480 610" role="img" aria-labelledby="title desc">
 <title id="title">Ryan — Codex NightView, mint edition</title>
-<desc id="desc">26,245,751,945 account-reported Codex tokens across 100 returned dates, 2026-07-25 to 2026-11-02. A 13-week isometric calendar adapted from GitHub Profile 3D Contrib NightView. Heights use the original logarithmic mapping with tokens measured in millions. Missing dates are unknown, not zero. All-device coverage is not established.</desc>
+<desc id="desc">26,440,194,481 account-reported Codex tokens across 102 returned dates, 2026-07-25 to 2026-11-04. A 13-week isometric calendar adapted from GitHub Profile 3D Contrib NightView. Heights use the original logarithmic mapping with tokens measured in millions. Missing dates are unknown, not zero. All-device coverage is not established.</desc>
 <style>text{font-family:Ubuntu,Helvetica,Arial,sans-serif}.tower{transform-box:fill-box;transform-origin:center bottom;animation:grow 2.2s ease-out both}@keyframes grow{from{transform:scaleY(.025)}to{transform:scaleY(1)}}@media(prefers-reduced-motion:reduce){.tower{animation:none}}</style>
 <rect width="480" height="610" fill="#00000f"/>
 <text x="22" y="32" font-size="15" fill="#a6e3df" font-weight="600" text-anchor="start" letter-spacing="1">CODEX · NIGHT VIEW</text>
-<text x="22" y="55" font-size="12" fill="#9199aa" font-weight="400" text-anchor="start" >Jul 25 — Nov 02, 2026</text>
-<text x="22" y="101" font-size="33" fill="#a6e3df" font-weight="600" text-anchor="start" >26.25B</text>
+<text x="22" y="55" font-size="12" fill="#9199aa" font-weight="400" text-anchor="start" >Jul 25 — Nov 04, 2026</text>
+<text x="22" y="101" font-size="33" fill="#a6e3df" font-weight="600" text-anchor="start" >26.44B</text>
 <text x="22" y="122" font-size="12" fill="#eeeeff" font-weight="400" text-anchor="start" >recorded tokens</text>
-<text x="270" y="101" font-size="33" fill="#eeeeff" font-weight="600" text-anchor="start" >2.5B</text>
+<text x="270" y="101" font-size="33" fill="#eeeeff" font-weight="600" text-anchor="start" >1B</text>
 <text x="270" y="122" font-size="12" fill="#9199aa" font-weight="400" text-anchor="start" >last 7 days</text>
-<text x="22" y="159" font-size="12" fill="#9199aa" font-weight="400" text-anchor="start" >100 active days · peak 2.2B tokens</text>
+<text x="22" y="159" font-size="12" fill="#9199aa" font-weight="400" text-anchor="start" >102 active days · peak 2.2B tokens</text>
 <text x="22" y="181" font-size="10" fill="#9199aa" font-weight="400" text-anchor="start" letter-spacing="1">LATEST 13 WEEKS</text>
 <g transform="translate(0 107)">
 <g class="tower" data-date="2026-08-09" data-state="recorded"><title>2026-08-09: 235,234 recorded tokens</title>
@@ -435,16 +435,20 @@
 <polygon points="398.00,271.45 416.00,261.06 416.00,307.62 398.00,318.02" fill="#183a4a" />
 <polygon points="380.00,261.06 398.00,250.67 416.00,261.06 398.00,271.45" fill="#235369" />
 </g>
-<g class="tower" data-date="2026-11-02" data-state="recorded"><title>2026-11-02: 151,591,766 recorded tokens</title>
-<polygon points="360.00,243.59 378.00,253.98 378.00,329.56 360.00,319.17" fill="#2d6775" />
-<polygon points="378.00,253.98 396.00,243.59 396.00,319.17 378.00,329.56" fill="#265662" />
-<polygon points="360.00,243.59 378.00,233.20 396.00,243.59 378.00,253.98" fill="#367b8c" />
+<g class="tower" data-date="2026-11-02" data-state="recorded"><title>2026-11-02: 177,180,286 recorded tokens</title>
+<polygon points="360.00,238.81 378.00,249.20 378.00,329.56 360.00,319.17" fill="#2d6775" />
+<polygon points="378.00,249.20 396.00,238.81 396.00,319.17 378.00,329.56" fill="#265662" />
+<polygon points="360.00,238.81 378.00,228.42 396.00,238.81 378.00,249.20" fill="#367b8c" />
 </g>
-<g data-date="2026-11-03" data-state="missing"><title>2026-11-03: not yet returned</title>
-<polygon points="340.00,330.72 358.00,320.33 376.00,330.72 358.00,341.11" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
+<g class="tower" data-date="2026-11-03" data-state="recorded"><title>2026-11-03: 60,148,636 recorded tokens</title>
+<polygon points="340.00,281.32 358.00,291.71 358.00,341.11 340.00,330.72" fill="#1d4558" />
+<polygon points="358.00,291.71 376.00,281.32 376.00,330.72 358.00,341.11" fill="#183a4a" />
+<polygon points="340.00,281.32 358.00,270.93 376.00,281.32 358.00,291.71" fill="#235369" />
 </g>
-<g data-date="2026-11-04" data-state="missing"><title>2026-11-04: not yet returned</title>
-<polygon points="320.00,342.26 338.00,331.87 356.00,342.26 338.00,352.66" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
+<g class="tower" data-date="2026-11-04" data-state="recorded"><title>2026-11-04: 108,705,380 recorded tokens</title>
+<polygon points="320.00,276.58 338.00,286.97 338.00,352.66 320.00,342.26" fill="#1d4558" />
+<polygon points="338.00,286.97 356.00,276.58 356.00,342.26 338.00,352.66" fill="#183a4a" />
+<polygon points="320.00,276.58 338.00,266.18 356.00,276.58 338.00,286.97" fill="#235369" />
 </g>
 <g data-date="2026-11-05" data-state="missing"><title>2026-11-05: not yet returned</title>
 <polygon points="300.00,353.81 318.00,343.42 336.00,353.81 318.00,364.20" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
