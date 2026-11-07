@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render a private-data-safe Codex token city from account-reported daily buckets."""
+"""Render the Codex NightView from Token Monitor's automatic JSON export."""
 import argparse
 import base64
 import datetime as dt
@@ -7,110 +7,90 @@ import html
 import json
 import math
 import pathlib
-import queue
-import shutil
 import subprocess
-import threading
-import time
 import xml.etree.ElementTree as ET
 
 REPO = 'Ryanhu2001/Ryanhu2001'
 FILES = ('codex-city.json', 'codex-city.svg', 'codex-city-mobile.svg')
 UTC = dt.timezone.utc
+SHANGHAI = dt.timezone(dt.timedelta(hours=8))
+SETTINGS = pathlib.Path.home() / 'Library/Application Support/Token Monitor/settings.json'
 
 
-def read_usage():
-    binary = shutil.which('codex')
-    if not binary:
-        raise RuntimeError('Codex CLI is unavailable; the published city was preserved.')
-    proc = subprocess.Popen([binary, 'app-server', '--stdio'], stdin=subprocess.PIPE,
-                            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
-    inbox = queue.Queue()
-
-    def reader():
-        for line in proc.stdout:
-            try:
-                inbox.put(json.loads(line))
-            except ValueError:
-                pass
-        inbox.put(None)
-
-    threading.Thread(target=reader, daemon=True).start()
-
-    def send(message):
-        proc.stdin.write(json.dumps(message) + '\n')
-        proc.stdin.flush()
-
-    def request(number, method, params=None):
-        message = {'id': number, 'method': method}
-        if params is not None:
-            message['params'] = params
-        send(message)
-        deadline = time.monotonic() + 45
-        while time.monotonic() < deadline:
-            try:
-                reply = inbox.get(timeout=max(0.1, deadline - time.monotonic()))
-            except queue.Empty:
-                raise TimeoutError('Codex account usage timed out.') from None
-            if reply is None:
-                raise RuntimeError('Codex closed before returning account usage.')
-            if reply.get('id') == number:
-                if 'error' in reply:
-                    raise RuntimeError('Codex account usage failed; check the local login.')
-                return reply['result']
-        raise TimeoutError('Codex account usage timed out.')
-
-    try:
-        request(1, 'initialize', {'clientInfo': {'name': 'codex_token_city', 'version': '1.0'},
-                                 'capabilities': {'experimentalApi': True}})
-        send({'method': 'initialized'})
-        return request(2, 'account/usage/read')
-    finally:
-        proc.terminate()
-        try:
-            proc.wait(timeout=3)
-        except subprocess.TimeoutExpired:
-            proc.kill()
-            proc.wait()
+def read_usage(export_path=None):
+    if export_path is None:
+        settings = json.loads(SETTINGS.read_text())
+        directory = settings.get('exportDir')
+        if settings.get('exportAutoEnabled') is not True or not isinstance(directory, str) or not directory:
+            raise ValueError('Enable Token Monitor automatic export before updating the city.')
+        export_path = pathlib.Path(directory).expanduser() / 'token-monitor-export.json'
+    return json.loads(pathlib.Path(export_path).read_text())
 
 
 def sanitize(usage, now=None):
     now = now or dt.datetime.now(UTC)
-    buckets = usage.get('dailyUsageBuckets')
+    if not isinstance(usage, dict) or usage.get('app', {}).get('name') != 'token-monitor':
+        raise ValueError('Expected a Token Monitor JSON export; no other source is accepted.')
+    generated = dt.datetime.fromisoformat(str(usage.get('generatedAt', '')).replace('Z', '+00:00'))
+    if generated.tzinfo is None:
+        raise ValueError('Token Monitor export timestamp must include a timezone.')
+    if generated > now + dt.timedelta(minutes=5):
+        raise ValueError('Token Monitor export timestamp is in the future.')
+    if now - generated > dt.timedelta(hours=48):
+        raise ValueError('Token Monitor export is older than 48 hours; the published city was preserved.')
+    today = now.astimezone(SHANGHAI).date()
+    buckets = usage.get('daily')
     if not isinstance(buckets, list) or not buckets:
-        raise ValueError('Daily Codex buckets are unavailable; the published city was preserved.')
+        raise ValueError('Token Monitor daily history is unavailable; the published city was preserved.')
     daily = {}
+    seen = set()
     for bucket in buckets:
-        date = dt.date.fromisoformat(bucket['startDate'])
-        tokens = bucket.get('tokens')
+        date = dt.date.fromisoformat(bucket['date'])
+        if date.isoformat() != bucket['date'] or date > today:
+            raise ValueError('Invalid or future Token Monitor date.')
+        if date in seen:
+            raise ValueError('Duplicate daily date; refusing to double count.')
+        seen.add(date)
+        clients = bucket.get('perClient')
+        if not isinstance(clients, dict):
+            raise ValueError('Token Monitor daily perClient breakdown is unavailable.')
+        codex = clients.get('codex')
+        # An absent Codex entry is unknown, not a measured zero.
+        if codex is None:
+            continue
+        if not isinstance(codex, dict):
+            raise ValueError('Invalid Codex daily record.')
+        tokens = codex.get('tokens')
         if type(tokens) is not int or tokens < 0 or tokens > 10**15:
             raise ValueError('Invalid token count.')
-        if date > (now + dt.timedelta(hours=14)).date():
-            raise ValueError('A returned bucket is in the future.')
-        if date in daily:
-            raise ValueError('Duplicate daily bucket; refusing to double count.')
+        # These are already included in `tokens`; never add them again.
+        known_components = [codex.get(key, 0) for key in
+                            ('cacheReadTokens', 'cacheWriteTokens', 'outputTokens', 'unclassifiedTokens')]
+        if any(type(value) is not int or value < 0 for value in known_components) or sum(known_components) > tokens:
+            raise ValueError('Codex token components do not fit the exported total.')
+        # Daily publishing uses completed dates, so today's changing total is excluded.
+        if date == today:
+            continue
         daily[date] = tokens
+    if not daily:
+        raise ValueError('No completed Codex daily records in the Token Monitor export.')
     first, last = min(daily), max(daily)
-    if (now.date() - last).days > 3:
-        raise ValueError('The daily buckets are stale; the published city was preserved.')
+    if (today - last).days > 3:
+        raise ValueError('Token Monitor Codex daily history is stale; the published city was preserved.')
     missing = [(first + dt.timedelta(days=i)).isoformat()
                for i in range((last - first).days + 1)
                if first + dt.timedelta(days=i) not in daily]
-    account_total = (usage.get('summary') or {}).get('lifetimeTokens')
-    if account_total is not None and (type(account_total) is not int or account_total < 0):
-        raise ValueError('Invalid account total.')
-    # A sum match is only an internal consistency check, not proof of all-device coverage.
     return {
-        'schemaVersion': 1,
-        'source': 'Codex account/usage/read dailyUsageBuckets',
+        'schemaVersion': 2,
+        'source': 'Token Monitor automatic export: daily.perClient.codex.tokens',
+        'sourceUpdatedAt': generated.astimezone(UTC).replace(microsecond=0).isoformat(),
         'updatedAt': now.replace(microsecond=0).isoformat(),
-        'metric': 'service-reported tokens; no input/output/cache breakdown provided',
-        'dateBasis': 'service startDate values, without timezone conversion',
+        'metric': 'Codex exported total; cache and reasoning are already included, never added again',
+        'dateBasis': 'Token Monitor exported dates without conversion; current Asia/Shanghai date excluded',
         'coverage': {'firstReturnedDate': first.isoformat(), 'through': last.isoformat(),
                      'returnedDays': len(daily), 'missingDates': missing,
                      'allDevicesComplete': 'not established'},
         'recordedTokens': sum(daily.values()),
-        'matchesAccountSummary': None if account_total is None else sum(daily.values()) == account_total,
         'dailyUsageBuckets': [{'startDate': date.isoformat(), 'tokens': tokens}
                              for date, tokens in sorted(daily.items())],
     }
@@ -145,7 +125,7 @@ def render(data, mobile=False):
     width, height = (480, 610) if mobile else (1280, 890)
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc">',
            '<title id="title">Ryan — Codex NightView, mint edition</title>',
-           f'<desc id="desc">{total:,} account-reported Codex tokens across {len(daily)} returned dates, {first} to {end}. A {weeks}-week isometric calendar adapted from GitHub Profile 3D Contrib NightView. Heights use the original logarithmic mapping with tokens measured in millions. Missing dates are unknown, not zero. All-device coverage is not established.</desc>',
+           f'<desc id="desc">{total:,} Codex tokens from Token Monitor across {len(daily)} completed dates, {first} to {end}. Cache and reasoning are included once in the exported total. A {weeks}-week isometric calendar adapted from GitHub Profile 3D Contrib NightView. Heights are logarithmic. Missing dates are unknown, not zero. All-device coverage is not established.</desc>',
            '<style>text{font-family:Ubuntu,Helvetica,Arial,sans-serif}.tower{transform-box:fill-box;transform-origin:center bottom;animation:grow 2.2s ease-out both}@keyframes grow{from{transform:scaleY(.025)}to{transform:scaleY(1)}}@media(prefers-reduced-motion:reduce){.tower{animation:none}}</style>',
            f'<rect width="{width}" height="{height}" fill="#00000f"/>']
     mint, fg, weak = '#a6e3df', '#eeeeff', '#9199aa'
@@ -177,7 +157,7 @@ def render(data, mobile=False):
     else:
         text(35,43,'CODEX · NIGHT VIEW',23,mint,600,extra='letter-spacing="1.5"')
         text(width-25,29,f'{first:%Y-%m-%d} / {end:%Y-%m-%d}',16,anchor='end')
-        text(35,73,f'{len(daily)} dates returned · {len(data["coverage"]["missingDates"])} missing within returned history',15)
+        text(35,73,f'Token Monitor · {len(daily)} completed dates · {len(data["coverage"]["missingDates"])} missing',15)
         out.append('<g>')
         dx = width/64
         plot_height = 850
@@ -216,7 +196,7 @@ def render(data, mobile=False):
     if not mobile:
         # NightView's upper-right radar position, now showing actual daily tokens.
         cx, cy, radius = 974, 272, 153
-        text(cx,66,'RECENT 7 DAYS',17,mint,600,'middle',extra='letter-spacing="1"')
+        text(cx,66,'DAILY TOKENS · LAST 7 DAYS',15,mint,600,'middle',extra='letter-spacing="1"')
         maximum = max((v or 0) for v in recent_values)
         tick = max(1, math.ceil(maximum/4/1_000_000))*1_000_000
         scale = tick*4
@@ -242,7 +222,6 @@ def render(data, mobile=False):
                 if value is not None:
                     px,py = radial(i,value/scale)
                     out.append(f'<circle cx="{px:.2f}" cy="{py:.2f}" r="4" fill="{mint}"/>')
-        text(cx,479,'tokens / day' if recent_days == 7 else f'{recent_days}/7 dates returned',14,weak,anchor='middle')
 
         # NightView's lower-left donut: a real partition of the returned history.
         cx, cy, radius = 190, 658, 101
@@ -265,7 +244,7 @@ def render(data, mobile=False):
     else:
         text(22,552,'LOG HEIGHT · MINT NIGHT VIEW',10,weak,extra='letter-spacing=".6"')
         text(22,575,'Outlined tiles: no returned record',11)
-        text(22,594,'Account-reported tokens · dates as returned',10)
+        text(22,594,'Token Monitor · Codex · completed dates',10)
     svg = '\n'.join(out)+'\n</svg>\n'
     ET.fromstring(svg)
     assert 'NaN' not in svg and 'Infinity' not in svg
@@ -310,10 +289,11 @@ def publish(directory):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output-dir', type=pathlib.Path, default=pathlib.Path(__file__).parent)
-    parser.add_argument('--input-json', type=pathlib.Path, help='Render a previously captured account response offline')
+    parser.add_argument('--monitor-export', '--input-json', dest='monitor_export', type=pathlib.Path,
+                        help='Token Monitor JSON export (default: read its configured automatic export directory)')
     parser.add_argument('--publish', action='store_true', help='Publish only the three allowlisted city assets')
     args = parser.parse_args()
-    usage = json.loads(args.input_json.read_text()) if args.input_json else read_usage()
+    usage = read_usage(args.monitor_export)
     data = sanitize(usage)
     assets = {'codex-city.json':json.dumps(data, indent=2)+'\n',
               'codex-city.svg':render(data), 'codex-city-mobile.svg':render(data, mobile=True)}
