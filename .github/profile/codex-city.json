@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
   "source": "Token Monitor automatic export: daily.perClient.codex.tokens",
-  "sourceUpdatedAt": "2026-11-07T17:05:21+00:00",
-  "updatedAt": "2026-11-07T17:06:12+00:00",
+  "sourceUpdatedAt": "2026-11-08T01:31:11+00:00",
+  "updatedAt": "2026-11-08T01:31:56+00:00",
   "metric": "Codex exported total; cache and reasoning are already included, never added again",
   "dateBasis": "Token Monitor exported dates without conversion; current Asia/Shanghai date excluded",
   "coverage": {
