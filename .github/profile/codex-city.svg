@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="890" viewBox="0 0 1280 890" role="img" aria-labelledby="title desc">
 <title id="title">Ryan — Codex NightView, mint edition</title>
-<desc id="desc">68,397,712,193 Codex tokens from Token Monitor across 112 completed dates, 2026-07-20 to 2026-11-08. Cache and reasoning are included once in the exported total. A 53-week isometric calendar adapted from GitHub Profile 3D Contrib NightView. Heights are logarithmic. Missing dates are unknown, not zero. All-device coverage is not established.</desc>
+<desc id="desc">68,547,572,010 Codex tokens from Token Monitor across 113 completed dates, 2026-07-20 to 2026-11-09. Cache and reasoning are included once in the exported total. A 53-week isometric calendar adapted from GitHub Profile 3D Contrib NightView. Heights are logarithmic. Missing dates are unknown, not zero. All-device coverage is not established.</desc>
 <style>text{font-family:Ubuntu,Helvetica,Arial,sans-serif}.tower{transform-box:fill-box;transform-origin:center bottom;animation:grow 2.2s ease-out both}@keyframes grow{from{transform:scaleY(.025)}to{transform:scaleY(1)}}@media(prefers-reduced-motion:reduce){.tower{animation:none}}</style>
 <rect width="1280" height="890" fill="#00000f"/>
 <text x="35" y="43" font-size="23" fill="#a6e3df" font-weight="600" text-anchor="start" letter-spacing="1.5">CODEX · NIGHT VIEW</text>
-<text x="1255" y="29" font-size="16" fill="#9199aa" font-weight="400" text-anchor="end" >2026-07-20 / 2026-11-08</text>
-<text x="35" y="73" font-size="15" fill="#9199aa" font-weight="400" text-anchor="start" >Token Monitor · 112 completed dates · 0 missing</text>
+<text x="1255" y="29" font-size="16" fill="#9199aa" font-weight="400" text-anchor="end" >2026-07-20 / 2026-11-09</text>
+<text x="35" y="73" font-size="15" fill="#9199aa" font-weight="400" text-anchor="start" >Token Monitor · 113 completed dates · 0 missing</text>
 <g>
 <g data-date="2025-11-09" data-state="missing"><title>2025-11-09: no returned record</title>
 <polygon points="140.00,157.18 158.00,146.79 176.00,157.18 158.00,167.57" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
@@ -1326,8 +1326,10 @@
 <polygon points="1198.00,622.33 1216.00,611.93 1216.00,757.62 1198.00,768.02" fill="#183a4a" />
 <polygon points="1180.00,611.93 1198.00,601.54 1216.00,611.93 1198.00,622.33" fill="#235369" />
 </g>
-<g data-date="2026-11-09" data-state="missing"><title>2026-11-09: not yet returned</title>
-<polygon points="1160.00,769.17 1178.00,758.78 1196.00,769.17 1178.00,779.56" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
+<g class="tower" data-date="2026-11-09" data-state="recorded"><title>2026-11-09: 149,859,817 recorded tokens</title>
+<polygon points="1160.00,657.06 1178.00,667.45 1178.00,779.56 1160.00,769.17" fill="#1d4558" />
+<polygon points="1178.00,667.45 1196.00,657.06 1196.00,769.17 1178.00,779.56" fill="#183a4a" />
+<polygon points="1160.00,657.06 1178.00,646.67 1196.00,657.06 1178.00,667.45" fill="#235369" />
 </g>
 <g data-date="2026-11-10" data-state="missing"><title>2026-11-10: not yet returned</title>
 <polygon points="1140.00,780.72 1158.00,770.33 1176.00,780.72 1158.00,791.11" fill="#081322" stroke="#1e3349" stroke-width=".55" stroke-dasharray="1.7 2"/>
@@ -1355,30 +1357,30 @@
 <polygon points="974.00,119.00 1093.62,176.61 1123.16,306.05 1040.38,409.85 907.62,409.85 824.84,306.05 854.38,176.61" fill="none" stroke="#777d8a" stroke-width=".7" stroke-dasharray="4 5"/>
 <text x="981" y="123.0" font-size="11" fill="#9199aa" font-weight="400" text-anchor="start" >340M</text>
 <path d="M974 272L974.00 119.00" stroke="#5b6476" stroke-width=".7" stroke-dasharray="4 5"/>
-<text x="974.0" y="96.46000000000001" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Nov 02</text>
+<text x="974.0" y="96.46000000000001" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Nov 03</text>
 <path d="M974 272L1093.62 176.61" stroke="#5b6476" stroke-width=".7" stroke-dasharray="4 5"/>
-<text x="1115.151855844778" y="164.43515117242424" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Nov 03</text>
+<text x="1115.151855844778" y="164.43515117242424" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Nov 04</text>
 <path d="M974 272L1123.16 306.05" stroke="#5b6476" stroke-width=".7" stroke-dasharray="4 5"/>
-<text x="1150.0134852653064" y="317.173929416473" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Nov 04</text>
+<text x="1150.0134852653064" y="317.173929416473" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Nov 05</text>
 <path d="M974 272L1040.38 409.85" stroke="#5b6476" stroke-width=".7" stroke-dasharray="4 5"/>
-<text x="1052.333370260284" y="439.6609194111028" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Nov 05</text>
+<text x="1052.333370260284" y="439.6609194111028" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Nov 06</text>
 <path d="M974 272L907.62 409.85" stroke="#5b6476" stroke-width=".7" stroke-dasharray="4 5"/>
-<text x="895.6666297397161" y="439.6609194111028" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Nov 06</text>
+<text x="895.6666297397161" y="439.6609194111028" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Nov 07</text>
 <path d="M974 272L824.84 306.05" stroke="#5b6476" stroke-width=".7" stroke-dasharray="4 5"/>
-<text x="797.9865147346936" y="317.173929416473" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Nov 07</text>
+<text x="797.9865147346936" y="317.173929416473" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Nov 08</text>
 <path d="M974 272L854.38 176.61" stroke="#5b6476" stroke-width=".7" stroke-dasharray="4 5"/>
-<text x="832.8481441552219" y="164.43515117242427" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Nov 08</text>
-<polygon points="974.00,220.63 991.53,258.02 1021.05,282.74 998.92,323.76 922.20,379.56 825.30,305.94 865.97,185.85" fill="#a6e3df" fill-opacity=".38" stroke="#a6e3df" stroke-width="3"/>
+<text x="832.8481441552219" y="164.43515117242427" font-size="15" fill="#eeeeff" font-weight="400" text-anchor="middle" >Nov 09</text>
+<polygon points="974.00,249.58 1011.73,241.91 1030.00,284.78 1025.80,379.56 907.82,409.42 839.29,302.75 921.28,229.95" fill="#a6e3df" fill-opacity=".38" stroke="#a6e3df" stroke-width="3"/>
 <circle cx="190" cy="658" r="101" fill="none" stroke="#173345" stroke-width="29"/>
-<circle cx="190" cy="658" r="101" fill="none" stroke="#a6e3df" stroke-width="29" stroke-dasharray="12.156 634.602" transform="rotate(-90 190 658)"/>
-<text x="190" y="654" font-size="29" fill="#a6e3df" font-weight="600" text-anchor="middle" >1.31B</text>
+<circle cx="190" cy="658" r="101" fill="none" stroke="#a6e3df" stroke-width="29" stroke-dasharray="12.460 634.602" transform="rotate(-90 190 658)"/>
+<text x="190" y="654" font-size="29" fill="#a6e3df" font-weight="600" text-anchor="middle" >1.35B</text>
 <text x="190" y="682" font-size="14" fill="#eeeeff" font-weight="400" text-anchor="middle" >last 7 days</text>
-<text x="335" y="640" font-size="18" fill="#a6e3df" font-weight="400" text-anchor="start" >1.9% recent</text>
-<text x="335" y="671" font-size="18" fill="#6e98a8" font-weight="400" text-anchor="start" >98.1% earlier</text>
+<text x="335" y="640" font-size="18" fill="#a6e3df" font-weight="400" text-anchor="start" >2.0% recent</text>
+<text x="335" y="671" font-size="18" fill="#6e98a8" font-weight="400" text-anchor="start" >98.0% earlier</text>
 <text x="335" y="703" font-size="14" fill="#9199aa" font-weight="400" text-anchor="start" >of recorded tokens</text>
-<text x="380" y="833" font-size="32" fill="#a6e3df" font-weight="600" text-anchor="end" >68.4B</text>
+<text x="380" y="833" font-size="32" fill="#a6e3df" font-weight="600" text-anchor="end" >68.55B</text>
 <text x="391" y="833" font-size="24" fill="#eeeeff" font-weight="400" text-anchor="start" >tokens</text>
-<text x="602" y="833" font-size="29" fill="#a6e3df" font-weight="600" text-anchor="end" >112</text>
+<text x="602" y="833" font-size="29" fill="#a6e3df" font-weight="600" text-anchor="end" >113</text>
 <text x="614" y="833" font-size="21" fill="#eeeeff" font-weight="400" text-anchor="start" >active days</text>
 <text x="810" y="833" font-size="19" fill="#eeeeff" font-weight="400" text-anchor="start" >peak 8.05B</text>
 <text x="24" y="866" font-size="13" fill="#9199aa" font-weight="400" text-anchor="start" >NightView · mint  /  token heights: logarithmic  /  outlined tiles: no returned record</text>
