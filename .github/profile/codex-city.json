@@ -1,18 +1,18 @@
 {
   "schemaVersion": 2,
   "source": "Token Monitor automatic export: daily.perClient.codex.tokens",
-  "sourceUpdatedAt": "2026-11-15T01:33:23+00:00",
-  "updatedAt": "2026-11-15T01:34:12+00:00",
+  "sourceUpdatedAt": "2026-11-16T01:25:52+00:00",
+  "updatedAt": "2026-11-16T01:25:52+00:00",
   "metric": "Codex exported total; cache and reasoning are already included, never added again",
   "dateBasis": "Token Monitor exported dates without conversion; current Asia/Shanghai date excluded",
   "coverage": {
     "firstReturnedDate": "2026-07-20",
-    "through": "2026-11-14",
-    "returnedDays": 118,
+    "through": "2026-11-15",
+    "returnedDays": 119,
     "missingDates": [],
     "allDevicesComplete": "not established"
   },
-  "recordedTokens": 69320170420,
+  "recordedTokens": 69379281904,
   "dailyUsageBuckets": [
     {
       "startDate": "2026-07-20",
@@ -485,6 +485,10 @@
     {
       "startDate": "2026-11-14",
       "tokens": 52442225
+    },
+    {
+      "startDate": "2026-11-15",
+      "tokens": 59111484
     }
   ]
 }
